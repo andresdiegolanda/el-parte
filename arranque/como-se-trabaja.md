@@ -94,7 +94,7 @@ Cada componente tiene su página en `docs/como-se-hizo/<componente>.md` con seis
 
 ### Estilo (regla 7)
 
-- Español rioplatense, con voseo.
+- Español rioplatense, con voseo. La única excepción es el texto de [`LICENSE`](../LICENSE), que queda en inglés porque es el que tiene validez legal.
 - Sin guiones largos en ningún archivo. El verificador lo controla. Para cortar una frase se usan dos puntos, coma, punto o paréntesis.
 - Cada término técnico se explica la primera vez que aparece en un documento, o se enlaza al [glosario](glosario.md). Si el término no está en el glosario, se agrega.
 - En el código, los nombres van en español sin tildes ni eñes (`Afirmacion`, `explorador.candidatos`), salvo lo que imponga cada framework (decisión D7).
@@ -132,7 +132,7 @@ Controla que no haya guiones largos, que los enlaces relativos de los Markdown a
 2. El [tablero](../tablero.md) al día: la tarjeta en su columna, con sus etapas, su lista y su registro, y una tarjeta nueva por cada cosa que quedó pendiente. Después, el kanban regenerado.
 3. Si se tomó una decisión significativa, su ADR.
 4. Si el trabajo enseñó algo que contradice un documento, se corrige el documento (regla 1).
-5. La línea de estado de [arranque/README.md](README.md) al día.
+5. La línea de estado de [arranque/README.md](README.md) al día, y la etiqueta "estado" del [README](../README.md) si cambió la fase del proyecto.
 
 ### Commits
 

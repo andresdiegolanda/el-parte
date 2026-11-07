@@ -192,7 +192,7 @@
 <script type="application/json" id="datos">{
  "meta": {
   "actualizado": "2026-11-07",
-  "nota": "El tablero pasa a tarjetas y genera el kanban. Lo próximo es T09, que destraba la arquitectura y el ADR del stack.",
+  "nota": "Licencia MIT (T13) y etiquetas en el README. Lo próximo es T09, que destraba la arquitectura y el ADR del stack.",
   "calendario": [
    "2026-11-07",
    "2026-11-14",
@@ -492,34 +492,10 @@
    ]
   },
   {
-   "id": "T17",
-   "titulo": "Dar acceso de escritura al repositorio a las sesiones en la nube",
-   "columna": "para-empezar",
-   "orden": 5,
-   "tipo": "gestion",
-   "dueno": "Andrés",
-   "dependeDe": "",
-   "dependencias": [],
-   "esperaA": "",
-   "fecha": "",
-   "detalle": [],
-   "etapas": [],
-   "lista": [],
-   "notas": [
-    "El push del primer commit desde una sesión en la nube devolvió HTTP 403: esas sesiones pueden leer el repositorio pero no escribir. Se resuelve instalando la app de GitHub de Claude en el repositorio. Mientras tanto, los commits se suben desde una máquina local."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-07",
-     "texto": "Creada, después del 403."
-    }
-   ]
-  },
-  {
    "id": "T11",
    "titulo": "Entregar el registro completo del banco de pruebas",
    "columna": "para-empezar",
-   "orden": 6,
+   "orden": 5,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -536,35 +512,6 @@
    "lista": [],
    "notas": [
     "El seguimiento acumulado y las bitácoras por corrida van en `banco-de-pruebas/privado/`, que no se versiona (D2). Hay que confirmar cuántas noches cubre: la muestra sugiere unas cincuenta desde el 2026-09-17 y la definición del proyecto habla de unas setenta."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-07",
-     "texto": "Creada."
-    }
-   ]
-  },
-  {
-   "id": "T13",
-   "titulo": "Elegir la licencia del repositorio",
-   "columna": "para-empezar",
-   "orden": 7,
-   "tipo": "gestion",
-   "dueno": "Andrés",
-   "dependeDe": "",
-   "dependencias": [],
-   "esperaA": "",
-   "fecha": "",
-   "detalle": [
-    {
-     "texto": "README.md",
-     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/README.md"
-    }
-   ],
-   "etapas": [],
-   "lista": [],
-   "notas": [
-    "Mientras no haya licencia rigen los derechos de autor por defecto, y nadie puede reutilizar el código."
    ],
    "registro": [
     {
@@ -1038,10 +985,75 @@
    ]
   },
   {
+   "id": "T13",
+   "titulo": "Elegir la licencia del repositorio",
+   "columna": "hecho",
+   "orden": 1,
+   "tipo": "gestion",
+   "dueno": "Andrés",
+   "dependeDe": "",
+   "dependencias": [],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "LICENSE",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/LICENSE"
+    },
+    {
+     "texto": "arranque/decisiones-iniciales.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/arranque/decisiones-iniciales.md"
+    }
+   ],
+   "etapas": [],
+   "lista": [],
+   "notas": [
+    "Se eligió MIT (D13). El texto está en `LICENSE`, en la raíz, y el README muestra la etiqueta."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    },
+    {
+     "fecha": "2026-11-07",
+     "texto": "Hecha: licencia MIT."
+    }
+   ]
+  },
+  {
+   "id": "T17",
+   "titulo": "Dar acceso de escritura al repositorio a las sesiones en la nube",
+   "columna": "hecho",
+   "orden": 2,
+   "tipo": "gestion",
+   "dueno": "Andrés",
+   "dependeDe": "",
+   "dependencias": [],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [],
+   "etapas": [],
+   "lista": [],
+   "notas": [
+    "El push del primer commit desde una sesión en la nube devolvió HTTP 403: esas sesiones pueden leer el repositorio pero no escribir. Se resolvió sumando el repositorio a la app de GitHub de Claude, que ya estaba instalada en la cuenta con acceso a repositorios elegidos."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada, después del 403."
+    },
+    {
+     "fecha": "2026-11-07",
+     "texto": "Hecha: el push de los commits f3be363 y 375d044 anduvo."
+    }
+   ]
+  },
+  {
    "id": "T16",
    "titulo": "Armar el kanban generado desde el tablero",
    "columna": "hecho",
-   "orden": 1,
+   "orden": 3,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1091,7 +1103,7 @@
    "id": "T01",
    "titulo": "Armar la base documental",
    "columna": "hecho",
-   "orden": 2,
+   "orden": 4,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "",

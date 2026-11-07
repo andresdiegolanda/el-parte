@@ -21,7 +21,8 @@ flowchart TD
 
 | Ruta | Qué tiene |
 |---|---|
-| [`README.md`](../README.md) | Qué es el proyecto y sus doce reglas. |
+| [`README.md`](../README.md) | Qué es el proyecto, sus etiquetas y sus doce reglas. |
+| [`LICENSE`](../LICENSE) | Licencia MIT (D13). |
 | [`CHANGELOG.md`](../CHANGELOG.md) | Cada cambio, corto, con enlace al porqué. |
 | [`tablero.md`](../tablero.md) | Todo lo pendiente, en tarjetas con dueño, etapas y registro. Es la única fuente del kanban. |
 | [`arranque/README.md`](README.md) | Puerta de entrada: qué leer y en qué orden, y el estado en una línea. |

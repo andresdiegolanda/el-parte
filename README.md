@@ -1,5 +1,11 @@
 # El Parte
 
+[![licencia: MIT](https://img.shields.io/badge/licencia-MIT-green)](LICENSE)
+[![IA: agentes orquestados](https://img.shields.io/badge/IA-agentes%20orquestados-c0392b)](arranque/proyecto.md)
+[![fuentes: Estado uruguayo](https://img.shields.io/badge/fuentes-Estado%20uruguayo-1f4fae)](arranque/proyecto.md)
+[![estado: en diseño](https://img.shields.io/badge/estado-en%20dise%C3%B1o-orange)](tablero.md)
+[![idioma: español](https://img.shields.io/badge/idioma-espa%C3%B1ol-lightgrey)](arranque/como-se-trabaja.md)
+
 El Parte es un servicio web. Un grupo de agentes orquestados lee todas las noches lo que publica el Estado uruguayo en sus fuentes públicas, extrae hechos (quién, qué, cuándo, con qué fuente) y los guarda en una base común. Cada cliente tiene una página donde se suscribe a entidades: organismos, empresas, programas, licitaciones. Cada mañana su página muestra lo que se encontró la noche anterior sobre sus suscripciones, con la fuente de cada hecho, y dice con claridad cuándo no hubo nada nuevo.
 
 Es un proyecto didáctico y de portafolio. Su objetivo es mostrar cómo se construye un sistema de agentes orquestados que corre solo y no miente. Mostrar cómo se hizo es tan importante como el resultado: cualquiera que entre al repositorio o a la aplicación tiene que poder entender, sin hablar con nadie, qué hace cada pieza, por qué está, cómo se construyó y qué falló en el camino. No es un negocio: no hay pagos, planes ni soporte.
@@ -31,4 +37,4 @@ Cómo se cumple cada regla en la práctica está en [`arranque/como-se-trabaja.m
 
 ## Licencia
 
-Pendiente de decisión (ver el [tablero](tablero.md)). Mientras no haya licencia, rigen los derechos de autor por defecto.
+[MIT](LICENSE). El texto de la licencia queda en inglés, su idioma original, porque es el que tiene validez legal: es la única excepción a la regla 7.

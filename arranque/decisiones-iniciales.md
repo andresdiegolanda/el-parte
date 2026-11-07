@@ -1,6 +1,6 @@
 # Decisiones iniciales
 
-Al arrancar el proyecto quedaron abiertas diez preguntas que la definición no resolvía (D1 a D10). Después se sumaron la forma de esta carpeta (D11) y el nombre del proyecto (D12). Estas son las decisiones que se tomaron. Son provisorias: están vigentes hasta que un ADR las confirme o las cambie, y el [tablero](../tablero.md) dice cuáles tienen que pasar a ADR.
+Al arrancar el proyecto quedaron abiertas diez preguntas que la definición no resolvía (D1 a D10). Después se sumaron la forma de esta carpeta (D11), el nombre del proyecto (D12) y la licencia (D13). Estas son las decisiones que se tomaron. Son provisorias: están vigentes hasta que un ADR las confirme o las cambie, y el [tablero](../tablero.md) dice cuáles tienen que pasar a ADR.
 
 Cada decisión dice qué se decidió, por qué, qué cuesta y qué la haría cambiar.
 
@@ -73,7 +73,7 @@ Cada decisión dice qué se decidió, por qué, qué cuesta y qué la haría cam
 - **Por qué.** Un lugar único y público para el handoff (regla 10). [PROVEN: la API de GitHub devuelve `private: false` y rama por defecto `main`, 2026-11-07]
 - **Costo.** Ninguno relevante.
 - **Qué la haría cambiar.** Nada previsto.
-- **Estado.** Vigente. La licencia está pendiente (tablero, T13).
+- **Estado.** Vigente. La licencia está en D13.
 
 ## D9. Dónde corre el servicio
 
@@ -105,4 +105,12 @@ Cada decisión dice qué se decidió, por qué, qué cuesta y qué la haría cam
 - **Por qué.** Un parte es el informe breve de novedades, y eso es lo que entrega el servicio cada mañana.
 - **Costo.** Ninguno relevante.
 - **Qué la haría cambiar.** Nada previsto.
+- **Estado.** Vigente.
+
+## D13. Licencia MIT
+
+- **Decisión.** El repositorio se publica con la licencia MIT, en [`LICENSE`](../LICENSE), a nombre de Andrés Landa.
+- **Por qué.** El proyecto es didáctico y de portafolio: cualquiera puede usar, copiar, modificar y redistribuir el código y su documentación, con la condición de conservar el aviso de copyright y el de la licencia. [PROVEN: texto de la licencia MIT de choosealicense.com, https://github.com/github/choosealicense.com/blob/gh-pages/_licenses/mit.txt, 2026-11-07]
+- **Costo.** No se puede exigir que quien reutilice el código publique sus cambios.
+- **Qué la haría cambiar.** Nada previsto. Lo ya publicado con MIT sigue bajo MIT aunque después se cambie la licencia. [ASSUMED]
 - **Estado.** Vigente.

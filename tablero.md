@@ -3,7 +3,7 @@
 Todo pendiente de El Parte vive acá, con dueño (regla 8). Este archivo es la única fuente del kanban: [`kanban/index.html`](kanban/index.html) se genera desde acá con `python3 herramientas/generar_kanban.py` y no se edita a mano ([ADR 0001](adrs/0001-tablero-fuente-unica-kanban-generado.md)).
 
 - Actualizado: 2026-11-07
-- Nota: El tablero pasa a tarjetas y genera el kanban. Lo próximo es T09, que destraba la arquitectura y el ADR del stack.
+- Nota: Licencia MIT (T13) y etiquetas en el README. Lo próximo es T09, que destraba la arquitectura y el ADR del stack.
 - Calendario: 2026-11-07, 2026-11-14, 2026-11-21, 2026-11-28
 - Repositorio: https://github.com/andresdiegolanda/el-parte
 
@@ -152,31 +152,12 @@ Etapas:
 Registro:
 - 2026-11-07: Creada.
 
-### T17 · Dar acceso de escritura al repositorio a las sesiones en la nube
-- Tipo: Gestión
-- Dueño: Andrés
-
-El push del primer commit desde una sesión en la nube devolvió HTTP 403: esas sesiones pueden leer el repositorio pero no escribir. Se resuelve instalando la app de GitHub de Claude en el repositorio. Mientras tanto, los commits se suben desde una máquina local.
-
-Registro:
-- 2026-11-07: Creada, después del 403.
-
 ### T11 · Entregar el registro completo del banco de pruebas
 - Tipo: Gestión
 - Dueño: Andrés
 - Detalle: [arranque/proyecto.md](arranque/proyecto.md)
 
 El seguimiento acumulado y las bitácoras por corrida van en `banco-de-pruebas/privado/`, que no se versiona (D2). Hay que confirmar cuántas noches cubre: la muestra sugiere unas cincuenta desde el 2026-09-17 y la definición del proyecto habla de unas setenta.
-
-Registro:
-- 2026-11-07: Creada.
-
-### T13 · Elegir la licencia del repositorio
-- Tipo: Gestión
-- Dueño: Andrés
-- Detalle: [README.md](README.md)
-
-Mientras no haya licencia rigen los derechos de autor por defecto, y nadie puede reutilizar el código.
 
 Registro:
 - 2026-11-07: Creada.
@@ -352,6 +333,27 @@ Registro:
 - 2026-11-07: Creada.
 
 ## Hecho
+
+### T13 · Elegir la licencia del repositorio
+- Tipo: Gestión
+- Dueño: Andrés
+- Detalle: [LICENSE](LICENSE), [arranque/decisiones-iniciales.md](arranque/decisiones-iniciales.md)
+
+Se eligió MIT (D13). El texto está en `LICENSE`, en la raíz, y el README muestra la etiqueta.
+
+Registro:
+- 2026-11-07: Creada.
+- 2026-11-07: Hecha: licencia MIT.
+
+### T17 · Dar acceso de escritura al repositorio a las sesiones en la nube
+- Tipo: Gestión
+- Dueño: Andrés
+
+El push del primer commit desde una sesión en la nube devolvió HTTP 403: esas sesiones pueden leer el repositorio pero no escribir. Se resolvió sumando el repositorio a la app de GitHub de Claude, que ya estaba instalada en la cuenta con acceso a repositorios elegidos.
+
+Registro:
+- 2026-11-07: Creada, después del 403.
+- 2026-11-07: Hecha: el push de los commits f3be363 y 375d044 anduvo.
 
 ### T16 · Armar el kanban generado desde el tablero
 - Tipo: Herramienta
