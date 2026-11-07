@@ -91,7 +91,7 @@ Y las fallas que muestra esa noche, cada una con la pieza de El Parte que la ati
 
 Son preferencias, no órdenes. Cada una se confirma o se cambia con un ADR (pendientes en el [tablero](../tablero.md)):
 
-- Java con Spring Boot y Spring AI para los agentes y la orquestación. El estado actual de los patrones de orquestación de Spring AI se verifica en su documentación oficial antes de apoyarse en ellos (tablero, T09).
+- Java con Spring Boot y Spring AI para los agentes y la orquestación. Lo que Spring AI ofrece hoy está verificado en [docs/verificaciones/spring-ai.md](../docs/verificaciones/spring-ai.md): sirve para cada agente por dentro, pero no coordina agentes entre sí.
 - PostgreSQL para la base de afirmaciones.
 - Los agentes se comunican por mensajes en tópicos, para que cada corrida sea reproducible y la sala de máquinas se arme desde los mensajes.
 - Una interfaz web simple, sin framework pesado.

@@ -28,7 +28,7 @@ Después de eso, cada tarea del tablero enlaza a los documentos que necesita. El
 
 ## Estado en una línea
 
-Base documental y kanban listos. Lo próximo es T09, verificar Spring AI, que destraba la arquitectura (`docs/arquitectura.md`). El detalle está en el [tablero](../tablero.md).
+Spring AI verificado (T09, [docs/verificaciones/spring-ai.md](../docs/verificaciones/spring-ai.md)). Lo próximo es T02, la arquitectura (`docs/arquitectura.md`). El detalle está en el [tablero](../tablero.md).
 
 Esta línea se actualiza en cada entrega.
 

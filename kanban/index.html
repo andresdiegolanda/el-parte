@@ -192,7 +192,7 @@
 <script type="application/json" id="datos">{
  "meta": {
   "actualizado": "2026-11-07",
-  "nota": "Licencia MIT (T13) y etiquetas en el README. Lo próximo es T09, que destraba la arquitectura y el ADR del stack.",
+  "nota": "T09 hecha: Spring AI sirve para cada agente por dentro, y la orquestación por tópicos la escribe el proyecto. Lo próximo es T02, la arquitectura.",
   "calendario": [
    "2026-11-07",
    "2026-11-14",
@@ -287,48 +287,164 @@
  ],
  "tarjetas": [
   {
-   "id": "T09",
-   "titulo": "Verificar Spring AI y sus patrones de orquestación",
+   "id": "T02",
+   "titulo": "Escribir docs/arquitectura.md",
    "columna": "para-empezar",
    "orden": 1,
-   "tipo": "verificacion",
+   "tipo": "documento",
    "dueno": "desarrollo",
-   "dependeDe": "",
-   "dependencias": [],
+   "dependeDe": "T09",
+   "dependencias": [
+    "T09"
+   ],
    "esperaA": "",
    "fecha": "",
    "detalle": [
     {
      "texto": "arranque/proyecto.md",
      "url": "https://github.com/andresdiegolanda/el-parte/blob/main/arranque/proyecto.md"
+    },
+    {
+     "texto": "docs/verificaciones/spring-ai.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/docs/verificaciones/spring-ai.md"
     }
    ],
-   "etapas": [],
+   "etapas": [
+    {
+     "texto": "Borrador",
+     "hecho": false
+    },
+    {
+     "texto": "Grados y fuentes",
+     "hecho": false
+    },
+    {
+     "texto": "Diagramas",
+     "hecho": false
+    },
+    {
+     "texto": "Releído y verificado",
+     "hecho": false
+    }
+   ],
    "lista": [
     {
-     "texto": "Versión vigente y fecha de publicación",
+     "texto": "Visión general en Mermaid",
      "hecho": false
     },
     {
-     "texto": "Patrones de orquestación de agentes que documenta",
+     "texto": "Los agentes y sus razones",
      "hecho": false
     },
     {
-     "texto": "Cómo abstrae el proveedor de modelos (D4)",
+     "texto": "Secuencia de una noche",
      "hecho": false
     },
     {
-     "texto": "Integración con mensajería en tópicos",
+     "texto": "Lámina de arquitectura en SVG con su generador",
+     "hecho": false
+    },
+    {
+     "texto": "Verificador de láminas",
      "hecho": false
     }
    ],
    "notas": [
-    "Antes de apoyarse en Spring AI hay que saber qué ofrece hoy, verificado en su documentación oficial con URL y fecha. Destraba la arquitectura (T02) y el ADR del stack (T05)."
+    "La visión general del sistema y la primera lámina en SVG, con su generador y el verificador que falla si la lámina no coincide (regla 5)."
    ],
    "registro": [
     {
      "fecha": "2026-11-07",
      "texto": "Creada."
+    },
+    {
+     "fecha": "2026-11-07",
+     "texto": "Pasa a Para empezar: T09 está hecha."
+    }
+   ]
+  },
+  {
+   "id": "T05",
+   "titulo": "Escribir los primeros ADRs",
+   "columna": "para-empezar",
+   "orden": 2,
+   "tipo": "adr",
+   "dueno": "desarrollo",
+   "dependeDe": "T09",
+   "dependencias": [
+    "T09"
+   ],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "arranque/como-se-trabaja.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/arranque/como-se-trabaja.md"
+    },
+    {
+     "texto": "docs/verificaciones/spring-ai.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/docs/verificaciones/spring-ai.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Contexto y alternativas",
+     "hecho": false
+    },
+    {
+     "texto": "Fuentes verificadas",
+     "hecho": false
+    },
+    {
+     "texto": "Escrito",
+     "hecho": false
+    },
+    {
+     "texto": "Aceptado",
+     "hecho": false
+    }
+   ],
+   "lista": [
+    {
+     "texto": "Orquestación por mensajes",
+     "hecho": false
+    },
+    {
+     "texto": "Elección del stack",
+     "hecho": false
+    },
+    {
+     "texto": "Grados de evidencia",
+     "hecho": false
+    },
+    {
+     "texto": "Presupuesto por corrida (D4)",
+     "hecho": false
+    },
+    {
+     "texto": "Versión de Spring AI (2.0.x o 2.1) y de Java",
+     "hecho": false
+    },
+    {
+     "texto": "Proyecto de mensajería compatible con Spring Boot 4",
+     "hecho": false
+    },
+    {
+     "texto": "Cómo grabar y repetir respuestas del modelo en las pruebas (D4)",
+     "hecho": false
+    }
+   ],
+   "notas": [
+    "Las cuatro decisiones de base del sistema. El del stack fija los modelos concretos, el sistema de mensajería, la interfaz web y el buzón de correo de prueba (D9)."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    },
+    {
+     "fecha": "2026-11-07",
+     "texto": "Pasa a Para empezar: T09 está hecha. Suma tres puntos que la verificación dejó abiertos."
     }
    ]
   },
@@ -336,7 +452,7 @@
    "id": "T10",
    "titulo": "Verificar las fuentes candidatas",
    "columna": "para-empezar",
-   "orden": 2,
+   "orden": 3,
    "tipo": "verificacion",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -398,7 +514,7 @@
    "id": "T06",
    "titulo": "Escribir los ADRs de las decisiones D2 y D3",
    "columna": "para-empezar",
-   "orden": 3,
+   "orden": 4,
    "tipo": "adr",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -453,7 +569,7 @@
    "id": "T15",
    "titulo": "Comprobar en el verificador que los diagramas Mermaid se dibujan",
    "columna": "para-empezar",
-   "orden": 4,
+   "orden": 5,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -495,7 +611,7 @@
    "id": "T11",
    "titulo": "Entregar el registro completo del banco de pruebas",
    "columna": "para-empezar",
-   "orden": 5,
+   "orden": 6,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -521,79 +637,10 @@
    ]
   },
   {
-   "id": "T02",
-   "titulo": "Escribir docs/arquitectura.md",
-   "columna": "pendiente",
-   "orden": 1,
-   "tipo": "documento",
-   "dueno": "desarrollo",
-   "dependeDe": "T09",
-   "dependencias": [
-    "T09"
-   ],
-   "esperaA": "",
-   "fecha": "",
-   "detalle": [
-    {
-     "texto": "arranque/proyecto.md",
-     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/arranque/proyecto.md"
-    }
-   ],
-   "etapas": [
-    {
-     "texto": "Borrador",
-     "hecho": false
-    },
-    {
-     "texto": "Grados y fuentes",
-     "hecho": false
-    },
-    {
-     "texto": "Diagramas",
-     "hecho": false
-    },
-    {
-     "texto": "Releído y verificado",
-     "hecho": false
-    }
-   ],
-   "lista": [
-    {
-     "texto": "Visión general en Mermaid",
-     "hecho": false
-    },
-    {
-     "texto": "Los agentes y sus razones",
-     "hecho": false
-    },
-    {
-     "texto": "Secuencia de una noche",
-     "hecho": false
-    },
-    {
-     "texto": "Lámina de arquitectura en SVG con su generador",
-     "hecho": false
-    },
-    {
-     "texto": "Verificador de láminas",
-     "hecho": false
-    }
-   ],
-   "notas": [
-    "La visión general del sistema y la primera lámina en SVG, con su generador y el verificador que falla si la lámina no coincide (regla 5)."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-07",
-     "texto": "Creada."
-    }
-   ]
-  },
-  {
    "id": "T03",
    "titulo": "Escribir docs/contratos.md",
    "columna": "pendiente",
-   "orden": 2,
+   "orden": 1,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T02",
@@ -649,7 +696,7 @@
    "id": "T04",
    "titulo": "Escribir docs/base-de-afirmaciones.md",
    "columna": "pendiente",
-   "orden": 3,
+   "orden": 2,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T03",
@@ -702,75 +749,10 @@
    ]
   },
   {
-   "id": "T05",
-   "titulo": "Escribir los primeros ADRs",
-   "columna": "pendiente",
-   "orden": 4,
-   "tipo": "adr",
-   "dueno": "desarrollo",
-   "dependeDe": "T09",
-   "dependencias": [
-    "T09"
-   ],
-   "esperaA": "",
-   "fecha": "",
-   "detalle": [
-    {
-     "texto": "arranque/como-se-trabaja.md",
-     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/arranque/como-se-trabaja.md"
-    }
-   ],
-   "etapas": [
-    {
-     "texto": "Contexto y alternativas",
-     "hecho": false
-    },
-    {
-     "texto": "Fuentes verificadas",
-     "hecho": false
-    },
-    {
-     "texto": "Escrito",
-     "hecho": false
-    },
-    {
-     "texto": "Aceptado",
-     "hecho": false
-    }
-   ],
-   "lista": [
-    {
-     "texto": "Orquestación por mensajes",
-     "hecho": false
-    },
-    {
-     "texto": "Elección del stack",
-     "hecho": false
-    },
-    {
-     "texto": "Grados de evidencia",
-     "hecho": false
-    },
-    {
-     "texto": "Presupuesto por corrida (D4)",
-     "hecho": false
-    }
-   ],
-   "notas": [
-    "Las cuatro decisiones de base del sistema. El del stack fija los modelos concretos, el sistema de mensajería, la interfaz web y el buzón de correo de prueba (D9)."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-07",
-     "texto": "Creada."
-    }
-   ]
-  },
-  {
    "id": "T07",
    "titulo": "Escribir docs/plan.md",
    "columna": "pendiente",
-   "orden": 5,
+   "orden": 3,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T02",
@@ -822,7 +804,7 @@
    "id": "T08",
    "titulo": "Construir la primera rebanada de punta a punta",
    "columna": "pendiente",
-   "orden": 6,
+   "orden": 4,
    "tipo": "componente",
    "dueno": "desarrollo",
    "dependeDe": "T02 a T07, T10, T14",
@@ -906,7 +888,7 @@
    "id": "T12",
    "titulo": "Escribir el formato, la muestra sintética y las métricas del banco de pruebas",
    "columna": "pendiente",
-   "orden": 7,
+   "orden": 5,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T11",
@@ -962,7 +944,7 @@
    "id": "T14",
    "titulo": "Dejar la clave del proveedor de modelos fuera del repositorio",
    "columna": "pendiente",
-   "orden": 8,
+   "orden": 6,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "T05",
@@ -985,10 +967,64 @@
    ]
   },
   {
+   "id": "T09",
+   "titulo": "Verificar Spring AI y sus patrones de orquestación",
+   "columna": "hecho",
+   "orden": 1,
+   "tipo": "verificacion",
+   "dueno": "desarrollo",
+   "dependeDe": "",
+   "dependencias": [],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "docs/verificaciones/spring-ai.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/docs/verificaciones/spring-ai.md"
+    }
+   ],
+   "etapas": [],
+   "lista": [
+    {
+     "texto": "Versión vigente y fecha de publicación",
+     "hecho": true
+    },
+    {
+     "texto": "Patrones de orquestación de agentes que documenta",
+     "hecho": true
+    },
+    {
+     "texto": "Cómo abstrae el proveedor de modelos (D4)",
+     "hecho": true
+    },
+    {
+     "texto": "Integración con mensajería en tópicos",
+     "hecho": true
+    }
+   ],
+   "notas": [
+    "Antes de apoyarse en Spring AI hay que saber qué ofrece hoy, verificado en su documentación oficial con URL y fecha. Destraba la arquitectura (T02) y el ADR del stack (T05)."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    },
+    {
+     "fecha": "2026-11-07",
+     "texto": "Pasa a En curso."
+    },
+    {
+     "fecha": "2026-11-07",
+     "texto": "Hecha. La ficha está en docs/verificaciones/spring-ai.md: Spring AI 2.0.2 sirve para cada agente por dentro, pero la orquestación por tópicos es del proyecto."
+    }
+   ]
+  },
+  {
    "id": "T13",
    "titulo": "Elegir la licencia del repositorio",
    "columna": "hecho",
-   "orden": 1,
+   "orden": 2,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1025,7 +1061,7 @@
    "id": "T17",
    "titulo": "Dar acceso de escritura al repositorio a las sesiones en la nube",
    "columna": "hecho",
-   "orden": 2,
+   "orden": 3,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1053,7 +1089,7 @@
    "id": "T16",
    "titulo": "Armar el kanban generado desde el tablero",
    "columna": "hecho",
-   "orden": 3,
+   "orden": 4,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1103,7 +1139,7 @@
    "id": "T01",
    "titulo": "Armar la base documental",
    "columna": "hecho",
-   "orden": 4,
+   "orden": 5,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "",

@@ -12,6 +12,7 @@ flowchart TD
     R --> HE[herramientas/<br/>verificadores y generadores]
     R --> BP[banco-de-pruebas/<br/>formato, muestra y métricas]
     R --> OB[obsoletos/<br/>lo que sobra]
+    DO --> DV[verificaciones/]
     DO --> DF[fuentes/]
     DO --> DC[como-se-hizo/]
     DO --> DL[laminas/]
@@ -38,6 +39,7 @@ flowchart TD
 | [`herramientas/tablero_md.py`](../herramientas/tablero_md.py) | Lee y valida `tablero.md`. Lo usan el generador y el verificador. |
 | [`herramientas/generar_kanban.py`](../herramientas/generar_kanban.py) | Genera `kanban/index.html` desde `tablero.md`. |
 | [`herramientas/verificar_docs.py`](../herramientas/verificar_docs.py) | Verificador: guiones largos, enlaces relativos, reglas del tablero, kanban al día y referencias a tarjetas y decisiones. |
+| [`docs/verificaciones/spring-ai.md`](../docs/verificaciones/spring-ai.md) | Qué ofrece hoy Spring AI, verificado con URL y fecha (T09). |
 | [`obsoletos/README.md`](../obsoletos/README.md) | Índice de lo que se movió a obsoletos. |
 | [`.gitignore`](../.gitignore) | Lo que no se versiona: el registro real del banco de pruebas y los secretos. |
 

@@ -3,7 +3,7 @@
 Todo pendiente de El Parte vive acá, con dueño (regla 8). Este archivo es la única fuente del kanban: [`kanban/index.html`](kanban/index.html) se genera desde acá con `python3 herramientas/generar_kanban.py` y no se edita a mano ([ADR 0001](adrs/0001-tablero-fuente-unica-kanban-generado.md)).
 
 - Actualizado: 2026-11-07
-- Nota: Licencia MIT (T13) y etiquetas en el README. Lo próximo es T09, que destraba la arquitectura y el ADR del stack.
+- Nota: T09 hecha: Spring AI sirve para cada agente por dentro, y la orquestación por tópicos la escribe el proyecto. Lo próximo es T02, la arquitectura.
 - Calendario: 2026-11-07, 2026-11-14, 2026-11-21, 2026-11-28
 - Repositorio: https://github.com/andresdiegolanda/el-parte
 
@@ -81,21 +81,57 @@ Los campos van pegados al título, sin línea en blanco. Los que no aplican se o
 
 ## Para empezar
 
-### T09 · Verificar Spring AI y sus patrones de orquestación
-- Tipo: Verificación
+### T02 · Escribir docs/arquitectura.md
+- Tipo: Documento
 - Dueño: desarrollo
-- Detalle: [arranque/proyecto.md](arranque/proyecto.md)
+- Depende de: T09
+- Detalle: [arranque/proyecto.md](arranque/proyecto.md), [docs/verificaciones/spring-ai.md](docs/verificaciones/spring-ai.md)
 
-Antes de apoyarse en Spring AI hay que saber qué ofrece hoy, verificado en su documentación oficial con URL y fecha. Destraba la arquitectura (T02) y el ADR del stack (T05).
+La visión general del sistema y la primera lámina en SVG, con su generador y el verificador que falla si la lámina no coincide (regla 5).
+
+Etapas:
+- [ ] Borrador
+- [ ] Grados y fuentes
+- [ ] Diagramas
+- [ ] Releído y verificado
 
 Lista:
-- [ ] Versión vigente y fecha de publicación
-- [ ] Patrones de orquestación de agentes que documenta
-- [ ] Cómo abstrae el proveedor de modelos (D4)
-- [ ] Integración con mensajería en tópicos
+- [ ] Visión general en Mermaid
+- [ ] Los agentes y sus razones
+- [ ] Secuencia de una noche
+- [ ] Lámina de arquitectura en SVG con su generador
+- [ ] Verificador de láminas
 
 Registro:
 - 2026-11-07: Creada.
+- 2026-11-07: Pasa a Para empezar: T09 está hecha.
+
+### T05 · Escribir los primeros ADRs
+- Tipo: ADR
+- Dueño: desarrollo
+- Depende de: T09
+- Detalle: [arranque/como-se-trabaja.md](arranque/como-se-trabaja.md), [docs/verificaciones/spring-ai.md](docs/verificaciones/spring-ai.md)
+
+Las cuatro decisiones de base del sistema. El del stack fija los modelos concretos, el sistema de mensajería, la interfaz web y el buzón de correo de prueba (D9).
+
+Etapas:
+- [ ] Contexto y alternativas
+- [ ] Fuentes verificadas
+- [ ] Escrito
+- [ ] Aceptado
+
+Lista:
+- [ ] Orquestación por mensajes
+- [ ] Elección del stack
+- [ ] Grados de evidencia
+- [ ] Presupuesto por corrida (D4)
+- [ ] Versión de Spring AI (2.0.x o 2.1) y de Java
+- [ ] Proyecto de mensajería compatible con Spring Boot 4
+- [ ] Cómo grabar y repetir respuestas del modelo en las pruebas (D4)
+
+Registro:
+- 2026-11-07: Creada.
+- 2026-11-07: Pasa a Para empezar: T09 está hecha. Suma tres puntos que la verificación dejó abiertos.
 
 ### T10 · Verificar las fuentes candidatas
 - Tipo: Verificación
@@ -166,30 +202,6 @@ Registro:
 
 ## Pendiente
 
-### T02 · Escribir docs/arquitectura.md
-- Tipo: Documento
-- Dueño: desarrollo
-- Depende de: T09
-- Detalle: [arranque/proyecto.md](arranque/proyecto.md)
-
-La visión general del sistema y la primera lámina en SVG, con su generador y el verificador que falla si la lámina no coincide (regla 5).
-
-Etapas:
-- [ ] Borrador
-- [ ] Grados y fuentes
-- [ ] Diagramas
-- [ ] Releído y verificado
-
-Lista:
-- [ ] Visión general en Mermaid
-- [ ] Los agentes y sus razones
-- [ ] Secuencia de una noche
-- [ ] Lámina de arquitectura en SVG con su generador
-- [ ] Verificador de láminas
-
-Registro:
-- 2026-11-07: Creada.
-
 ### T03 · Escribir docs/contratos.md
 - Tipo: Documento
 - Dueño: desarrollo
@@ -228,29 +240,6 @@ Lista:
 - [ ] Modelo de datos con diagrama
 - [ ] Traza de qué agente produjo cada hecho
 - [ ] Tabla de usuarios aparte (D3)
-
-Registro:
-- 2026-11-07: Creada.
-
-### T05 · Escribir los primeros ADRs
-- Tipo: ADR
-- Dueño: desarrollo
-- Depende de: T09
-- Detalle: [arranque/como-se-trabaja.md](arranque/como-se-trabaja.md)
-
-Las cuatro decisiones de base del sistema. El del stack fija los modelos concretos, el sistema de mensajería, la interfaz web y el buzón de correo de prueba (D9).
-
-Etapas:
-- [ ] Contexto y alternativas
-- [ ] Fuentes verificadas
-- [ ] Escrito
-- [ ] Aceptado
-
-Lista:
-- [ ] Orquestación por mensajes
-- [ ] Elección del stack
-- [ ] Grados de evidencia
-- [ ] Presupuesto por corrida (D4)
 
 Registro:
 - 2026-11-07: Creada.
@@ -333,6 +322,24 @@ Registro:
 - 2026-11-07: Creada.
 
 ## Hecho
+
+### T09 · Verificar Spring AI y sus patrones de orquestación
+- Tipo: Verificación
+- Dueño: desarrollo
+- Detalle: [docs/verificaciones/spring-ai.md](docs/verificaciones/spring-ai.md)
+
+Antes de apoyarse en Spring AI hay que saber qué ofrece hoy, verificado en su documentación oficial con URL y fecha. Destraba la arquitectura (T02) y el ADR del stack (T05).
+
+Lista:
+- [x] Versión vigente y fecha de publicación
+- [x] Patrones de orquestación de agentes que documenta
+- [x] Cómo abstrae el proveedor de modelos (D4)
+- [x] Integración con mensajería en tópicos
+
+Registro:
+- 2026-11-07: Creada.
+- 2026-11-07: Pasa a En curso.
+- 2026-11-07: Hecha. La ficha está en docs/verificaciones/spring-ai.md: Spring AI 2.0.2 sirve para cada agente por dentro, pero la orquestación por tópicos es del proyecto.
 
 ### T13 · Elegir la licencia del repositorio
 - Tipo: Gestión
