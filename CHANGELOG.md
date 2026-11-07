@@ -4,6 +4,8 @@ Cada entrada dice qué cambió, dónde, y enlaza al documento que tiene el porqu
 
 ## 2026-11-07
 
+- T10 hecha: se agrega `docs/fuentes/`, con una página por cada una de las siete fuentes candidatas, y el [ADR 0006](adrs/0006-fuentes-de-la-version-0.md) con las que entran. D5 queda reemplazada y D3 pasa a PROVEN. `como-se-trabaja.md` suma la práctica de leer los términos de una fuente antes de consultarla. Tarjetas nuevas: T18 (aclaración de IMPO) y T19 (revisión de los ADRs). Por qué: [docs/fuentes/README.md](docs/fuentes/README.md).
+- T05 escrita: ADRs [0002](adrs/0002-orquestacion-por-mensajes.md) a [0005](adrs/0005-presupuesto-por-corrida.md), propuestos. T05 pasa a Esperando hasta su revisión. El glosario suma Kafka, libro de la corrida, LTS, Mailpit, token, CC BY 4.0, IATI y OCDS. Por qué: [adrs/README.md](adrs/README.md).
 - T09 hecha: se agrega `docs/verificaciones/spring-ai.md`, con lo que ofrece hoy Spring AI verificado con URL y fecha. T02 y T05 pasan a Para empezar, y T05 suma tres puntos abiertos. El glosario suma advisor, ChatClient, ChatModel, flujo de trabajo, Micrometer y salida estructurada. Por qué: [docs/verificaciones/spring-ai.md](docs/verificaciones/spring-ai.md).
 - Se agrega `LICENSE` con la licencia MIT, y el README suma etiquetas de licencia, tema, fuentes, estado e idioma. T13 pasa a Hecho. Por qué: [decisiones-iniciales.md](arranque/decisiones-iniciales.md), D13.
 - T17 pasa a Hecho: el repositorio se sumó a la app de GitHub de Claude y el push desde la nube anda. Por qué: [tablero.md](tablero.md).

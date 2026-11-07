@@ -14,6 +14,7 @@ Los términos que usa el proyecto, en orden alfabético. Si un documento usa un 
 | Banco de pruebas | Registro de una vigilancia anterior hecha con un solo agente, contra el que se mide El Parte. No se versiona. |
 | Base de afirmaciones | La base de datos de hechos: entidad, estado, fecha, grado, fuente y la traza de qué agente los produjo. |
 | Candidato | Lo que devuelve un explorador: un posible hecho con su evidencia cruda (URL, texto, fecha detectada). Todavía no es un hecho. |
+| CC BY 4.0 | Licencia Creative Commons Atribución 4.0: permite reutilizar los datos para cualquier fin, citando la fuente. La usan el BID y el Banco Mundial. |
 | CHANGELOG | Archivo con cada cambio del repositorio, corto, con enlace al documento que tiene el porqué. |
 | ChatClient | En Spring AI, la API de uso diario para hablar con un modelo. Por dentro usa un ChatModel. |
 | ChatModel | En Spring AI, la interfaz común a todos los proveedores de modelos. Cambiar de proveedor pide cambios mínimos de código. |
@@ -31,15 +32,21 @@ Los términos que usa el proyecto, en orden alfabético. Si un documento usa un 
 | Fuera de alcance | Hallazgo del banco de pruebas que vino de un lugar que El Parte no lee (prensa, buscadores). Se cuenta aparte en la medición. |
 | Grado (de un documento) | Lo que lleva cada afirmación técnica de los documentos del proyecto: PROVEN con fuente, INFERRED o ASSUMED. Ver [como-se-trabaja.md](como-se-trabaja.md). |
 | Grado (de un hecho) | Lo que pone el refutador a cada hecho: PROVEN (la fuente lo dice), INFERRED (se deduce de lo que dice la fuente) o "las fuentes no lo mencionan". |
+| IATI | Estándar internacional para publicar datos de proyectos de cooperación (*International Aid Transparency Initiative*). |
 | Idempotencia | Propiedad de una operación que, repetida, deja todo igual que si se hubiera hecho una sola vez. Acá: procesar dos veces el mismo mensaje no crea dos hechos. |
 | Identidad de un hecho | La regla que dice cuándo dos candidatos son el mismo hecho. Se define en `docs/contratos.md`. |
 | INFERRED | Grado: se deduce de algo verificado, pero no se comprobó directamente. Vale para hechos y para documentos. |
+| Kafka | Sistema de mensajería con tópicos que guardan su historia y se pueden volver a leer. Es el que usa El Parte ([ADR 0003](../adrs/0003-eleccion-del-stack.md)). |
 | Kanban | Forma de ver el trabajo como tarjetas que avanzan por columnas. En El Parte es `kanban/index.html`, generado desde `tablero.md`. |
 | Lámina | Diagrama de arquitectura en SVG, generado por un script desde su fuente. No se edita a mano. |
+| Libro de la corrida | Fila de la base que lleva lo gastado y lo reservado de una corrida, contra su presupuesto ([ADR 0005](../adrs/0005-presupuesto-por-corrida.md)). |
+| LTS | Versión con soporte largo (del inglés *long-term support*). Java 25 es la LTS más nueva. |
+| Mailpit | Servidor de correo de prueba: captura los correos que manda la aplicación y los muestra en una página web. |
 | Mermaid | Lenguaje de texto para escribir diagramas dentro de un Markdown. GitHub los dibuja al mostrar el archivo. |
 | Micrometer | Biblioteca de métricas de Spring. Spring AI la usa para contar llamadas al modelo y tokens. |
 | Modelo de lenguaje | El sistema de inteligencia artificial que lee y escribe texto y que usan los agentes por dentro. |
 | Observador | Agente que mide precisión por fuente, costo y duración por corrida y por agente, y fuentes bloqueadas. |
+| OCDS | Estándar abierto de datos de contrataciones públicas (*Open Contracting Data Standard*). Es el formato en que publica ARCE. |
 | Orquestación | La forma en que los agentes se reparten el trabajo y se pasan los resultados, con reglas fijas. |
 | Página de la mañana | Lo que ve cada cliente al día siguiente: lo nuevo sobre sus suscripciones desde ayer, con la fuente de cada hecho, o un aviso claro de que no hubo nada. |
 | PostgreSQL | Base de datos relacional de código abierto. Candidata para la base de afirmaciones. |
@@ -56,4 +63,5 @@ Los términos que usa el proyecto, en orden alfabético. Si un documento usa un 
 | SVG | Formato de imagen vectorial escrito en texto. Se usa para las láminas. |
 | Tablero | Archivo `tablero.md` con todo lo pendiente, en tarjetas. Es la única fuente del kanban. |
 | Tarjeta | Un pendiente del tablero: un bloque `###` de `tablero.md` con tipo, dueño, notas, etapas, lista y registro. |
+| Token | Unidad en la que un modelo de lenguaje mide el texto que lee y escribe. Los proveedores cobran por millón de tokens. |
 | Tópico | Canal con nombre de un sistema de mensajería. Un agente publica mensajes en un tópico y otros los leen. Guardar los mensajes permite repetir una corrida y armar la sala de máquinas. |

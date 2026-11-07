@@ -26,7 +26,7 @@ Cada decisión dice qué se decidió, por qué, qué cuesta y qué la haría cam
   - Solo se puede suscribir a organismos, personas jurídicas, programas y licitaciones. No a personas físicas.
   - Los nombres de personas físicas que aparecen en los textos de las fuentes se enmascaran al guardar. La URL de la fuente queda, así cualquiera puede ir a ver el original.
   - Los correos de los usuarios viven en una tabla aparte, fuera de la base de afirmaciones. Nunca entran a la demo ni al repositorio.
-- **Por qué.** La regla 11 prohíbe datos personales en la base y en la demo, pero el login por enlace obliga a guardar correos, y es esperable que las fuentes oficiales nombren personas en designaciones, adjudicaciones a personas físicas o empresas unipersonales. [ASSUMED: se verifica fuente por fuente al escribir cada explorador (tablero, T10)]
+- **Por qué.** La regla 11 prohíbe datos personales en la base y en la demo, pero el login por enlace obliga a guardar correos, y casi todas las fuentes verificadas nombran personas: contactos, firmantes, consultores individuales, designaciones. [PROVEN: [docs/fuentes/](../docs/fuentes/README.md), 2026-11-07]
 - **Costo.** Hay hechos que pierden información, y enmascarar exige detectar nombres, cosa que puede fallar.
 - **Qué la haría cambiar.** Que el enmascarado haga que dos hechos distintos queden iguales, o que una fuente importante sea casi toda sobre personas.
 - **Estado.** Provisoria. Pasa a ADR (tablero, T06).
@@ -34,14 +34,14 @@ Cada decisión dice qué se decidió, por qué, qué cuesta y qué la haría cam
 ## D4. Modelo de lenguaje y tope de gasto
 
 - **Decisión.**
-  - Proveedor Anthropic, usado desde Spring AI. Un modelo chico para los exploradores y el archivista y uno más grande para el refutador y el analista. Los modelos concretos se eligen en el ADR del stack, verificados en la documentación oficial.
+  - Proveedor Anthropic, usado desde Spring AI. Un modelo chico para los exploradores y el archivista y uno más grande para el refutador y el analista. Los modelos concretos quedaron en el [ADR 0003](../adrs/0003-eleccion-del-stack.md): Claude Haiku 5.5 y Claude Sonnet 5.5.
   - Tope de 0,50 USD por corrida: una pasada completa del banco de pruebas, de unas setenta noches, queda en 35 USD como máximo.
   - Las pruebas automáticas usan respuestas grabadas del modelo y no gastan.
   - La clave del proveedor la pone el responsable del proyecto, fuera del repositorio.
 - **Por qué.** El presupuesto que corta necesita números desde el principio. Las respuestas grabadas hacen que las pruebas sean reproducibles y gratis.
 - **Costo.** Atarse a un proveedor. Spring AI abstrae el proveedor, pero eso se verifica en el ADR. [ASSUMED]
 - **Qué la haría cambiar.** Que el costo medido por corrida quede muy lejos del tope, por arriba o por abajo.
-- **Estado.** Provisoria. Pasa al ADR de presupuesto por corrida (tablero, T05).
+- **Estado.** Pasó a los ADRs [0003](../adrs/0003-eleccion-del-stack.md) y [0005](../adrs/0005-presupuesto-por-corrida.md), propuestos.
 
 ## D5. Las fuentes de la versión 0
 
@@ -49,7 +49,7 @@ Cada decisión dice qué se decidió, por qué, qué cuesta y qué la haría cam
 - **Por qué.** Son las fuentes con más chance de tener datos abiertos, API o descarga oficial [ASSUMED: se verifica cada una (tablero, T10)], y la primera tiene que poder compararse con el banco de pruebas.
 - **Costo.** Algunas fuentes interesantes pueden quedar afuera por sus términos.
 - **Qué la haría cambiar.** Lo que diga la verificación de permisos y formatos de cada fuente.
-- **Estado.** Provisoria.
+- **Estado.** Reemplazada por el [ADR 0006](../adrs/0006-fuentes-de-la-version-0.md): entran ARCE, BID, Banco Mundial y la normativa de Presidencia. La fuente del BPS quedó afuera porque sus términos prohíben la consulta automática.
 
 ## D6. Revisión humana
 
@@ -77,7 +77,7 @@ Cada decisión dice qué se decidió, por qué, qué cuesta y qué la haría cam
 
 ## D9. Dónde corre el servicio
 
-- **Decisión.** La versión 0 se levanta en una máquina local con un solo comando, y los correos del login caen en un buzón de prueba local. Dónde se publica el servicio, con qué dominio y con qué servicio de correo, se decide con un ADR en el cuarto fin de semana.
+- **Decisión.** La versión 0 se levanta en una máquina local con un solo comando, y los correos del login caen en un buzón de prueba local (Mailpit, [ADR 0003](../adrs/0003-eleccion-del-stack.md)). Dónde se publica el servicio, con qué dominio y con qué servicio de correo, se decide con un ADR en el cuarto fin de semana.
 - **Por qué.** Publicar no aporta nada a las primeras rebanadas, y elegir hosting antes de medir costos es adivinar.
 - **Costo.** Los usuarios invitados recién pueden entrar al final.
 - **Qué la haría cambiar.** Necesitar mostrar el servicio en línea antes.

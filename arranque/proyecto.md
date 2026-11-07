@@ -52,7 +52,7 @@ El diagrama es la idea general. La arquitectura formal, con el diagrama de secue
 
 Entra:
 
-- Entre cuatro y seis fuentes públicas con permiso de uso (datos abiertos, API o descargas oficiales). Las candidatas son compras estatales, el diario oficial (IMPO), las resoluciones de directorio de los organismos que las publican, Presidencia y las novedades de gub.uy, y las carteras de proyectos para Uruguay de los bancos multilaterales (BID, Banco Mundial, CAF). Nada de raspar sitios que lo prohíben ni de copiar prensa textual. Cuáles entran está en [decisiones-iniciales.md](decisiones-iniciales.md) (D5).
+- Entre cuatro y seis fuentes públicas con permiso de uso (datos abiertos, API o descargas oficiales). Las candidatas son compras estatales, el diario oficial (IMPO), las resoluciones de directorio de los organismos que las publican, Presidencia y las novedades de gub.uy, y las carteras de proyectos para Uruguay de los bancos multilaterales (BID, Banco Mundial, CAF). Nada de raspar sitios que lo prohíben ni de copiar prensa textual. Cuáles entran lo decide el [ADR 0006](../adrs/0006-fuentes-de-la-version-0.md), a partir de la verificación de cada una en [docs/fuentes/](../docs/fuentes/README.md).
 - Los seis agentes de la tabla de arriba.
 - La base de afirmaciones: hechos con entidad, estado, fecha, grado, fuente y la traza de qué agente los produjo. Es una base de datos, no un documento.
 - Suscripciones por entidad y la página de la mañana de cada cliente: lo que cambió desde ayer, más el expediente de cada entidad para consultar cuando se quiera.
@@ -64,7 +64,7 @@ No entra: audio, pagos, WhatsApp, planificador dinámico de fuentes, más de un 
 
 ## El banco de pruebas
 
-Existe un registro de una vigilancia anterior de un organismo, hecha todas las noches con un solo agente, con los hallazgos reales y los descartes anotados. Es el banco de pruebas de la versión 0: el sistema orquestado tiene que correr sobre esas noches y medirse contra ese registro (hallazgos encontrados, falsos positivos, costo). La medición es parte de la versión 0, no algo para después.
+Existe un registro de una vigilancia anterior de un organismo, el Banco de Previsión Social (BPS), hecha todas las noches con un solo agente, con los hallazgos reales y los descartes anotados. Es el banco de pruebas de la versión 0: el sistema orquestado tiene que correr sobre esas noches y medirse contra ese registro (hallazgos encontrados, falsos positivos, costo). La medición es parte de la versión 0, no algo para después.
 
 El registro no se versiona, porque es material de otro proyecto (regla 11). Se lee desde una ruta configurable; en el repositorio van su formato, las métricas y una muestra sintética. Ver [decisiones-iniciales.md](decisiones-iniciales.md) (D1 y D2).
 

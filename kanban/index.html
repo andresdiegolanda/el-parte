@@ -192,7 +192,7 @@
 <script type="application/json" id="datos">{
  "meta": {
   "actualizado": "2026-11-07",
-  "nota": "T09 hecha: Spring AI sirve para cada agente por dentro, y la orquestación por tópicos la escribe el proyecto. Lo próximo es T02, la arquitectura.",
+  "nota": "T10 hecha y T05 escrita: seis ADRs esperan revisión (T19). Entran ARCE, BID, Banco Mundial y la normativa de Presidencia; el BPS queda afuera. Lo próximo es T02, la arquitectura.",
   "calendario": [
    "2026-11-07",
    "2026-11-14",
@@ -287,10 +287,64 @@
  ],
  "tarjetas": [
   {
+   "id": "T19",
+   "titulo": "Aceptar o corregir los ADRs propuestos",
+   "columna": "para-empezar",
+   "orden": 1,
+   "tipo": "gestion",
+   "dueno": "Andrés",
+   "dependeDe": "",
+   "dependencias": [],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "adrs/README.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/adrs/README.md"
+    }
+   ],
+   "etapas": [],
+   "lista": [
+    {
+     "texto": "0001: tablero como fuente única y kanban generado",
+     "hecho": false
+    },
+    {
+     "texto": "0002: orquestación por mensajes",
+     "hecho": false
+    },
+    {
+     "texto": "0003: elección del stack",
+     "hecho": false
+    },
+    {
+     "texto": "0004: grados de evidencia",
+     "hecho": false
+    },
+    {
+     "texto": "0005: presupuesto por corrida",
+     "hecho": false
+    },
+    {
+     "texto": "0006: fuentes de la versión 0",
+     "hecho": false
+    }
+   ],
+   "notas": [
+    "Los ADRs 0001 a 0006 están propuestos. Cada uno se acepta, se corrige o se rechaza; al aceptarlo, su estado pasa a \"aceptado\" en el archivo y en el índice."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    }
+   ]
+  },
+  {
    "id": "T02",
    "titulo": "Escribir docs/arquitectura.md",
    "columna": "para-empezar",
-   "orden": 1,
+   "orden": 2,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T09",
@@ -364,157 +418,10 @@
    ]
   },
   {
-   "id": "T05",
-   "titulo": "Escribir los primeros ADRs",
-   "columna": "para-empezar",
-   "orden": 2,
-   "tipo": "adr",
-   "dueno": "desarrollo",
-   "dependeDe": "T09",
-   "dependencias": [
-    "T09"
-   ],
-   "esperaA": "",
-   "fecha": "",
-   "detalle": [
-    {
-     "texto": "arranque/como-se-trabaja.md",
-     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/arranque/como-se-trabaja.md"
-    },
-    {
-     "texto": "docs/verificaciones/spring-ai.md",
-     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/docs/verificaciones/spring-ai.md"
-    }
-   ],
-   "etapas": [
-    {
-     "texto": "Contexto y alternativas",
-     "hecho": false
-    },
-    {
-     "texto": "Fuentes verificadas",
-     "hecho": false
-    },
-    {
-     "texto": "Escrito",
-     "hecho": false
-    },
-    {
-     "texto": "Aceptado",
-     "hecho": false
-    }
-   ],
-   "lista": [
-    {
-     "texto": "Orquestación por mensajes",
-     "hecho": false
-    },
-    {
-     "texto": "Elección del stack",
-     "hecho": false
-    },
-    {
-     "texto": "Grados de evidencia",
-     "hecho": false
-    },
-    {
-     "texto": "Presupuesto por corrida (D4)",
-     "hecho": false
-    },
-    {
-     "texto": "Versión de Spring AI (2.0.x o 2.1) y de Java",
-     "hecho": false
-    },
-    {
-     "texto": "Proyecto de mensajería compatible con Spring Boot 4",
-     "hecho": false
-    },
-    {
-     "texto": "Cómo grabar y repetir respuestas del modelo en las pruebas (D4)",
-     "hecho": false
-    }
-   ],
-   "notas": [
-    "Las cuatro decisiones de base del sistema. El del stack fija los modelos concretos, el sistema de mensajería, la interfaz web y el buzón de correo de prueba (D9)."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-07",
-     "texto": "Creada."
-    },
-    {
-     "fecha": "2026-11-07",
-     "texto": "Pasa a Para empezar: T09 está hecha. Suma tres puntos que la verificación dejó abiertos."
-    }
-   ]
-  },
-  {
-   "id": "T10",
-   "titulo": "Verificar las fuentes candidatas",
-   "columna": "para-empezar",
-   "orden": 3,
-   "tipo": "verificacion",
-   "dueno": "desarrollo",
-   "dependeDe": "",
-   "dependencias": [],
-   "esperaA": "",
-   "fecha": "",
-   "detalle": [
-    {
-     "texto": "arranque/decisiones-iniciales.md",
-     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/arranque/decisiones-iniciales.md"
-    }
-   ],
-   "etapas": [],
-   "lista": [
-    {
-     "texto": "Compras estatales",
-     "hecho": false
-    },
-    {
-     "texto": "Diario oficial (IMPO)",
-     "hecho": false
-    },
-    {
-     "texto": "Resoluciones de directorio del organismo del banco de pruebas",
-     "hecho": false
-    },
-    {
-     "texto": "Presidencia y novedades de gub.uy",
-     "hecho": false
-    },
-    {
-     "texto": "BID",
-     "hecho": false
-    },
-    {
-     "texto": "Banco Mundial",
-     "hecho": false
-    },
-    {
-     "texto": "CAF",
-     "hecho": false
-    },
-    {
-     "texto": "Elegir la fuente de la primera rebanada",
-     "hecho": false
-    }
-   ],
-   "notas": [
-    "De cada fuente: permiso de uso, formato, si deja consultar por fecha y si nombra personas físicas. Cada una termina en su página en `docs/fuentes/`, con URL y fecha de verificación. Con eso se elige la fuente de la primera rebanada (D5)."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-07",
-     "texto": "Creada."
-    }
-   ]
-  },
-  {
    "id": "T06",
    "titulo": "Escribir los ADRs de las decisiones D2 y D3",
    "columna": "para-empezar",
-   "orden": 4,
+   "orden": 3,
    "tipo": "adr",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -569,7 +476,7 @@
    "id": "T15",
    "titulo": "Comprobar en el verificador que los diagramas Mermaid se dibujan",
    "columna": "para-empezar",
-   "orden": 5,
+   "orden": 4,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -608,6 +515,35 @@
    ]
   },
   {
+   "id": "T18",
+   "titulo": "Pedir a IMPO que aclare si su JSON de normas se puede reutilizar",
+   "columna": "para-empezar",
+   "orden": 5,
+   "tipo": "gestion",
+   "dueno": "Andrés",
+   "dependeDe": "",
+   "dependencias": [],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "docs/fuentes/impo.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/docs/fuentes/impo.md"
+    }
+   ],
+   "etapas": [],
+   "lista": [],
+   "notas": [
+    "Su página de datos abiertos ofrece el JSON con licencia abierta, pero sus condiciones de uso prohíben copiar. Con una aclaración por escrito a favor, IMPO entra como quinta fuente (ADR 0006)."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    }
+   ]
+  },
+  {
    "id": "T11",
    "titulo": "Entregar el registro completo del banco de pruebas",
    "columna": "para-empezar",
@@ -633,6 +569,107 @@
     {
      "fecha": "2026-11-07",
      "texto": "Creada."
+    }
+   ]
+  },
+  {
+   "id": "T05",
+   "titulo": "Escribir los primeros ADRs",
+   "columna": "esperando",
+   "orden": 1,
+   "tipo": "adr",
+   "dueno": "desarrollo",
+   "dependeDe": "T09",
+   "dependencias": [
+    "T09"
+   ],
+   "esperaA": "Andrés, que acepte o corrija los ADRs 0002 a 0005 (T19)",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "adrs/0002-orquestacion-por-mensajes.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/adrs/0002-orquestacion-por-mensajes.md"
+    },
+    {
+     "texto": "adrs/0003-eleccion-del-stack.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/adrs/0003-eleccion-del-stack.md"
+    },
+    {
+     "texto": "adrs/0004-grados-de-evidencia.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/adrs/0004-grados-de-evidencia.md"
+    },
+    {
+     "texto": "adrs/0005-presupuesto-por-corrida.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/adrs/0005-presupuesto-por-corrida.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Contexto y alternativas",
+     "hecho": true
+    },
+    {
+     "texto": "Fuentes verificadas",
+     "hecho": true
+    },
+    {
+     "texto": "Escrito",
+     "hecho": true
+    },
+    {
+     "texto": "Aceptado",
+     "hecho": false
+    }
+   ],
+   "lista": [
+    {
+     "texto": "Orquestación por mensajes",
+     "hecho": true
+    },
+    {
+     "texto": "Elección del stack",
+     "hecho": true
+    },
+    {
+     "texto": "Grados de evidencia",
+     "hecho": true
+    },
+    {
+     "texto": "Presupuesto por corrida (D4)",
+     "hecho": true
+    },
+    {
+     "texto": "Versión de Spring AI (2.0.x o 2.1) y de Java",
+     "hecho": true
+    },
+    {
+     "texto": "Proyecto de mensajería compatible con Spring Boot 4",
+     "hecho": true
+    },
+    {
+     "texto": "Cómo grabar y repetir respuestas del modelo en las pruebas (D4)",
+     "hecho": true
+    }
+   ],
+   "notas": [
+    "Las cuatro decisiones de base del sistema. El del stack fija los modelos concretos, el sistema de mensajería, la interfaz web y el buzón de correo de prueba (D9)."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    },
+    {
+     "fecha": "2026-11-07",
+     "texto": "Pasa a Para empezar: T09 está hecha. Suma tres puntos que la verificación dejó abiertos."
+    },
+    {
+     "fecha": "2026-11-07",
+     "texto": "Pasa a En curso."
+    },
+    {
+     "fecha": "2026-11-07",
+     "texto": "Escritos los ADRs 0002 a 0005, propuestos. Pasa a Esperando hasta que se acepten."
     }
    ]
   },
@@ -824,6 +861,10 @@
     {
      "texto": "arranque/proyecto.md",
      "url": "https://github.com/andresdiegolanda/el-parte/blob/main/arranque/proyecto.md"
+    },
+    {
+     "texto": "docs/fuentes/compras-estatales.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/docs/fuentes/compras-estatales.md"
     }
    ],
    "etapas": [
@@ -850,7 +891,11 @@
    ],
    "lista": [
     {
-     "texto": "Una fuente y su explorador",
+     "texto": "Explorador de ARCE, filtrando por el BPS como comprador antes de llamar al modelo",
+     "hecho": false
+    },
+    {
+     "texto": "Zona horaria y publicaciones atrasadas de ARCE",
      "hecho": false
     },
     {
@@ -881,6 +926,10 @@
     {
      "fecha": "2026-11-07",
      "texto": "Creada."
+    },
+    {
+     "fecha": "2026-11-07",
+     "texto": "La fuente es ARCE (ADR 0006)."
     }
    ]
   },
@@ -967,10 +1016,84 @@
    ]
   },
   {
+   "id": "T10",
+   "titulo": "Verificar las fuentes candidatas",
+   "columna": "hecho",
+   "orden": 1,
+   "tipo": "verificacion",
+   "dueno": "desarrollo",
+   "dependeDe": "",
+   "dependencias": [],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "docs/fuentes/README.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/docs/fuentes/README.md"
+    },
+    {
+     "texto": "adrs/0006-fuentes-de-la-version-0.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/adrs/0006-fuentes-de-la-version-0.md"
+    }
+   ],
+   "etapas": [],
+   "lista": [
+    {
+     "texto": "Compras estatales",
+     "hecho": true
+    },
+    {
+     "texto": "Diario oficial (IMPO)",
+     "hecho": true
+    },
+    {
+     "texto": "Resoluciones de directorio del organismo del banco de pruebas",
+     "hecho": true
+    },
+    {
+     "texto": "Presidencia y novedades de gub.uy",
+     "hecho": true
+    },
+    {
+     "texto": "BID",
+     "hecho": true
+    },
+    {
+     "texto": "Banco Mundial",
+     "hecho": true
+    },
+    {
+     "texto": "CAF",
+     "hecho": true
+    },
+    {
+     "texto": "Elegir la fuente de la primera rebanada",
+     "hecho": true
+    }
+   ],
+   "notas": [
+    "De cada fuente: permiso de uso, formato, si deja consultar por fecha y si nombra personas físicas. Cada una termina en su página en `docs/fuentes/`, con URL y fecha de verificación. Con eso se elige la fuente de la primera rebanada (D5)."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    },
+    {
+     "fecha": "2026-11-07",
+     "texto": "Pasa a En curso."
+    },
+    {
+     "fecha": "2026-11-07",
+     "texto": "Hecha. Entran ARCE, BID, Banco Mundial y la normativa de Presidencia; ARCE es la fuente de la primera rebanada (ADR 0006, propuesto). El BPS queda afuera porque sus términos prohíben la consulta automática."
+    }
+   ]
+  },
+  {
    "id": "T09",
    "titulo": "Verificar Spring AI y sus patrones de orquestación",
    "columna": "hecho",
-   "orden": 1,
+   "orden": 2,
    "tipo": "verificacion",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1024,7 +1147,7 @@
    "id": "T13",
    "titulo": "Elegir la licencia del repositorio",
    "columna": "hecho",
-   "orden": 2,
+   "orden": 3,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1061,7 +1184,7 @@
    "id": "T17",
    "titulo": "Dar acceso de escritura al repositorio a las sesiones en la nube",
    "columna": "hecho",
-   "orden": 3,
+   "orden": 4,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1089,7 +1212,7 @@
    "id": "T16",
    "titulo": "Armar el kanban generado desde el tablero",
    "columna": "hecho",
-   "orden": 4,
+   "orden": 5,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1139,7 +1262,7 @@
    "id": "T01",
    "titulo": "Armar la base documental",
    "columna": "hecho",
-   "orden": 5,
+   "orden": 6,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "",

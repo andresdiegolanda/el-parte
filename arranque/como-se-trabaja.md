@@ -50,6 +50,8 @@ Ojo con un nombre parecido: los agentes también ponen grados a los hechos que e
 
 Lo que se afirma sobre un producto (Spring AI, PostgreSQL, el sistema de mensajería), una API o una fuente del Estado se contrasta con la documentación oficial antes de escribirlo, y se anota la URL y la fecha de consulta. Lo que se sabía de antes no cuenta como fuente.
 
+Al verificar una fuente del Estado, primero se leen sus términos de uso y su robots.txt, y recién después se hace la primera consulta. Esta práctica sale de un error: en la verificación de las fuentes se consultó el sitio del BPS antes de leer sus términos, que prohíben la consulta automática ([docs/fuentes/bps.md](../docs/fuentes/bps.md)).
+
 ### Decisiones (regla 3)
 
 Toda decisión significativa es un ADR (registro de decisión de arquitectura) en `adrs/`, con nombre `NNNN-titulo-corto.md` y número correlativo. Cada ADR tiene estas secciones:

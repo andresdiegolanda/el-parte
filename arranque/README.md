@@ -28,7 +28,7 @@ Después de eso, cada tarea del tablero enlaza a los documentos que necesita. El
 
 ## Estado en una línea
 
-Spring AI verificado (T09, [docs/verificaciones/spring-ai.md](../docs/verificaciones/spring-ai.md)). Lo próximo es T02, la arquitectura (`docs/arquitectura.md`). El detalle está en el [tablero](../tablero.md).
+Spring AI y las fuentes verificados (T09 y T10), y seis ADRs propuestos esperando revisión (T19). Lo próximo es T02, la arquitectura (`docs/arquitectura.md`). El detalle está en el [tablero](../tablero.md).
 
 Esta línea se actualiza en cada entrega.
 

@@ -3,7 +3,7 @@
 Todo pendiente de El Parte vive acá, con dueño (regla 8). Este archivo es la única fuente del kanban: [`kanban/index.html`](kanban/index.html) se genera desde acá con `python3 herramientas/generar_kanban.py` y no se edita a mano ([ADR 0001](adrs/0001-tablero-fuente-unica-kanban-generado.md)).
 
 - Actualizado: 2026-11-07
-- Nota: T09 hecha: Spring AI sirve para cada agente por dentro, y la orquestación por tópicos la escribe el proyecto. Lo próximo es T02, la arquitectura.
+- Nota: T10 hecha y T05 escrita: seis ADRs esperan revisión (T19). Entran ARCE, BID, Banco Mundial y la normativa de Presidencia; el BPS queda afuera. Lo próximo es T02, la arquitectura.
 - Calendario: 2026-11-07, 2026-11-14, 2026-11-21, 2026-11-28
 - Repositorio: https://github.com/andresdiegolanda/el-parte
 
@@ -81,6 +81,24 @@ Los campos van pegados al título, sin línea en blanco. Los que no aplican se o
 
 ## Para empezar
 
+### T19 · Aceptar o corregir los ADRs propuestos
+- Tipo: Gestión
+- Dueño: Andrés
+- Detalle: [adrs/README.md](adrs/README.md)
+
+Los ADRs 0001 a 0006 están propuestos. Cada uno se acepta, se corrige o se rechaza; al aceptarlo, su estado pasa a "aceptado" en el archivo y en el índice.
+
+Lista:
+- [ ] 0001: tablero como fuente única y kanban generado
+- [ ] 0002: orquestación por mensajes
+- [ ] 0003: elección del stack
+- [ ] 0004: grados de evidencia
+- [ ] 0005: presupuesto por corrida
+- [ ] 0006: fuentes de la versión 0
+
+Registro:
+- 2026-11-07: Creada.
+
 ### T02 · Escribir docs/arquitectura.md
 - Tipo: Documento
 - Dueño: desarrollo
@@ -105,53 +123,6 @@ Lista:
 Registro:
 - 2026-11-07: Creada.
 - 2026-11-07: Pasa a Para empezar: T09 está hecha.
-
-### T05 · Escribir los primeros ADRs
-- Tipo: ADR
-- Dueño: desarrollo
-- Depende de: T09
-- Detalle: [arranque/como-se-trabaja.md](arranque/como-se-trabaja.md), [docs/verificaciones/spring-ai.md](docs/verificaciones/spring-ai.md)
-
-Las cuatro decisiones de base del sistema. El del stack fija los modelos concretos, el sistema de mensajería, la interfaz web y el buzón de correo de prueba (D9).
-
-Etapas:
-- [ ] Contexto y alternativas
-- [ ] Fuentes verificadas
-- [ ] Escrito
-- [ ] Aceptado
-
-Lista:
-- [ ] Orquestación por mensajes
-- [ ] Elección del stack
-- [ ] Grados de evidencia
-- [ ] Presupuesto por corrida (D4)
-- [ ] Versión de Spring AI (2.0.x o 2.1) y de Java
-- [ ] Proyecto de mensajería compatible con Spring Boot 4
-- [ ] Cómo grabar y repetir respuestas del modelo en las pruebas (D4)
-
-Registro:
-- 2026-11-07: Creada.
-- 2026-11-07: Pasa a Para empezar: T09 está hecha. Suma tres puntos que la verificación dejó abiertos.
-
-### T10 · Verificar las fuentes candidatas
-- Tipo: Verificación
-- Dueño: desarrollo
-- Detalle: [arranque/decisiones-iniciales.md](arranque/decisiones-iniciales.md)
-
-De cada fuente: permiso de uso, formato, si deja consultar por fecha y si nombra personas físicas. Cada una termina en su página en `docs/fuentes/`, con URL y fecha de verificación. Con eso se elige la fuente de la primera rebanada (D5).
-
-Lista:
-- [ ] Compras estatales
-- [ ] Diario oficial (IMPO)
-- [ ] Resoluciones de directorio del organismo del banco de pruebas
-- [ ] Presidencia y novedades de gub.uy
-- [ ] BID
-- [ ] Banco Mundial
-- [ ] CAF
-- [ ] Elegir la fuente de la primera rebanada
-
-Registro:
-- 2026-11-07: Creada.
 
 ### T06 · Escribir los ADRs de las decisiones D2 y D3
 - Tipo: ADR
@@ -188,6 +159,16 @@ Etapas:
 Registro:
 - 2026-11-07: Creada.
 
+### T18 · Pedir a IMPO que aclare si su JSON de normas se puede reutilizar
+- Tipo: Gestión
+- Dueño: Andrés
+- Detalle: [docs/fuentes/impo.md](docs/fuentes/impo.md)
+
+Su página de datos abiertos ofrece el JSON con licencia abierta, pero sus condiciones de uso prohíben copiar. Con una aclaración por escrito a favor, IMPO entra como quinta fuente (ADR 0006).
+
+Registro:
+- 2026-11-07: Creada.
+
 ### T11 · Entregar el registro completo del banco de pruebas
 - Tipo: Gestión
 - Dueño: Andrés
@@ -199,6 +180,36 @@ Registro:
 - 2026-11-07: Creada.
 
 ## Esperando
+
+### T05 · Escribir los primeros ADRs
+- Tipo: ADR
+- Dueño: desarrollo
+- Depende de: T09
+- Espera a: Andrés, que acepte o corrija los ADRs 0002 a 0005 (T19)
+- Detalle: [adrs/0002-orquestacion-por-mensajes.md](adrs/0002-orquestacion-por-mensajes.md), [adrs/0003-eleccion-del-stack.md](adrs/0003-eleccion-del-stack.md), [adrs/0004-grados-de-evidencia.md](adrs/0004-grados-de-evidencia.md), [adrs/0005-presupuesto-por-corrida.md](adrs/0005-presupuesto-por-corrida.md)
+
+Las cuatro decisiones de base del sistema. El del stack fija los modelos concretos, el sistema de mensajería, la interfaz web y el buzón de correo de prueba (D9).
+
+Etapas:
+- [x] Contexto y alternativas
+- [x] Fuentes verificadas
+- [x] Escrito
+- [ ] Aceptado
+
+Lista:
+- [x] Orquestación por mensajes
+- [x] Elección del stack
+- [x] Grados de evidencia
+- [x] Presupuesto por corrida (D4)
+- [x] Versión de Spring AI (2.0.x o 2.1) y de Java
+- [x] Proyecto de mensajería compatible con Spring Boot 4
+- [x] Cómo grabar y repetir respuestas del modelo en las pruebas (D4)
+
+Registro:
+- 2026-11-07: Creada.
+- 2026-11-07: Pasa a Para empezar: T09 está hecha. Suma tres puntos que la verificación dejó abiertos.
+- 2026-11-07: Pasa a En curso.
+- 2026-11-07: Escritos los ADRs 0002 a 0005, propuestos. Pasa a Esperando hasta que se acepten.
 
 ## Pendiente
 
@@ -268,7 +279,7 @@ Registro:
 - Tipo: Componente
 - Dueño: desarrollo
 - Depende de: T02 a T07, T10, T14
-- Detalle: [arranque/proyecto.md](arranque/proyecto.md)
+- Detalle: [arranque/proyecto.md](arranque/proyecto.md), [docs/fuentes/compras-estatales.md](docs/fuentes/compras-estatales.md)
 
 Chica y completa le gana a grande y a medias: una fuente, del explorador a la página de la mañana, con la sala de máquinas de esa corrida.
 
@@ -280,7 +291,8 @@ Etapas:
 - [ ] Página cómo se hizo
 
 Lista:
-- [ ] Una fuente y su explorador
+- [ ] Explorador de ARCE, filtrando por el BPS como comprador antes de llamar al modelo
+- [ ] Zona horaria y publicaciones atrasadas de ARCE
 - [ ] Archivista
 - [ ] Refutador
 - [ ] Editor
@@ -289,6 +301,7 @@ Lista:
 
 Registro:
 - 2026-11-07: Creada.
+- 2026-11-07: La fuente es ARCE (ADR 0006).
 
 ### T12 · Escribir el formato, la muestra sintética y las métricas del banco de pruebas
 - Tipo: Documento
@@ -322,6 +335,28 @@ Registro:
 - 2026-11-07: Creada.
 
 ## Hecho
+
+### T10 · Verificar las fuentes candidatas
+- Tipo: Verificación
+- Dueño: desarrollo
+- Detalle: [docs/fuentes/README.md](docs/fuentes/README.md), [adrs/0006-fuentes-de-la-version-0.md](adrs/0006-fuentes-de-la-version-0.md)
+
+De cada fuente: permiso de uso, formato, si deja consultar por fecha y si nombra personas físicas. Cada una termina en su página en `docs/fuentes/`, con URL y fecha de verificación. Con eso se elige la fuente de la primera rebanada (D5).
+
+Lista:
+- [x] Compras estatales
+- [x] Diario oficial (IMPO)
+- [x] Resoluciones de directorio del organismo del banco de pruebas
+- [x] Presidencia y novedades de gub.uy
+- [x] BID
+- [x] Banco Mundial
+- [x] CAF
+- [x] Elegir la fuente de la primera rebanada
+
+Registro:
+- 2026-11-07: Creada.
+- 2026-11-07: Pasa a En curso.
+- 2026-11-07: Hecha. Entran ARCE, BID, Banco Mundial y la normativa de Presidencia; ARCE es la fuente de la primera rebanada (ADR 0006, propuesto). El BPS queda afuera porque sus términos prohíben la consulta automática.
 
 ### T09 · Verificar Spring AI y sus patrones de orquestación
 - Tipo: Verificación
