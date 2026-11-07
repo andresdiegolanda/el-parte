@@ -1,0 +1,10 @@
+# Registro real del banco de pruebas: no se versiona (arranque/decisiones-iniciales.md, D2)
+banco-de-pruebas/privado/
+
+# Secretos y configuración local (claves del proveedor de modelos, correos de usuarios)
+.env
+.env.*
+*.local.*
+
+# Archivos de trabajo que no se versionan
+tmp/
