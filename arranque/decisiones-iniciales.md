@@ -1,6 +1,6 @@
 # Decisiones iniciales
 
-Al arrancar el proyecto quedaron abiertas diez preguntas que la definición no resolvía, y una más sobre la forma de esta carpeta. Estas son las decisiones que se tomaron. Son provisorias: están vigentes hasta que un ADR las confirme o las cambie, y el [tablero](../tablero.md) dice cuáles tienen que pasar a ADR.
+Al arrancar el proyecto quedaron abiertas diez preguntas que la definición no resolvía (D1 a D10). Después se sumaron la forma de esta carpeta (D11) y el nombre del proyecto (D12). Estas son las decisiones que se tomaron. Son provisorias: están vigentes hasta que un ADR las confirme o las cambie, y el [tablero](../tablero.md) dice cuáles tienen que pasar a ADR.
 
 Cada decisión dice qué se decidió, por qué, qué cuesta y qué la haría cambiar.
 
@@ -96,5 +96,13 @@ Cada decisión dice qué se decidió, por qué, qué cuesta y qué la haría cam
 - **Decisión.** La guía para sesiones nuevas es la carpeta `arranque/` en la raíz del repositorio, en lugar del archivo `docs/arranque.md` que figuraba en la definición. Una sesión nueva solo tiene que leer esta carpeta.
 - **Por qué.** Un punto de entrada único y visible, separado de la documentación técnica que va a crecer en `docs/`, y que puede tener varios archivos cortos en lugar de uno largo.
 - **Costo.** Una carpeta más en la raíz.
+- **Qué la haría cambiar.** Nada previsto.
+- **Estado.** Vigente.
+
+## D12. El nombre es El Parte
+
+- **Decisión.** El proyecto se llama El Parte. Deja de ser un nombre provisorio.
+- **Por qué.** Un parte es el informe breve de novedades, y eso es lo que entrega el servicio cada mañana.
+- **Costo.** Ninguno relevante.
 - **Qué la haría cambiar.** Nada previsto.
 - **Estado.** Vigente.

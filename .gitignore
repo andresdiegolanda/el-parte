@@ -8,3 +8,6 @@ banco-de-pruebas/privado/
 
 # Archivos de trabajo que no se versionan
 tmp/
+
+# Caché de Python
+__pycache__/

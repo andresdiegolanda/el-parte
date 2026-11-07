@@ -1,7 +1,5 @@
 # El Parte
 
-*Nombre provisorio.*
-
 El Parte es un servicio web. Un grupo de agentes orquestados lee todas las noches lo que publica el Estado uruguayo en sus fuentes públicas, extrae hechos (quién, qué, cuándo, con qué fuente) y los guarda en una base común. Cada cliente tiene una página donde se suscribe a entidades: organismos, empresas, programas, licitaciones. Cada mañana su página muestra lo que se encontró la noche anterior sobre sus suscripciones, con la fuente de cada hecho, y dice con claridad cuándo no hubo nada nuevo.
 
 Es un proyecto didáctico y de portafolio. Su objetivo es mostrar cómo se construye un sistema de agentes orquestados que corre solo y no miente. Mostrar cómo se hizo es tan importante como el resultado: cualquiera que entre al repositorio o a la aplicación tiene que poder entender, sin hablar con nadie, qué hace cada pieza, por qué está, cómo se construyó y qué falló en el camino. No es un negocio: no hay pagos, planes ni soporte.
@@ -12,7 +10,7 @@ Si llegás por primera vez, seas persona o asistente, leé la carpeta [`arranque
 
 ## Estado
 
-Fase de documentación: todavía no hay código. Lo que está en curso y lo que falta está en el [tablero](tablero.md). Lo que cambió, en el [CHANGELOG](CHANGELOG.md).
+Fase de documentación: todavía no hay código. Lo que está en curso y lo que falta está en el [tablero](tablero.md), que también se ve como kanban en [`kanban/index.html`](kanban/index.html) (se abre en cualquier navegador). Lo que cambió, en el [CHANGELOG](CHANGELOG.md).
 
 ## Las reglas del proyecto
 
@@ -23,7 +21,7 @@ Fase de documentación: todavía no hay código. Lo que está en curso y lo que 
 5. **Diagramas en todo lo que se explique:** Mermaid dentro del Markdown para flujos, secuencias y estados; SVG para las láminas de arquitectura, generadas por script desde su fuente y nunca editadas a mano, con un verificador que falle si una lámina no coincide con su generador.
 6. **Cada componente tiene su página "cómo se hizo":** qué hace, por qué existe, cómo se construyó, qué se probó, qué falló y qué se cambió. La bitácora de lo que falló es contenido de primera, no algo que se esconde.
 7. **Español rioplatense, sin guiones largos en ningún artefacto.** Los términos técnicos se explican la primera vez o remiten al [glosario](arranque/glosario.md).
-8. **Todo pendiente tiene dueño y vive en el [tablero](tablero.md)**, en Markdown.
+8. **Todo pendiente tiene dueño y vive en el [tablero](tablero.md)**, en Markdown. El kanban se genera desde ese archivo.
 9. **Nada se borra:** lo que sobra se mueve a [`obsoletos/`](obsoletos/README.md).
 10. **El repositorio es el único handoff:** una sesión nueva, de una persona o de un asistente, arranca desde la carpeta [`arranque/`](arranque/README.md) sin necesitar nada más.
 11. **Sin datos personales en la base ni en la demo;** solo fuentes públicas y datos sintéticos para las pruebas. El proyecto es independiente de cualquier trabajo para clientes y no incluye material de otros proyectos.

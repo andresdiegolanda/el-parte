@@ -5,9 +5,12 @@ Controla, sobre todo el repositorio:
 
 1. Que ningun archivo de texto tenga guiones largos (regla 7).
 2. Que los enlaces relativos de los Markdown apunten a archivos que existen.
-3. Que todo pendiente del tablero tenga un dueño valido y un ID unico (regla 8).
-4. Que toda tarea (T01, T02...) citada en un Markdown exista en el tablero.
-5. Que toda decision de arranque (D1, D2...) citada exista en
+3. Que tablero.md respete su formato y sus reglas (regla 8): ver
+   herramientas/tablero_md.py.
+4. Que kanban/index.html sea exactamente lo que genera tablero.md
+   (adrs/0001-tablero-fuente-unica-kanban-generado.md).
+5. Que toda tarea (T01, T02...) citada en un Markdown exista en el tablero.
+6. Que toda decision de arranque (D1, D2...) citada exista en
    arranque/decisiones-iniciales.md.
 
 Uso:  python3 herramientas/verificar_docs.py
@@ -20,6 +23,9 @@ import sys
 from pathlib import Path
 from urllib.parse import unquote
 
+import generar_kanban
+import tablero_md
+
 RAIZ = Path(__file__).resolve().parent.parent
 
 # Carpetas que no se revisan: la de git, el registro real del banco de
@@ -31,7 +37,6 @@ EXCLUIDAS_RUTAS = {Path("banco-de-pruebas/privado")}
 # Se arman con chr() para que este archivo no los contenga.
 GUIONES = {chr(0x2014): "guion largo", chr(0x2013): "semiraya", chr(0x2015): "barra horizontal"}
 
-DUENOS_VALIDOS = {"Andrés", "desarrollo"}
 
 ENLACE = re.compile(r"!?\[[^\]]*\]\(\s*([^)\s]+)(?:\s+\"[^\"]*\")?\s*\)")
 CODIGO_EN_LINEA = re.compile(r"`[^`]*`")
@@ -97,42 +102,25 @@ def verificar_enlaces(markdowns, errores):
                     errores.append(f"{relativa}:{numero}: enlace roto a {destino}")
 
 
-def filas_de_tablas(texto):
-    """Devuelve (encabezado, fila, numero) por cada fila de datos de cada tabla."""
-    encabezado = None
-    for numero, linea in enumerate(texto.splitlines(), start=1):
-        if not linea.startswith("|"):
-            encabezado = None
-            continue
-        celdas = [c.strip() for c in linea.strip().strip("|").split("|")]
-        if encabezado is None:
-            encabezado = celdas
-            continue
-        if all(re.fullmatch(r":?-{3,}:?", c) for c in celdas):
-            continue
-        yield encabezado, celdas, numero
-
-
 def verificar_tablero(errores):
     tablero = RAIZ / "tablero.md"
     if not tablero.exists():
         errores.append("tablero.md: no existe")
         return set()
-    ids = set()
-    for encabezado, celdas, numero in filas_de_tablas(tablero.read_text(encoding="utf-8")):
-        if "ID" not in encabezado or "Dueño" not in encabezado:
-            continue
-        fila = dict(zip(encabezado, celdas))
-        identificador = fila.get("ID", "")
-        if not TAREA.fullmatch(identificador):
-            errores.append(f"tablero.md:{numero}: ID invalido '{identificador}'")
-        elif identificador in ids:
-            errores.append(f"tablero.md:{numero}: ID repetido {identificador}")
-        ids.add(identificador)
-        dueno = fila.get("Dueño", "")
-        if dueno not in DUENOS_VALIDOS:
-            errores.append(f"tablero.md:{numero}: {identificador} sin dueño valido ('{dueno}')")
-    return ids
+    datos, de_formato = tablero_md.leer(tablero)
+    errores.extend(de_formato)
+    errores.extend(tablero_md.validar(datos))
+    return tablero_md.ids(datos)
+
+
+def verificar_kanban(errores):
+    html, problemas = generar_kanban.generar()
+    if problemas:
+        errores.append("kanban/index.html: no se puede generar mientras el tablero tenga problemas")
+        return
+    salida = generar_kanban.SALIDA
+    if not salida.exists() or salida.read_text(encoding="utf-8") != html:
+        errores.append("kanban/index.html: no coincide con tablero.md; corré python3 herramientas/generar_kanban.py")
 
 
 def decisiones_definidas():
@@ -162,6 +150,7 @@ def main():
     verificar_guiones(archivos, errores)
     verificar_enlaces(markdowns, errores)
     ids = verificar_tablero(errores)
+    verificar_kanban(errores)
     verificar_referencias(markdowns, ids, decisiones_definidas(), errores)
 
     if errores:

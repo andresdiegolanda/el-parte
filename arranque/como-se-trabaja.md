@@ -6,17 +6,17 @@ Las doce reglas están en el [README](../README.md). Acá está cómo se cumplen
 
 ```mermaid
 flowchart TD
-    A[Leer arranque/] --> B[Tomar una tarea del tablero<br/>y marcarla en curso]
+    A[Leer arranque/] --> B[Pasar la primera tarjeta de Para empezar<br/>a En curso]
     B --> C{¿Toca un producto,<br/>una API o una fuente?}
     C -- Sí --> D[Verificar en la documentación oficial<br/>y anotar URL y fecha]
     C -- No --> E
     D --> E[Escribir el documento o el código]
     E --> F[Releer lo escrito y comprobar el cambio]
-    F --> G[Correr herramientas/verificar_docs.py]
+    F --> H[CHANGELOG, tablero y ADR si hubo decisión]
+    H --> I[Regenerar el kanban y actualizar<br/>el estado en arranque/README.md]
+    I --> G[Correr herramientas/verificar_docs.py]
     G -- Falla --> E
-    G -- Pasa --> H[CHANGELOG, tablero y ADR si hubo decisión]
-    H --> I[Actualizar el estado en arranque/README.md]
-    I --> J{¿Se pidió commit?}
+    G -- Pasa --> J{¿Se pidió commit?}
     J -- Sí --> K[Commit y push]
     J -- No --> L[Entregar sin commit]
 ```
@@ -25,8 +25,8 @@ flowchart TD
 
 1. Traer la última versión del repositorio.
 2. Leer la carpeta `arranque/` en el orden de su [README](README.md).
-3. Elegir la tarea en el [tablero](../tablero.md). Si lo que hay que hacer no está en el tablero, primero se agrega, con dueño.
-4. Marcar la tarea como "en curso".
+3. Elegir la tarjeta en el [tablero](../tablero.md): la primera de "Para empezar", salvo que haya un motivo para otra. Si lo que hay que hacer no está en el tablero, primero se agrega la tarjeta, con dueño.
+4. Mover su bloque a "En curso" y anotarlo en su registro.
 
 ## Mientras se trabaja
 
@@ -81,7 +81,7 @@ La señal concreta que obligaría a revisarla.
 
 Un ADR aceptado no se edita: si cambia la decisión, se escribe uno nuevo que lo reemplaza y el viejo pasa a "reemplazado por".
 
-Mientras no existe `adrs/`, las decisiones de arranque están en [decisiones-iniciales.md](decisiones-iniciales.md), y el tablero dice cuáles tienen que pasar a ADR.
+El índice está en [`adrs/README.md`](../adrs/README.md). Las decisiones de arranque que todavía no tienen ADR están en [decisiones-iniciales.md](decisiones-iniciales.md), y el tablero dice cuáles tienen que pasar a ADR.
 
 ### Diagramas (regla 5)
 
@@ -104,6 +104,14 @@ Cada componente tiene su página en `docs/como-se-hizo/<componente>.md` con seis
 
 Sin datos personales en la base ni en la demo. Solo fuentes públicas y datos sintéticos para las pruebas. Cómo se tratan los nombres de personas que aparecen en las fuentes y los correos de los usuarios está en [decisiones-iniciales.md](decisiones-iniciales.md) (D3).
 
+### El tablero y el kanban (regla 8)
+
+[`tablero.md`](../tablero.md) es la única fuente de lo pendiente ([ADR 0001](../adrs/0001-tablero-fuente-unica-kanban-generado.md)). Cada pendiente es una tarjeta: un bloque `###` debajo de la columna en la que está. El propio tablero explica el formato, los tipos con sus etapas y las reglas de cada columna.
+
+- Mover una tarjeta es mover su bloque a otra columna y sumar una línea a su registro.
+- Después de tocar el tablero se regenera el kanban con `python3 herramientas/generar_kanban.py`. `kanban/index.html` no se edita a mano: lo que se cambia a mano es `kanban/plantilla.html` (el diseño) o `tablero.md` (el contenido).
+- Si hay una copia publicada del kanban, se vuelve a publicar desde `kanban/index.html`.
+
 ### Nada se borra (regla 9)
 
 Lo que sobra se mueve a [`obsoletos/`](../obsoletos/README.md), manteniendo su ruta relativa debajo de esa carpeta, y se anota en el índice de `obsoletos/README.md`: qué era, cuándo se movió, por qué y qué lo reemplaza.
@@ -116,12 +124,12 @@ Después de cada escritura se relee el archivo y se comprueba que el cambio qued
 python3 herramientas/verificar_docs.py
 ```
 
-Controla que no haya guiones largos, que los enlaces relativos de los Markdown apunten a archivos que existen y que todo pendiente del tablero tenga dueño. Si algo falla, termina con código 1 y dice dónde.
+Controla que no haya guiones largos, que los enlaces relativos de los Markdown apunten a archivos que existen, que el tablero respete su formato y sus reglas, que el kanban coincida con el tablero y que toda tarjeta o decisión citada exista. Si algo falla, termina con código 1 y dice dónde.
 
 ## Al terminar
 
 1. Una entrada corta en el [CHANGELOG](../CHANGELOG.md): qué cambió, dónde, y el enlace al documento que tiene el porqué.
-2. El [tablero](../tablero.md) al día: estado de la tarea, y lo nuevo que quedó pendiente, con dueño.
+2. El [tablero](../tablero.md) al día: la tarjeta en su columna, con sus etapas, su lista y su registro, y una tarjeta nueva por cada cosa que quedó pendiente. Después, el kanban regenerado.
 3. Si se tomó una decisión significativa, su ADR.
 4. Si el trabajo enseñó algo que contradice un documento, se corrige el documento (regla 1).
 5. La línea de estado de [arranque/README.md](README.md) al día.

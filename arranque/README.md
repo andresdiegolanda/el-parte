@@ -21,14 +21,14 @@ flowchart LR
 2. [como-se-trabaja.md](como-se-trabaja.md): las reglas del proyecto llevadas a la práctica. Cómo empieza, avanza y termina una sesión.
 3. [decisiones-iniciales.md](decisiones-iniciales.md): lo que ya se decidió y está vigente, aunque todavía no tenga su ADR.
 4. [mapa.md](mapa.md): qué hay en cada carpeta del repositorio y qué va a haber.
-5. [../tablero.md](../tablero.md): qué está en curso, qué falta y de quién es cada cosa. La próxima tarea sale de acá.
+5. [../tablero.md](../tablero.md): qué está en curso, qué falta y de quién es cada cosa, en tarjetas. La próxima tarea es la primera de "Para empezar". La misma información, como kanban, está en [../kanban/index.html](../kanban/index.html).
 6. [glosario.md](glosario.md): los términos técnicos. Se consulta cuando aparece uno que no conocés.
 
 Después de eso, cada tarea del tablero enlaza a los documentos que necesita. El [mapa](mapa.md) dice dónde está cada uno.
 
 ## Estado en una línea
 
-Base documental creada (README, CHANGELOG, tablero y esta carpeta). Lo próximo es `docs/arquitectura.md`. El detalle está en el [tablero](../tablero.md).
+Base documental y kanban listos. Lo próximo es T09, verificar Spring AI, que destraba la arquitectura (`docs/arquitectura.md`). El detalle está en el [tablero](../tablero.md).
 
 Esta línea se actualiza en cada entrega.
 

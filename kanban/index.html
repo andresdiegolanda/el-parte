@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Tablero de El Parte</title>
+<!-- Generado por herramientas/generar_kanban.py desde tablero.md. No se edita a mano: se edita tablero.md y se vuelve a generar. -->
+<!-- Plantilla del kanban. Esta sí se edita a mano; los datos entran desde tablero.md
+     con herramientas/generar_kanban.py, que escribe kanban/index.html. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+  /* Layout: tablero de solo lectura. Encabezado con el proyecto y una franja de estado, cinco columnas
+     (Pendiente a Hecho) que se apilan en el teléfono, y un panel lateral con el detalle de cada tarjeta. */
+  :root {
+    --bg: #eceeed; --surface: #ffffff; --col: #e1e4e3; --ink: #1b2226; --muted: #5a666c; --line: #cdd3d2;
+    --accent: #1f4fae; --accent-soft: #e1e8f7;
+    --wait: #9c5f0b; --wait-soft: #fbefd9; --late: #b4322a; --late-soft: #f9e2df; --ok: #2b7a4b; --ok-soft: #dff1e5;
+    --documento: #1f4fae; --documento-soft: #e1e8f7; --adr: #5b3fb0; --adr-soft: #ebe5fa;
+    --componente: #0f6e7a; --componente-soft: #dcf1f2; --verificacion: #8a4b12; --verificacion-soft: #f6e7d6;
+    --herramienta: #3f5563; --herramienta-soft: #e3e9ed; --gestion: #9a3d6a; --gestion-soft: #f7e3ee;
+    --shadow: 0 1px 2px rgba(27, 34, 38, .08), 0 2px 6px rgba(27, 34, 38, .05);
+    --sans: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #121618; --surface: #1c2225; --col: #171c1e; --ink: #e3e9ec; --muted: #97a4aa; --line: #2c3539;
+      --accent: #7ea6ff; --accent-soft: #1f2b45;
+      --wait: #f0b45a; --wait-soft: #3a2c14; --late: #f08a80; --late-soft: #3d1f1c; --ok: #6fcf97; --ok-soft: #173225;
+      --documento: #7ea6ff; --documento-soft: #1f2b45; --adr: #b9a4ff; --adr-soft: #2a2343;
+      --componente: #6fd0da; --componente-soft: #143236; --verificacion: #e9a86b; --verificacion-soft: #3b2a18;
+      --herramienta: #a9bcc8; --herramienta-soft: #26313a; --gestion: #f09cc4; --gestion-soft: #3a1d2c;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .4);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #121618; --surface: #1c2225; --col: #171c1e; --ink: #e3e9ec; --muted: #97a4aa; --line: #2c3539;
+    --accent: #7ea6ff; --accent-soft: #1f2b45;
+    --wait: #f0b45a; --wait-soft: #3a2c14; --late: #f08a80; --late-soft: #3d1f1c; --ok: #6fcf97; --ok-soft: #173225;
+    --documento: #7ea6ff; --documento-soft: #1f2b45; --adr: #b9a4ff; --adr-soft: #2a2343;
+    --componente: #6fd0da; --componente-soft: #143236; --verificacion: #e9a86b; --verificacion-soft: #3b2a18;
+    --herramienta: #a9bcc8; --herramienta-soft: #26313a; --gestion: #f09cc4; --gestion-soft: #3a1d2c;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4);
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 14px; line-height: 1.5;
+         padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .wrap { padding-inline: 20px; padding-block: 0 40px; max-width: 1500px; margin-inline: auto; }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  a { color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  code { font-family: var(--mono); font-size: 12.5px; background: var(--col); padding: 0 4px; border-radius: 4px; }
+
+  /* encabezado */
+  .top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); margin-inline: -20px; padding: 14px 20px 12px; display: flex; gap: 16px; align-items: flex-end; flex-wrap: wrap; }
+  .top .id { flex: 1 1 420px; min-width: 0; }
+  .kicker { font-size: 11.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+  h1 { margin: 2px 0 2px; font-size: 22px; font-weight: 600; letter-spacing: -.01em; text-wrap: balance; }
+  .story { margin: 0; color: var(--muted); }
+  .story b { color: var(--ink); font-weight: 500; }
+  .tools { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .rw { font-size: 12px; border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; color: var(--muted); white-space: nowrap; text-decoration: none; }
+  .rw:hover { border-color: var(--muted); color: var(--ink); }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--surface); }
+  .seg button { border: 0; background: transparent; padding: 4px 12px; font-size: 13px; color: var(--muted); }
+  .seg button + button { border-left: 1px solid var(--line); }
+  .seg button[aria-pressed="true"] { background: var(--accent-soft); color: var(--ink); font-weight: 500; }
+
+  .strip { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 6px; }
+  .stat { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 7px 12px; min-width: 0; max-width: 100%; }
+  .stat .k { display: block; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  .stat .v { font-weight: 500; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+  .stat.next { border-color: var(--accent); background: var(--accent-soft); }
+  .stat.late .v { color: var(--late); }
+  .lastnote { margin: 4px 0 14px; color: var(--muted); font-size: 13px; max-width: 110ch; }
+  .lastnote b { color: var(--ink); font-weight: 500; }
+
+  /* tablero */
+  .board { display: grid; grid-template-columns: repeat(5, minmax(220px, 1fr)); gap: 12px; align-items: start; }
+  .column { background: var(--col); border-radius: 10px; padding: 10px; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+  .colhead { display: flex; align-items: baseline; gap: 8px; padding: 2px 4px 0; }
+  .colhead h2 { margin: 0; font-size: 13.5px; font-weight: 600; }
+  .colhead .n { font-family: var(--mono); font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .colhead .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; align-self: center; }
+  .colhint { font-size: 12px; color: var(--muted); margin: -4px 4px 2px; }
+  .cards { display: flex; flex-direction: column; gap: 8px; min-height: 36px; }
+  .empty { font-size: 12.5px; color: var(--muted); border: 1px dashed var(--line); border-radius: 8px; padding: 10px; }
+
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow); padding: 9px 10px 8px; cursor: pointer; display: flex; flex-direction: column; gap: 6px; text-align: left; width: 100%; }
+  .card:hover { border-color: var(--muted); }
+  .card .row { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .card .title { font-weight: 500; line-height: 1.35; overflow-wrap: anywhere; }
+  .chip { font-family: var(--mono); font-size: 11.5px; padding: 0 6px; border-radius: 4px; border: 1px solid var(--line); color: var(--muted); white-space: nowrap; background: transparent; }
+  .chip.id { color: var(--ink); background: var(--col); border-color: transparent; font-weight: 500; }
+  .chip.k-documento { color: var(--documento); background: var(--documento-soft); border-color: transparent; }
+  .chip.k-adr { color: var(--adr); background: var(--adr-soft); border-color: transparent; }
+  .chip.k-componente { color: var(--componente); background: var(--componente-soft); border-color: transparent; }
+  .chip.k-verificacion { color: var(--verificacion); background: var(--verificacion-soft); border-color: transparent; }
+  .chip.k-herramienta { color: var(--herramienta); background: var(--herramienta-soft); border-color: transparent; }
+  .chip.k-gestion { color: var(--gestion); background: var(--gestion-soft); border-color: transparent; }
+  .chip.wait { color: var(--wait); background: var(--wait-soft); border-color: transparent; white-space: normal; }
+  .chip.late { color: var(--late); background: var(--late-soft); border-color: transparent; }
+  .chip.ok { color: var(--ok); background: var(--ok-soft); border-color: transparent; }
+  .who { font-size: 12px; color: var(--muted); }
+  .bar { display: flex; gap: 3px; }
+  .bar i { flex: 1; height: 4px; border-radius: 2px; background: var(--line); }
+  .bar i.on { background: var(--ok); }
+  .needs { font-size: 12px; color: var(--muted); }
+  .needs .falta { color: var(--wait); font-weight: 500; }
+
+  .btn { border: 1px solid var(--line); background: var(--surface); border-radius: 6px; padding: 5px 11px; }
+  .btn:hover { border-color: var(--muted); }
+
+  /* panel de detalle */
+  .overlay { position: fixed; inset: 0; z-index: 20; background: rgba(10, 14, 16, .35); display: flex; justify-content: flex-end; }
+  .panel { background: var(--surface); width: min(560px, 100%); height: 100%; overflow-y: auto; padding: calc(16px + env(safe-area-inset-top, 0px)) 20px calc(24px + env(safe-area-inset-bottom, 0px)); border-left: 1px solid var(--line); display: flex; flex-direction: column; gap: 16px; }
+  .phead { display: flex; gap: 10px; align-items: flex-start; }
+  .phead .grow { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+  .phead h2 { margin: 0; font-size: 18px; font-weight: 600; line-height: 1.3; text-wrap: balance; }
+  .fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px 14px; margin: 0; }
+  .fields div { min-width: 0; }
+  .fields dt { font-size: 11.5px; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+  .fields dd { margin: 2px 0 0; overflow-wrap: anywhere; display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
+  .depbtn { cursor: pointer; }
+  .depbtn:hover { border-color: var(--muted); }
+  .sec h3 { margin: 0 0 6px; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  .ticks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+  .ticks li { display: flex; gap: 9px; align-items: flex-start; }
+  .box { width: 15px; height: 15px; flex: none; margin-top: 3px; border: 1.5px solid var(--line); border-radius: 4px; position: relative; }
+  .box.on { background: var(--ok); border-color: var(--ok); }
+  .box.on::after { content: ""; position: absolute; left: 4px; top: 1px; width: 4px; height: 8px; border: solid var(--surface); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+  .ticks li.on span { color: var(--muted); text-decoration: line-through; }
+  .notes p { margin: 0 0 8px; max-width: 65ch; }
+  .notes p:last-child { margin-bottom: 0; }
+  .refs { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; font-family: var(--mono); font-size: 12.5px; }
+  .log { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+  .log li { display: grid; grid-template-columns: 58px minmax(0, 1fr); gap: 8px; font-size: 13px; }
+  .log .d { font-family: var(--mono); font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .pfoot { border-top: 1px solid var(--line); padding-top: 12px; margin-top: auto; font-size: 12.5px; color: var(--muted); }
+
+  footer { margin-top: 26px; color: var(--muted); font-size: 13px; max-width: 110ch; display: grid; gap: 6px; }
+  footer b { color: var(--ink); font-weight: 500; }
+
+  @media (max-width: 1100px) { .board { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 760px) {
+    .wrap { padding-inline: 16px; }
+    .top { margin-inline: -16px; padding-inline: 16px; position: static; }
+    .board { grid-template-columns: minmax(0, 1fr); }
+    /* en el teléfono, primero lo que se puede hacer */
+    .column[data-col="en-curso"] { order: 1; } .column[data-col="para-empezar"] { order: 2; } .column[data-col="esperando"] { order: 3; }
+    .column[data-col="pendiente"] { order: 4; } .column[data-col="hecho"] { order: 5; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="id">
+      <div class="kicker">El Parte · tablero del proyecto</div>
+      <h1>Tablero de El Parte</h1>
+      <p class="story"><b>Lo que falta para la versión 0.</b> <span id="count"></span></p>
+    </div>
+    <div class="tools">
+      <div class="seg" role="group" aria-label="De quién mostrar" id="filtros"></div>
+      <a class="rw" id="rw" target="_blank" rel="noopener noreferrer"></a>
+    </div>
+  </header>
+
+  <section class="strip" id="strip" aria-label="Estado de un vistazo"></section>
+  <p class="lastnote" id="lastnote" hidden></p>
+
+  <main class="board" id="board"></main>
+
+  <footer id="pie">
+    <div><b>Cómo se lee.</b> Cada columna dice arriba qué quiere decir. Abrí una tarjeta para ver sus etapas, su lista, sus notas y su registro. El enlace a una tarjeta termina en su número, por ejemplo <code>#T09</code>.</div>
+    <div><b>De dónde sale.</b> Esta página es una vista de solo lectura de <code>tablero.md</code>, generada con <code>herramientas/generar_kanban.py</code>. Para mover una tarjeta se mueve su bloque en <code>tablero.md</code> y se vuelve a generar la página. El verificador del repositorio falla si la página y el tablero no coinciden.</div>
+    <div><b>Sin conexión.</b> <code>kanban/index.html</code> es un solo archivo: se abre en cualquier navegador, sin servidor.</div>
+  </footer>
+</div>
+
+<div class="overlay" id="overlay" hidden>
+  <div class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="p-title"></div>
+</div>
+
+<script type="application/json" id="datos">{
+ "meta": {
+  "actualizado": "2026-11-07",
+  "nota": "El tablero pasa a tarjetas y genera el kanban. Lo próximo es T09, que destraba la arquitectura y el ADR del stack.",
+  "calendario": [
+   "2026-11-07",
+   "2026-11-14",
+   "2026-11-21",
+   "2026-11-28"
+  ],
+  "repositorio": "https://github.com/andresdiegolanda/el-parte",
+  "tablero": "https://github.com/andresdiegolanda/el-parte/blob/main/tablero.md"
+ },
+ "columnas": [
+  {
+   "id": "pendiente",
+   "nombre": "Pendiente",
+   "pista": "Espera otra tarjeta"
+  },
+  {
+   "id": "para-empezar",
+   "nombre": "Para empezar",
+   "pista": "Se puede hacer ya"
+  },
+  {
+   "id": "en-curso",
+   "nombre": "En curso",
+   "pista": "Alguien la está haciendo"
+  },
+  {
+   "id": "esperando",
+   "nombre": "Esperando",
+   "pista": "Una decisión, otra persona o un material"
+  },
+  {
+   "id": "hecho",
+   "nombre": "Hecho",
+   "pista": "Terminada; no se borra"
+  }
+ ],
+ "tipos": {
+  "documento": {
+   "nombre": "Documento",
+   "etapas": [
+    "Borrador",
+    "Grados y fuentes",
+    "Diagramas",
+    "Releído y verificado"
+   ]
+  },
+  "adr": {
+   "nombre": "ADR",
+   "etapas": [
+    "Contexto y alternativas",
+    "Fuentes verificadas",
+    "Escrito",
+    "Aceptado"
+   ]
+  },
+  "componente": {
+   "nombre": "Componente",
+   "etapas": [
+    "Contrato",
+    "Código",
+    "Pruebas",
+    "Medido contra el banco",
+    "Página cómo se hizo"
+   ]
+  },
+  "herramienta": {
+   "nombre": "Herramienta",
+   "etapas": [
+    "Escrita",
+    "Probada",
+    "Documentada"
+   ]
+  },
+  "verificacion": {
+   "nombre": "Verificación",
+   "etapas": []
+  },
+  "gestion": {
+   "nombre": "Gestión",
+   "etapas": []
+  }
+ },
+ "duenos": [
+  {
+   "nombre": "desarrollo",
+   "descripcion": "La sesión que esté trabajando en el repositorio, de una persona o de un asistente"
+  },
+  {
+   "nombre": "Andrés",
+   "descripcion": "Responsable del proyecto: decisiones, accesos, claves, revisión humana y material que no está en el repositorio"
+  }
+ ],
+ "tarjetas": [
+  {
+   "id": "T09",
+   "titulo": "Verificar Spring AI y sus patrones de orquestación",
+   "columna": "para-empezar",
+   "orden": 1,
+   "tipo": "verificacion",
+   "dueno": "desarrollo",
+   "dependeDe": "",
+   "dependencias": [],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "arranque/proyecto.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/arranque/proyecto.md"
+    }
+   ],
+   "etapas": [],
+   "lista": [
+    {
+     "texto": "Versión vigente y fecha de publicación",
+     "hecho": false
+    },
+    {
+     "texto": "Patrones de orquestación de agentes que documenta",
+     "hecho": false
+    },
+    {
+     "texto": "Cómo abstrae el proveedor de modelos (D4)",
+     "hecho": false
+    },
+    {
+     "texto": "Integración con mensajería en tópicos",
+     "hecho": false
+    }
+   ],
+   "notas": [
+    "Antes de apoyarse en Spring AI hay que saber qué ofrece hoy, verificado en su documentación oficial con URL y fecha. Destraba la arquitectura (T02) y el ADR del stack (T05)."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    }
+   ]
+  },
+  {
+   "id": "T10",
+   "titulo": "Verificar las fuentes candidatas",
+   "columna": "para-empezar",
+   "orden": 2,
+   "tipo": "verificacion",
+   "dueno": "desarrollo",
+   "dependeDe": "",
+   "dependencias": [],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "arranque/decisiones-iniciales.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/arranque/decisiones-iniciales.md"
+    }
+   ],
+   "etapas": [],
+   "lista": [
+    {
+     "texto": "Compras estatales",
+     "hecho": false
+    },
+    {
+     "texto": "Diario oficial (IMPO)",
+     "hecho": false
+    },
+    {
+     "texto": "Resoluciones de directorio del organismo del banco de pruebas",
+     "hecho": false
+    },
+    {
+     "texto": "Presidencia y novedades de gub.uy",
+     "hecho": false
+    },
+    {
+     "texto": "BID",
+     "hecho": false
+    },
+    {
+     "texto": "Banco Mundial",
+     "hecho": false
+    },
+    {
+     "texto": "CAF",
+     "hecho": false
+    },
+    {
+     "texto": "Elegir la fuente de la primera rebanada",
+     "hecho": false
+    }
+   ],
+   "notas": [
+    "De cada fuente: permiso de uso, formato, si deja consultar por fecha y si nombra personas físicas. Cada una termina en su página en `docs/fuentes/`, con URL y fecha de verificación. Con eso se elige la fuente de la primera rebanada (D5)."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    }
+   ]
+  },
+  {
+   "id": "T06",
+   "titulo": "Escribir los ADRs de las decisiones D2 y D3",
+   "columna": "para-empezar",
+   "orden": 3,
+   "tipo": "adr",
+   "dueno": "desarrollo",
+   "dependeDe": "",
+   "dependencias": [],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "arranque/decisiones-iniciales.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/arranque/decisiones-iniciales.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Contexto y alternativas",
+     "hecho": false
+    },
+    {
+     "texto": "Fuentes verificadas",
+     "hecho": false
+    },
+    {
+     "texto": "Escrito",
+     "hecho": false
+    },
+    {
+     "texto": "Aceptado",
+     "hecho": false
+    }
+   ],
+   "lista": [
+    {
+     "texto": "ADR de D2: registro fuera del repositorio",
+     "hecho": false
+    },
+    {
+     "texto": "ADR de D3: datos personales",
+     "hecho": false
+    }
+   ],
+   "notas": [
+    "D2 deja el registro del banco de pruebas fuera del repositorio y D3 fija cómo se tratan los datos personales. Las dos son significativas y pasan a ADR (regla 3)."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    }
+   ]
+  },
+  {
+   "id": "T15",
+   "titulo": "Comprobar en el verificador que los diagramas Mermaid se dibujan",
+   "columna": "para-empezar",
+   "orden": 4,
+   "tipo": "herramienta",
+   "dueno": "desarrollo",
+   "dependeDe": "",
+   "dependencias": [],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "herramientas/verificar_docs.py",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/herramientas/verificar_docs.py"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Escrita",
+     "hecho": false
+    },
+    {
+     "texto": "Probada",
+     "hecho": false
+    },
+    {
+     "texto": "Documentada",
+     "hecho": false
+    }
+   ],
+   "lista": [],
+   "notas": [
+    "Los diagramas que había el 2026-11-07 se comprobaron a mano con mermaid-cli y Chrome sin ventana, y se dibujan todos. Falta que el verificador lo haga solo, y que se saltee con un aviso donde no haya navegador."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    }
+   ]
+  },
+  {
+   "id": "T17",
+   "titulo": "Dar acceso de escritura al repositorio a las sesiones en la nube",
+   "columna": "para-empezar",
+   "orden": 5,
+   "tipo": "gestion",
+   "dueno": "Andrés",
+   "dependeDe": "",
+   "dependencias": [],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [],
+   "etapas": [],
+   "lista": [],
+   "notas": [
+    "El push del primer commit desde una sesión en la nube devolvió HTTP 403: esas sesiones pueden leer el repositorio pero no escribir. Se resuelve instalando la app de GitHub de Claude en el repositorio. Mientras tanto, los commits se suben desde una máquina local."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada, después del 403."
+    }
+   ]
+  },
+  {
+   "id": "T11",
+   "titulo": "Entregar el registro completo del banco de pruebas",
+   "columna": "para-empezar",
+   "orden": 6,
+   "tipo": "gestion",
+   "dueno": "Andrés",
+   "dependeDe": "",
+   "dependencias": [],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "arranque/proyecto.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/arranque/proyecto.md"
+    }
+   ],
+   "etapas": [],
+   "lista": [],
+   "notas": [
+    "El seguimiento acumulado y las bitácoras por corrida van en `banco-de-pruebas/privado/`, que no se versiona (D2). Hay que confirmar cuántas noches cubre: la muestra sugiere unas cincuenta desde el 2026-09-17 y la definición del proyecto habla de unas setenta."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    }
+   ]
+  },
+  {
+   "id": "T13",
+   "titulo": "Elegir la licencia del repositorio",
+   "columna": "para-empezar",
+   "orden": 7,
+   "tipo": "gestion",
+   "dueno": "Andrés",
+   "dependeDe": "",
+   "dependencias": [],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "README.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/README.md"
+    }
+   ],
+   "etapas": [],
+   "lista": [],
+   "notas": [
+    "Mientras no haya licencia rigen los derechos de autor por defecto, y nadie puede reutilizar el código."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    }
+   ]
+  },
+  {
+   "id": "T02",
+   "titulo": "Escribir docs/arquitectura.md",
+   "columna": "pendiente",
+   "orden": 1,
+   "tipo": "documento",
+   "dueno": "desarrollo",
+   "dependeDe": "T09",
+   "dependencias": [
+    "T09"
+   ],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "arranque/proyecto.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/arranque/proyecto.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Borrador",
+     "hecho": false
+    },
+    {
+     "texto": "Grados y fuentes",
+     "hecho": false
+    },
+    {
+     "texto": "Diagramas",
+     "hecho": false
+    },
+    {
+     "texto": "Releído y verificado",
+     "hecho": false
+    }
+   ],
+   "lista": [
+    {
+     "texto": "Visión general en Mermaid",
+     "hecho": false
+    },
+    {
+     "texto": "Los agentes y sus razones",
+     "hecho": false
+    },
+    {
+     "texto": "Secuencia de una noche",
+     "hecho": false
+    },
+    {
+     "texto": "Lámina de arquitectura en SVG con su generador",
+     "hecho": false
+    },
+    {
+     "texto": "Verificador de láminas",
+     "hecho": false
+    }
+   ],
+   "notas": [
+    "La visión general del sistema y la primera lámina en SVG, con su generador y el verificador que falla si la lámina no coincide (regla 5)."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    }
+   ]
+  },
+  {
+   "id": "T03",
+   "titulo": "Escribir docs/contratos.md",
+   "columna": "pendiente",
+   "orden": 2,
+   "tipo": "documento",
+   "dueno": "desarrollo",
+   "dependeDe": "T02",
+   "dependencias": [
+    "T02"
+   ],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [],
+   "etapas": [
+    {
+     "texto": "Borrador",
+     "hecho": false
+    },
+    {
+     "texto": "Grados y fuentes",
+     "hecho": false
+    },
+    {
+     "texto": "Diagramas",
+     "hecho": false
+    },
+    {
+     "texto": "Releído y verificado",
+     "hecho": false
+    }
+   ],
+   "lista": [
+    {
+     "texto": "Esquema y ejemplo de cada mensaje",
+     "hecho": false
+    },
+    {
+     "texto": "Regla de identidad e idempotencia de cada hecho",
+     "hecho": false
+    },
+    {
+     "texto": "Umbral de \"demasiado INFERRED\" (D6)",
+     "hecho": false
+    }
+   ],
+   "notas": [
+    "Los mensajes entre agentes. De esto depende que cada corrida se pueda repetir y que la sala de máquinas se arme desde los mensajes."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    }
+   ]
+  },
+  {
+   "id": "T04",
+   "titulo": "Escribir docs/base-de-afirmaciones.md",
+   "columna": "pendiente",
+   "orden": 3,
+   "tipo": "documento",
+   "dueno": "desarrollo",
+   "dependeDe": "T03",
+   "dependencias": [
+    "T03"
+   ],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [],
+   "etapas": [
+    {
+     "texto": "Borrador",
+     "hecho": false
+    },
+    {
+     "texto": "Grados y fuentes",
+     "hecho": false
+    },
+    {
+     "texto": "Diagramas",
+     "hecho": false
+    },
+    {
+     "texto": "Releído y verificado",
+     "hecho": false
+    }
+   ],
+   "lista": [
+    {
+     "texto": "Modelo de datos con diagrama",
+     "hecho": false
+    },
+    {
+     "texto": "Traza de qué agente produjo cada hecho",
+     "hecho": false
+    },
+    {
+     "texto": "Tabla de usuarios aparte (D3)",
+     "hecho": false
+    }
+   ],
+   "notas": [
+    "El modelo de datos de la base de afirmaciones, con diagrama."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    }
+   ]
+  },
+  {
+   "id": "T05",
+   "titulo": "Escribir los primeros ADRs",
+   "columna": "pendiente",
+   "orden": 4,
+   "tipo": "adr",
+   "dueno": "desarrollo",
+   "dependeDe": "T09",
+   "dependencias": [
+    "T09"
+   ],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "arranque/como-se-trabaja.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/arranque/como-se-trabaja.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Contexto y alternativas",
+     "hecho": false
+    },
+    {
+     "texto": "Fuentes verificadas",
+     "hecho": false
+    },
+    {
+     "texto": "Escrito",
+     "hecho": false
+    },
+    {
+     "texto": "Aceptado",
+     "hecho": false
+    }
+   ],
+   "lista": [
+    {
+     "texto": "Orquestación por mensajes",
+     "hecho": false
+    },
+    {
+     "texto": "Elección del stack",
+     "hecho": false
+    },
+    {
+     "texto": "Grados de evidencia",
+     "hecho": false
+    },
+    {
+     "texto": "Presupuesto por corrida (D4)",
+     "hecho": false
+    }
+   ],
+   "notas": [
+    "Las cuatro decisiones de base del sistema. El del stack fija los modelos concretos, el sistema de mensajería, la interfaz web y el buzón de correo de prueba (D9)."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    }
+   ]
+  },
+  {
+   "id": "T07",
+   "titulo": "Escribir docs/plan.md",
+   "columna": "pendiente",
+   "orden": 5,
+   "tipo": "documento",
+   "dueno": "desarrollo",
+   "dependeDe": "T02",
+   "dependencias": [
+    "T02"
+   ],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [],
+   "etapas": [
+    {
+     "texto": "Borrador",
+     "hecho": false
+    },
+    {
+     "texto": "Grados y fuentes",
+     "hecho": false
+    },
+    {
+     "texto": "Diagramas",
+     "hecho": false
+    },
+    {
+     "texto": "Releído y verificado",
+     "hecho": false
+    }
+   ],
+   "lista": [
+    {
+     "texto": "Qué se muestra al final de cada fin de semana",
+     "hecho": false
+    },
+    {
+     "texto": "Que entre en unas seis horas de revisión por fin de semana",
+     "hecho": false
+    }
+   ],
+   "notas": [
+    "El plan de los cuatro fines de semana del calendario (D10)."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    }
+   ]
+  },
+  {
+   "id": "T08",
+   "titulo": "Construir la primera rebanada de punta a punta",
+   "columna": "pendiente",
+   "orden": 6,
+   "tipo": "componente",
+   "dueno": "desarrollo",
+   "dependeDe": "T02 a T07, T10, T14",
+   "dependencias": [
+    "T02",
+    "T03",
+    "T04",
+    "T05",
+    "T06",
+    "T07",
+    "T10",
+    "T14"
+   ],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "arranque/proyecto.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/arranque/proyecto.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Contrato",
+     "hecho": false
+    },
+    {
+     "texto": "Código",
+     "hecho": false
+    },
+    {
+     "texto": "Pruebas",
+     "hecho": false
+    },
+    {
+     "texto": "Medido contra el banco",
+     "hecho": false
+    },
+    {
+     "texto": "Página cómo se hizo",
+     "hecho": false
+    }
+   ],
+   "lista": [
+    {
+     "texto": "Una fuente y su explorador",
+     "hecho": false
+    },
+    {
+     "texto": "Archivista",
+     "hecho": false
+    },
+    {
+     "texto": "Refutador",
+     "hecho": false
+    },
+    {
+     "texto": "Editor",
+     "hecho": false
+    },
+    {
+     "texto": "Página de la mañana",
+     "hecho": false
+    },
+    {
+     "texto": "Sala de máquinas de la corrida",
+     "hecho": false
+    }
+   ],
+   "notas": [
+    "Chica y completa le gana a grande y a medias: una fuente, del explorador a la página de la mañana, con la sala de máquinas de esa corrida."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    }
+   ]
+  },
+  {
+   "id": "T12",
+   "titulo": "Escribir el formato, la muestra sintética y las métricas del banco de pruebas",
+   "columna": "pendiente",
+   "orden": 7,
+   "tipo": "documento",
+   "dueno": "desarrollo",
+   "dependeDe": "T11",
+   "dependencias": [
+    "T11"
+   ],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [],
+   "etapas": [
+    {
+     "texto": "Borrador",
+     "hecho": false
+    },
+    {
+     "texto": "Grados y fuentes",
+     "hecho": false
+    },
+    {
+     "texto": "Diagramas",
+     "hecho": false
+    },
+    {
+     "texto": "Releído y verificado",
+     "hecho": false
+    }
+   ],
+   "lista": [
+    {
+     "texto": "Formato del registro",
+     "hecho": false
+    },
+    {
+     "texto": "Muestra sintética",
+     "hecho": false
+    },
+    {
+     "texto": "Forma de las métricas",
+     "hecho": false
+    }
+   ],
+   "notas": [
+    "Lo que sí se versiona del banco de pruebas (D2), en `banco-de-pruebas/`."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    }
+   ]
+  },
+  {
+   "id": "T14",
+   "titulo": "Dejar la clave del proveedor de modelos fuera del repositorio",
+   "columna": "pendiente",
+   "orden": 8,
+   "tipo": "gestion",
+   "dueno": "Andrés",
+   "dependeDe": "T05",
+   "dependencias": [
+    "T05"
+   ],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [],
+   "etapas": [],
+   "lista": [],
+   "notas": [
+    "Para las corridas reales (D4). Las pruebas automáticas no la necesitan: usan respuestas grabadas."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    }
+   ]
+  },
+  {
+   "id": "T16",
+   "titulo": "Armar el kanban generado desde el tablero",
+   "columna": "hecho",
+   "orden": 1,
+   "tipo": "herramienta",
+   "dueno": "desarrollo",
+   "dependeDe": "",
+   "dependencias": [],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "adrs/0001-tablero-fuente-unica-kanban-generado.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/adrs/0001-tablero-fuente-unica-kanban-generado.md"
+    },
+    {
+     "texto": "kanban/plantilla.html",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/kanban/plantilla.html"
+    },
+    {
+     "texto": "herramientas/generar_kanban.py",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/herramientas/generar_kanban.py"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Escrita",
+     "hecho": true
+    },
+    {
+     "texto": "Probada",
+     "hecho": true
+    },
+    {
+     "texto": "Documentada",
+     "hecho": true
+    }
+   ],
+   "lista": [],
+   "notas": [
+    "Este archivo pasó de tablas a tarjetas, y el kanban se genera desde acá. El verificador controla que la página coincida con el tablero y las reglas de cada columna."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada y hecha."
+    }
+   ]
+  },
+  {
+   "id": "T01",
+   "titulo": "Armar la base documental",
+   "columna": "hecho",
+   "orden": 2,
+   "tipo": "documento",
+   "dueno": "desarrollo",
+   "dependeDe": "",
+   "dependencias": [],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "arranque/README.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/arranque/README.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Borrador",
+     "hecho": true
+    },
+    {
+     "texto": "Grados y fuentes",
+     "hecho": true
+    },
+    {
+     "texto": "Diagramas",
+     "hecho": true
+    },
+    {
+     "texto": "Releído y verificado",
+     "hecho": true
+    }
+   ],
+   "lista": [],
+   "notas": [
+    "README con las reglas, CHANGELOG, tablero, la carpeta `arranque/`, `obsoletos/` y el verificador."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Hecha, en el commit f3be363."
+    }
+   ]
+  }
+ ]
+}</script>
+<script>
+(function () {
+  "use strict";
+
+  var D = JSON.parse(document.getElementById("datos").textContent);
+  var MESES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+  var COLOR_COL = { "pendiente": "var(--muted)", "para-empezar": "var(--accent)", "en-curso": "var(--adr)", "esperando": "var(--wait)", "hecho": "var(--ok)" };
+  var VACIA = { "en-curso": "Nada en curso. La primera de Para empezar es la próxima." };
+
+  var $ = function (id) { return document.getElementById(id); };
+  var porId = {};
+  D.tarjetas.forEach(function (t) { porId[t.id] = t; });
+  var filtro = "todo";
+  var abierta = null;
+  try { var f0 = localStorage.getItem("elparte-filtro"); if (f0 && D.duenos.some(function (d) { return d.nombre === f0; })) { filtro = f0; } } catch (e) { /* sin almacenamiento */ }
+
+  // ---------- ayudas
+  function hoy() { var d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+  function sumarDias(iso, n) { var d = new Date(iso + "T12:00:00"); d.setDate(d.getDate() + n); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+  function fecha(iso) {
+    if (!iso || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) { return iso || ""; }
+    var p = iso.split("-"); var s = (+p[2]) + " " + MESES[+p[1] - 1];
+    return p[0] === hoy().slice(0, 4) ? s : s + " " + p[0];
+  }
+  function el(tag, attrs, kids) {
+    var e = document.createElement(tag);
+    if (attrs) { Object.keys(attrs).forEach(function (k) {
+      var v = attrs[k];
+      if (v === null || v === undefined || v === false) { return; }
+      if (k === "text") { e.textContent = v; } else if (k === "cls") { e.className = v; }
+      else if (k.slice(0, 2) === "on") { e.addEventListener(k.slice(2), v); } else { e.setAttribute(k, v === true ? "" : v); }
+    }); }
+    (kids || []).forEach(function (c) { if (c !== null && c !== undefined) { e.appendChild(typeof c === "string" ? document.createTextNode(c) : c); } });
+    return e;
+  }
+  // texto con `código` y [enlaces](https://...), sin HTML
+  function enLinea(texto) {
+    var frag = document.createDocumentFragment();
+    var re = /`([^`]+)`|\[([^\]]+)\]\(([^)\s]+)\)/g, ultimo = 0, m;
+    while ((m = re.exec(texto)) !== null) {
+      if (m.index > ultimo) { frag.appendChild(document.createTextNode(texto.slice(ultimo, m.index))); }
+      if (m[1] !== undefined) { frag.appendChild(el("code", { text: m[1] })); }
+      else if (/^https?:\/\//.test(m[3])) { frag.appendChild(el("a", { href: m[3], target: "_blank", rel: "noopener noreferrer", text: m[2] })); }
+      else { frag.appendChild(document.createTextNode(m[2])); }
+      ultimo = re.lastIndex;
+    }
+    if (ultimo < texto.length) { frag.appendChild(document.createTextNode(texto.slice(ultimo))); }
+    return frag;
+  }
+  function mayuscula(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
+  function tipoDe(t) { return D.tipos[t.tipo] || { nombre: t.tipo, etapas: [] }; }
+  function nombreCol(id) { for (var i = 0; i < D.columnas.length; i++) { if (D.columnas[i].id === id) { return D.columnas[i].nombre; } } return id; }
+  function visible(t) { return filtro === "todo" || t.dueno === filtro; }
+  function lista() { return D.tarjetas.filter(visible); }
+  function enCol(c) { return lista().filter(function (t) { return t.columna === c; }).sort(function (a, b) { return a.orden - b.orden; }); }
+  function vencida(t) { return t.fecha && t.columna !== "hecho" && t.fecha < hoy(); }
+  function faltan(t) { return t.dependencias.filter(function (d) { return !porId[d] || porId[d].columna !== "hecho"; }); }
+  function etapasHechas(t) { return t.etapas.filter(function (e) { return e.hecho; }).length; }
+
+  // ---------- encabezado, franja y nota
+  function renderEncabezado() {
+    var abiertas = D.tarjetas.filter(function (t) { return t.columna !== "hecho"; });
+    var partes = D.duenos.map(function (d) {
+      var n = abiertas.filter(function (t) { return t.dueno === d.nombre; }).length;
+      return n + " de " + d.nombre;
+    });
+    var txt = abiertas.length + (abiertas.length === 1 ? " tarjeta abierta" : " tarjetas abiertas");
+    if (partes.length) { txt += ": " + partes.slice(0, -1).join(", ") + (partes.length > 1 ? " y " : "") + partes[partes.length - 1]; }
+    $("count").textContent = txt + ".";
+    var rw = $("rw");
+    rw.href = D.meta.tablero;
+    rw.textContent = "Copia de tablero.md del " + fecha(D.meta.actualizado) + " · solo lectura";
+  }
+
+  function finDeSemana() {
+    var cal = D.meta.calendario || [], t = hoy();
+    if (!cal.length) { return null; }
+    for (var i = 0; i < cal.length; i++) {
+      if (t >= cal[i] && t <= sumarDias(cal[i], 1)) { return "El " + (i + 1) + " de " + cal.length + ", hoy"; }
+      if (t < cal[i]) { return i === 0 ? "Empieza el " + fecha(cal[0]) : "Próximo: el " + (i + 1) + " de " + cal.length + ", el " + fecha(cal[i]); }
+    }
+    return "Terminaron los " + cal.length;
+  }
+
+  function stat(clase, k, v) { return el("div", { cls: "stat" + (clase ? " " + clase : "") }, [el("span", { cls: "k", text: k }), el("span", { cls: "v", text: v })]); }
+
+  function renderFranja() {
+    var s = $("strip"); s.textContent = "";
+    var todas = lista(); if (!todas.length) { return; }
+    var curso = enCol("en-curso"), listas = enCol("para-empezar"), esperando = enCol("esperando"), hechas = enCol("hecho");
+    var prox = curso[0] || listas[0];
+    if (prox) { s.appendChild(stat("next", curso[0] ? "En curso" : "Lo próximo", prox.id + " · " + prox.titulo)); }
+    var fds = finDeSemana();
+    if (fds) { s.appendChild(stat("", "Fin de semana", fds)); }
+    var por = {};
+    esperando.forEach(function (t) { var w = t.esperaA || "alguien"; por[w] = (por[w] || 0) + 1; });
+    var wtxt = Object.keys(por).map(function (k) { return k + (por[k] > 1 ? " (" + por[k] + ")" : ""); }).join(" · ");
+    s.appendChild(stat("", "Esperando", wtxt || "nada"));
+    var tarde = todas.filter(vencida);
+    s.appendChild(stat(tarde.length ? "late" : "", "Fecha pasada", tarde.length ? tarde.map(function (t) { return t.id; }).join(" · ") : "ninguna"));
+    s.appendChild(stat("", "Hecho", hechas.length + " de " + todas.length + " tarjetas"));
+  }
+
+  function renderNota() {
+    var n = $("lastnote");
+    if (!D.meta.nota) { n.hidden = true; return; }
+    n.textContent = "";
+    n.appendChild(el("b", { text: "Última actualización, " + fecha(D.meta.actualizado) + ": " }));
+    n.appendChild(enLinea(D.meta.nota));
+    n.hidden = false;
+  }
+
+  function renderFiltros() {
+    var seg = $("filtros"); seg.textContent = "";
+    [{ id: "todo", txt: "Todo" }].concat(D.duenos.map(function (d) { return { id: d.nombre, txt: mayuscula(d.nombre) }; })).forEach(function (o) {
+      seg.appendChild(el("button", { type: "button", "aria-pressed": filtro === o.id ? "true" : "false", text: o.txt, onclick: function () {
+        filtro = o.id;
+        try { localStorage.setItem("elparte-filtro", o.id); } catch (e) { /* sin almacenamiento */ }
+        renderFiltros(); render();
+      } }));
+    });
+  }
+
+  // ---------- tablero
+  function cara(t) {
+    var tipo = tipoDe(t);
+    var kids = [
+      el("div", { cls: "row" }, [
+        el("span", { cls: "chip id", text: t.id }),
+        el("span", { cls: "chip k-" + t.tipo, text: tipo.nombre }),
+        t.columna === "esperando" && t.esperaA ? el("span", { cls: "chip wait", text: "espera: " + t.esperaA }) : null,
+        t.fecha ? el("span", { cls: "chip " + (t.columna === "hecho" ? "ok" : (vencida(t) ? "late" : "")), text: (vencida(t) ? "era para el " : "para el ") + fecha(t.fecha) }) : null
+      ]),
+      el("div", { cls: "title", text: t.titulo })
+    ];
+    if (t.etapas.length) {
+      var bar = el("div", { cls: "bar", "aria-hidden": "true" });
+      t.etapas.forEach(function (e) { bar.appendChild(el("i", { cls: e.hecho ? "on" : "" })); });
+      kids.push(bar);
+      var sigue = null; for (var i = 0; i < t.etapas.length; i++) { if (!t.etapas[i].hecho) { sigue = t.etapas[i].texto; break; } }
+      kids.push(el("div", { cls: "who", text: etapasHechas(t) + "/" + t.etapas.length + (sigue ? " · sigue: " + sigue : " · todas las etapas hechas") }));
+    }
+    if (t.lista.length) { kids.push(el("div", { cls: "who", text: "Lista " + t.lista.filter(function (x) { return x.hecho; }).length + "/" + t.lista.length })); }
+    var f = faltan(t);
+    kids.push(el("div", { cls: "needs" }, ["Quién: " + t.dueno, f.length ? " · " : null, f.length ? el("span", { cls: "falta", text: "falta " + f.join(", ") }) : null]));
+    return el("article", { cls: "card", tabindex: "0", role: "button", "data-id": t.id, "aria-label": t.id + ", " + t.titulo + ", " + nombreCol(t.columna),
+      onclick: function () { abrir(t.id); },
+      onkeydown: function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); abrir(t.id); } } }, kids);
+  }
+
+  function render() {
+    var board = $("board"); board.textContent = "";
+    D.columnas.forEach(function (col) {
+      var items = enCol(col.id);
+      var cuerpo = el("div", { cls: "cards" });
+      if (!items.length) { cuerpo.appendChild(el("div", { cls: "empty", text: VACIA[col.id] || "Nada acá." })); }
+      items.forEach(function (t) { cuerpo.appendChild(cara(t)); });
+      board.appendChild(el("section", { cls: "column", "data-col": col.id, "aria-label": col.nombre }, [
+        el("div", { cls: "colhead" }, [el("span", { cls: "dot", style: "background:" + (COLOR_COL[col.id] || "var(--muted)") }), el("h2", { text: col.nombre }), el("span", { cls: "n", text: String(items.length) })]),
+        col.pista ? el("div", { cls: "colhint", text: col.pista }) : null,
+        cuerpo
+      ]));
+    });
+    renderEncabezado(); renderFranja(); renderNota();
+  }
+
+  function renderPie() {
+    var ciclos = Object.keys(D.tipos).filter(function (k) { return D.tipos[k].etapas.length; }).map(function (k) {
+      return el("div", {}, [el("b", { text: "Etapas de cada " + (D.tipos[k].nombre === D.tipos[k].nombre.toUpperCase() ? D.tipos[k].nombre : D.tipos[k].nombre.toLowerCase()) + ":" }), " " + D.tipos[k].etapas.join(", ") + "."]);
+    });
+    ciclos.forEach(function (c) { $("pie").appendChild(c); });
+  }
+
+  // ---------- panel de detalle
+  function seccion(titulo, contenido) { return el("div", { cls: "sec" }, [el("h3", { text: titulo }), contenido]); }
+  function casillas(items) {
+    var ul = el("ul", { cls: "ticks" });
+    items.forEach(function (i) { var span = el("span"); span.appendChild(enLinea(i.texto)); ul.appendChild(el("li", { cls: i.hecho ? "on" : "" }, [el("span", { cls: "box" + (i.hecho ? " on" : ""), "aria-label": i.hecho ? "hecho" : "sin hacer", role: "img" }), span])); });
+    return ul;
+  }
+  function campo(k, v) { return el("div", {}, [el("dt", { text: k }), el("dd", {}, Array.isArray(v) ? v : [v])]); }
+
+  function abrir(id, sinHash) {
+    var t = porId[id]; if (!t) { return; }
+    abrir.ultima = id;
+    abierta = id;
+    var p = $("panel"); p.textContent = "";
+    var tipo = tipoDe(t);
+    var cerrarBtn = el("button", { cls: "btn", type: "button", text: "Cerrar", "aria-label": "Cerrar la tarjeta", onclick: function () { cerrar(); } });
+    p.appendChild(el("div", { cls: "phead" }, [el("div", { cls: "grow" }, [
+      el("div", { cls: "row", style: "display:flex;gap:6px;flex-wrap:wrap" }, [el("span", { cls: "chip id", text: t.id }), el("span", { cls: "chip k-" + t.tipo, text: tipo.nombre }), el("span", { cls: "chip", text: nombreCol(t.columna) })]),
+      el("h2", { id: "p-title", tabindex: "-1", text: t.titulo })]), cerrarBtn]));
+
+    var campos = [campo("Columna", nombreCol(t.columna)), campo("Dueño", t.dueno)];
+    if (t.esperaA) { campos.push(campo("Espera a", t.esperaA)); }
+    if (t.fecha) { campos.push(campo("Fecha", fecha(t.fecha))); }
+    if (t.dependencias.length) {
+      campos.push(campo("Depende de", t.dependencias.map(function (d) {
+        var hecha = porId[d] && porId[d].columna === "hecho";
+        return el("button", { type: "button", cls: "chip depbtn " + (hecha ? "ok" : "wait"), title: porId[d] ? porId[d].titulo : d, text: d + (hecha ? " hecha" : ""), onclick: function () { abrir(d); } });
+      })));
+    }
+    p.appendChild(el("dl", { cls: "fields" }, campos));
+
+    if (t.etapas.length) { p.appendChild(seccion("Etapas", casillas(t.etapas))); }
+    if (t.lista.length) { p.appendChild(seccion("Lista", casillas(t.lista))); }
+    if (t.notas.length) {
+      var notas = el("div", { cls: "notes" });
+      t.notas.forEach(function (n) { var par = el("p"); par.appendChild(enLinea(n)); notas.appendChild(par); });
+      p.appendChild(seccion("Notas", notas));
+    }
+    if (t.detalle.length) {
+      var refs = el("ul", { cls: "refs" });
+      t.detalle.forEach(function (d) { refs.appendChild(el("li", {}, [el("a", { href: d.url, target: "_blank", rel: "noopener noreferrer", text: d.texto })])); });
+      p.appendChild(seccion("Dónde está el detalle", refs));
+    }
+    var log = el("ul", { cls: "log" });
+    t.registro.slice().reverse().forEach(function (r) { var tx = el("span"); tx.appendChild(enLinea(r.texto)); log.appendChild(el("li", {}, [el("span", { cls: "d", text: fecha(r.fecha) }), tx])); });
+    p.appendChild(seccion("Registro", log));
+    p.appendChild(el("div", { cls: "pfoot" }, ["Esta tarjeta es el bloque ", el("code", { text: "### " + t.id }), " de ", el("a", { href: D.meta.tablero, target: "_blank", rel: "noopener noreferrer", text: "tablero.md" }), ". Para cambiarla se edita ese bloque y se vuelve a generar la página."]));
+
+    $("overlay").hidden = false;
+    $("p-title").focus();
+    if (!sinHash && location.hash !== "#" + id) { try { location.hash = id; } catch (e) { /* sin hash */ } }
+  }
+
+  function cerrar(sinHash) {
+    abierta = null;
+    $("overlay").hidden = true;
+    $("panel").textContent = "";
+    if (!sinHash && location.hash) { try { history.replaceState(null, "", location.pathname + location.search); } catch (e) { /* sin historial */ } }
+    var c = document.querySelector('.card[data-id="' + (abrir.ultima || "") + '"]'); if (c) { c.focus(); }
+  }
+
+  function seguirHash() {
+    var m = /^#(T\d{2})$/.exec(location.hash);
+    if (m && porId[m[1]]) { if (abierta !== m[1]) { abrir(m[1], true); } }
+    else if (abierta) { cerrar(true); }
+  }
+
+  $("overlay").addEventListener("click", function (e) { if (e.target === $("overlay")) { cerrar(); } });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && abierta) { cerrar(); } });
+  window.addEventListener("hashchange", seguirHash);
+
+  renderFiltros();
+  render();
+  renderPie();
+  seguirHash();
+})();
+</script>
+</body>
+</html>

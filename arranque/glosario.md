@@ -12,6 +12,7 @@ Los términos que usa el proyecto, en orden alfabético. Si un documento usa un 
 | ASSUMED | Grado de una afirmación de los documentos del proyecto: supuesto de trabajo, sin verificar. |
 | Banco de pruebas | Registro de una vigilancia anterior hecha con un solo agente, contra el que se mide El Parte. No se versiona. |
 | Base de afirmaciones | La base de datos de hechos: entidad, estado, fecha, grado, fuente y la traza de qué agente los produjo. |
+| Columna | En el tablero, el estado de una tarjeta: Pendiente, Para empezar, En curso, Esperando o Hecho. |
 | Candidato | Lo que devuelve un explorador: un posible hecho con su evidencia cruda (URL, texto, fecha detectada). Todavía no es un hecho. |
 | CHANGELOG | Archivo con cada cambio del repositorio, corto, con enlace al documento que tiene el porqué. |
 | Contenedor | Paquete que lleva un programa con todo lo que necesita para correr, igual en cualquier máquina. |
@@ -20,6 +21,7 @@ Los términos que usa el proyecto, en orden alfabético. Si un documento usa un 
 | Editor | Agente que aplica las reglas de redacción, arma el informe de cada cliente y manda a revisión humana lo dudoso. |
 | Entidad | Aquello a lo que un cliente se suscribe: un organismo, una empresa (persona jurídica), un programa o una licitación. |
 | Expediente | Todo lo que la base sabe de una entidad, para consultar cuando se quiera. |
+| Etapa | En el tablero, cada paso del ciclo fijo de un tipo de tarjeta (por ejemplo, las de un componente: contrato, código, pruebas, medición y página "cómo se hizo"). |
 | Explorador | Agente que lee una fuente y devuelve candidatos. Hay uno por fuente. |
 | Falso positivo | Algo que el sistema presentó como hallazgo y no lo era: material viejo, un hecho repetido, una deducción presentada como hecho. |
 | Fuera de alcance | Hallazgo del banco de pruebas que vino de un lugar que El Parte no lee (prensa, buscadores). Se cuenta aparte en la medición. |
@@ -28,6 +30,7 @@ Los términos que usa el proyecto, en orden alfabético. Si un documento usa un 
 | Idempotencia | Propiedad de una operación que, repetida, deja todo igual que si se hubiera hecho una sola vez. Acá: procesar dos veces el mismo mensaje no crea dos hechos. |
 | Identidad de un hecho | La regla que dice cuándo dos candidatos son el mismo hecho. Se define en `docs/contratos.md`. |
 | INFERRED | Grado: se deduce de algo verificado, pero no se comprobó directamente. Vale para hechos y para documentos. |
+| Kanban | Forma de ver el trabajo como tarjetas que avanzan por columnas. En El Parte es `kanban/index.html`, generado desde `tablero.md`. |
 | Lámina | Diagrama de arquitectura en SVG, generado por un script desde su fuente. No se edita a mano. |
 | Mermaid | Lenguaje de texto para escribir diagramas dentro de un Markdown. GitHub los dibuja al mostrar el archivo. |
 | Modelo de lenguaje | El sistema de inteligencia artificial que lee y escribe texto y que usan los agentes por dentro. |
@@ -45,5 +48,6 @@ Los términos que usa el proyecto, en orden alfabético. Si un documento usa un 
 | Spring AI | Proyecto del ecosistema Spring para usar modelos de lenguaje desde Java. Su estado actual se verifica en el ADR del stack. |
 | Spring Boot | Forma estándar de armar aplicaciones Java con Spring, con configuración por defecto. |
 | SVG | Formato de imagen vectorial escrito en texto. Se usa para las láminas. |
-| Tablero | Archivo `tablero.md` con todo lo pendiente, cada cosa con dueño y estado. |
+| Tablero | Archivo `tablero.md` con todo lo pendiente, en tarjetas. Es la única fuente del kanban. |
+| Tarjeta | Un pendiente del tablero: un bloque `###` de `tablero.md` con tipo, dueño, notas, etapas, lista y registro. |
 | Tópico | Canal con nombre de un sistema de mensajería. Un agente publica mensajes en un tópico y otros los leen. Guardar los mensajes permite repetir una corrida y armar la sala de máquinas. |
