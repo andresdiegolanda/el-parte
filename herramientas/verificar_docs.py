@@ -9,21 +9,34 @@ Controla, sobre todo el repositorio:
    herramientas/tablero_md.py.
 4. Que kanban/index.html sea exactamente lo que genera tablero.md
    (adrs/0001-tablero-fuente-unica-kanban-generado.md).
-5. Que toda tarea (T01, T02...) citada en un Markdown exista en el tablero.
-6. Que toda decision de arranque (D1, D2...) citada exista en
+5. Que cada lámina SVG de docs/laminas/ sea exactamente lo que genera su
+   fuente JSON (regla 5).
+6. Que toda tarea (T01, T02...) citada en un Markdown exista en el tablero.
+7. Que toda decision de arranque (D1, D2...) citada exista en
    arranque/decisiones-iniciales.md.
+8. Que cada diagrama Mermaid de los Markdown se pueda dibujar. Usa mermaid-cli
+   (el programa mmdc), que se busca en la variable de entorno MMDC o en el PATH.
+   Si no está, avisa y no falla, salvo que EXIGIR_MERMAID=1. Los diagramas que
+   ya pasaron se guardan por su hash en tmp/mermaid-verificados.txt.
 
 Uso:  python3 herramientas/verificar_docs.py
 Sale con codigo 0 si todo esta bien y 1 si encuentra algun problema.
 Solo usa la biblioteca estandar de Python.
 """
 
+import hashlib
+import json
+import os
 import re
+import shutil
+import subprocess
 import sys
+import tempfile
 from pathlib import Path
 from urllib.parse import unquote
 
 import generar_kanban
+import generar_laminas
 import tablero_md
 
 RAIZ = Path(__file__).resolve().parent.parent
@@ -123,6 +136,66 @@ def verificar_kanban(errores):
         errores.append("kanban/index.html: no coincide con tablero.md; corré python3 herramientas/generar_kanban.py")
 
 
+def verificar_laminas(errores):
+    for ruta, contenido in generar_laminas.generar_todas().items():
+        relativa = ruta.relative_to(RAIZ)
+        if not ruta.exists() or ruta.read_text(encoding="utf-8") != contenido:
+            errores.append(f"{relativa}: no coincide con su fuente; corré python3 herramientas/generar_laminas.py")
+    for svg in generar_laminas.CARPETA.glob("*.svg"):
+        if not svg.with_suffix(".json").exists():
+            errores.append(f"{svg.relative_to(RAIZ)}: lámina sin fuente JSON (las láminas no se dibujan a mano)")
+
+
+def bloques_mermaid(texto):
+    """Devuelve (linea, contenido) de cada bloque ```mermaid del texto."""
+    bloques, actual, inicio = [], None, 0
+    for numero, linea in enumerate(texto.splitlines(), start=1):
+        if actual is None and linea.strip() == "```mermaid":
+            actual, inicio = [], numero
+        elif actual is not None and linea.strip() == "```":
+            bloques.append((inicio, "\n".join(actual) + "\n"))
+            actual = None
+        elif actual is not None:
+            actual.append(linea)
+    return bloques
+
+
+def verificar_mermaid(markdowns, errores, avisos):
+    mmdc = os.environ.get("MMDC") or shutil.which("mmdc")
+    if not mmdc:
+        mensaje = "Mermaid: no se comprobó si los diagramas se dibujan (falta mmdc; ver arranque/como-se-trabaja.md)"
+        (errores if os.environ.get("EXIGIR_MERMAID") == "1" else avisos).append(mensaje)
+        return
+    cache = RAIZ / "tmp" / "mermaid-verificados.txt"
+    vistos = set(cache.read_text(encoding="utf-8").split()) if cache.exists() else set()
+    nuevos = set()
+    configuracion = {"args": ["--no-sandbox", "--disable-gpu"]}
+    if os.environ.get("PUPPETEER_EXECUTABLE_PATH"):
+        configuracion["executablePath"] = os.environ["PUPPETEER_EXECUTABLE_PATH"]
+    with tempfile.TemporaryDirectory() as carpeta:
+        cfg = Path(carpeta) / "puppeteer.json"
+        cfg.write_text(json.dumps(configuracion), encoding="utf-8")
+        for ruta, relativa in markdowns:
+            for linea, bloque in bloques_mermaid(leer_texto(ruta)):
+                huella = hashlib.sha256(bloque.encode("utf-8")).hexdigest()
+                if huella in vistos:
+                    nuevos.add(huella)
+                    continue
+                entrada = Path(carpeta) / "diagrama.mmd"
+                entrada.write_text(bloque, encoding="utf-8")
+                proceso = subprocess.run(
+                    [mmdc, "-q", "-p", str(cfg), "-i", str(entrada), "-o", str(Path(carpeta) / "diagrama.svg")],
+                    capture_output=True, text=True, timeout=120,
+                )
+                if proceso.returncode == 0:
+                    nuevos.add(huella)
+                else:
+                    detalle = (proceso.stderr or proceso.stdout).strip().splitlines()
+                    errores.append(f"{relativa}:{linea}: el diagrama Mermaid no se dibuja: {detalle[0] if detalle else 'sin detalle'}")
+    cache.parent.mkdir(exist_ok=True)
+    cache.write_text("\n".join(sorted(nuevos)) + "\n", encoding="utf-8")
+
+
 def decisiones_definidas():
     archivo = RAIZ / "arranque" / "decisiones-iniciales.md"
     if not archivo.exists():
@@ -146,13 +219,18 @@ def main():
     archivos = list(archivos_del_repo())
     markdowns = [(r, rel) for r, rel in archivos if r.suffix == ".md"]
     errores = []
+    avisos = []
 
     verificar_guiones(archivos, errores)
     verificar_enlaces(markdowns, errores)
     ids = verificar_tablero(errores)
     verificar_kanban(errores)
+    verificar_laminas(errores)
+    verificar_mermaid(markdowns, errores, avisos)
     verificar_referencias(markdowns, ids, decisiones_definidas(), errores)
 
+    for aviso in avisos:
+        print(f"Aviso: {aviso}")
     if errores:
         print(f"Se encontraron {len(errores)} problemas:")
         for error in errores:

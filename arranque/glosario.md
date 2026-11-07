@@ -18,6 +18,7 @@ Los términos que usa el proyecto, en orden alfabético. Si un documento usa un 
 | CHANGELOG | Archivo con cada cambio del repositorio, corto, con enlace al documento que tiene el porqué. |
 | ChatClient | En Spring AI, la API de uso diario para hablar con un modelo. Por dentro usa un ChatModel. |
 | ChatModel | En Spring AI, la interfaz común a todos los proveedores de modelos. Cambiar de proveedor pide cambios mínimos de código. |
+| Clave de hecho | La identidad de un hecho: dice cuándo dos candidatos son el mismo. Se arma con la fuente, su identificador estable y el tipo de hecho ([docs/contratos.md](../docs/contratos.md)). |
 | Columna | En el tablero, el estado de una tarjeta: Pendiente, Para empezar, En curso, Esperando o Hecho. |
 | Contenedor | Paquete que lleva un programa con todo lo que necesita para correr, igual en cualquier máquina. |
 | Corrida | Una ejecución completa de la noche: todos los exploradores, el cotejo, la refutación, el análisis y la edición. |
@@ -58,6 +59,7 @@ Los términos que usa el proyecto, en orden alfabético. Si un documento usa un 
 | robots.txt | Archivo que un sitio publica para decir qué partes no quiere que lean los programas automáticos. Se respeta. |
 | Sala de máquinas | La parte de la aplicación que muestra, por cada corrida y cada hallazgo, qué agente hizo qué, qué se refutó y por qué, contra qué se cotejó, cuánto costó y cuánto tardó. |
 | Salida estructurada | Respuesta del modelo en un formato fijo (un tipo Java con su esquema JSON) en lugar de texto libre. Spring AI la valida y la vuelve a pedir si no cumple. |
+| Sobre | Los campos comunes a todo mensaje entre agentes: identificador, tipo, versión, corrida, causa, agente y momento de emisión. |
 | Spring AI | Proyecto del ecosistema Spring para usar modelos de lenguaje desde Java. Su estado actual se verifica en el ADR del stack. |
 | Spring Boot | Forma estándar de armar aplicaciones Java con Spring, con configuración por defecto. |
 | SVG | Formato de imagen vectorial escrito en texto. Se usa para las láminas. |

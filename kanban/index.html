@@ -20,6 +20,7 @@
     --documento: #1f4fae; --documento-soft: #e1e8f7; --adr: #5b3fb0; --adr-soft: #ebe5fa;
     --componente: #0f6e7a; --componente-soft: #dcf1f2; --verificacion: #8a4b12; --verificacion-soft: #f6e7d6;
     --herramienta: #3f5563; --herramienta-soft: #e3e9ed; --gestion: #9a3d6a; --gestion-soft: #f7e3ee;
+    --web: #6b4ea8; --web-soft: #efe9fb;
     --shadow: 0 1px 2px rgba(27, 34, 38, .08), 0 2px 6px rgba(27, 34, 38, .05);
     --sans: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
     --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
@@ -32,6 +33,7 @@
       --documento: #7ea6ff; --documento-soft: #1f2b45; --adr: #b9a4ff; --adr-soft: #2a2343;
       --componente: #6fd0da; --componente-soft: #143236; --verificacion: #e9a86b; --verificacion-soft: #3b2a18;
       --herramienta: #a9bcc8; --herramienta-soft: #26313a; --gestion: #f09cc4; --gestion-soft: #3a1d2c;
+      --web: #c3a8ff; --web-soft: #2c2445;
       --shadow: 0 1px 2px rgba(0, 0, 0, .4);
       color-scheme: dark;
     }
@@ -43,6 +45,7 @@
     --documento: #7ea6ff; --documento-soft: #1f2b45; --adr: #b9a4ff; --adr-soft: #2a2343;
     --componente: #6fd0da; --componente-soft: #143236; --verificacion: #e9a86b; --verificacion-soft: #3b2a18;
     --herramienta: #a9bcc8; --herramienta-soft: #26313a; --gestion: #f09cc4; --gestion-soft: #3a1d2c;
+    --web: #c3a8ff; --web-soft: #2c2445;
     --shadow: 0 1px 2px rgba(0, 0, 0, .4);
     color-scheme: dark;
   }
@@ -105,6 +108,7 @@
   .chip.k-verificacion { color: var(--verificacion); background: var(--verificacion-soft); border-color: transparent; }
   .chip.k-herramienta { color: var(--herramienta); background: var(--herramienta-soft); border-color: transparent; }
   .chip.k-gestion { color: var(--gestion); background: var(--gestion-soft); border-color: transparent; }
+  .chip.k-web { color: var(--web); background: var(--web-soft); border-color: transparent; }
   .chip.wait { color: var(--wait); background: var(--wait-soft); border-color: transparent; white-space: normal; }
   .chip.late { color: var(--late); background: var(--late-soft); border-color: transparent; }
   .chip.ok { color: var(--ok); background: var(--ok-soft); border-color: transparent; }
@@ -192,7 +196,7 @@
 <script type="application/json" id="datos">{
  "meta": {
   "actualizado": "2026-11-07",
-  "nota": "T10 hecha y T05 escrita: seis ADRs esperan revisión (T19). Entran ARCE, BID, Banco Mundial y la normativa de Presidencia; el BPS queda afuera. Lo próximo es T02, la arquitectura.",
+  "nota": "Documentación del primer fin de semana completa (T02, T03, T04, T07; T05 y T06 escritas). Ocho ADRs esperan revisión (T19), y la primera rebanada (T08) espera eso, la clave (T14) y el registro del banco (T11).",
   "calendario": [
    "2026-11-07",
    "2026-11-14",
@@ -255,6 +259,15 @@
     "Código",
     "Pruebas",
     "Medido contra el banco",
+    "Página cómo se hizo"
+   ]
+  },
+  "web": {
+   "nombre": "Web",
+   "etapas": [
+    "Diseño",
+    "Código",
+    "Pruebas",
     "Página cómo se hizo"
    ]
   },
@@ -328,184 +341,18 @@
     {
      "texto": "0006: fuentes de la versión 0",
      "hecho": false
-    }
-   ],
-   "notas": [
-    "Los ADRs 0001 a 0006 están propuestos. Cada uno se acepta, se corrige o se rechaza; al aceptarlo, su estado pasa a \"aceptado\" en el archivo y en el índice."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-07",
-     "texto": "Creada."
-    }
-   ]
-  },
-  {
-   "id": "T02",
-   "titulo": "Escribir docs/arquitectura.md",
-   "columna": "para-empezar",
-   "orden": 2,
-   "tipo": "documento",
-   "dueno": "desarrollo",
-   "dependeDe": "T09",
-   "dependencias": [
-    "T09"
-   ],
-   "esperaA": "",
-   "fecha": "",
-   "detalle": [
-    {
-     "texto": "arranque/proyecto.md",
-     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/arranque/proyecto.md"
     },
     {
-     "texto": "docs/verificaciones/spring-ai.md",
-     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/docs/verificaciones/spring-ai.md"
-    }
-   ],
-   "etapas": [
-    {
-     "texto": "Borrador",
+     "texto": "0007: registro del banco de pruebas fuera del repositorio",
      "hecho": false
     },
     {
-     "texto": "Grados y fuentes",
-     "hecho": false
-    },
-    {
-     "texto": "Diagramas",
-     "hecho": false
-    },
-    {
-     "texto": "Releído y verificado",
-     "hecho": false
-    }
-   ],
-   "lista": [
-    {
-     "texto": "Visión general en Mermaid",
-     "hecho": false
-    },
-    {
-     "texto": "Los agentes y sus razones",
-     "hecho": false
-    },
-    {
-     "texto": "Secuencia de una noche",
-     "hecho": false
-    },
-    {
-     "texto": "Lámina de arquitectura en SVG con su generador",
-     "hecho": false
-    },
-    {
-     "texto": "Verificador de láminas",
+     "texto": "0008: datos personales",
      "hecho": false
     }
    ],
    "notas": [
-    "La visión general del sistema y la primera lámina en SVG, con su generador y el verificador que falla si la lámina no coincide (regla 5)."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-07",
-     "texto": "Creada."
-    },
-    {
-     "fecha": "2026-11-07",
-     "texto": "Pasa a Para empezar: T09 está hecha."
-    }
-   ]
-  },
-  {
-   "id": "T06",
-   "titulo": "Escribir los ADRs de las decisiones D2 y D3",
-   "columna": "para-empezar",
-   "orden": 3,
-   "tipo": "adr",
-   "dueno": "desarrollo",
-   "dependeDe": "",
-   "dependencias": [],
-   "esperaA": "",
-   "fecha": "",
-   "detalle": [
-    {
-     "texto": "arranque/decisiones-iniciales.md",
-     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/arranque/decisiones-iniciales.md"
-    }
-   ],
-   "etapas": [
-    {
-     "texto": "Contexto y alternativas",
-     "hecho": false
-    },
-    {
-     "texto": "Fuentes verificadas",
-     "hecho": false
-    },
-    {
-     "texto": "Escrito",
-     "hecho": false
-    },
-    {
-     "texto": "Aceptado",
-     "hecho": false
-    }
-   ],
-   "lista": [
-    {
-     "texto": "ADR de D2: registro fuera del repositorio",
-     "hecho": false
-    },
-    {
-     "texto": "ADR de D3: datos personales",
-     "hecho": false
-    }
-   ],
-   "notas": [
-    "D2 deja el registro del banco de pruebas fuera del repositorio y D3 fija cómo se tratan los datos personales. Las dos son significativas y pasan a ADR (regla 3)."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-07",
-     "texto": "Creada."
-    }
-   ]
-  },
-  {
-   "id": "T15",
-   "titulo": "Comprobar en el verificador que los diagramas Mermaid se dibujan",
-   "columna": "para-empezar",
-   "orden": 4,
-   "tipo": "herramienta",
-   "dueno": "desarrollo",
-   "dependeDe": "",
-   "dependencias": [],
-   "esperaA": "",
-   "fecha": "",
-   "detalle": [
-    {
-     "texto": "herramientas/verificar_docs.py",
-     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/herramientas/verificar_docs.py"
-    }
-   ],
-   "etapas": [
-    {
-     "texto": "Escrita",
-     "hecho": false
-    },
-    {
-     "texto": "Probada",
-     "hecho": false
-    },
-    {
-     "texto": "Documentada",
-     "hecho": false
-    }
-   ],
-   "lista": [],
-   "notas": [
-    "Los diagramas que había el 2026-11-07 se comprobaron a mano con mermaid-cli y Chrome sin ventana, y se dibujan todos. Falta que el verificador lo haga solo, y que se saltee con un aviso donde no haya navegador."
+    "Los ADRs 0001 a 0008 están propuestos. Cada uno se acepta, se corrige o se rechaza; al aceptarlo, su estado pasa a \"aceptado\" en el archivo y en el índice."
    ],
    "registro": [
     {
@@ -518,7 +365,7 @@
    "id": "T18",
    "titulo": "Pedir a IMPO que aclare si su JSON de normas se puede reutilizar",
    "columna": "para-empezar",
-   "orden": 5,
+   "orden": 2,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -547,7 +394,7 @@
    "id": "T11",
    "titulo": "Entregar el registro completo del banco de pruebas",
    "columna": "para-empezar",
-   "orden": 6,
+   "orden": 3,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -573,10 +420,73 @@
    ]
   },
   {
+   "id": "T06",
+   "titulo": "Escribir los ADRs de las decisiones D2 y D3",
+   "columna": "esperando",
+   "orden": 1,
+   "tipo": "adr",
+   "dueno": "desarrollo",
+   "dependeDe": "",
+   "dependencias": [],
+   "esperaA": "Andrés, que acepte o corrija los ADRs 0007 y 0008 (T19)",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "adrs/0007-registro-del-banco-fuera-del-repositorio.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/adrs/0007-registro-del-banco-fuera-del-repositorio.md"
+    },
+    {
+     "texto": "adrs/0008-datos-personales.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/adrs/0008-datos-personales.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Contexto y alternativas",
+     "hecho": true
+    },
+    {
+     "texto": "Fuentes verificadas",
+     "hecho": true
+    },
+    {
+     "texto": "Escrito",
+     "hecho": true
+    },
+    {
+     "texto": "Aceptado",
+     "hecho": false
+    }
+   ],
+   "lista": [
+    {
+     "texto": "ADR de D2: registro fuera del repositorio",
+     "hecho": true
+    },
+    {
+     "texto": "ADR de D3: datos personales",
+     "hecho": true
+    }
+   ],
+   "notas": [
+    "D2 deja el registro del banco de pruebas fuera del repositorio y D3 fija cómo se tratan los datos personales. Las dos son significativas y pasan a ADR (regla 3)."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    },
+    {
+     "fecha": "2026-11-07",
+     "texto": "Escritos los ADRs 0007 y 0008, propuestos. Pasa a Esperando hasta que se acepten."
+    }
+   ]
+  },
+  {
    "id": "T05",
    "titulo": "Escribir los primeros ADRs",
    "columna": "esperando",
-   "orden": 1,
+   "orden": 2,
    "tipo": "adr",
    "dueno": "desarrollo",
    "dependeDe": "T09",
@@ -674,174 +584,10 @@
    ]
   },
   {
-   "id": "T03",
-   "titulo": "Escribir docs/contratos.md",
-   "columna": "pendiente",
-   "orden": 1,
-   "tipo": "documento",
-   "dueno": "desarrollo",
-   "dependeDe": "T02",
-   "dependencias": [
-    "T02"
-   ],
-   "esperaA": "",
-   "fecha": "",
-   "detalle": [],
-   "etapas": [
-    {
-     "texto": "Borrador",
-     "hecho": false
-    },
-    {
-     "texto": "Grados y fuentes",
-     "hecho": false
-    },
-    {
-     "texto": "Diagramas",
-     "hecho": false
-    },
-    {
-     "texto": "Releído y verificado",
-     "hecho": false
-    }
-   ],
-   "lista": [
-    {
-     "texto": "Esquema y ejemplo de cada mensaje",
-     "hecho": false
-    },
-    {
-     "texto": "Regla de identidad e idempotencia de cada hecho",
-     "hecho": false
-    },
-    {
-     "texto": "Umbral de \"demasiado INFERRED\" (D6)",
-     "hecho": false
-    }
-   ],
-   "notas": [
-    "Los mensajes entre agentes. De esto depende que cada corrida se pueda repetir y que la sala de máquinas se arme desde los mensajes."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-07",
-     "texto": "Creada."
-    }
-   ]
-  },
-  {
-   "id": "T04",
-   "titulo": "Escribir docs/base-de-afirmaciones.md",
-   "columna": "pendiente",
-   "orden": 2,
-   "tipo": "documento",
-   "dueno": "desarrollo",
-   "dependeDe": "T03",
-   "dependencias": [
-    "T03"
-   ],
-   "esperaA": "",
-   "fecha": "",
-   "detalle": [],
-   "etapas": [
-    {
-     "texto": "Borrador",
-     "hecho": false
-    },
-    {
-     "texto": "Grados y fuentes",
-     "hecho": false
-    },
-    {
-     "texto": "Diagramas",
-     "hecho": false
-    },
-    {
-     "texto": "Releído y verificado",
-     "hecho": false
-    }
-   ],
-   "lista": [
-    {
-     "texto": "Modelo de datos con diagrama",
-     "hecho": false
-    },
-    {
-     "texto": "Traza de qué agente produjo cada hecho",
-     "hecho": false
-    },
-    {
-     "texto": "Tabla de usuarios aparte (D3)",
-     "hecho": false
-    }
-   ],
-   "notas": [
-    "El modelo de datos de la base de afirmaciones, con diagrama."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-07",
-     "texto": "Creada."
-    }
-   ]
-  },
-  {
-   "id": "T07",
-   "titulo": "Escribir docs/plan.md",
-   "columna": "pendiente",
-   "orden": 3,
-   "tipo": "documento",
-   "dueno": "desarrollo",
-   "dependeDe": "T02",
-   "dependencias": [
-    "T02"
-   ],
-   "esperaA": "",
-   "fecha": "",
-   "detalle": [],
-   "etapas": [
-    {
-     "texto": "Borrador",
-     "hecho": false
-    },
-    {
-     "texto": "Grados y fuentes",
-     "hecho": false
-    },
-    {
-     "texto": "Diagramas",
-     "hecho": false
-    },
-    {
-     "texto": "Releído y verificado",
-     "hecho": false
-    }
-   ],
-   "lista": [
-    {
-     "texto": "Qué se muestra al final de cada fin de semana",
-     "hecho": false
-    },
-    {
-     "texto": "Que entre en unas seis horas de revisión por fin de semana",
-     "hecho": false
-    }
-   ],
-   "notas": [
-    "El plan de los cuatro fines de semana del calendario (D10)."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-07",
-     "texto": "Creada."
-    }
-   ]
-  },
-  {
    "id": "T08",
    "titulo": "Construir la primera rebanada de punta a punta",
    "columna": "pendiente",
-   "orden": 4,
+   "orden": 1,
    "tipo": "componente",
    "dueno": "desarrollo",
    "dependeDe": "T02 a T07, T10, T14",
@@ -899,6 +645,10 @@
      "hecho": false
     },
     {
+     "texto": "Migraciones de la base a partir de docs/base-de-afirmaciones.md, con el reparto de permisos por esquema",
+     "hecho": false
+    },
+    {
      "texto": "Archivista",
      "hecho": false
     },
@@ -937,7 +687,7 @@
    "id": "T12",
    "titulo": "Escribir el formato, la muestra sintética y las métricas del banco de pruebas",
    "columna": "pendiente",
-   "orden": 5,
+   "orden": 2,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T11",
@@ -993,7 +743,7 @@
    "id": "T14",
    "titulo": "Dejar la clave del proveedor de modelos fuera del repositorio",
    "columna": "pendiente",
-   "orden": 6,
+   "orden": 3,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "T05",
@@ -1016,10 +766,791 @@
    ]
   },
   {
+   "id": "T20",
+   "titulo": "Medir la primera rebanada contra el banco de pruebas",
+   "columna": "pendiente",
+   "orden": 4,
+   "tipo": "verificacion",
+   "dueno": "desarrollo",
+   "dependeDe": "T08, T12",
+   "dependencias": [
+    "T08",
+    "T12"
+   ],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "docs/plan.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/docs/plan.md"
+    }
+   ],
+   "etapas": [],
+   "lista": [
+    {
+     "texto": "Correr la rebanada sobre cada noche del registro",
+     "hecho": false
+    },
+    {
+     "texto": "Contar encontrados, no encontrados, fuera de alcance y falsos positivos",
+     "hecho": false
+    },
+    {
+     "texto": "Costo y duración por noche",
+     "hecho": false
+    },
+    {
+     "texto": "Versionar las métricas con la huella del registro usado (ADR 0007)",
+     "hecho": false
+    }
+   ],
+   "notas": [
+    "La medición es parte de la versión 0. Corre la rebanada sobre cada noche del registro y compara lo encontrado con lo que encontró la vigilancia anterior (D1)."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada con el plan (T07)."
+    }
+   ]
+  },
+  {
+   "id": "T21",
+   "titulo": "Completar el analista",
+   "columna": "pendiente",
+   "orden": 5,
+   "tipo": "componente",
+   "dueno": "desarrollo",
+   "dependeDe": "T08",
+   "dependencias": [
+    "T08"
+   ],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "docs/contratos.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/docs/contratos.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Contrato",
+     "hecho": false
+    },
+    {
+     "texto": "Código",
+     "hecho": false
+    },
+    {
+     "texto": "Pruebas",
+     "hecho": false
+    },
+    {
+     "texto": "Medido contra el banco",
+     "hecho": false
+    },
+    {
+     "texto": "Página cómo se hizo",
+     "hecho": false
+    }
+   ],
+   "lista": [],
+   "notas": [
+    "En la primera rebanada el analista solo pasa la afirmación. Acá escribe qué dice, por qué importa y qué mirar."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada con el plan (T07)."
+    }
+   ]
+  },
+  {
+   "id": "T22",
+   "titulo": "Implementar el presupuesto que corta",
+   "columna": "pendiente",
+   "orden": 6,
+   "tipo": "componente",
+   "dueno": "desarrollo",
+   "dependeDe": "T08",
+   "dependencias": [
+    "T08"
+   ],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "adrs/0005-presupuesto-por-corrida.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/adrs/0005-presupuesto-por-corrida.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Contrato",
+     "hecho": false
+    },
+    {
+     "texto": "Código",
+     "hecho": false
+    },
+    {
+     "texto": "Pruebas",
+     "hecho": false
+    },
+    {
+     "texto": "Medido contra el banco",
+     "hecho": false
+    },
+    {
+     "texto": "Página cómo se hizo",
+     "hecho": false
+    }
+   ],
+   "lista": [
+    {
+     "texto": "Advisor de presupuesto en todos los ChatClient",
+     "hecho": false
+    },
+    {
+     "texto": "Libro de la corrida con actualización atómica",
+     "hecho": false
+    },
+    {
+     "texto": "Tabla de precios con fuente y fecha",
+     "hecho": false
+    },
+    {
+     "texto": "Corte por tiempo y mensaje corrida.cortada",
+     "hecho": false
+    }
+   ],
+   "notas": [
+    "El advisor de presupuesto, el libro de la corrida y la tabla de precios del ADR 0005."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada con el plan (T07)."
+    }
+   ]
+  },
+  {
+   "id": "T23",
+   "titulo": "Armar la cola de revisión humana",
+   "columna": "pendiente",
+   "orden": 7,
+   "tipo": "web",
+   "dueno": "desarrollo",
+   "dependeDe": "T08",
+   "dependencias": [
+    "T08"
+   ],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "docs/contratos.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/docs/contratos.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Diseño",
+     "hecho": false
+    },
+    {
+     "texto": "Código",
+     "hecho": false
+    },
+    {
+     "texto": "Pruebas",
+     "hecho": false
+    },
+    {
+     "texto": "Página cómo se hizo",
+     "hecho": false
+    }
+   ],
+   "lista": [],
+   "notas": [
+    "La cola de hechos INFERRED en la sala de máquinas, y la marca de pendiente en la página de la mañana (D6)."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada con el plan (T07)."
+    }
+   ]
+  },
+  {
+   "id": "T24",
+   "titulo": "Sumar los exploradores del BID, el Banco Mundial y Presidencia",
+   "columna": "pendiente",
+   "orden": 8,
+   "tipo": "componente",
+   "dueno": "desarrollo",
+   "dependeDe": "T08",
+   "dependencias": [
+    "T08"
+   ],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "adrs/0006-fuentes-de-la-version-0.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/adrs/0006-fuentes-de-la-version-0.md"
+    },
+    {
+     "texto": "adrs/0008-datos-personales.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/adrs/0008-datos-personales.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Contrato",
+     "hecho": false
+    },
+    {
+     "texto": "Código",
+     "hecho": false
+    },
+    {
+     "texto": "Pruebas",
+     "hecho": false
+    },
+    {
+     "texto": "Medido contra el banco",
+     "hecho": false
+    },
+    {
+     "texto": "Página cómo se hizo",
+     "hecho": false
+    }
+   ],
+   "lista": [
+    {
+     "texto": "Explorador del BID",
+     "hecho": false
+    },
+    {
+     "texto": "Explorador del Banco Mundial (API v3, campos acotados)",
+     "hecho": false
+    },
+    {
+     "texto": "Explorador de la normativa de Presidencia, a ritmo bajo",
+     "hecho": false
+    }
+   ],
+   "notas": [
+    "Las otras tres fuentes de la versión 0, cada una con sus descartes de datos personales."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada con el plan (T07)."
+    }
+   ]
+  },
+  {
+   "id": "T25",
+   "titulo": "Armar el login por enlace, los cuatro usuarios y la cuenta de demostración",
+   "columna": "pendiente",
+   "orden": 9,
+   "tipo": "web",
+   "dueno": "desarrollo",
+   "dependeDe": "T08",
+   "dependencias": [
+    "T08"
+   ],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "adrs/0003-eleccion-del-stack.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/adrs/0003-eleccion-del-stack.md"
+    },
+    {
+     "texto": "adrs/0008-datos-personales.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/adrs/0008-datos-personales.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Diseño",
+     "hecho": false
+    },
+    {
+     "texto": "Código",
+     "hecho": false
+    },
+    {
+     "texto": "Pruebas",
+     "hecho": false
+    },
+    {
+     "texto": "Página cómo se hizo",
+     "hecho": false
+    }
+   ],
+   "lista": [],
+   "notas": [
+    "Login con token de un solo uso de Spring Security, correos en el esquema cuentas y lista de invitados desde la configuración."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada con el plan (T07)."
+    }
+   ]
+  },
+  {
+   "id": "T26",
+   "titulo": "Escribir la sección \"Cómo funciona\" y las páginas \"cómo se hizo\"",
+   "columna": "pendiente",
+   "orden": 10,
+   "tipo": "documento",
+   "dueno": "desarrollo",
+   "dependeDe": "T08",
+   "dependencias": [
+    "T08"
+   ],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "docs/arquitectura.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/docs/arquitectura.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Borrador",
+     "hecho": false
+    },
+    {
+     "texto": "Grados y fuentes",
+     "hecho": false
+    },
+    {
+     "texto": "Diagramas",
+     "hecho": false
+    },
+    {
+     "texto": "Releído y verificado",
+     "hecho": false
+    }
+   ],
+   "lista": [],
+   "notas": [
+    "La sección de la aplicación que enlaza a la documentación, y la página \"cómo se hizo\" de cada componente que todavía no la tenga (regla 6)."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada con el plan (T07)."
+    }
+   ]
+  },
+  {
+   "id": "T27",
+   "titulo": "Escribir el ADR de despliegue",
+   "columna": "pendiente",
+   "orden": 11,
+   "tipo": "adr",
+   "dueno": "desarrollo",
+   "dependeDe": "T08",
+   "dependencias": [
+    "T08"
+   ],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "arranque/decisiones-iniciales.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/arranque/decisiones-iniciales.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Contexto y alternativas",
+     "hecho": false
+    },
+    {
+     "texto": "Fuentes verificadas",
+     "hecho": false
+    },
+    {
+     "texto": "Escrito",
+     "hecho": false
+    },
+    {
+     "texto": "Aceptado",
+     "hecho": false
+    }
+   ],
+   "lista": [],
+   "notas": [
+    "Dónde se publica el servicio para los usuarios invitados, con qué dominio y con qué servicio de correo (D9)."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada con el plan (T07)."
+    }
+   ]
+  },
+  {
+   "id": "T07",
+   "titulo": "Escribir docs/plan.md",
+   "columna": "hecho",
+   "orden": 1,
+   "tipo": "documento",
+   "dueno": "desarrollo",
+   "dependeDe": "T02",
+   "dependencias": [
+    "T02"
+   ],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "docs/plan.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/docs/plan.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Borrador",
+     "hecho": true
+    },
+    {
+     "texto": "Grados y fuentes",
+     "hecho": true
+    },
+    {
+     "texto": "Diagramas",
+     "hecho": true
+    },
+    {
+     "texto": "Releído y verificado",
+     "hecho": true
+    }
+   ],
+   "lista": [
+    {
+     "texto": "Qué se muestra al final de cada fin de semana",
+     "hecho": true
+    },
+    {
+     "texto": "Que entre en unas seis horas de revisión por fin de semana",
+     "hecho": true
+    }
+   ],
+   "notas": [
+    "El plan de los cuatro fines de semana del calendario (D10)."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    },
+    {
+     "fecha": "2026-11-07",
+     "texto": "Pasa a Para empezar: T02 está hecha."
+    },
+    {
+     "fecha": "2026-11-07",
+     "texto": "Hecha. Cada fin de semana tiene qué se muestra y cómo se comprueba; sus tareas están en T20 a T27."
+    }
+   ]
+  },
+  {
+   "id": "T04",
+   "titulo": "Escribir docs/base-de-afirmaciones.md",
+   "columna": "hecho",
+   "orden": 2,
+   "tipo": "documento",
+   "dueno": "desarrollo",
+   "dependeDe": "T03",
+   "dependencias": [
+    "T03"
+   ],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "docs/base-de-afirmaciones.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/docs/base-de-afirmaciones.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Borrador",
+     "hecho": true
+    },
+    {
+     "texto": "Grados y fuentes",
+     "hecho": true
+    },
+    {
+     "texto": "Diagramas",
+     "hecho": true
+    },
+    {
+     "texto": "Releído y verificado",
+     "hecho": true
+    }
+   ],
+   "lista": [
+    {
+     "texto": "Modelo de datos con diagrama",
+     "hecho": true
+    },
+    {
+     "texto": "Traza de qué agente produjo cada hecho",
+     "hecho": true
+    },
+    {
+     "texto": "Tabla de usuarios aparte (D3)",
+     "hecho": true
+    }
+   ],
+   "notas": [
+    "El modelo de datos de la base de afirmaciones, con diagrama."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    },
+    {
+     "fecha": "2026-11-07",
+     "texto": "Pasa a Para empezar: T03 está hecha."
+    },
+    {
+     "fecha": "2026-11-07",
+     "texto": "Pasa a En curso."
+    },
+    {
+     "fecha": "2026-11-07",
+     "texto": "Hecha. Dos esquemas (parte y cuentas), 16 tablas; el DDL se probó contra PostgreSQL 18.6."
+    }
+   ]
+  },
+  {
+   "id": "T03",
+   "titulo": "Escribir docs/contratos.md",
+   "columna": "hecho",
+   "orden": 3,
+   "tipo": "documento",
+   "dueno": "desarrollo",
+   "dependeDe": "T02",
+   "dependencias": [
+    "T02"
+   ],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "docs/contratos.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/docs/contratos.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Borrador",
+     "hecho": true
+    },
+    {
+     "texto": "Grados y fuentes",
+     "hecho": true
+    },
+    {
+     "texto": "Diagramas",
+     "hecho": true
+    },
+    {
+     "texto": "Releído y verificado",
+     "hecho": true
+    }
+   ],
+   "lista": [
+    {
+     "texto": "Esquema y ejemplo de cada mensaje",
+     "hecho": true
+    },
+    {
+     "texto": "Regla de identidad e idempotencia de cada hecho",
+     "hecho": true
+    },
+    {
+     "texto": "Umbral de \"demasiado INFERRED\" (D6)",
+     "hecho": true
+    }
+   ],
+   "notas": [
+    "Los mensajes entre agentes. De esto depende que cada corrida se pueda repetir y que la sala de máquinas se arme desde los mensajes."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    },
+    {
+     "fecha": "2026-11-07",
+     "texto": "Pasa a Para empezar: T02 está hecha."
+    },
+    {
+     "fecha": "2026-11-07",
+     "texto": "Pasa a En curso."
+    },
+    {
+     "fecha": "2026-11-07",
+     "texto": "Hecha. Once tipos de mensaje con esquema y ejemplo; en la versión 0, todo hecho INFERRED va a revisión."
+    }
+   ]
+  },
+  {
+   "id": "T15",
+   "titulo": "Comprobar en el verificador que los diagramas Mermaid se dibujan",
+   "columna": "hecho",
+   "orden": 4,
+   "tipo": "herramienta",
+   "dueno": "desarrollo",
+   "dependeDe": "",
+   "dependencias": [],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "herramientas/verificar_docs.py",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/herramientas/verificar_docs.py"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Escrita",
+     "hecho": true
+    },
+    {
+     "texto": "Probada",
+     "hecho": true
+    },
+    {
+     "texto": "Documentada",
+     "hecho": true
+    }
+   ],
+   "lista": [],
+   "notas": [
+    "Los diagramas que había el 2026-11-07 se comprobaron a mano con mermaid-cli y Chrome sin ventana, y se dibujan todos. Falta que el verificador lo haga solo, y que se saltee con un aviso donde no haya navegador."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    },
+    {
+     "fecha": "2026-11-07",
+     "texto": "Hecha. El verificador dibuja cada diagrama con mermaid-cli, guarda en caché los que pasan y avisa sin fallar si no hay mmdc."
+    }
+   ]
+  },
+  {
+   "id": "T02",
+   "titulo": "Escribir docs/arquitectura.md",
+   "columna": "hecho",
+   "orden": 5,
+   "tipo": "documento",
+   "dueno": "desarrollo",
+   "dependeDe": "T09",
+   "dependencias": [
+    "T09"
+   ],
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "docs/arquitectura.md",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/docs/arquitectura.md"
+    },
+    {
+     "texto": "docs/laminas/arquitectura.json",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/docs/laminas/arquitectura.json"
+    },
+    {
+     "texto": "herramientas/generar_laminas.py",
+     "url": "https://github.com/andresdiegolanda/el-parte/blob/main/herramientas/generar_laminas.py"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Borrador",
+     "hecho": true
+    },
+    {
+     "texto": "Grados y fuentes",
+     "hecho": true
+    },
+    {
+     "texto": "Diagramas",
+     "hecho": true
+    },
+    {
+     "texto": "Releído y verificado",
+     "hecho": true
+    }
+   ],
+   "lista": [
+    {
+     "texto": "Visión general en Mermaid",
+     "hecho": true
+    },
+    {
+     "texto": "Los agentes y sus razones",
+     "hecho": true
+    },
+    {
+     "texto": "Secuencia de una noche",
+     "hecho": true
+    },
+    {
+     "texto": "Lámina de arquitectura en SVG con su generador",
+     "hecho": true
+    },
+    {
+     "texto": "Verificador de láminas",
+     "hecho": true
+    }
+   ],
+   "notas": [
+    "La visión general del sistema y la primera lámina en SVG, con su generador y el verificador que falla si la lámina no coincide (regla 5)."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    },
+    {
+     "fecha": "2026-11-07",
+     "texto": "Pasa a Para empezar: T09 está hecha."
+    },
+    {
+     "fecha": "2026-11-07",
+     "texto": "Pasa a En curso."
+    },
+    {
+     "fecha": "2026-11-07",
+     "texto": "Hecha. La lámina se genera desde su JSON y el verificador falla si el SVG no coincide."
+    }
+   ]
+  },
+  {
    "id": "T10",
    "titulo": "Verificar las fuentes candidatas",
    "columna": "hecho",
-   "orden": 1,
+   "orden": 6,
    "tipo": "verificacion",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1093,7 +1624,7 @@
    "id": "T09",
    "titulo": "Verificar Spring AI y sus patrones de orquestación",
    "columna": "hecho",
-   "orden": 2,
+   "orden": 7,
    "tipo": "verificacion",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1147,7 +1678,7 @@
    "id": "T13",
    "titulo": "Elegir la licencia del repositorio",
    "columna": "hecho",
-   "orden": 3,
+   "orden": 8,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1184,7 +1715,7 @@
    "id": "T17",
    "titulo": "Dar acceso de escritura al repositorio a las sesiones en la nube",
    "columna": "hecho",
-   "orden": 4,
+   "orden": 9,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1212,7 +1743,7 @@
    "id": "T16",
    "titulo": "Armar el kanban generado desde el tablero",
    "columna": "hecho",
-   "orden": 5,
+   "orden": 10,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1262,7 +1793,7 @@
    "id": "T01",
    "titulo": "Armar la base documental",
    "columna": "hecho",
-   "orden": 6,
+   "orden": 11,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "",

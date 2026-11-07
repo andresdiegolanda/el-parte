@@ -35,7 +35,7 @@ flowchart LR
     OB --> SM[Sala de máquinas]
 ```
 
-El diagrama es la idea general. La arquitectura formal, con el diagrama de secuencia de una noche y la lámina en SVG, va en `docs/arquitectura.md` (pendiente, ver el [tablero](../tablero.md)).
+El diagrama es la idea general. La arquitectura formal, con el diagrama de secuencia de una noche y la lámina en SVG, está en [docs/arquitectura.md](../docs/arquitectura.md).
 
 ## Los agentes y por qué existe cada uno
 
@@ -104,12 +104,12 @@ Son preferencias, no órdenes. Cada una se confirma o se cambia con un ADR (pend
 | 1 | Preguntas de arranque | Hecho: sus respuestas están en [decisiones-iniciales.md](decisiones-iniciales.md) |
 | 2 | Carpeta `arranque/` (antes prevista como `docs/arranque.md`) | Hecho |
 | 3 | `README.md` con las reglas | Hecho |
-| 4 | `docs/arquitectura.md`: visión general en Mermaid, agentes, secuencia de una noche, lámina SVG con su generador | Pendiente |
-| 5 | `docs/contratos.md`: mensajes entre agentes con esquema y ejemplo, identidad e idempotencia de cada hecho | Pendiente |
-| 6 | `docs/base-de-afirmaciones.md`: modelo de datos con diagrama | Pendiente |
-| 7 | `adrs/`: orquestación por mensajes, stack, grados de evidencia, presupuesto por corrida | Pendiente |
+| 4 | `docs/arquitectura.md`: visión general en Mermaid, agentes, secuencia de una noche, lámina SVG con su generador | Hecho |
+| 5 | `docs/contratos.md`: mensajes entre agentes con esquema y ejemplo, identidad e idempotencia de cada hecho | Hecho |
+| 6 | `docs/base-de-afirmaciones.md`: modelo de datos con diagrama | Hecho |
+| 7 | `adrs/`: orquestación por mensajes, stack, grados de evidencia, presupuesto por corrida | Escritos, esperando revisión |
 | 8 | `tablero.md` y `CHANGELOG.md` | Hecho |
-| 9 | Plan de cuatro fines de semana, con qué se muestra al final de cada uno | Pendiente |
+| 9 | Plan de cuatro fines de semana, con qué se muestra al final de cada uno | Hecho: [docs/plan.md](../docs/plan.md) |
 | 10 | Primera rebanada de punta a punta: una fuente, un explorador, el archivista, el refutador, el editor, una página de la mañana y la sala de máquinas de esa corrida | Pendiente |
 
 Chico y completo le gana a grande y a medias.

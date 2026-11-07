@@ -18,7 +18,7 @@ Cada decisión dice qué se decidió, por qué, qué cuesta y qué la haría cam
 - **Por qué.** El registro es material de otro proyecto (regla 11).
 - **Costo.** Una sesión que no tenga el registro no puede repetir la medición real, solo la muestra sintética. Es una excepción acotada a la regla 10, y queda escrita como tal.
 - **Qué la haría cambiar.** Una versión depurada del registro que se pueda publicar.
-- **Estado.** Provisoria. Pasa a ADR (tablero, T06).
+- **Estado.** Pasó al [ADR 0007](../adrs/0007-registro-del-banco-fuera-del-repositorio.md), propuesto.
 
 ## D3. Datos personales
 
@@ -29,7 +29,7 @@ Cada decisión dice qué se decidió, por qué, qué cuesta y qué la haría cam
 - **Por qué.** La regla 11 prohíbe datos personales en la base y en la demo, pero el login por enlace obliga a guardar correos, y casi todas las fuentes verificadas nombran personas: contactos, firmantes, consultores individuales, designaciones. [PROVEN: [docs/fuentes/](../docs/fuentes/README.md), 2026-11-07]
 - **Costo.** Hay hechos que pierden información, y enmascarar exige detectar nombres, cosa que puede fallar.
 - **Qué la haría cambiar.** Que el enmascarado haga que dos hechos distintos queden iguales, o que una fuente importante sea casi toda sobre personas.
-- **Estado.** Provisoria. Pasa a ADR (tablero, T06).
+- **Estado.** Pasó al [ADR 0008](../adrs/0008-datos-personales.md), propuesto, que fija qué se descarta en cada fuente.
 
 ## D4. Modelo de lenguaje y tope de gasto
 
@@ -53,7 +53,7 @@ Cada decisión dice qué se decidió, por qué, qué cuesta y qué la haría cam
 
 ## D6. Revisión humana
 
-- **Decisión.** Revisa el responsable del proyecto, desde una cola en la sala de máquinas. Mientras nadie revisa, el hecho se muestra con su grado y la marca "pendiente de revisión". Nada desaparece de la página sin que la página lo diga. El umbral de "demasiado INFERRED" se define en `docs/contratos.md`.
+- **Decisión.** Revisa el responsable del proyecto, desde una cola en la sala de máquinas. Mientras nadie revisa, el hecho se muestra con su grado y la marca "pendiente de revisión". Nada desaparece de la página sin que la página lo diga. El umbral de "demasiado INFERRED" está en [docs/contratos.md](../docs/contratos.md): en la versión 0, todo hecho INFERRED va a revisión.
 - **Por qué.** La página sale todas las mañanas, haya revisión o no, y el sistema no puede esconder lo que no sabe.
 - **Costo.** El cliente puede ver hechos no revisados, aunque marcados.
 - **Qué la haría cambiar.** Que los hechos pendientes de revisión resulten falsos seguido.
@@ -85,11 +85,11 @@ Cada decisión dice qué se decidió, por qué, qué cuesta y qué la haría cam
 
 ## D10. Calendario
 
-- **Decisión.** Cuatro fines de semana: 7 y 8, 14 y 15, 21 y 22, y 28 y 29 de noviembre de 2026. El responsable del proyecto dedica unas seis horas por fin de semana a revisar y probar. El plan detallado, con qué se muestra al final de cada uno, va en `docs/plan.md`.
+- **Decisión.** Cuatro fines de semana: 7 y 8, 14 y 15, 21 y 22, y 28 y 29 de noviembre de 2026. El responsable del proyecto dedica unas seis horas por fin de semana a revisar y probar. El plan detallado, con qué se muestra al final de cada uno, está en [docs/plan.md](../docs/plan.md).
 - **Por qué.** El plan tiene que entrar en horas reales.
 - **Costo.** Poco margen para imprevistos.
 - **Qué la haría cambiar.** Una semana con menos horas.
-- **Estado.** Provisoria (tablero, T07).
+- **Estado.** Provisoria. El plan está escrito (T07).
 
 ## D11. La guía de arranque es una carpeta
 

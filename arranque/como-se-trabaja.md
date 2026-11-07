@@ -88,7 +88,7 @@ El índice está en [`adrs/README.md`](../adrs/README.md). Las decisiones de arr
 ### Diagramas (regla 5)
 
 - Flujos, secuencias y estados: Mermaid dentro del Markdown.
-- Láminas de arquitectura: SVG generado por un script desde su fuente. El SVG nunca se edita a mano, y un verificador falla si una lámina no coincide con lo que genera su script. El generador y el verificador se construyen con `docs/arquitectura.md`.
+- Láminas de arquitectura: SVG generado desde una fuente JSON en `docs/laminas/` con `python3 herramientas/generar_laminas.py`. El SVG nunca se edita a mano, y el verificador falla si una lámina no coincide con lo que genera su fuente o si un SVG no tiene fuente.
 
 ### La página "cómo se hizo" de cada componente (regla 6)
 
@@ -126,7 +126,9 @@ Después de cada escritura se relee el archivo y se comprueba que el cambio qued
 python3 herramientas/verificar_docs.py
 ```
 
-Controla que no haya guiones largos, que los enlaces relativos de los Markdown apunten a archivos que existen, que el tablero respete su formato y sus reglas, que el kanban coincida con el tablero y que toda tarjeta o decisión citada exista. Si algo falla, termina con código 1 y dice dónde.
+Controla que no haya guiones largos, que los enlaces relativos de los Markdown apunten a archivos que existen, que el tablero respete su formato y sus reglas, que el kanban y las láminas coincidan con sus fuentes, que toda tarjeta o decisión citada exista y que cada diagrama Mermaid se pueda dibujar. Si algo falla, termina con código 1 y dice dónde.
+
+Para dibujar los diagramas usa mermaid-cli (el programa `mmdc`), que busca en la variable de entorno `MMDC` o en el `PATH`. Si no lo encuentra, avisa y sigue; con `EXIGIR_MERMAID=1` falla. Los diagramas que ya pasaron se guardan por su hash en `tmp/mermaid-verificados.txt`, que no se versiona, así que las corridas siguientes son instantáneas.
 
 ## Al terminar
 
@@ -143,5 +145,6 @@ No se hacen commits ni push sin un pedido explícito del responsable del proyect
 ## Entorno de trabajo
 
 - El repositorio vive en <https://github.com/andresdiegolanda/el-parte>. La rama principal es `main`.
+- mermaid-cli se instala con `npm install -g @mermaid-js/mermaid-cli` y necesita un Chrome; si no encuentra uno, se le indica con la variable `PUPPETEER_EXECUTABLE_PATH`. En el espacio de trabajo en la nube usado el 2026-11-07 ya estaba instalado. [PROVEN: el verificador dibujó los 13 diagramas del repositorio, 2026-11-07]
 - El código y sus requisitos (versiones de Java, de la base y del sistema de mensajería) se fijan con el ADR del stack, todavía pendiente.
 - En un espacio de trabajo en la nube puede pasar que Docker esté instalado pero sin el daemon andando. Se levanta con `sudo dockerd > /tmp/dockerd.log 2>&1 &` y se prueba con `docker run --rm hello-world`. [PROVEN: comprobado en un espacio de trabajo en la nube con Docker 29.9.2 y Java 21, 2026-11-07] En esos espacios los procesos que quedan en segundo plano pueden no sobrevivir entre una sesión y otra, así que se vuelve a levantar cuando haga falta. [ASSUMED]

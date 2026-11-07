@@ -1,0 +1,50 @@
+{
+  "titulo": "El Parte · arquitectura de la versión 0",
+  "ancho": 1190,
+  "alto": 510,
+  "grupos": [
+    {"id": "fuentes", "texto": "Fuentes públicas", "x": 20, "y": 60, "ancho": 195, "alto": 330},
+    {"id": "app", "texto": "Aplicación El Parte · Spring Boot 4.1 · Java 25 · Spring AI 2.0", "x": 255, "y": 60, "ancho": 665, "alto": 330}
+  ],
+  "cajas": [
+    {"id": "arce", "texto": ["Compras estatales", "ARCE · OCDS"], "x": 35, "y": 95, "ancho": 165, "alto": 55, "tipo": "fuente"},
+    {"id": "bid", "texto": ["BID", "datos abiertos"], "x": 35, "y": 170, "ancho": 165, "alto": 55, "tipo": "fuente"},
+    {"id": "bm", "texto": ["Banco Mundial", "API v3"], "x": 35, "y": 245, "ancho": 165, "alto": 55, "tipo": "fuente"},
+    {"id": "pres", "texto": ["Presidencia", "normativa"], "x": 35, "y": 320, "ancho": 165, "alto": 55, "tipo": "fuente"},
+
+    {"id": "exp", "texto": ["Exploradores", "uno por fuente"], "x": 275, "y": 110, "ancho": 110, "alto": 60, "tipo": "agente"},
+    {"id": "arc", "texto": ["Archivista", "coteja"], "x": 405, "y": 110, "ancho": 110, "alto": 60, "tipo": "agente"},
+    {"id": "ref", "texto": ["Refutador", "pone el grado"], "x": 535, "y": 110, "ancho": 110, "alto": 60, "tipo": "agente"},
+    {"id": "ana", "texto": ["Analista", "explica"], "x": 665, "y": 110, "ancho": 110, "alto": 60, "tipo": "agente"},
+    {"id": "edi", "texto": ["Editor", "arma informes"], "x": 795, "y": 110, "ancho": 110, "alto": 60, "tipo": "agente"},
+
+    {"id": "obs", "texto": ["Observador", "mide y guarda cada mensaje"], "x": 275, "y": 210, "ancho": 240, "alto": 60, "tipo": "agente"},
+    {"id": "pre", "texto": ["Advisor de presupuesto", "envuelve cada llamada al modelo"], "x": 535, "y": 210, "ancho": 370, "alto": 60, "tipo": "agente"},
+    {"id": "web", "texto": ["Web", "página de la mañana · expediente · sala de máquinas · revisión · login"], "x": 275, "y": 310, "ancho": 630, "alto": 60, "tipo": "web"},
+
+    {"id": "kafka", "texto": ["Kafka 4.4", "tópicos de cada corrida"], "x": 255, "y": 430, "ancho": 320, "alto": 60, "tipo": "dato"},
+    {"id": "pg", "texto": ["PostgreSQL 18", "afirmaciones · mensajes · libro · cuentas"], "x": 600, "y": 430, "ancho": 320, "alto": 60, "tipo": "dato"},
+
+    {"id": "anth", "texto": ["API de Anthropic", "Haiku 5.5 y Sonnet 5.5"], "x": 950, "y": 210, "ancho": 220, "alto": 60, "tipo": "externo"},
+    {"id": "nav", "texto": ["Navegador", "clientes y cuenta de demostración"], "x": 950, "y": 310, "ancho": 220, "alto": 60, "tipo": "externo"},
+    {"id": "mail", "texto": ["Mailpit", "correos del login"], "x": 950, "y": 430, "ancho": 220, "alto": 60, "tipo": "externo"}
+  ],
+  "flechas": [
+    {"desde": "arce", "hasta": "exp", "via": [[235, 122.5], [235, 140]]},
+    {"desde": "bid", "hasta": "exp", "via": [[235, 197.5], [235, 140]]},
+    {"desde": "bm", "hasta": "exp", "via": [[235, 272.5], [235, 140]]},
+    {"desde": "pres", "hasta": "exp", "via": [[235, 347.5], [235, 140]]},
+
+    {"desde": "exp", "hasta": "arc", "texto": "candidatos", "texto_xy": [395, 102]},
+    {"desde": "arc", "hasta": "ref", "texto": "cotejados", "texto_xy": [525, 102]},
+    {"desde": "ref", "hasta": "ana", "texto": "graduados", "texto_xy": [655, 102]},
+    {"desde": "ana", "hasta": "edi", "texto": "analizados", "texto_xy": [785, 102]},
+
+    {"desde": "pre", "hasta": "anth", "texto": "llamadas", "texto_xy": [927, 204]},
+    {"desde": "web", "hasta": "nav", "doble": true, "texto": "HTTP", "texto_xy": [927, 304]},
+    {"desde": "web", "hasta": "mail", "via": [[935, 355], [935, 460]], "texto": "enlace de login", "texto_xy": [935, 405]},
+
+    {"desde": "app", "hasta": "kafka", "desde_xy": [415, 390], "hasta_xy": [415, 430], "doble": true, "texto": "mensajes", "texto_xy": [460, 414]},
+    {"desde": "app", "hasta": "pg", "desde_xy": [760, 390], "hasta_xy": [760, 430], "doble": true, "texto": "hechos y registro", "texto_xy": [828, 414]}
+  ]
+}

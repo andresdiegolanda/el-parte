@@ -3,7 +3,7 @@
 Todo pendiente de El Parte vive acá, con dueño (regla 8). Este archivo es la única fuente del kanban: [`kanban/index.html`](kanban/index.html) se genera desde acá con `python3 herramientas/generar_kanban.py` y no se edita a mano ([ADR 0001](adrs/0001-tablero-fuente-unica-kanban-generado.md)).
 
 - Actualizado: 2026-11-07
-- Nota: T10 hecha y T05 escrita: seis ADRs esperan revisión (T19). Entran ARCE, BID, Banco Mundial y la normativa de Presidencia; el BPS queda afuera. Lo próximo es T02, la arquitectura.
+- Nota: Documentación del primer fin de semana completa (T02, T03, T04, T07; T05 y T06 escritas). Ocho ADRs esperan revisión (T19), y la primera rebanada (T08) espera eso, la clave (T14) y el registro del banco (T11).
 - Calendario: 2026-11-07, 2026-11-14, 2026-11-21, 2026-11-28
 - Repositorio: https://github.com/andresdiegolanda/el-parte
 
@@ -38,6 +38,7 @@ Las etapas son el ciclo fijo de cada tipo, y bajan las reglas del proyecto a cad
 | Documento | Borrador; Grados y fuentes; Diagramas; Releído y verificado |
 | ADR | Contexto y alternativas; Fuentes verificadas; Escrito; Aceptado |
 | Componente | Contrato; Código; Pruebas; Medido contra el banco; Página cómo se hizo |
+| Web | Diseño; Código; Pruebas; Página cómo se hizo |
 | Herramienta | Escrita; Probada; Documentada |
 | Verificación | (sin etapas) |
 | Gestión | (sin etapas) |
@@ -86,7 +87,7 @@ Los campos van pegados al título, sin línea en blanco. Los que no aplican se o
 - Dueño: Andrés
 - Detalle: [adrs/README.md](adrs/README.md)
 
-Los ADRs 0001 a 0006 están propuestos. Cada uno se acepta, se corrige o se rechaza; al aceptarlo, su estado pasa a "aceptado" en el archivo y en el índice.
+Los ADRs 0001 a 0008 están propuestos. Cada uno se acepta, se corrige o se rechaza; al aceptarlo, su estado pasa a "aceptado" en el archivo y en el índice.
 
 Lista:
 - [ ] 0001: tablero como fuente única y kanban generado
@@ -95,66 +96,8 @@ Lista:
 - [ ] 0004: grados de evidencia
 - [ ] 0005: presupuesto por corrida
 - [ ] 0006: fuentes de la versión 0
-
-Registro:
-- 2026-11-07: Creada.
-
-### T02 · Escribir docs/arquitectura.md
-- Tipo: Documento
-- Dueño: desarrollo
-- Depende de: T09
-- Detalle: [arranque/proyecto.md](arranque/proyecto.md), [docs/verificaciones/spring-ai.md](docs/verificaciones/spring-ai.md)
-
-La visión general del sistema y la primera lámina en SVG, con su generador y el verificador que falla si la lámina no coincide (regla 5).
-
-Etapas:
-- [ ] Borrador
-- [ ] Grados y fuentes
-- [ ] Diagramas
-- [ ] Releído y verificado
-
-Lista:
-- [ ] Visión general en Mermaid
-- [ ] Los agentes y sus razones
-- [ ] Secuencia de una noche
-- [ ] Lámina de arquitectura en SVG con su generador
-- [ ] Verificador de láminas
-
-Registro:
-- 2026-11-07: Creada.
-- 2026-11-07: Pasa a Para empezar: T09 está hecha.
-
-### T06 · Escribir los ADRs de las decisiones D2 y D3
-- Tipo: ADR
-- Dueño: desarrollo
-- Detalle: [arranque/decisiones-iniciales.md](arranque/decisiones-iniciales.md)
-
-D2 deja el registro del banco de pruebas fuera del repositorio y D3 fija cómo se tratan los datos personales. Las dos son significativas y pasan a ADR (regla 3).
-
-Etapas:
-- [ ] Contexto y alternativas
-- [ ] Fuentes verificadas
-- [ ] Escrito
-- [ ] Aceptado
-
-Lista:
-- [ ] ADR de D2: registro fuera del repositorio
-- [ ] ADR de D3: datos personales
-
-Registro:
-- 2026-11-07: Creada.
-
-### T15 · Comprobar en el verificador que los diagramas Mermaid se dibujan
-- Tipo: Herramienta
-- Dueño: desarrollo
-- Detalle: [herramientas/verificar_docs.py](herramientas/verificar_docs.py)
-
-Los diagramas que había el 2026-11-07 se comprobaron a mano con mermaid-cli y Chrome sin ventana, y se dibujan todos. Falta que el verificador lo haga solo, y que se saltee con un aviso donde no haya navegador.
-
-Etapas:
-- [ ] Escrita
-- [ ] Probada
-- [ ] Documentada
+- [ ] 0007: registro del banco de pruebas fuera del repositorio
+- [ ] 0008: datos personales
 
 Registro:
 - 2026-11-07: Creada.
@@ -180,6 +123,28 @@ Registro:
 - 2026-11-07: Creada.
 
 ## Esperando
+
+### T06 · Escribir los ADRs de las decisiones D2 y D3
+- Tipo: ADR
+- Dueño: desarrollo
+- Espera a: Andrés, que acepte o corrija los ADRs 0007 y 0008 (T19)
+- Detalle: [adrs/0007-registro-del-banco-fuera-del-repositorio.md](adrs/0007-registro-del-banco-fuera-del-repositorio.md), [adrs/0008-datos-personales.md](adrs/0008-datos-personales.md)
+
+D2 deja el registro del banco de pruebas fuera del repositorio y D3 fija cómo se tratan los datos personales. Las dos son significativas y pasan a ADR (regla 3).
+
+Etapas:
+- [x] Contexto y alternativas
+- [x] Fuentes verificadas
+- [x] Escrito
+- [ ] Aceptado
+
+Lista:
+- [x] ADR de D2: registro fuera del repositorio
+- [x] ADR de D3: datos personales
+
+Registro:
+- 2026-11-07: Creada.
+- 2026-11-07: Escritos los ADRs 0007 y 0008, propuestos. Pasa a Esperando hasta que se acepten.
 
 ### T05 · Escribir los primeros ADRs
 - Tipo: ADR
@@ -213,68 +178,6 @@ Registro:
 
 ## Pendiente
 
-### T03 · Escribir docs/contratos.md
-- Tipo: Documento
-- Dueño: desarrollo
-- Depende de: T02
-
-Los mensajes entre agentes. De esto depende que cada corrida se pueda repetir y que la sala de máquinas se arme desde los mensajes.
-
-Etapas:
-- [ ] Borrador
-- [ ] Grados y fuentes
-- [ ] Diagramas
-- [ ] Releído y verificado
-
-Lista:
-- [ ] Esquema y ejemplo de cada mensaje
-- [ ] Regla de identidad e idempotencia de cada hecho
-- [ ] Umbral de "demasiado INFERRED" (D6)
-
-Registro:
-- 2026-11-07: Creada.
-
-### T04 · Escribir docs/base-de-afirmaciones.md
-- Tipo: Documento
-- Dueño: desarrollo
-- Depende de: T03
-
-El modelo de datos de la base de afirmaciones, con diagrama.
-
-Etapas:
-- [ ] Borrador
-- [ ] Grados y fuentes
-- [ ] Diagramas
-- [ ] Releído y verificado
-
-Lista:
-- [ ] Modelo de datos con diagrama
-- [ ] Traza de qué agente produjo cada hecho
-- [ ] Tabla de usuarios aparte (D3)
-
-Registro:
-- 2026-11-07: Creada.
-
-### T07 · Escribir docs/plan.md
-- Tipo: Documento
-- Dueño: desarrollo
-- Depende de: T02
-
-El plan de los cuatro fines de semana del calendario (D10).
-
-Etapas:
-- [ ] Borrador
-- [ ] Grados y fuentes
-- [ ] Diagramas
-- [ ] Releído y verificado
-
-Lista:
-- [ ] Qué se muestra al final de cada fin de semana
-- [ ] Que entre en unas seis horas de revisión por fin de semana
-
-Registro:
-- 2026-11-07: Creada.
-
 ### T08 · Construir la primera rebanada de punta a punta
 - Tipo: Componente
 - Dueño: desarrollo
@@ -293,6 +196,7 @@ Etapas:
 Lista:
 - [ ] Explorador de ARCE, filtrando por el BPS como comprador antes de llamar al modelo
 - [ ] Zona horaria y publicaciones atrasadas de ARCE
+- [ ] Migraciones de la base a partir de docs/base-de-afirmaciones.md, con el reparto de permisos por esquema
 - [ ] Archivista
 - [ ] Refutador
 - [ ] Editor
@@ -334,7 +238,273 @@ Para las corridas reales (D4). Las pruebas automáticas no la necesitan: usan re
 Registro:
 - 2026-11-07: Creada.
 
+### T20 · Medir la primera rebanada contra el banco de pruebas
+- Tipo: Verificación
+- Dueño: desarrollo
+- Depende de: T08, T12
+- Detalle: [docs/plan.md](docs/plan.md)
+
+La medición es parte de la versión 0. Corre la rebanada sobre cada noche del registro y compara lo encontrado con lo que encontró la vigilancia anterior (D1).
+
+Lista:
+- [ ] Correr la rebanada sobre cada noche del registro
+- [ ] Contar encontrados, no encontrados, fuera de alcance y falsos positivos
+- [ ] Costo y duración por noche
+- [ ] Versionar las métricas con la huella del registro usado (ADR 0007)
+
+Registro:
+- 2026-11-07: Creada con el plan (T07).
+
+### T21 · Completar el analista
+- Tipo: Componente
+- Dueño: desarrollo
+- Depende de: T08
+- Detalle: [docs/contratos.md](docs/contratos.md)
+
+En la primera rebanada el analista solo pasa la afirmación. Acá escribe qué dice, por qué importa y qué mirar.
+
+Etapas:
+- [ ] Contrato
+- [ ] Código
+- [ ] Pruebas
+- [ ] Medido contra el banco
+- [ ] Página cómo se hizo
+
+Registro:
+- 2026-11-07: Creada con el plan (T07).
+
+### T22 · Implementar el presupuesto que corta
+- Tipo: Componente
+- Dueño: desarrollo
+- Depende de: T08
+- Detalle: [adrs/0005-presupuesto-por-corrida.md](adrs/0005-presupuesto-por-corrida.md)
+
+El advisor de presupuesto, el libro de la corrida y la tabla de precios del ADR 0005.
+
+Etapas:
+- [ ] Contrato
+- [ ] Código
+- [ ] Pruebas
+- [ ] Medido contra el banco
+- [ ] Página cómo se hizo
+
+Lista:
+- [ ] Advisor de presupuesto en todos los ChatClient
+- [ ] Libro de la corrida con actualización atómica
+- [ ] Tabla de precios con fuente y fecha
+- [ ] Corte por tiempo y mensaje corrida.cortada
+
+Registro:
+- 2026-11-07: Creada con el plan (T07).
+
+### T23 · Armar la cola de revisión humana
+- Tipo: Web
+- Dueño: desarrollo
+- Depende de: T08
+- Detalle: [docs/contratos.md](docs/contratos.md)
+
+La cola de hechos INFERRED en la sala de máquinas, y la marca de pendiente en la página de la mañana (D6).
+
+Etapas:
+- [ ] Diseño
+- [ ] Código
+- [ ] Pruebas
+- [ ] Página cómo se hizo
+
+Registro:
+- 2026-11-07: Creada con el plan (T07).
+
+### T24 · Sumar los exploradores del BID, el Banco Mundial y Presidencia
+- Tipo: Componente
+- Dueño: desarrollo
+- Depende de: T08
+- Detalle: [adrs/0006-fuentes-de-la-version-0.md](adrs/0006-fuentes-de-la-version-0.md), [adrs/0008-datos-personales.md](adrs/0008-datos-personales.md)
+
+Las otras tres fuentes de la versión 0, cada una con sus descartes de datos personales.
+
+Etapas:
+- [ ] Contrato
+- [ ] Código
+- [ ] Pruebas
+- [ ] Medido contra el banco
+- [ ] Página cómo se hizo
+
+Lista:
+- [ ] Explorador del BID
+- [ ] Explorador del Banco Mundial (API v3, campos acotados)
+- [ ] Explorador de la normativa de Presidencia, a ritmo bajo
+
+Registro:
+- 2026-11-07: Creada con el plan (T07).
+
+### T25 · Armar el login por enlace, los cuatro usuarios y la cuenta de demostración
+- Tipo: Web
+- Dueño: desarrollo
+- Depende de: T08
+- Detalle: [adrs/0003-eleccion-del-stack.md](adrs/0003-eleccion-del-stack.md), [adrs/0008-datos-personales.md](adrs/0008-datos-personales.md)
+
+Login con token de un solo uso de Spring Security, correos en el esquema cuentas y lista de invitados desde la configuración.
+
+Etapas:
+- [ ] Diseño
+- [ ] Código
+- [ ] Pruebas
+- [ ] Página cómo se hizo
+
+Registro:
+- 2026-11-07: Creada con el plan (T07).
+
+### T26 · Escribir la sección "Cómo funciona" y las páginas "cómo se hizo"
+- Tipo: Documento
+- Dueño: desarrollo
+- Depende de: T08
+- Detalle: [docs/arquitectura.md](docs/arquitectura.md)
+
+La sección de la aplicación que enlaza a la documentación, y la página "cómo se hizo" de cada componente que todavía no la tenga (regla 6).
+
+Etapas:
+- [ ] Borrador
+- [ ] Grados y fuentes
+- [ ] Diagramas
+- [ ] Releído y verificado
+
+Registro:
+- 2026-11-07: Creada con el plan (T07).
+
+### T27 · Escribir el ADR de despliegue
+- Tipo: ADR
+- Dueño: desarrollo
+- Depende de: T08
+- Detalle: [arranque/decisiones-iniciales.md](arranque/decisiones-iniciales.md)
+
+Dónde se publica el servicio para los usuarios invitados, con qué dominio y con qué servicio de correo (D9).
+
+Etapas:
+- [ ] Contexto y alternativas
+- [ ] Fuentes verificadas
+- [ ] Escrito
+- [ ] Aceptado
+
+Registro:
+- 2026-11-07: Creada con el plan (T07).
+
 ## Hecho
+
+### T07 · Escribir docs/plan.md
+- Tipo: Documento
+- Dueño: desarrollo
+- Depende de: T02
+- Detalle: [docs/plan.md](docs/plan.md)
+
+El plan de los cuatro fines de semana del calendario (D10).
+
+Etapas:
+- [x] Borrador
+- [x] Grados y fuentes
+- [x] Diagramas
+- [x] Releído y verificado
+
+Lista:
+- [x] Qué se muestra al final de cada fin de semana
+- [x] Que entre en unas seis horas de revisión por fin de semana
+
+Registro:
+- 2026-11-07: Creada.
+- 2026-11-07: Pasa a Para empezar: T02 está hecha.
+- 2026-11-07: Hecha. Cada fin de semana tiene qué se muestra y cómo se comprueba; sus tareas están en T20 a T27.
+
+### T04 · Escribir docs/base-de-afirmaciones.md
+- Tipo: Documento
+- Dueño: desarrollo
+- Depende de: T03
+- Detalle: [docs/base-de-afirmaciones.md](docs/base-de-afirmaciones.md)
+
+El modelo de datos de la base de afirmaciones, con diagrama.
+
+Etapas:
+- [x] Borrador
+- [x] Grados y fuentes
+- [x] Diagramas
+- [x] Releído y verificado
+
+Lista:
+- [x] Modelo de datos con diagrama
+- [x] Traza de qué agente produjo cada hecho
+- [x] Tabla de usuarios aparte (D3)
+
+Registro:
+- 2026-11-07: Creada.
+- 2026-11-07: Pasa a Para empezar: T03 está hecha.
+- 2026-11-07: Pasa a En curso.
+- 2026-11-07: Hecha. Dos esquemas (parte y cuentas), 16 tablas; el DDL se probó contra PostgreSQL 18.6.
+
+### T03 · Escribir docs/contratos.md
+- Tipo: Documento
+- Dueño: desarrollo
+- Depende de: T02
+- Detalle: [docs/contratos.md](docs/contratos.md)
+
+Los mensajes entre agentes. De esto depende que cada corrida se pueda repetir y que la sala de máquinas se arme desde los mensajes.
+
+Etapas:
+- [x] Borrador
+- [x] Grados y fuentes
+- [x] Diagramas
+- [x] Releído y verificado
+
+Lista:
+- [x] Esquema y ejemplo de cada mensaje
+- [x] Regla de identidad e idempotencia de cada hecho
+- [x] Umbral de "demasiado INFERRED" (D6)
+
+Registro:
+- 2026-11-07: Creada.
+- 2026-11-07: Pasa a Para empezar: T02 está hecha.
+- 2026-11-07: Pasa a En curso.
+- 2026-11-07: Hecha. Once tipos de mensaje con esquema y ejemplo; en la versión 0, todo hecho INFERRED va a revisión.
+
+### T15 · Comprobar en el verificador que los diagramas Mermaid se dibujan
+- Tipo: Herramienta
+- Dueño: desarrollo
+- Detalle: [herramientas/verificar_docs.py](herramientas/verificar_docs.py)
+
+Los diagramas que había el 2026-11-07 se comprobaron a mano con mermaid-cli y Chrome sin ventana, y se dibujan todos. Falta que el verificador lo haga solo, y que se saltee con un aviso donde no haya navegador.
+
+Etapas:
+- [x] Escrita
+- [x] Probada
+- [x] Documentada
+
+Registro:
+- 2026-11-07: Creada.
+- 2026-11-07: Hecha. El verificador dibuja cada diagrama con mermaid-cli, guarda en caché los que pasan y avisa sin fallar si no hay mmdc.
+
+### T02 · Escribir docs/arquitectura.md
+- Tipo: Documento
+- Dueño: desarrollo
+- Depende de: T09
+- Detalle: [docs/arquitectura.md](docs/arquitectura.md), [docs/laminas/arquitectura.json](docs/laminas/arquitectura.json), [herramientas/generar_laminas.py](herramientas/generar_laminas.py)
+
+La visión general del sistema y la primera lámina en SVG, con su generador y el verificador que falla si la lámina no coincide (regla 5).
+
+Etapas:
+- [x] Borrador
+- [x] Grados y fuentes
+- [x] Diagramas
+- [x] Releído y verificado
+
+Lista:
+- [x] Visión general en Mermaid
+- [x] Los agentes y sus razones
+- [x] Secuencia de una noche
+- [x] Lámina de arquitectura en SVG con su generador
+- [x] Verificador de láminas
+
+Registro:
+- 2026-11-07: Creada.
+- 2026-11-07: Pasa a Para empezar: T09 está hecha.
+- 2026-11-07: Pasa a En curso.
+- 2026-11-07: Hecha. La lámina se genera desde su JSON y el verificador falla si el SVG no coincide.
 
 ### T10 · Verificar las fuentes candidatas
 - Tipo: Verificación
