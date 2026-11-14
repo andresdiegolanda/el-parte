@@ -9,7 +9,8 @@ flowchart LR
     A[proyecto.md] --> B[como-se-trabaja.md]
     B --> C[decisiones-iniciales.md]
     C --> D[mapa.md]
-    D --> E[../tablero.md]
+    D --> T[../docs/tablero-de-arquitectura/]
+    T --> E[../tablero.md]
     E --> F{Tarea elegida}
     F --> G[Documentos de la tarea]
     H[glosario.md] -.-> A
@@ -21,14 +22,15 @@ flowchart LR
 2. [como-se-trabaja.md](como-se-trabaja.md): las reglas del proyecto llevadas a la práctica. Cómo empieza, avanza y termina una sesión.
 3. [decisiones-iniciales.md](decisiones-iniciales.md): lo que ya se decidió y está vigente, aunque todavía no tenga su ADR.
 4. [mapa.md](mapa.md): qué hay en cada carpeta del repositorio y qué va a haber.
-5. [../tablero.md](../tablero.md): qué está en curso, qué falta y de quién es cada cosa, en tarjetas. La próxima tarea es la primera de "Para empezar". El kanban publicado es editable y se sincroniza con este archivo: cómo se hace está en [como-se-trabaja.md](como-se-trabaja.md), "Sincronizar el kanban".
-6. [glosario.md](glosario.md): los términos técnicos. Se consulta cuando aparece uno que no conocés.
+5. [El tablero de arquitectura](../docs/tablero-de-arquitectura/README.md): el sistema objeto por objeto, construido y diseñado. Refleja la arquitectura en todo momento: se cambia en el mismo momento que el sistema, y los pedidos citan sus objetos (regla 13). Se abre con `docs/tablero-de-arquitectura/index.html`.
+6. [../tablero.md](../tablero.md): qué está en curso, qué falta y de quién es cada cosa, en tarjetas. La próxima tarea es la primera de "Para empezar". El kanban publicado es editable y se sincroniza con este archivo: cómo se hace está en [como-se-trabaja.md](como-se-trabaja.md), "Sincronizar el kanban".
+7. [glosario.md](glosario.md): los términos técnicos. Se consulta cuando aparece uno que no conocés.
 
 Después de eso, cada tarea del tablero enlaza a los documentos que necesita. El [mapa](mapa.md) dice dónde está cada uno.
 
 ## Estado en una línea
 
-Spring AI y las fuentes verificados (T09 y T10), los ADRs 0002 a 0011 aceptados (T19 y T31), con IMPO como quinta fuente, y el registro del banco de pruebas entregado (T11). La arquitectura está en [docs/arquitectura.md](../docs/arquitectura.md) (T02). Los contratos entre agentes están en [docs/contratos.md](../docs/contratos.md) (T03). El modelo de la base está en [docs/base-de-afirmaciones.md](../docs/base-de-afirmaciones.md) (T04). El plan está en [docs/plan.md](../docs/plan.md) (T07). La primera rebanada (T08) anda de punta a punta, con una fuente (ARCE), y se repite sin red ni costo ([docs/como-se-hizo/primera-rebanada.md](../docs/como-se-hizo/primera-rebanada.md)), con las corridas grabadas en la base ([ADR 0011](../adrs/0011-grabacion-y-repeticion-de-corridas.md)). Lo próximo es el formato y la muestra del banco de pruebas (T12), que destraban la medición de la rebanada (T20). El detalle está en el [tablero](../tablero.md).
+Spring AI y las fuentes verificados (T09 y T10), los ADRs 0002 a 0012 aceptados (T19, T31 y T32), con IMPO como quinta fuente, y el registro del banco de pruebas entregado (T11). La arquitectura está en [docs/arquitectura.md](../docs/arquitectura.md) (T02). Los contratos entre agentes están en [docs/contratos.md](../docs/contratos.md) (T03). El modelo de la base está en [docs/base-de-afirmaciones.md](../docs/base-de-afirmaciones.md) (T04). El plan está en [docs/plan.md](../docs/plan.md) (T07). La primera rebanada (T08) anda de punta a punta, con una fuente (ARCE), y se repite sin red ni costo ([docs/como-se-hizo/primera-rebanada.md](../docs/como-se-hizo/primera-rebanada.md)), con las corridas grabadas en la base ([ADR 0011](../adrs/0011-grabacion-y-repeticion-de-corridas.md)). El sistema, objeto por objeto, está en el [tablero de arquitectura](../docs/tablero-de-arquitectura/README.md), que el verificador compara con el código ([ADR 0012](../adrs/0012-tablero-de-arquitectura.md)). Lo próximo es el formato y la muestra del banco de pruebas (T12), que destraban la medición de la rebanada (T20). El detalle está en el [tablero](../tablero.md).
 
 Esta línea se actualiza en cada entrega.
 

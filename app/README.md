@@ -1,6 +1,6 @@
 # La aplicación
 
-El código de El Parte: una aplicación Spring Boot donde corren todos los agentes, el observador y la web ([ADR 0003](../adrs/0003-eleccion-del-stack.md)). Hoy tiene la primera rebanada (tablero, T08): una fuente, ARCE, del explorador a la página de la mañana, con la sala de máquinas de cada corrida. Cómo se hizo, qué se probó y qué falló, en [docs/como-se-hizo/primera-rebanada.md](../docs/como-se-hizo/primera-rebanada.md).
+El código de El Parte: una aplicación Spring Boot donde corren todos los agentes, el observador y la web ([ADR 0003](../adrs/0003-eleccion-del-stack.md)). Hoy tiene la primera rebanada (tablero, T08): una fuente, ARCE, del explorador a la página de la mañana, con la sala de máquinas de cada corrida. Cómo se hizo, qué se probó y qué falló, en [docs/como-se-hizo/primera-rebanada.md](../docs/como-se-hizo/primera-rebanada.md). Cómo se conecta cada pieza, objeto por objeto, en el [tablero de arquitectura](../docs/tablero-de-arquitectura/README.md).
 
 ## Levantarla
 

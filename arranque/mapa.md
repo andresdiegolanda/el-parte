@@ -16,13 +16,14 @@ flowchart TD
     DO --> DF[fuentes/]
     DO --> DC[como-se-hizo/]
     DO --> DL[laminas/]
+    DO --> DT[tablero-de-arquitectura/<br/>el sistema objeto por objeto]
 ```
 
 ## Lo que ya existe
 
 | Ruta | Qué tiene |
 |---|---|
-| [`README.md`](../README.md) | Qué es el proyecto, sus etiquetas y sus doce reglas. |
+| [`README.md`](../README.md) | Qué es el proyecto, sus etiquetas y sus trece reglas. |
 | [`LICENSE`](../LICENSE) | Licencia MIT (D13). |
 | [`CHANGELOG.md`](../CHANGELOG.md) | Cada cambio, corto, con enlace al porqué. |
 | [`tablero.md`](../tablero.md) | Todo lo pendiente, en tarjetas con dueño, etapas y registro. Es la única fuente del kanban. |
@@ -38,14 +39,19 @@ flowchart TD
 | [`adrs/0002-orquestacion-por-mensajes.md`](../adrs/0002-orquestacion-por-mensajes.md) a [`0005`](../adrs/0005-presupuesto-por-corrida.md) | Orquestación por mensajes, stack, grados de evidencia y presupuesto por corrida (T05). |
 | [`adrs/0006-fuentes-de-la-version-0.md`](../adrs/0006-fuentes-de-la-version-0.md) y [`0010`](../adrs/0010-impo-como-quinta-fuente.md) | Qué fuentes entran en la versión 0 y cuál usa la primera rebanada (T10); IMPO entra como quinta. |
 | [`adrs/0007-registro-del-banco-fuera-del-repositorio.md`](../adrs/0007-registro-del-banco-fuera-del-repositorio.md) y [`0008`](../adrs/0008-datos-personales.md) | Registro del banco de pruebas fuera del repositorio y datos personales (T06). |
+| [`kanban/README.md`](../kanban/README.md) | Qué es el kanban y qué archivo se edita a mano. |
 | [`kanban/plantilla.html`](../kanban/plantilla.html) | Diseño del kanban. Se edita a mano. |
 | [`kanban/index.html`](../kanban/index.html) | Copia sin conexión del kanban, generada desde el tablero. Publicada con su base, es el kanban editable. No se edita a mano. |
+| [`herramientas/README.md`](../herramientas/README.md) | Qué hace cada script, cómo se corre y sus pruebas. |
+| [`herramientas/tablero_arquitectura.py`](../herramientas/tablero_arquitectura.py) y [`generar_tablero_arquitectura.py`](../herramientas/generar_tablero_arquitectura.py) | Leen el modelo del tablero de arquitectura, lo comparan con el código y generan su página. |
 | [`herramientas/tablero_md.py`](../herramientas/tablero_md.py) | Lee y valida `tablero.md`. Lo usan el generador y el verificador. |
 | [`herramientas/generar_kanban.py`](../herramientas/generar_kanban.py) | Genera `kanban/index.html` desde `tablero.md`. |
 | [`herramientas/sincronizar_tablero.py`](../herramientas/sincronizar_tablero.py) | Sincroniza la base del kanban publicado con `tablero.md` (ADR 0009). |
-| [`herramientas/pruebas/`](../herramientas/pruebas/prueba_sincronizacion.py) | Pruebas de la sincronización y del kanban editable. |
+| [`herramientas/pruebas/`](../herramientas/pruebas/prueba_sincronizacion.py) | Pruebas de la sincronización, del kanban editable y del tablero de arquitectura. |
 | [`herramientas/generar_laminas.py`](../herramientas/generar_laminas.py) | Genera cada lámina SVG desde su fuente JSON. |
 | [`herramientas/verificar_docs.py`](../herramientas/verificar_docs.py) | Verificador: guiones largos, enlaces relativos, reglas del tablero, kanban y láminas al día, referencias a tarjetas y decisiones, y la primera migración igual al DDL del documento de la base. |
+| [`docs/README.md`](../docs/README.md) | Qué hay en `docs/` y cuál manda. |
+| [`docs/tablero-de-arquitectura/`](../docs/tablero-de-arquitectura/README.md) | El sistema objeto por objeto: `sistema.json` (la fuente), `plantilla.html` y la página generada `index.html`. Refleja la arquitectura en todo momento (ADR 0012, T32). |
 | [`docs/arquitectura.md`](../docs/arquitectura.md) | La arquitectura de la versión 0: lámina, agentes, una noche paso a paso, fallas y despliegue (T02). |
 | [`docs/base-de-afirmaciones.md`](../docs/base-de-afirmaciones.md) | El modelo de datos: dos esquemas, el DDL probado contra PostgreSQL 18 y de dónde sale cada vista (T04). |
 | [`docs/contratos.md`](../docs/contratos.md) | Los mensajes entre agentes con esquema y ejemplo, la identidad de un hecho, la idempotencia y el umbral de revisión (T03). |
@@ -55,6 +61,7 @@ flowchart TD
 | [`docs/fuentes/README.md`](../docs/fuentes/README.md) | Resumen de las siete fuentes candidatas y una página por fuente (T10). |
 | [`docs/como-se-hizo/primera-rebanada.md`](../docs/como-se-hizo/primera-rebanada.md) | Cómo se hizo la primera rebanada: qué hace, por qué, cómo se construyó, qué se probó, qué falló y qué se cambió (T08). |
 | [`adrs/0011-grabacion-y-repeticion-de-corridas.md`](../adrs/0011-grabacion-y-repeticion-de-corridas.md) | Las corridas se graban en la base y se repiten desde ahí (T08, T31). |
+| [`adrs/0012-tablero-de-arquitectura.md`](../adrs/0012-tablero-de-arquitectura.md) | El tablero de arquitectura refleja el sistema y es la referencia de los pedidos (T32). |
 | [`app/`](../app/README.md) | El código: una aplicación Spring Boot con un paquete por agente ([ADR 0003](../adrs/0003-eleccion-del-stack.md)), sus migraciones, sus páginas y sus pruebas. Cómo se levanta y qué hay adentro, en [app/README.md](../app/README.md). |
 | [`compose.yaml`](../compose.yaml) | Levanta en local la aplicación, PostgreSQL, Kafka y el buzón de correo de prueba. |
 | [`obsoletos/README.md`](../obsoletos/README.md) | Índice de lo que se movió a obsoletos. |

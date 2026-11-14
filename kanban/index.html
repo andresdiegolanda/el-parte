@@ -225,7 +225,7 @@
 <script type="application/json" id="datos">{
  "meta": {
   "actualizado": "2026-11-14",
-  "nota": "La primera rebanada (T08) anda de punta a punta y espera su medición contra el banco (T20), que a su vez espera el formato y la muestra del banco de pruebas (T12). El ADR 0011, sobre cómo se graban y se repiten las corridas, está aceptado (T31).",
+  "nota": "La primera rebanada (T08) anda de punta a punta y espera su medición contra el banco (T20), que a su vez espera el formato y la muestra del banco de pruebas (T12). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.",
   "calendario": [
    "2026-11-07",
    "2026-11-14",
@@ -922,10 +922,59 @@
    ]
   },
   {
+   "id": "T33",
+   "titulo": "Armar el expediente de cada entidad",
+   "columna": "pendiente",
+   "orden": 9,
+   "tipo": "web",
+   "dueno": "desarrollo",
+   "dependeDe": "T08",
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "docs/arquitectura.md",
+     "ruta": "docs/arquitectura.md"
+    },
+    {
+     "texto": "docs/base-de-afirmaciones.md",
+     "ruta": "docs/base-de-afirmaciones.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Diseño",
+     "hecho": false
+    },
+    {
+     "texto": "Código",
+     "hecho": false
+    },
+    {
+     "texto": "Pruebas",
+     "hecho": false
+    },
+    {
+     "texto": "Página cómo se hizo",
+     "hecho": false
+    }
+   ],
+   "lista": [],
+   "notas": [
+    "Todo lo que la base sabe de una entidad: cada hecho y cada versión, en orden, para consultar cuando se quiera y no solo lo de anoche."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-14",
+     "texto": "Creada: el tablero de arquitectura mostró que el expediente estaba diseñado en la arquitectura y en la base, pero ninguna tarjeta lo construía."
+    }
+   ]
+  },
+  {
    "id": "T29",
    "titulo": "Cambiar el modelo de cada agente sin reiniciar la aplicación",
    "columna": "pendiente",
-   "orden": 9,
+   "orden": 10,
    "tipo": "web",
    "dueno": "desarrollo",
    "dependeDe": "T22, T25",
@@ -1003,7 +1052,7 @@
    "id": "T30",
    "titulo": "Sumar el explorador de IMPO",
    "columna": "pendiente",
-   "orden": 10,
+   "orden": 11,
    "tipo": "componente",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -1074,10 +1123,84 @@
    ]
   },
   {
+   "id": "T32",
+   "titulo": "Armar el tablero de arquitectura",
+   "columna": "hecho",
+   "orden": 1,
+   "tipo": "herramienta",
+   "dueno": "desarrollo",
+   "dependeDe": "",
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "docs/tablero-de-arquitectura/README.md",
+     "ruta": "docs/tablero-de-arquitectura/README.md"
+    },
+    {
+     "texto": "adrs/0012-tablero-de-arquitectura.md",
+     "ruta": "adrs/0012-tablero-de-arquitectura.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Escrita",
+     "hecho": true
+    },
+    {
+     "texto": "Probada",
+     "hecho": true
+    },
+    {
+     "texto": "Documentada",
+     "hecho": true
+    }
+   ],
+   "lista": [
+    {
+     "texto": "Modelo del sistema en sistema.json",
+     "hecho": true
+    },
+    {
+     "texto": "Página generada desde el modelo",
+     "hecho": true
+    },
+    {
+     "texto": "Control contra el código en el verificador",
+     "hecho": true
+    },
+    {
+     "texto": "Pruebas del control y de la página",
+     "hecho": true
+    },
+    {
+     "texto": "La regla registrada en un ADR y en cómo se trabaja",
+     "hecho": true
+    },
+    {
+     "texto": "Un README en cada carpeta de la raíz",
+     "hecho": true
+    }
+   ],
+   "notas": [
+    "El sistema objeto por objeto, en una página: lo construido y lo diseñado, con sus flechas, sus recorridos y su historial. Es la referencia para pedir cambios, y el verificador lo compara con el código en cada cambio."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-14",
+     "texto": "Creada y en curso."
+    },
+    {
+     "fecha": "2026-11-14",
+     "texto": "Hecha: 56 objetos construidos y 16 diseñados, verificados contra el código; la regla queda en el ADR 0012 y en la regla 13 del README. Encontró que el expediente no tenía tarjeta: T33. Pasa a Hecho."
+    }
+   ]
+  },
+  {
    "id": "T31",
    "titulo": "Aceptar o corregir el ADR 0011",
    "columna": "hecho",
-   "orden": 1,
+   "orden": 2,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1114,7 +1237,7 @@
    "id": "T18",
    "titulo": "Pedir a IMPO que aclare si su JSON de normas se puede reutilizar",
    "columna": "hecho",
-   "orden": 2,
+   "orden": 3,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1146,7 +1269,7 @@
    "id": "T11",
    "titulo": "Entregar el registro completo del banco de pruebas",
    "columna": "hecho",
-   "orden": 3,
+   "orden": 4,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1178,7 +1301,7 @@
    "id": "T14",
    "titulo": "Dejar la clave del proveedor de modelos fuera del repositorio",
    "columna": "hecho",
-   "orden": 4,
+   "orden": 5,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "T05",
@@ -1231,7 +1354,7 @@
    "id": "T19",
    "titulo": "Aceptar o corregir los ADRs propuestos",
    "columna": "hecho",
-   "orden": 5,
+   "orden": 6,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1308,7 +1431,7 @@
    "id": "T05",
    "titulo": "Escribir los primeros ADRs",
    "columna": "hecho",
-   "orden": 6,
+   "orden": 7,
    "tipo": "adr",
    "dueno": "desarrollo",
    "dependeDe": "T09",
@@ -1410,7 +1533,7 @@
    "id": "T06",
    "titulo": "Escribir los ADRs de las decisiones D2 y D3",
    "columna": "hecho",
-   "orden": 7,
+   "orden": 8,
    "tipo": "adr",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1476,7 +1599,7 @@
    "id": "T28",
    "titulo": "Hacer editable el kanban y sincronizarlo con el tablero",
    "columna": "hecho",
-   "orden": 8,
+   "orden": 9,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1533,7 +1656,7 @@
    "id": "T07",
    "titulo": "Escribir docs/plan.md",
    "columna": "hecho",
-   "orden": 9,
+   "orden": 10,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T02",
@@ -1595,7 +1718,7 @@
    "id": "T04",
    "titulo": "Escribir docs/base-de-afirmaciones.md",
    "columna": "hecho",
-   "orden": 10,
+   "orden": 11,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T03",
@@ -1665,7 +1788,7 @@
    "id": "T03",
    "titulo": "Escribir docs/contratos.md",
    "columna": "hecho",
-   "orden": 11,
+   "orden": 12,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T02",
@@ -1735,7 +1858,7 @@
    "id": "T15",
    "titulo": "Comprobar en el verificador que los diagramas Mermaid se dibujan",
    "columna": "hecho",
-   "orden": 12,
+   "orden": 13,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1780,7 +1903,7 @@
    "id": "T02",
    "titulo": "Escribir docs/arquitectura.md",
    "columna": "hecho",
-   "orden": 13,
+   "orden": 14,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T09",
@@ -1866,7 +1989,7 @@
    "id": "T10",
    "titulo": "Verificar las fuentes candidatas",
    "columna": "hecho",
-   "orden": 14,
+   "orden": 15,
    "tipo": "verificacion",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1939,7 +2062,7 @@
    "id": "T09",
    "titulo": "Verificar Spring AI y sus patrones de orquestación",
    "columna": "hecho",
-   "orden": 15,
+   "orden": 16,
    "tipo": "verificacion",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1992,7 +2115,7 @@
    "id": "T13",
    "titulo": "Elegir la licencia del repositorio",
    "columna": "hecho",
-   "orden": 16,
+   "orden": 17,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -2028,7 +2151,7 @@
    "id": "T17",
    "titulo": "Dar acceso de escritura al repositorio a las sesiones en la nube",
    "columna": "hecho",
-   "orden": 17,
+   "orden": 18,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -2055,7 +2178,7 @@
    "id": "T16",
    "titulo": "Armar el kanban generado desde el tablero",
    "columna": "hecho",
-   "orden": 18,
+   "orden": 19,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -2104,7 +2227,7 @@
    "id": "T01",
    "titulo": "Armar la base documental",
    "columna": "hecho",
-   "orden": 19,
+   "orden": 20,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "",

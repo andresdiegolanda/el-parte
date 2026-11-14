@@ -3,7 +3,7 @@
 Todo pendiente de El Parte vive acá, con dueño (regla 8). Este archivo es lo que manda. El kanban publicado es editable y se sincroniza con este archivo cada vez que una sesión de desarrollo lee o escribe el repositorio, o cuando se le pide; su copia sin conexión, [`kanban/index.html`](kanban/index.html), se genera desde acá con `python3 herramientas/generar_kanban.py` y no se edita a mano ([ADR 0009](adrs/0009-kanban-editable-sincronizado.md)).
 
 - Actualizado: 2026-11-14
-- Nota: La primera rebanada (T08) anda de punta a punta y espera su medición contra el banco (T20), que a su vez espera el formato y la muestra del banco de pruebas (T12). El ADR 0011, sobre cómo se graban y se repiten las corridas, está aceptado (T31).
+- Nota: La primera rebanada (T08) anda de punta a punta y espera su medición contra el banco (T20), que a su vez espera el formato y la muestra del banco de pruebas (T12). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.
 - Calendario: 2026-11-07, 2026-11-14, 2026-11-21, 2026-11-28
 - Repositorio: https://github.com/andresdiegolanda/el-parte
 
@@ -296,6 +296,23 @@ Etapas:
 Registro:
 - 2026-11-07: Creada con el plan (T07).
 
+### T33 · Armar el expediente de cada entidad
+- Tipo: Web
+- Dueño: desarrollo
+- Depende de: T08
+- Detalle: [docs/arquitectura.md](docs/arquitectura.md), [docs/base-de-afirmaciones.md](docs/base-de-afirmaciones.md)
+
+Todo lo que la base sabe de una entidad: cada hecho y cada versión, en orden, para consultar cuando se quiera y no solo lo de anoche.
+
+Etapas:
+- [ ] Diseño
+- [ ] Código
+- [ ] Pruebas
+- [ ] Página cómo se hizo
+
+Registro:
+- 2026-11-14: Creada: el tablero de arquitectura mostró que el expediente estaba diseñado en la arquitectura y en la base, pero ninguna tarjeta lo construía.
+
 ### T29 · Cambiar el modelo de cada agente sin reiniciar la aplicación
 - Tipo: Web
 - Dueño: desarrollo
@@ -347,6 +364,30 @@ Registro:
 - 2026-11-14: Creada con el ADR 0010.
 
 ## Hecho
+
+### T32 · Armar el tablero de arquitectura
+- Tipo: Herramienta
+- Dueño: desarrollo
+- Detalle: [docs/tablero-de-arquitectura/README.md](docs/tablero-de-arquitectura/README.md), [adrs/0012-tablero-de-arquitectura.md](adrs/0012-tablero-de-arquitectura.md)
+
+El sistema objeto por objeto, en una página: lo construido y lo diseñado, con sus flechas, sus recorridos y su historial. Es la referencia para pedir cambios, y el verificador lo compara con el código en cada cambio.
+
+Etapas:
+- [x] Escrita
+- [x] Probada
+- [x] Documentada
+
+Lista:
+- [x] Modelo del sistema en sistema.json
+- [x] Página generada desde el modelo
+- [x] Control contra el código en el verificador
+- [x] Pruebas del control y de la página
+- [x] La regla registrada en un ADR y en cómo se trabaja
+- [x] Un README en cada carpeta de la raíz
+
+Registro:
+- 2026-11-14: Creada y en curso.
+- 2026-11-14: Hecha: 56 objetos construidos y 16 diseñados, verificados contra el código; la regla queda en el ADR 0012 y en la regla 13 del README. Encontró que el expediente no tenía tarjeta: T33. Pasa a Hecho.
 
 ### T31 · Aceptar o corregir el ADR 0011
 - Tipo: Gestión

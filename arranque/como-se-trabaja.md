@@ -1,6 +1,6 @@
 # Cómo se trabaja
 
-Las doce reglas están en el [README](../README.md). Acá está cómo se cumplen en una sesión de trabajo, sea de una persona o de un asistente.
+Las trece reglas están en el [README](../README.md). Acá está cómo se cumplen en una sesión de trabajo, sea de una persona o de un asistente.
 
 ## El ciclo de una sesión
 
@@ -11,7 +11,7 @@ flowchart TD
     B --> C{¿Toca un producto,<br/>una API o una fuente?}
     C -- Sí --> D[Verificar en la documentación oficial<br/>y anotar URL y fecha]
     C -- No --> E
-    D --> E[Escribir el documento o el código]
+    D --> E[Escribir el documento o el código,<br/>y el tablero de arquitectura si la toca]
     E --> F[Releer lo escrito y comprobar el cambio]
     F --> H[CHANGELOG, tablero y ADR si hubo decisión]
     H --> I[Regenerar el kanban y actualizar<br/>el estado en arranque/README.md]
@@ -27,8 +27,9 @@ flowchart TD
 1. Traer la última versión del repositorio.
 2. Leer la carpeta `arranque/` en el orden de su [README](README.md).
 3. Sincronizar el kanban con el tablero, si la sesión tiene acceso a su base (ver "Sincronizar el kanban"): así entran los cambios que se hicieron en el kanban desde la última sesión.
-4. Elegir la tarjeta en el [tablero](../tablero.md): la primera de "Para empezar", salvo que haya un motivo para otra. Si lo que hay que hacer no está en el tablero, primero se agrega la tarjeta, con dueño.
-5. Mover su bloque a "En curso" y anotarlo en su registro.
+4. Abrir el [tablero de arquitectura](../docs/tablero-de-arquitectura/README.md) y ubicar los objetos que toca el trabajo. Si el pedido los cita (`arquitectura: <id>`), se parte de ahí.
+5. Elegir la tarjeta en el [tablero](../tablero.md): la primera de "Para empezar", salvo que haya un motivo para otra. Si lo que hay que hacer no está en el tablero, primero se agrega la tarjeta, con dueño.
+6. Mover su bloque a "En curso" y anotarlo en su registro.
 
 ## Mientras se trabaja
 
@@ -47,6 +48,15 @@ Ejemplo:
 Cuando una sección entera tiene el mismo grado y la misma fuente, se dice una vez al principio de la sección.
 
 Ojo con un nombre parecido: los agentes también ponen grados a los hechos que encuentran (PROVEN, INFERRED, NOT_MENTIONED). Son las mismas palabras con otro alcance: unos califican lo que dicen los documentos del proyecto, los otros califican lo que dicen las fuentes del Estado. Los dos usos están en el [glosario](glosario.md).
+
+### El tablero de arquitectura (regla 13)
+
+El [tablero de arquitectura](../docs/tablero-de-arquitectura/README.md) refleja el sistema con precisión y exactitud en todo momento ([ADR 0012](../adrs/0012-tablero-de-arquitectura.md)). En la práctica:
+
+- **Se cambia en el mismo momento que el sistema.** Si un cambio del código o del diseño toca la arquitectura (un agente, un servicio, un tópico, una tabla, una página, una conexión entre ellos, o algo que pasa de diseñado a construido), en el mismo cambio se edita `docs/tablero-de-arquitectura/sistema.json`, se suma una entrada a su historial y se regenera la página con `python3 herramientas/generar_tablero_arquitectura.py`. No hay "después lo actualizo".
+- **Los pedidos lo citan.** Un pedido nombra los objetos por su referencia, que la ficha de cada objeto deja copiar: `arquitectura: refutador`, `arquitectura: refutador>modelo`. Así no hay dudas sobre de qué pieza se habla.
+- **El verificador lo compara con el código.** Si una clase nueva no está en ningún objeto, si falta o sobra una flecha, si una página atiende otras rutas o si algo diseñado ya se construyó, el verificador falla y dice qué corregir.
+- **Lo que el verificador no ve se revisa a mano**: los textos de cada objeto, los recorridos y las llamadas afuera. Se releen en cada cambio que toque esos objetos.
 
 ### Nada de memoria
 
@@ -149,7 +159,7 @@ Después de cada escritura se relee el archivo y se comprueba que el cambio qued
 python3 herramientas/verificar_docs.py
 ```
 
-Controla que no haya guiones largos, que los enlaces relativos de los Markdown apunten a archivos que existen, que el tablero respete su formato y sus reglas, que el kanban y las láminas coincidan con sus fuentes, que toda tarjeta o decisión citada exista y que cada diagrama Mermaid se pueda dibujar. Si algo falla, termina con código 1 y dice dónde.
+Controla que no haya guiones largos, que los enlaces relativos de los Markdown apunten a archivos que existen, que el tablero respete su formato y sus reglas, que el kanban y las láminas coincidan con sus fuentes, que toda tarjeta o decisión citada exista, que cada diagrama Mermaid se pueda dibujar, que la primera migración sea igual al DDL del documento de la base y que el tablero de arquitectura coincida con el código. Si algo falla, termina con código 1 y dice dónde.
 
 Para dibujar los diagramas usa mermaid-cli (el programa `mmdc`), que busca en la variable de entorno `MMDC` o en el `PATH`. Si no lo encuentra, avisa y sigue; con `EXIGIR_MERMAID=1` falla. Los diagramas que ya pasaron se guardan por su hash en `tmp/mermaid-verificados.txt`, que no se versiona, así que las corridas siguientes son instantáneas.
 
@@ -158,8 +168,9 @@ Para dibujar los diagramas usa mermaid-cli (el programa `mmdc`), que busca en la
 1. Una entrada corta en el [CHANGELOG](../CHANGELOG.md): qué cambió, dónde, y el enlace al documento que tiene el porqué.
 2. El [tablero](../tablero.md) al día: la tarjeta en su columna, con sus etapas, su lista y su registro, y una tarjeta nueva por cada cosa que quedó pendiente. Después, el kanban regenerado.
 3. Si se tomó una decisión significativa, su ADR.
-4. Si el trabajo enseñó algo que contradice un documento, se corrige el documento (regla 1).
-5. La línea de estado de [arranque/README.md](README.md) al día, y la etiqueta "estado" del [README](../README.md) si cambió la fase del proyecto.
+4. Si el trabajo tocó la arquitectura, el [tablero de arquitectura](../docs/tablero-de-arquitectura/README.md) al día, con su entrada en el historial (regla 13).
+5. Si el trabajo enseñó algo que contradice un documento, se corrige el documento (regla 1).
+6. La línea de estado de [arranque/README.md](README.md) al día, y la etiqueta "estado" del [README](../README.md) si cambió la fase del proyecto.
 
 ### Commits
 

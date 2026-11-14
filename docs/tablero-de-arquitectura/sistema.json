@@ -1,0 +1,2841 @@
+{
+ "titulo": "El Parte · tablero de arquitectura",
+ "actualizado": "2026-11-14",
+ "repositorio": "https://github.com/andresdiegolanda/el-parte/blob/main/",
+ "tablero": "https://github.com/andresdiegolanda/el-parte/blob/main/tablero.md",
+ "kanban": "https://claude.ai/artifact/4wQ9LjW4H98WnjUWpcFsf3",
+ "franjas": [
+  {
+   "id": "noche",
+   "titulo": "La corrida de cada noche",
+   "sub": "de izquierda a derecha: del inicio al informe",
+   "fila": [
+    0,
+    6
+   ]
+  },
+  {
+   "id": "servicios",
+   "titulo": "Servicios de la aplicación",
+   "sub": "lo que usan los agentes",
+   "fila": [
+    8,
+    10
+   ]
+  },
+  {
+   "id": "base",
+   "titulo": "Base de afirmaciones",
+   "sub": "PostgreSQL 18.7",
+   "fila": [
+    12,
+    14
+   ]
+  },
+  {
+   "id": "paginas",
+   "titulo": "Páginas",
+   "sub": "lo que ve quien entra",
+   "fila": [
+    16,
+    16
+   ]
+  }
+ ],
+ "columnas": [
+  {
+   "col": 0,
+   "titulo": "Afuera"
+  },
+  {
+   "col": 1,
+   "titulo": "Arranque y lectura"
+  },
+  {
+   "col": 2,
+   "titulo": "Exploradores"
+  },
+  {
+   "col": 3,
+   "titulo": "Kafka",
+   "kafka": true
+  },
+  {
+   "col": 4,
+   "titulo": "Archivista"
+  },
+  {
+   "col": 5,
+   "titulo": "Kafka",
+   "kafka": true
+  },
+  {
+   "col": 6,
+   "titulo": "Refutador"
+  },
+  {
+   "col": 7,
+   "titulo": "Kafka",
+   "kafka": true
+  },
+  {
+   "col": 8,
+   "titulo": "Analista"
+  },
+  {
+   "col": 9,
+   "titulo": "Kafka",
+   "kafka": true
+  },
+  {
+   "col": 10,
+   "titulo": "Editor y cierre"
+  },
+  {
+   "col": 11,
+   "titulo": "Kafka",
+   "kafka": true
+  }
+ ],
+ "grupos": [
+  {
+   "id": "esquema-parte",
+   "titulo": "esquema parte",
+   "col": [
+    0,
+    11
+   ],
+   "fila": [
+    12,
+    14
+   ]
+  },
+  {
+   "id": "esquema-cuentas",
+   "titulo": "esquema cuentas",
+   "col": [
+    12,
+    12
+   ],
+   "fila": [
+    12,
+    12
+   ]
+  }
+ ],
+ "nodos": [
+  {
+   "id": "afuera/arce",
+   "tipo": "externo",
+   "titulo": "ARCE",
+   "sub": "compras estatales · API OCDS",
+   "col": 0,
+   "fila": 1,
+   "estado": "construido",
+   "que_es": "La API pública de la Agencia Reguladora de Compras Estatales: un feed por mes y cada publicación en JSON OCDS, solo por HTTPS.",
+   "para_que": "Es la fuente de la primera rebanada: de acá salen las compras del BPS.",
+   "docs": [
+    "docs/fuentes/compras-estatales.md"
+   ]
+  },
+  {
+   "id": "afuera/bid",
+   "tipo": "externo",
+   "titulo": "BID",
+   "sub": "proyectos y operaciones",
+   "col": 0,
+   "fila": 2,
+   "estado": "disenado",
+   "que_es": "Una de las cinco fuentes de la versión 0 (BID). Todavía no se lee.",
+   "para_que": "Suma hechos de otra fuente pública sobre las mismas entidades.",
+   "docs": [
+    "docs/fuentes/bid.md"
+   ],
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "afuera/banco-mundial",
+   "tipo": "externo",
+   "titulo": "Banco Mundial",
+   "sub": "API v3 de proyectos",
+   "col": 0,
+   "fila": 3,
+   "estado": "disenado",
+   "que_es": "Una de las cinco fuentes de la versión 0 (Banco Mundial). Todavía no se lee.",
+   "para_que": "Suma hechos de otra fuente pública sobre las mismas entidades.",
+   "docs": [
+    "docs/fuentes/banco-mundial.md"
+   ],
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "afuera/presidencia",
+   "tipo": "externo",
+   "titulo": "Presidencia",
+   "sub": "normativa",
+   "col": 0,
+   "fila": 4,
+   "estado": "disenado",
+   "que_es": "Una de las cinco fuentes de la versión 0 (Presidencia). Todavía no se lee.",
+   "para_que": "Suma hechos de otra fuente pública sobre las mismas entidades.",
+   "docs": [
+    "docs/fuentes/presidencia.md"
+   ],
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "afuera/impo",
+   "tipo": "externo",
+   "titulo": "IMPO",
+   "sub": "Diario Oficial · JSON de normas",
+   "col": 0,
+   "fila": 5,
+   "estado": "disenado",
+   "que_es": "Una de las cinco fuentes de la versión 0 (IMPO). Todavía no se lee.",
+   "para_que": "Suma hechos de otra fuente pública sobre las mismas entidades.",
+   "docs": [
+    "docs/fuentes/impo.md"
+   ],
+   "tarjetas": [
+    "T30"
+   ]
+  },
+  {
+   "id": "afuera/registro-banco",
+   "tipo": "externo",
+   "titulo": "Registro del banco",
+   "sub": "privado, fuera del repositorio",
+   "col": 0,
+   "fila": 6,
+   "estado": "disenado",
+   "que_es": "El registro de la vigilancia anterior: 78 noches con lo que se encontró cada una. Vive en banco-de-pruebas/privado/, que no se versiona (ADR 0007).",
+   "para_que": "Es contra lo que se mide la rebanada: qué encontró El Parte y qué había encontrado la vigilancia.",
+   "docs": [
+    "adrs/0007-registro-del-banco-fuera-del-repositorio.md"
+   ],
+   "tarjetas": [
+    "T20"
+   ]
+  },
+  {
+   "id": "afuera/anthropic",
+   "tipo": "externo",
+   "titulo": "API de Anthropic",
+   "sub": "Claude Haiku y Sonnet",
+   "col": 6,
+   "fila": 10,
+   "estado": "construido",
+   "que_es": "El proveedor de modelos. La clave vive solo en el .env de la máquina que corre las noches reales (T14).",
+   "para_que": "Responde las preguntas de los agentes que usan el modelo. Hoy solo el refutador.",
+   "docs": [
+    "adrs/0003-eleccion-del-stack.md"
+   ]
+  },
+  {
+   "id": "afuera/mailpit",
+   "tipo": "infra",
+   "titulo": "Mailpit",
+   "sub": "buzón de correo de prueba · :8025",
+   "col": 12,
+   "fila": 9,
+   "estado": "construido",
+   "que_es": "Un buzón de prueba que levanta Docker Compose. Recibe los correos sin mandarlos a nadie.",
+   "para_que": "Va a recibir los enlaces del login mientras no haya un servicio de correo de verdad (D9). Hoy nada le escribe.",
+   "docs": [
+    "app/README.md"
+   ]
+  },
+  {
+   "id": "inicio",
+   "tipo": "agente",
+   "titulo": "Inicio de corrida",
+   "sub": "InicioDeCorrida",
+   "col": 1,
+   "fila": 0,
+   "estado": "construido",
+   "que_es": "Arma una corrida normal para una noche, o una repetición de otra, y la anuncia.",
+   "para_que": "Congela todo lo que la corrida necesita (noche, fuentes, entidades seguidas, presupuesto y modelos) para que cada agente use lo mismo y la corrida se pueda repetir.",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/corrida/InicioDeCorrida.java"
+   ],
+   "docs": [
+    "docs/contratos.md",
+    "adrs/0005-presupuesto-por-corrida.md"
+   ]
+  },
+  {
+   "id": "lector-arce",
+   "tipo": "servicio",
+   "titulo": "Lector de ARCE",
+   "sub": "LectorArce · Enmascarador",
+   "col": 1,
+   "fila": 1,
+   "estado": "construido",
+   "que_es": "Lee la API de ARCE (el feed del mes y cada publicación), con tres reintentos, y tapa los datos personales de lo leído.",
+   "para_que": "Concentra todo lo que se sabe de ARCE: rutas, formato, hora local y enmascarado. Lo usan el explorador y el refutador.",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/arce/LectorArce.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/arce/Enmascarador.java"
+   ],
+   "docs": [
+    "docs/fuentes/compras-estatales.md",
+    "adrs/0008-datos-personales.md"
+   ]
+  },
+  {
+   "id": "medicion-banco",
+   "tipo": "servicio",
+   "titulo": "Medición contra el banco",
+   "sub": "corridas en modo banco",
+   "col": 1,
+   "fila": 6,
+   "estado": "disenado",
+   "que_es": "Corre la rebanada sobre cada noche del registro del banco de pruebas y compara lo encontrado con lo que encontró la vigilancia anterior.",
+   "para_que": "Dice cuánto acierta El Parte: encontrados, no encontrados, fuera de alcance y falsos positivos, con costo y duración por noche.",
+   "docs": [
+    "docs/plan.md"
+   ],
+   "tarjetas": [
+    "T12",
+    "T20"
+   ]
+  },
+  {
+   "id": "explorador-arce",
+   "tipo": "agente",
+   "titulo": "Explorador de ARCE",
+   "sub": "ExploradorArce · CandidatosDeArce",
+   "col": 2,
+   "fila": 1,
+   "estado": "construido",
+   "que_es": "Lee lo publicado en ARCE la noche objetivo y un día de margen, se queda con las compras de las entidades seguidas y emite un candidato por cada una. No usa el modelo.",
+   "para_que": "Es la puerta de entrada de los hechos de ARCE: filtra por comprador antes de cualquier otra cosa y graba todo lo que lee.",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/arce/ExploradorArce.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/arce/CandidatosDeArce.java"
+   ],
+   "docs": [
+    "docs/fuentes/compras-estatales.md",
+    "docs/contratos.md"
+   ]
+  },
+  {
+   "id": "explorador-bid",
+   "tipo": "agente",
+   "titulo": "Explorador de BID",
+   "sub": "",
+   "col": 2,
+   "fila": 2,
+   "estado": "disenado",
+   "que_es": "El explorador de BID: leerá lo publicado la noche objetivo, tapará los datos personales y emitirá candidatos, como el de ARCE.",
+   "para_que": "Suma su fuente sin tocar a los demás agentes: el contrato de los candidatos es el mismo. También emitirá exploracion.terminada y fuente.fallida, y grabará lo que lea (ADR 0011).",
+   "docs": [
+    "adrs/0006-fuentes-de-la-version-0.md"
+   ],
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "explorador-banco-mundial",
+   "tipo": "agente",
+   "titulo": "Explorador de Banco Mundial",
+   "sub": "",
+   "col": 2,
+   "fila": 3,
+   "estado": "disenado",
+   "que_es": "El explorador de Banco Mundial: leerá lo publicado la noche objetivo, tapará los datos personales y emitirá candidatos, como el de ARCE.",
+   "para_que": "Suma su fuente sin tocar a los demás agentes: el contrato de los candidatos es el mismo. También emitirá exploracion.terminada y fuente.fallida, y grabará lo que lea (ADR 0011).",
+   "docs": [
+    "adrs/0006-fuentes-de-la-version-0.md"
+   ],
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "explorador-presidencia",
+   "tipo": "agente",
+   "titulo": "Explorador de Presidencia",
+   "sub": "",
+   "col": 2,
+   "fila": 4,
+   "estado": "disenado",
+   "que_es": "El explorador de Presidencia: leerá lo publicado la noche objetivo, tapará los datos personales y emitirá candidatos, como el de ARCE.",
+   "para_que": "Suma su fuente sin tocar a los demás agentes: el contrato de los candidatos es el mismo. También emitirá exploracion.terminada y fuente.fallida, y grabará lo que lea (ADR 0011).",
+   "docs": [
+    "adrs/0006-fuentes-de-la-version-0.md"
+   ],
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "explorador-impo",
+   "tipo": "agente",
+   "titulo": "Explorador de IMPO",
+   "sub": "",
+   "col": 2,
+   "fila": 5,
+   "estado": "disenado",
+   "que_es": "El explorador de IMPO: leerá lo publicado la noche objetivo, tapará los datos personales y emitirá candidatos, como el de ARCE.",
+   "para_que": "Suma su fuente sin tocar a los demás agentes: el contrato de los candidatos es el mismo. También emitirá exploracion.terminada y fuente.fallida, y grabará lo que lea (ADR 0011).",
+   "docs": [
+    "adrs/0006-fuentes-de-la-version-0.md",
+    "adrs/0010-impo-como-quinta-fuente.md"
+   ],
+   "tarjetas": [
+    "T30"
+   ]
+  },
+  {
+   "id": "kafka/corrida.iniciada",
+   "tipo": "topico",
+   "titulo": "corrida.iniciada",
+   "sub": "tópico de Kafka",
+   "col": 2,
+   "fila": 0,
+   "estado": "construido",
+   "que_es": "El mensaje que arranca la corrida, con todo lo que la corrida congela.",
+   "para_que": "Despierta a los exploradores y es el contexto que leen todos los agentes.",
+   "docs": [
+    "docs/contratos.md"
+   ],
+   "topico": "corrida.iniciada"
+  },
+  {
+   "id": "kafka/candidatos",
+   "tipo": "topico",
+   "titulo": "candidatos",
+   "sub": "tópico de Kafka",
+   "col": 3,
+   "fila": 1,
+   "estado": "construido",
+   "que_es": "Un mensaje por posible hecho, con su resumen, sus entidades y su evidencia.",
+   "para_que": "Lleva lo que encontraron los exploradores al archivista.",
+   "docs": [
+    "docs/contratos.md"
+   ],
+   "topico": "candidatos"
+  },
+  {
+   "id": "kafka/exploracion.terminada",
+   "tipo": "topico",
+   "titulo": "exploracion.terminada",
+   "sub": "tópico de Kafka",
+   "col": 3,
+   "fila": 3,
+   "estado": "construido",
+   "que_es": "Lo emite cada explorador al terminar, aunque haya fallado: cuántas publicaciones leyó y cuántos candidatos emitió.",
+   "para_que": "Le dice al cierre cuántos candidatos esperar.",
+   "docs": [
+    "docs/contratos.md"
+   ],
+   "topico": "exploracion.terminada"
+  },
+  {
+   "id": "kafka/fuente.fallida",
+   "tipo": "topico",
+   "titulo": "fuente.fallida",
+   "sub": "tópico de Kafka",
+   "col": 3,
+   "fila": 4,
+   "estado": "construido",
+   "que_es": "Una fuente que no respondió o respondió algo que no sirve, con su URL y el tipo de falla.",
+   "para_que": "Deja la falla a la vista en la sala de máquinas y en la página de la mañana.",
+   "docs": [
+    "docs/contratos.md"
+   ],
+   "topico": "fuente.fallida"
+  },
+  {
+   "id": "kafka/candidatos.cotejados",
+   "tipo": "topico",
+   "titulo": "candidatos.cotejados",
+   "sub": "tópico de Kafka",
+   "col": 5,
+   "fila": 1,
+   "estado": "construido",
+   "que_es": "Cada candidato con su clave de hecho y su estado: nuevo, actualización o conocido.",
+   "para_que": "Lleva al refutador solo lo que no se conocía; los conocidos terminan acá.",
+   "docs": [
+    "docs/contratos.md"
+   ],
+   "topico": "candidatos.cotejados"
+  },
+  {
+   "id": "kafka/candidatos.graduados",
+   "tipo": "topico",
+   "titulo": "candidatos.graduados",
+   "sub": "tópico de Kafka",
+   "col": 7,
+   "fila": 1,
+   "estado": "construido",
+   "que_es": "Cada candidato con su grado (PROVEN, INFERRED o NOT_MENTIONED), su afirmación y su evidencia.",
+   "para_que": "Lleva al analista lo que el refutador no pudo tirar abajo.",
+   "docs": [
+    "docs/contratos.md"
+   ],
+   "topico": "candidatos.graduados"
+  },
+  {
+   "id": "kafka/hechos.analizados",
+   "tipo": "topico",
+   "titulo": "hechos.analizados",
+   "sub": "tópico de Kafka",
+   "col": 9,
+   "fila": 1,
+   "estado": "construido",
+   "que_es": "Cada hecho PROVEN o INFERRED, con lo que dice, por qué importa y qué mirar.",
+   "para_que": "Lleva al editor lo que se va a publicar.",
+   "docs": [
+    "docs/contratos.md"
+   ],
+   "topico": "hechos.analizados"
+  },
+  {
+   "id": "kafka/revision.pendiente",
+   "tipo": "topico",
+   "titulo": "revision.pendiente",
+   "sub": "tópico de Kafka",
+   "col": 11,
+   "fila": 1,
+   "estado": "construido",
+   "que_es": "Un hecho que va a revisión humana, con su grado y el motivo. En la versión 0, todo INFERRED.",
+   "para_que": "Alimentará la cola de revisión (T23).",
+   "docs": [
+    "docs/contratos.md"
+   ],
+   "topico": "revision.pendiente"
+  },
+  {
+   "id": "kafka/informes",
+   "tipo": "topico",
+   "titulo": "informes",
+   "sub": "tópico de Kafka",
+   "col": 11,
+   "fila": 3,
+   "estado": "construido",
+   "que_es": "Uno por cliente con suscripciones: los hechos de la noche o sin novedades.",
+   "para_que": "Deja constancia de qué recibió cada cliente; el informe en sí queda en la base.",
+   "docs": [
+    "docs/contratos.md"
+   ],
+   "topico": "informes"
+  },
+  {
+   "id": "kafka/corrida.terminada",
+   "tipo": "topico",
+   "titulo": "corrida.terminada",
+   "sub": "tópico de Kafka",
+   "col": 11,
+   "fila": 4,
+   "estado": "construido",
+   "que_es": "Cierra la corrida con su estado, los conteos, el costo y la duración.",
+   "para_que": "Es el final de la traza de cada corrida en la sala de máquinas.",
+   "docs": [
+    "docs/contratos.md"
+   ],
+   "topico": "corrida.terminada"
+  },
+  {
+   "id": "kafka/corrida.cortada",
+   "tipo": "topico",
+   "titulo": "corrida.cortada",
+   "sub": "tópico de Kafka",
+   "col": 11,
+   "fila": 5,
+   "estado": "construido",
+   "que_es": "Dice qué límite se alcanzó y cuánto quedó sin procesar. Hoy, solo el de tiempo.",
+   "para_que": "Explica por qué una corrida no terminó entera.",
+   "docs": [
+    "docs/contratos.md"
+   ],
+   "topico": "corrida.cortada"
+  },
+  {
+   "id": "kafka/uso.modelo",
+   "tipo": "topico",
+   "titulo": "uso.modelo",
+   "sub": "tópico de Kafka",
+   "col": 7,
+   "fila": 9,
+   "estado": "construido",
+   "que_es": "Una por llamada al modelo: modelo, tokens, costo y resultado (hecha, error o reproducida).",
+   "para_que": "Es de donde sale el costo por agente de la sala de máquinas, y la base del presupuesto que corta (T22).",
+   "docs": [
+    "docs/contratos.md"
+   ],
+   "topico": "uso.modelo"
+  },
+  {
+   "id": "kafka/todos",
+   "tipo": "grupo-de-topicos",
+   "titulo": "Los 12 tópicos",
+   "sub": "todos, uno por tipo de mensaje",
+   "col": 9,
+   "fila": 8,
+   "estado": "construido",
+   "que_es": "No es un objeto del sistema: está en el tablero para dibujar una sola flecha en vez de doce. Representa los doce tópicos de Kafka, cada uno con una partición y sin vencimiento.",
+   "para_que": "Muestra que el observador escucha todo.",
+   "docs": [
+    "docs/contratos.md",
+    "adrs/0002-orquestacion-por-mensajes.md"
+   ]
+  },
+  {
+   "id": "archivista",
+   "tipo": "agente",
+   "titulo": "Archivista",
+   "sub": "Archivista",
+   "col": 4,
+   "fila": 1,
+   "estado": "construido",
+   "que_es": "Coteja cada candidato con los hechos que ya están, por su clave (fuente:proceso:tipo) y por la huella del contenido leído.",
+   "para_que": "Evita publicar dos veces lo mismo y reconoce las actualizaciones. Coteja contra corridas anteriores a la de referencia, así una repetición decide lo mismo.",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/archivista/Archivista.java"
+   ],
+   "docs": [
+    "docs/contratos.md"
+   ]
+  },
+  {
+   "id": "refutador",
+   "tipo": "agente",
+   "titulo": "Refutador",
+   "sub": "Refutador · Claude Sonnet",
+   "col": 6,
+   "fila": 1,
+   "estado": "construido",
+   "que_es": "Intenta tirar abajo cada candidato nuevo o actualizado: vuelve a leer la fuente por su cuenta y le pide al modelo que compare la afirmación con la publicación. Es el único que pone el grado.",
+   "para_que": "Que nada se publique sin evidencia (ADR 0004). Si no hay veredicto, el grado es NOT_MENTIONED.",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/refutador/Refutador.java"
+   ],
+   "docs": [
+    "docs/contratos.md",
+    "adrs/0004-grados-de-evidencia.md"
+   ]
+  },
+  {
+   "id": "analista",
+   "tipo": "agente",
+   "titulo": "Analista",
+   "sub": "Analista · por ahora pasa la afirmación",
+   "col": 8,
+   "fila": 1,
+   "estado": "construido",
+   "que_es": "Recibe lo graduado PROVEN o INFERRED y escribe qué dice, por qué importa y qué mirar. En la primera rebanada solo pasa la afirmación.",
+   "para_que": "Que el hecho se entienda sin leer la fuente. El análisis con el modelo llega con T21.",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/analista/Analista.java"
+   ],
+   "docs": [
+    "docs/contratos.md"
+   ],
+   "tarjetas": [
+    "T21"
+   ]
+  },
+  {
+   "id": "editor",
+   "tipo": "agente",
+   "titulo": "Editor",
+   "sub": "Editor",
+   "col": 10,
+   "fila": 1,
+   "estado": "construido",
+   "que_es": "Guarda cada hecho PROVEN o INFERRED con su versión, su evidencia y sus entidades, y manda a revisión los INFERRED. En una repetición no escribe nada.",
+   "para_que": "Es el único que escribe la base de afirmaciones.",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/editor/Editor.java"
+   ],
+   "docs": [
+    "docs/contratos.md",
+    "docs/base-de-afirmaciones.md"
+   ]
+  },
+  {
+   "id": "armado-de-informes",
+   "tipo": "servicio",
+   "titulo": "Armado de informes",
+   "sub": "ArmadoDeInformes · parte del editor",
+   "col": 10,
+   "fila": 3,
+   "estado": "construido",
+   "que_es": "Al cerrar la corrida arma el informe de cada cliente con suscripciones: los hechos de la noche sobre lo que sigue, o sin novedades.",
+   "para_que": "Es lo que ve cada cliente a la mañana. En una corrida normal lo guarda; en una repetición solo lo emite.",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/editor/ArmadoDeInformes.java"
+   ],
+   "docs": [
+    "docs/contratos.md"
+   ]
+  },
+  {
+   "id": "cierre",
+   "tipo": "servicio",
+   "titulo": "Cierre de corrida",
+   "sub": "CierreDeCorrida · cada 2 s",
+   "col": 10,
+   "fila": 4,
+   "estado": "construido",
+   "que_es": "Revisa cada dos segundos las corridas en curso: cierra la que tiene todos sus candidatos en un final y corta la que pasó su tope de tiempo.",
+   "para_que": "Sin cierre no hay informe ni corrida.terminada. Cuenta desde el registro de mensajes, así una repetición cierra igual.",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/corrida/CierreDeCorrida.java"
+   ],
+   "docs": [
+    "docs/contratos.md"
+   ]
+  },
+  {
+   "id": "aplicacion",
+   "tipo": "infra",
+   "titulo": "La aplicación",
+   "sub": "Spring Boot 4.1 · Java 25",
+   "col": 0,
+   "fila": 9,
+   "estado": "construido",
+   "que_es": "El proceso donde corren todos los agentes, el observador y la web: arranque, tópicos, reintentos de los consumidores, salud de Kafka y el marco común de las páginas.",
+   "para_que": "Un solo proceso hace la versión 0 fácil de levantar (ADR 0003).",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/ElParteAplicacion.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/infraestructura/ConfiguracionGeneral.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/infraestructura/SaludDeKafka.java",
+    "app/src/main/resources/templates/fragmentos.html"
+   ],
+   "docs": [
+    "app/README.md",
+    "adrs/0003-eleccion-del-stack.md"
+   ],
+   "comun": true
+  },
+  {
+   "id": "emisor",
+   "tipo": "servicio",
+   "titulo": "Emisor y sobres",
+   "sub": "Emisor · Sobre · Tipos · Contenidos · Huellas",
+   "col": 1,
+   "fila": 9,
+   "estado": "construido",
+   "que_es": "Arma el sobre de cada mensaje con su identificador determinista y lo manda a su tópico, con la corrida como clave.",
+   "para_que": "Que procesar dos veces lo mismo produzca los mismos mensajes. Lo usan todos los que emiten: sus flechas son las de 'emite'.",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/mensajes/Emisor.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/mensajes/Sobre.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/mensajes/Tipos.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/mensajes/Contenidos.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/infraestructura/Huellas.java"
+   ],
+   "docs": [
+    "docs/contratos.md"
+   ],
+   "comun": true
+  },
+  {
+   "id": "grabaciones",
+   "tipo": "servicio",
+   "titulo": "Grabaciones",
+   "sub": "Grabaciones",
+   "col": 2,
+   "fila": 9,
+   "estado": "construido",
+   "que_es": "Graba todo lo que una corrida lee de afuera, ya enmascarado, y lo devuelve tal como quedó guardado. En una repetición lee solo de ahí.",
+   "para_que": "Repetir cualquier corrida sin red ni costo, con los mismos mensajes (ADR 0011).",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/grabaciones/Grabaciones.java"
+   ],
+   "docs": [
+    "adrs/0011-grabacion-y-repeticion-de-corridas.md"
+   ]
+  },
+  {
+   "id": "procesados",
+   "tipo": "servicio",
+   "titulo": "Registro de lo procesado",
+   "sub": "Procesados",
+   "col": 4,
+   "fila": 9,
+   "estado": "construido",
+   "que_es": "Anota qué mensaje procesó cada agente, en la misma transacción que sus efectos.",
+   "para_que": "Que un mensaje entregado dos veces no cambie nada (idempotencia).",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/infraestructura/Procesados.java"
+   ],
+   "docs": [
+    "docs/contratos.md"
+   ],
+   "comun": true
+  },
+  {
+   "id": "presupuesto",
+   "tipo": "servicio",
+   "titulo": "Presupuesto que corta",
+   "sub": "advisor · libro de la corrida",
+   "col": 5,
+   "fila": 9,
+   "estado": "disenado",
+   "que_es": "Reservará el peor caso antes de cada llamada al modelo y cortará la corrida si no alcanza, por costo o por pasos.",
+   "para_que": "Que ninguna noche gaste más que su tope (ADR 0005). Hoy el tope de 60 candidatos y el del espacio de trabajo hacen de red.",
+   "docs": [
+    "adrs/0005-presupuesto-por-corrida.md"
+   ],
+   "tarjetas": [
+    "T22"
+   ]
+  },
+  {
+   "id": "modelo",
+   "tipo": "servicio",
+   "titulo": "Servicio del modelo",
+   "sub": "Modelo · Spring AI",
+   "col": 6,
+   "fila": 9,
+   "estado": "construido",
+   "que_es": "Por acá pasan todas las llamadas al modelo: usa el modelo que la corrida fijó para el agente, pide la respuesta con forma de record, la graba y emite uso.modelo con su costo.",
+   "para_que": "Un solo lugar para elegir el modelo, grabar, repetir y contar. Si el modelo no responde, la falla también se graba.",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/modelo/Modelo.java"
+   ],
+   "docs": [
+    "adrs/0003-eleccion-del-stack.md",
+    "adrs/0011-grabacion-y-repeticion-de-corridas.md"
+   ]
+  },
+  {
+   "id": "observador",
+   "tipo": "servicio",
+   "titulo": "Observador",
+   "sub": "Observador",
+   "col": 9,
+   "fila": 9,
+   "estado": "construido",
+   "que_es": "Escucha los doce tópicos y copia cada mensaje a la base.",
+   "para_que": "El registro de mensajes es la historia de cada corrida: de ahí salen la sala de máquinas, el cierre y la espera de las causas (ADR 0002).",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/observador/Observador.java"
+   ],
+   "docs": [
+    "adrs/0002-orquestacion-por-mensajes.md"
+   ]
+  },
+  {
+   "id": "registro",
+   "tipo": "servicio",
+   "titulo": "Registro de mensajes",
+   "sub": "RegistroDeMensajes",
+   "col": 10,
+   "fila": 9,
+   "estado": "construido",
+   "que_es": "Busca mensajes en la copia del observador, y espera hasta 30 segundos el que todavía no llegó.",
+   "para_que": "Entre tópicos no hay orden: un agente puede recibir algo antes que su causa, y la espera acá.",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/mensajes/RegistroDeMensajes.java"
+   ],
+   "docs": [
+    "docs/contratos.md"
+   ],
+   "comun": true
+  },
+  {
+   "id": "comparacion",
+   "tipo": "servicio",
+   "titulo": "Comparación de corridas",
+   "sub": "ComparacionDeCorridas",
+   "col": 11,
+   "fila": 9,
+   "estado": "construido",
+   "que_es": "Compara los mensajes de una corrida con los de su repetición: tipo, agente y contenido, sin identificadores, horas ni costos.",
+   "para_que": "Es la prueba de que una repetición dio lo mismo.",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/corrida/ComparacionDeCorridas.java"
+   ],
+   "docs": [
+    "docs/contratos.md"
+   ]
+  },
+  {
+   "id": "noche-por-reloj",
+   "tipo": "servicio",
+   "titulo": "Corrida por reloj",
+   "sub": "NochePorReloj · apagada",
+   "col": 0,
+   "fila": 10,
+   "estado": "construido",
+   "que_es": "Corre la noche de ayer a la hora que diga elparte.corrida.cron, en hora de Uruguay. Viene apagada.",
+   "para_que": "Que las noches corran solas cuando se decida dónde vive la aplicación (T27).",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/corrida/NochePorReloj.java"
+   ],
+   "docs": [
+    "app/README.md"
+   ],
+   "nota": "Apagada por omisión: el cron vale \"-\"."
+  },
+  {
+   "id": "corridas",
+   "tipo": "servicio",
+   "titulo": "Contexto de la corrida",
+   "sub": "Corridas",
+   "col": 1,
+   "fila": 10,
+   "estado": "construido",
+   "que_es": "Devuelve lo que congeló corrida.iniciada para una corrida, y su estado.",
+   "para_que": "Que cada agente use la noche, los modelos y el modo de su corrida, y sepa si es una repetición.",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/corrida/Corridas.java"
+   ],
+   "docs": [
+    "docs/contratos.md"
+   ],
+   "comun": true
+  },
+  {
+   "id": "base/fuentes",
+   "tipo": "tabla",
+   "titulo": "fuentes",
+   "sub": "parte.fuentes",
+   "col": 0,
+   "fila": 12,
+   "estado": "construido",
+   "que_es": "Una fila por fuente, con su licencia y cuándo se verificó.",
+   "para_que": "El inicio arma la lista de fuentes de cada corrida desde acá.",
+   "docs": [
+    "docs/base-de-afirmaciones.md"
+   ],
+   "tabla": "parte.fuentes"
+  },
+  {
+   "id": "base/corridas",
+   "tipo": "tabla",
+   "titulo": "corridas",
+   "sub": "parte.corridas",
+   "col": 1,
+   "fila": 12,
+   "estado": "construido",
+   "que_es": "Una fila por corrida: modo, noche, estado, límite alcanzado y cuándo empezó y terminó.",
+   "para_que": "Es la lista de la sala de máquinas, y la referencia del archivista para comparar contra corridas anteriores.",
+   "docs": [
+    "docs/base-de-afirmaciones.md"
+   ],
+   "tabla": "parte.corridas"
+  },
+  {
+   "id": "base/grabaciones",
+   "tipo": "tabla",
+   "titulo": "grabaciones",
+   "sub": "parte.grabaciones",
+   "col": 2,
+   "fila": 12,
+   "estado": "construido",
+   "que_es": "Lo que cada corrida leyó de afuera, por clave, ya enmascarado.",
+   "para_que": "Repetir corridas (ADR 0011).",
+   "docs": [
+    "docs/base-de-afirmaciones.md"
+   ],
+   "tabla": "parte.grabaciones"
+  },
+  {
+   "id": "base/mensajes_procesados",
+   "tipo": "tabla",
+   "titulo": "mensajes_procesados",
+   "sub": "parte.mensajes_procesados",
+   "col": 4,
+   "fila": 12,
+   "estado": "construido",
+   "que_es": "Qué mensaje procesó cada agente.",
+   "para_que": "Idempotencia, y la cuenta del cierre de lo que procesó el editor.",
+   "docs": [
+    "docs/base-de-afirmaciones.md"
+   ],
+   "tabla": "parte.mensajes_procesados"
+  },
+  {
+   "id": "base/precios_de_modelo",
+   "tipo": "tabla",
+   "titulo": "precios_de_modelo",
+   "sub": "parte.precios_de_modelo",
+   "col": 6,
+   "fila": 12,
+   "estado": "construido",
+   "que_es": "El precio de cada modelo por millón de tokens, con su fuente y desde cuándo rige.",
+   "para_que": "El costo de cada llamada sale de acá.",
+   "docs": [
+    "docs/base-de-afirmaciones.md"
+   ],
+   "tabla": "parte.precios_de_modelo"
+  },
+  {
+   "id": "base/suscripciones",
+   "tipo": "tabla",
+   "titulo": "suscripciones",
+   "sub": "parte.suscripciones",
+   "col": 8,
+   "fila": 12,
+   "estado": "construido",
+   "que_es": "Qué entidades sigue cada cliente.",
+   "para_que": "Define qué entidades sigue la corrida y qué va en cada informe.",
+   "docs": [
+    "docs/base-de-afirmaciones.md"
+   ],
+   "tabla": "parte.suscripciones"
+  },
+  {
+   "id": "base/mensajes",
+   "tipo": "tabla",
+   "titulo": "mensajes",
+   "sub": "parte.mensajes",
+   "col": 9,
+   "fila": 12,
+   "estado": "construido",
+   "que_es": "La copia de cada mensaje de cada corrida.",
+   "para_que": "La sala de máquinas, el cierre y la espera de causas leen de acá.",
+   "docs": [
+    "docs/base-de-afirmaciones.md"
+   ],
+   "tabla": "parte.mensajes"
+  },
+  {
+   "id": "base/hechos",
+   "tipo": "tabla",
+   "titulo": "hechos",
+   "sub": "parte.hechos",
+   "col": 10,
+   "fila": 12,
+   "estado": "construido",
+   "que_es": "La identidad de cada hecho: su clave, su fuente y su tipo.",
+   "para_que": "Es la base de afirmaciones; el contenido está en las versiones.",
+   "docs": [
+    "docs/base-de-afirmaciones.md"
+   ],
+   "tabla": "parte.hechos"
+  },
+  {
+   "id": "base/informes",
+   "tipo": "tabla",
+   "titulo": "informes",
+   "sub": "parte.informes",
+   "col": 11,
+   "fila": 12,
+   "estado": "construido",
+   "que_es": "Un informe por cliente, noche y corrida, con o sin novedades.",
+   "para_que": "Lo que muestra la página de la mañana.",
+   "docs": [
+    "docs/base-de-afirmaciones.md"
+   ],
+   "tabla": "parte.informes"
+  },
+  {
+   "id": "base/libros_de_corrida",
+   "tipo": "tabla",
+   "titulo": "libros_de_corrida",
+   "sub": "parte.libros_de_corrida",
+   "col": 1,
+   "fila": 13,
+   "estado": "construido",
+   "que_es": "El libro de gasto de cada corrida.",
+   "para_que": "Lo crea el inicio; lo va a llevar el presupuesto que corta (T22).",
+   "docs": [
+    "docs/base-de-afirmaciones.md"
+   ],
+   "tabla": "parte.libros_de_corrida"
+  },
+  {
+   "id": "base/entidades",
+   "tipo": "tabla",
+   "titulo": "entidades",
+   "sub": "parte.entidades",
+   "col": 2,
+   "fila": 13,
+   "estado": "construido",
+   "que_es": "Organismos y personas jurídicas, con sus identificadores en cada fuente.",
+   "para_que": "El explorador saca de acá el código de comprador de cada entidad seguida.",
+   "docs": [
+    "docs/base-de-afirmaciones.md"
+   ],
+   "tabla": "parte.entidades"
+  },
+  {
+   "id": "base/modelos_de_agente",
+   "tipo": "tabla",
+   "titulo": "modelos_de_agente",
+   "sub": "parte.modelos_de_agente",
+   "col": 6,
+   "fila": 13,
+   "estado": "construido",
+   "que_es": "Qué modelo usa cada agente y desde cuándo.",
+   "para_que": "El inicio congela el vigente en cada corrida (ADR 0003).",
+   "docs": [
+    "docs/base-de-afirmaciones.md"
+   ],
+   "tabla": "parte.modelos_de_agente"
+  },
+  {
+   "id": "base/clientes",
+   "tipo": "tabla",
+   "titulo": "clientes",
+   "sub": "parte.clientes",
+   "col": 8,
+   "fila": 13,
+   "estado": "construido",
+   "que_es": "Cada cliente, con un alias y si es la cuenta de demostración. Sin correos.",
+   "para_que": "A quién se le arma un informe.",
+   "docs": [
+    "docs/base-de-afirmaciones.md"
+   ],
+   "tabla": "parte.clientes"
+  },
+  {
+   "id": "base/hecho_entidades",
+   "tipo": "tabla",
+   "titulo": "hecho_entidades",
+   "sub": "parte.hecho_entidades",
+   "col": 9,
+   "fila": 13,
+   "estado": "construido",
+   "que_es": "Qué entidades menciona cada hecho y con qué rol.",
+   "para_que": "El expediente de una entidad y los informes por suscripción.",
+   "docs": [
+    "docs/base-de-afirmaciones.md"
+   ],
+   "tabla": "parte.hecho_entidades"
+  },
+  {
+   "id": "base/versiones_de_hecho",
+   "tipo": "tabla",
+   "titulo": "versiones_de_hecho",
+   "sub": "parte.versiones_de_hecho",
+   "col": 10,
+   "fila": 13,
+   "estado": "construido",
+   "que_es": "Cada versión de un hecho: afirmación, grado, razonamiento, estado de revisión y la traza de los mensajes que la produjeron.",
+   "para_que": "Una actualización es una versión nueva; la historia queda.",
+   "docs": [
+    "docs/base-de-afirmaciones.md"
+   ],
+   "tabla": "parte.versiones_de_hecho"
+  },
+  {
+   "id": "base/informe_hechos",
+   "tipo": "tabla",
+   "titulo": "informe_hechos",
+   "sub": "parte.informe_hechos",
+   "col": 11,
+   "fila": 13,
+   "estado": "construido",
+   "que_es": "Qué versiones incluye cada informe.",
+   "para_que": "La página de la mañana lista estos hechos.",
+   "docs": [
+    "docs/base-de-afirmaciones.md"
+   ],
+   "tabla": "parte.informe_hechos"
+  },
+  {
+   "id": "base/evidencias",
+   "tipo": "tabla",
+   "titulo": "evidencias",
+   "sub": "parte.evidencias",
+   "col": 10,
+   "fila": 14,
+   "estado": "construido",
+   "que_es": "Los fragmentos de la fuente que respaldan cada versión, con su URL y la huella del contenido.",
+   "para_que": "Sin evidencia no hay hecho; el archivista compara las huellas.",
+   "docs": [
+    "docs/base-de-afirmaciones.md"
+   ],
+   "tabla": "parte.evidencias"
+  },
+  {
+   "id": "base/revisiones",
+   "tipo": "tabla",
+   "titulo": "revisiones",
+   "sub": "parte.revisiones",
+   "col": 11,
+   "fila": 14,
+   "estado": "construido",
+   "que_es": "Cada revisión humana de una versión.",
+   "para_que": "La va a escribir la cola de revisión (T23). Hoy nadie la escribe.",
+   "docs": [
+    "docs/base-de-afirmaciones.md"
+   ],
+   "tabla": "parte.revisiones"
+  },
+  {
+   "id": "base/usuarios",
+   "tipo": "tabla",
+   "titulo": "usuarios",
+   "sub": "cuentas.usuarios",
+   "col": 12,
+   "fila": 12,
+   "estado": "construido",
+   "que_es": "Los correos de los usuarios invitados. Es el único lugar con datos personales, en un esquema aparte.",
+   "para_que": "El login (T25). Hoy nadie la usa.",
+   "docs": [
+    "docs/base-de-afirmaciones.md"
+   ],
+   "tabla": "cuentas.usuarios"
+  },
+  {
+   "id": "web/inicio",
+   "tipo": "pagina",
+   "titulo": "Inicio",
+   "sub": "GET /",
+   "col": 1,
+   "fila": 16,
+   "estado": "construido",
+   "que_es": "La portada: qué es El Parte y los enlaces a las otras páginas.",
+   "para_que": "La entrada de quien llega.",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/web/InicioControlador.java",
+    "app/src/main/resources/templates/inicio.html"
+   ],
+   "rutas": [
+    "GET /"
+   ]
+  },
+  {
+   "id": "web/sala",
+   "tipo": "pagina",
+   "titulo": "Sala de máquinas",
+   "sub": "GET y POST /corridas · GET /corridas/{id}",
+   "col": 3,
+   "fila": 16,
+   "estado": "construido",
+   "que_es": "La lista de corridas, el botón para correr una noche o repetir una corrida, y la página de cada corrida: la cadena de mensajes de cada candidato, el costo por agente y la comparación con la original.",
+   "para_que": "Ver qué hizo cada agente y por qué, y cuánto costó (ADR 0002).",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/web/SalaDeMaquinasControlador.java",
+    "app/src/main/resources/templates/corridas.html",
+    "app/src/main/resources/templates/sala.html"
+   ],
+   "docs": [
+    "app/README.md"
+   ],
+   "rutas": [
+    "GET /corridas",
+    "POST /corridas",
+    "GET /corridas/{id}"
+   ]
+  },
+  {
+   "id": "web/manana",
+   "tipo": "pagina",
+   "titulo": "Página de la mañana",
+   "sub": "GET /manana",
+   "col": 11,
+   "fila": 16,
+   "estado": "construido",
+   "que_es": "El último informe de la cuenta de demostración: cada hecho con su grado, su evidencia, su estado de revisión y el enlace a su traza. Avisa si una fuente falló.",
+   "para_que": "Es lo que El Parte le da a quien sigue una entidad.",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/web/MananaControlador.java",
+    "app/src/main/resources/templates/manana.html"
+   ],
+   "docs": [
+    "docs/base-de-afirmaciones.md"
+   ],
+   "rutas": [
+    "GET /manana"
+   ]
+  },
+  {
+   "id": "web/como-funciona",
+   "tipo": "pagina",
+   "titulo": "Cómo funciona",
+   "sub": "",
+   "col": 0,
+   "fila": 16,
+   "estado": "disenado",
+   "que_es": "La sección de la aplicación que enlaza a esta documentación y a las páginas 'cómo se hizo'.",
+   "para_que": "Que se entienda el sistema sin salir de la aplicación.",
+   "docs": [
+    "docs/plan.md"
+   ],
+   "tarjetas": [
+    "T26"
+   ]
+  },
+  {
+   "id": "web/revision",
+   "tipo": "pagina",
+   "titulo": "Cola de revisión",
+   "sub": "",
+   "col": 5,
+   "fila": 16,
+   "estado": "disenado",
+   "que_es": "La cola de hechos INFERRED pendientes de revisión, en la sala de máquinas.",
+   "para_que": "Que una persona confirme o corrija lo que el refutador dedujo (D6).",
+   "docs": [
+    "docs/contratos.md"
+   ],
+   "tarjetas": [
+    "T23"
+   ]
+  },
+  {
+   "id": "web/responsable",
+   "tipo": "pagina",
+   "titulo": "Pantalla del responsable",
+   "sub": "",
+   "col": 6,
+   "fila": 16,
+   "estado": "disenado",
+   "que_es": "La pantalla donde el responsable cambia el modelo de cada agente y los precios, sin reiniciar.",
+   "para_que": "Calibrar contra el banco de pruebas cambiando modelos de una corrida a otra (ADR 0003).",
+   "docs": [
+    "adrs/0003-eleccion-del-stack.md"
+   ],
+   "tarjetas": [
+    "T29"
+   ]
+  },
+  {
+   "id": "web/expediente",
+   "tipo": "pagina",
+   "titulo": "Expediente",
+   "sub": "",
+   "col": 9,
+   "fila": 16,
+   "estado": "disenado",
+   "que_es": "Todo lo que la base sabe de una entidad: cada hecho y cada versión, en orden.",
+   "para_que": "Consultar una entidad cuando se quiera, no solo lo de anoche.",
+   "docs": [
+    "docs/arquitectura.md"
+   ],
+   "tarjetas": [
+    "T33"
+   ]
+  },
+  {
+   "id": "web/login",
+   "tipo": "pagina",
+   "titulo": "Login por enlace",
+   "sub": "",
+   "col": 12,
+   "fila": 16,
+   "estado": "disenado",
+   "que_es": "El login con un enlace de un solo uso por correo, para cuatro usuarios invitados y la cuenta de demostración.",
+   "para_que": "Que cada invitado vea su página; los correos quedan en el esquema cuentas (ADR 0008).",
+   "docs": [
+    "adrs/0008-datos-personales.md"
+   ],
+   "tarjetas": [
+    "T25"
+   ]
+  }
+ ],
+ "flechas": [
+  {
+   "id": "web/sala>inicio",
+   "de": "web/sala",
+   "a": "inicio",
+   "tipo": "usa",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "corre una noche o repite una corrida",
+   "detalle": "La sala de máquinas recibe el formulario (POST /corridas) y le pide al inicio una corrida normal para la noche elegida, o la repetición de una corrida terminada."
+  },
+  {
+   "id": "noche-por-reloj>inicio",
+   "de": "noche-por-reloj",
+   "a": "inicio",
+   "tipo": "usa",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "corre la noche de ayer",
+   "detalle": "Si elparte.corrida.cron no es \"-\", el reloj le pide al inicio la corrida de ayer, en hora de Uruguay."
+  },
+  {
+   "id": "inicio>kafka/corrida.iniciada",
+   "de": "inicio",
+   "a": "kafka/corrida.iniciada",
+   "tipo": "emite",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "anuncia la corrida",
+   "detalle": "Emite corrida.iniciada con la noche, las fuentes, las entidades seguidas, el presupuesto y el modelo de cada agente, después de guardar la corrida."
+  },
+  {
+   "id": "kafka/corrida.iniciada>explorador-arce",
+   "de": "kafka/corrida.iniciada",
+   "a": "explorador-arce",
+   "tipo": "escucha",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "empieza a explorar",
+   "detalle": "El explorador de ARCE escucha corrida.iniciada y explora si la corrida incluye a ARCE."
+  },
+  {
+   "id": "explorador-arce>lector-arce",
+   "de": "explorador-arce",
+   "a": "lector-arce",
+   "tipo": "usa",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "pide el feed y cada publicación",
+   "detalle": "Pide el feed de los meses de la ventana y lee cada publicación de la noche y del día de margen para saber quién compra."
+  },
+  {
+   "id": "lector-arce>afuera/arce",
+   "de": "lector-arce",
+   "a": "afuera/arce",
+   "tipo": "llama",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "HTTPS, tres intentos",
+   "detalle": "GET del feed mensual (/ocds/rss/AAAA/MM) y de cada publicación (/ocds/release/<id>). Por HTTP la API responde 503.",
+   "fuente": "docs/fuentes/compras-estatales.md"
+  },
+  {
+   "id": "explorador-arce>grabaciones",
+   "de": "explorador-arce",
+   "a": "grabaciones",
+   "tipo": "usa",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "graba lo leído",
+   "detalle": "Graba la ventana del feed, el comprador de cada publicación y cada publicación de una entidad seguida, ya enmascarada, y sigue con lo grabado."
+  },
+  {
+   "id": "explorador-arce>kafka/candidatos",
+   "de": "explorador-arce",
+   "a": "kafka/candidatos",
+   "tipo": "emite",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "un candidato por compra seguida",
+   "detalle": "Por cada publicación de un comprador seguido (el BPS es 28-1) emite un candidato armado con los campos OCDS, hasta 60 por corrida."
+  },
+  {
+   "id": "explorador-arce>kafka/exploracion.terminada",
+   "de": "explorador-arce",
+   "a": "kafka/exploracion.terminada",
+   "tipo": "emite",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "terminé: cuántos",
+   "detalle": "Al terminar, aunque haya fallado, dice cuántas publicaciones leyó, cuántos candidatos emitió y cuántas quedaron sin procesar."
+  },
+  {
+   "id": "explorador-arce>kafka/fuente.fallida",
+   "de": "explorador-arce",
+   "a": "kafka/fuente.fallida",
+   "tipo": "emite",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "la fuente falló",
+   "detalle": "Si el feed o una publicación no se pudo leer después de tres intentos, emite fuente.fallida con la URL y el tipo de falla."
+  },
+  {
+   "id": "kafka/candidatos>archivista",
+   "de": "kafka/candidatos",
+   "a": "archivista",
+   "tipo": "escucha",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "coteja cada candidato",
+   "detalle": "El archivista recibe cada candidato."
+  },
+  {
+   "id": "archivista>kafka/candidatos.cotejados",
+   "de": "archivista",
+   "a": "kafka/candidatos.cotejados",
+   "tipo": "emite",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "nuevo, actualización o conocido",
+   "detalle": "Emite el cotejo con la clave de hecho y el estado. Un conocido termina acá."
+  },
+  {
+   "id": "kafka/candidatos.cotejados>refutador",
+   "de": "kafka/candidatos.cotejados",
+   "a": "refutador",
+   "tipo": "escucha",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "intenta tirarlo abajo",
+   "detalle": "El refutador recibe los cotejos y descarta los conocidos."
+  },
+  {
+   "id": "refutador>lector-arce",
+   "de": "refutador",
+   "a": "lector-arce",
+   "tipo": "usa",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "vuelve a leer la fuente",
+   "detalle": "Relee la publicación por su cuenta, sin confiar en lo que leyó el explorador, y la tapa."
+  },
+  {
+   "id": "refutador>grabaciones",
+   "de": "refutador",
+   "a": "grabaciones",
+   "tipo": "usa",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "graba la relectura",
+   "detalle": "La relectura también se graba, bajo su propia clave."
+  },
+  {
+   "id": "refutador>modelo",
+   "de": "refutador",
+   "a": "modelo",
+   "tipo": "usa",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "pide el veredicto",
+   "detalle": "Le pide al modelo un Veredicto (grado, afirmación, fragmentos, razonamiento, búsqueda, qué dice la fuente) con la publicación recortada a 10 ítems."
+  },
+  {
+   "id": "modelo>afuera/anthropic",
+   "de": "modelo",
+   "a": "afuera/anthropic",
+   "tipo": "llama",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "Claude, con el modelo de la corrida",
+   "detalle": "Llama a la API con el modelo que la corrida fijó para el agente, en las opciones del pedido.",
+   "fuente": "adrs/0003-eleccion-del-stack.md"
+  },
+  {
+   "id": "modelo>grabaciones",
+   "de": "modelo",
+   "a": "grabaciones",
+   "tipo": "usa",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "graba la respuesta",
+   "detalle": "Graba el texto, los tokens o el error. En una repetición lee de ahí y no llama a la API."
+  },
+  {
+   "id": "modelo>kafka/uso.modelo",
+   "de": "modelo",
+   "a": "kafka/uso.modelo",
+   "tipo": "emite",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "tokens y costo",
+   "detalle": "Una por llamada: hecha, error o reproducida, con tokens y costo según la tabla de precios."
+  },
+  {
+   "id": "refutador>kafka/candidatos.graduados",
+   "de": "refutador",
+   "a": "kafka/candidatos.graduados",
+   "tipo": "emite",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "PROVEN, INFERRED o NOT_MENTIONED",
+   "detalle": "Emite el candidato graduado, con las pruebas de fecha, duplicado y qué dice la fuente."
+  },
+  {
+   "id": "kafka/candidatos.graduados>analista",
+   "de": "kafka/candidatos.graduados",
+   "a": "analista",
+   "tipo": "escucha",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "analiza lo publicable",
+   "detalle": "El analista recibe lo graduado y descarta los NOT_MENTIONED."
+  },
+  {
+   "id": "analista>kafka/hechos.analizados",
+   "de": "analista",
+   "a": "kafka/hechos.analizados",
+   "tipo": "emite",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "el hecho, listo para publicar",
+   "detalle": "Emite el hecho analizado con el mismo grado. Por ahora, qué dice es la afirmación y lo demás dice 'Sin análisis'."
+  },
+  {
+   "id": "kafka/hechos.analizados>editor",
+   "de": "kafka/hechos.analizados",
+   "a": "editor",
+   "tipo": "escucha",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "publica",
+   "detalle": "El editor recibe cada hecho analizado."
+  },
+  {
+   "id": "editor>kafka/revision.pendiente",
+   "de": "editor",
+   "a": "kafka/revision.pendiente",
+   "tipo": "emite",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "los INFERRED, a revisión",
+   "detalle": "Todo hecho INFERRED va a revisión en la versión 0."
+  },
+  {
+   "id": "cierre>armado-de-informes",
+   "de": "cierre",
+   "a": "armado-de-informes",
+   "tipo": "usa",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "arma los informes",
+   "detalle": "Cuando la corrida terminó, o se cortó, el cierre le pide los informes al armado."
+  },
+  {
+   "id": "armado-de-informes>kafka/informes",
+   "de": "armado-de-informes",
+   "a": "kafka/informes",
+   "tipo": "emite",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "uno por cliente",
+   "detalle": "Un informe por cliente con suscripciones."
+  },
+  {
+   "id": "cierre>kafka/corrida.terminada",
+   "de": "cierre",
+   "a": "kafka/corrida.terminada",
+   "tipo": "emite",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "cierra la corrida",
+   "detalle": "Emite corrida.terminada con el estado, los conteos, el costo y la duración."
+  },
+  {
+   "id": "cierre>kafka/corrida.cortada",
+   "de": "cierre",
+   "a": "kafka/corrida.cortada",
+   "tipo": "emite",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "la corta por tiempo",
+   "detalle": "Si la corrida pasó sus minutos máximos, emite corrida.cortada antes de los informes."
+  },
+  {
+   "id": "kafka/todos>observador",
+   "de": "kafka/todos",
+   "a": "observador",
+   "tipo": "escucha",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "copia todo",
+   "detalle": "El observador escucha los doce tópicos."
+  },
+  {
+   "id": "web/sala>comparacion",
+   "de": "web/sala",
+   "a": "comparacion",
+   "tipo": "usa",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "compara con la original",
+   "detalle": "La página de una repetición muestra si sus mensajes son idénticos a los de la original."
+  },
+  {
+   "id": "inicio>base/corridas",
+   "de": "inicio",
+   "a": "base/corridas",
+   "tipo": "escribe",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "guarda la corrida",
+   "detalle": "Inserta la corrida en curso, antes de anunciarla."
+  },
+  {
+   "id": "inicio>base/libros_de_corrida",
+   "de": "inicio",
+   "a": "base/libros_de_corrida",
+   "tipo": "escribe",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "abre su libro",
+   "detalle": "Crea el libro de gasto de la corrida."
+  },
+  {
+   "id": "cierre>base/corridas",
+   "de": "cierre",
+   "a": "base/corridas",
+   "tipo": "escribe",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "la cierra",
+   "detalle": "Pone el estado (completa o cortada), el límite alcanzado y la hora de fin."
+  },
+  {
+   "id": "editor>base/hechos",
+   "de": "editor",
+   "a": "base/hechos",
+   "tipo": "escribe",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "el hecho",
+   "detalle": "Inserta el hecho por su clave, si no estaba."
+  },
+  {
+   "id": "editor>base/versiones_de_hecho",
+   "de": "editor",
+   "a": "base/versiones_de_hecho",
+   "tipo": "escribe",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "su versión",
+   "detalle": "Una versión nueva, con su grado, su estado de revisión y su traza."
+  },
+  {
+   "id": "editor>base/evidencias",
+   "de": "editor",
+   "a": "base/evidencias",
+   "tipo": "escribe",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "su evidencia",
+   "detalle": "Los fragmentos con su URL y la huella del contenido."
+  },
+  {
+   "id": "editor>base/entidades",
+   "de": "editor",
+   "a": "base/entidades",
+   "tipo": "escribe",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "las entidades nuevas",
+   "detalle": "Las personas jurídicas que aparecen como proveedoras, si no estaban."
+  },
+  {
+   "id": "editor>base/hecho_entidades",
+   "de": "editor",
+   "a": "base/hecho_entidades",
+   "tipo": "escribe",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "quién aparece",
+   "detalle": "Qué entidades menciona el hecho y con qué rol."
+  },
+  {
+   "id": "armado-de-informes>base/informes",
+   "de": "armado-de-informes",
+   "a": "base/informes",
+   "tipo": "escribe",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "el informe",
+   "detalle": "En una corrida normal guarda el informe de cada cliente."
+  },
+  {
+   "id": "armado-de-informes>base/informe_hechos",
+   "de": "armado-de-informes",
+   "a": "base/informe_hechos",
+   "tipo": "escribe",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "sus hechos",
+   "detalle": "Las versiones de esta corrida que entran en el informe."
+  },
+  {
+   "id": "grabaciones>base/grabaciones",
+   "de": "grabaciones",
+   "a": "base/grabaciones",
+   "tipo": "escribe",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "graba",
+   "detalle": "Inserta cada lectura y cada respuesta por su clave."
+  },
+  {
+   "id": "procesados>base/mensajes_procesados",
+   "de": "procesados",
+   "a": "base/mensajes_procesados",
+   "tipo": "escribe",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "anota",
+   "detalle": "Inserta el mensaje procesado por cada agente."
+  },
+  {
+   "id": "observador>base/mensajes",
+   "de": "observador",
+   "a": "base/mensajes",
+   "tipo": "escribe",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "copia cada mensaje",
+   "detalle": "Inserta cada mensaje; si ya estaba, no hace nada."
+  },
+  {
+   "id": "base/fuentes>inicio",
+   "de": "base/fuentes",
+   "a": "inicio",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "fuentes activas",
+   "detalle": "Las fuentes de la corrida."
+  },
+  {
+   "id": "base/suscripciones>inicio",
+   "de": "base/suscripciones",
+   "a": "inicio",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "entidades seguidas",
+   "detalle": "Las entidades con algún suscriptor."
+  },
+  {
+   "id": "base/modelos_de_agente>inicio",
+   "de": "base/modelos_de_agente",
+   "a": "inicio",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "modelo vigente",
+   "detalle": "El modelo vigente de cada agente, que congela en corrida.iniciada."
+  },
+  {
+   "id": "base/entidades>explorador-arce",
+   "de": "base/entidades",
+   "a": "explorador-arce",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "código de comprador",
+   "detalle": "El código de ARCE de cada entidad seguida."
+  },
+  {
+   "id": "base/hechos>archivista",
+   "de": "base/hechos",
+   "a": "archivista",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "¿ya está?",
+   "detalle": "El hecho con la misma clave."
+  },
+  {
+   "id": "base/versiones_de_hecho>archivista",
+   "de": "base/versiones_de_hecho",
+   "a": "archivista",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "última versión",
+   "detalle": "Su última versión de una corrida anterior a la de referencia."
+  },
+  {
+   "id": "base/evidencias>archivista",
+   "de": "base/evidencias",
+   "a": "archivista",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "huella anterior",
+   "detalle": "La huella del contenido de esa versión."
+  },
+  {
+   "id": "base/corridas>archivista",
+   "de": "base/corridas",
+   "a": "archivista",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "¿anterior?",
+   "detalle": "Cuándo empezó cada corrida, para comparar solo contra las anteriores."
+  },
+  {
+   "id": "base/mensajes_procesados>cierre",
+   "de": "base/mensajes_procesados",
+   "a": "cierre",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "¿lo procesó el editor?",
+   "detalle": "Cuántos hechos analizados ya procesó el editor."
+  },
+  {
+   "id": "base/clientes>armado-de-informes",
+   "de": "base/clientes",
+   "a": "armado-de-informes",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "clientes",
+   "detalle": "A quién se le arma un informe."
+  },
+  {
+   "id": "base/suscripciones>armado-de-informes",
+   "de": "base/suscripciones",
+   "a": "armado-de-informes",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "qué sigue cada uno",
+   "detalle": "Las entidades de cada cliente."
+  },
+  {
+   "id": "base/hechos>armado-de-informes",
+   "de": "base/hechos",
+   "a": "armado-de-informes",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "hechos de la noche",
+   "detalle": "Para enlazar el informe con las versiones."
+  },
+  {
+   "id": "base/versiones_de_hecho>armado-de-informes",
+   "de": "base/versiones_de_hecho",
+   "a": "armado-de-informes",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "versiones de la corrida",
+   "detalle": "Las versiones que escribió esta corrida."
+  },
+  {
+   "id": "base/corridas>modelo",
+   "de": "base/corridas",
+   "a": "modelo",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "cuándo empezó",
+   "detalle": "Para elegir el precio que regía al empezar la corrida."
+  },
+  {
+   "id": "base/precios_de_modelo>modelo",
+   "de": "base/precios_de_modelo",
+   "a": "modelo",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "precio vigente",
+   "detalle": "Entrada y salida por millón de tokens."
+  },
+  {
+   "id": "base/corridas>corridas",
+   "de": "base/corridas",
+   "a": "corridas",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "estado",
+   "detalle": "El estado de una corrida."
+  },
+  {
+   "id": "base/mensajes>registro",
+   "de": "base/mensajes",
+   "a": "registro",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "busca y espera",
+   "detalle": "Los mensajes de una corrida o uno por su identificador."
+  },
+  {
+   "id": "base/corridas>web/sala",
+   "de": "base/corridas",
+   "a": "web/sala",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "las corridas",
+   "detalle": "La lista y el encabezado de cada corrida."
+  },
+  {
+   "id": "base/mensajes>web/sala",
+   "de": "base/mensajes",
+   "a": "web/sala",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "la traza",
+   "detalle": "Los mensajes de la corrida, encadenados por su causa, y el costo de uso.modelo."
+  },
+  {
+   "id": "base/informes>web/manana",
+   "de": "base/informes",
+   "a": "web/manana",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "el último informe",
+   "detalle": "El último informe de la cuenta de demostración."
+  },
+  {
+   "id": "base/informe_hechos>web/manana",
+   "de": "base/informe_hechos",
+   "a": "web/manana",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "sus hechos",
+   "detalle": "Las versiones del informe."
+  },
+  {
+   "id": "base/versiones_de_hecho>web/manana",
+   "de": "base/versiones_de_hecho",
+   "a": "web/manana",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "afirmación y grado",
+   "detalle": "Afirmación, grado, razonamiento, fecha y estado de revisión."
+  },
+  {
+   "id": "base/hechos>web/manana",
+   "de": "base/hechos",
+   "a": "web/manana",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "tipo y clave",
+   "detalle": "El tipo de cada hecho."
+  },
+  {
+   "id": "base/evidencias>web/manana",
+   "de": "base/evidencias",
+   "a": "web/manana",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "la evidencia",
+   "detalle": "Los fragmentos con su URL."
+  },
+  {
+   "id": "base/clientes>web/manana",
+   "de": "base/clientes",
+   "a": "web/manana",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "la cuenta",
+   "detalle": "Cuál es la cuenta de demostración."
+  },
+  {
+   "id": "base/suscripciones>web/manana",
+   "de": "base/suscripciones",
+   "a": "web/manana",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "qué sigue",
+   "detalle": "Las entidades que sigue."
+  },
+  {
+   "id": "base/entidades>web/manana",
+   "de": "base/entidades",
+   "a": "web/manana",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "sus nombres",
+   "detalle": "El nombre de cada entidad seguida."
+  },
+  {
+   "id": "base/mensajes>web/manana",
+   "de": "base/mensajes",
+   "a": "web/manana",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "¿falló una fuente?",
+   "detalle": "Cuántos fuente.fallida tuvo la corrida del informe."
+  },
+  {
+   "id": "kafka/corrida.iniciada>explorador-bid",
+   "de": "kafka/corrida.iniciada",
+   "a": "explorador-bid",
+   "tipo": "escucha",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "empieza a explorar",
+   "detalle": "Escuchará corrida.iniciada como el de ARCE.",
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "explorador-bid>afuera/bid",
+   "de": "explorador-bid",
+   "a": "afuera/bid",
+   "tipo": "llama",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "lee la fuente",
+   "detalle": "Leerá lo publicado la noche objetivo.",
+   "fuente": "docs/fuentes/bid.md",
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "explorador-bid>kafka/candidatos",
+   "de": "explorador-bid",
+   "a": "kafka/candidatos",
+   "tipo": "emite",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "candidatos",
+   "detalle": "Emitirá candidatos con el mismo contrato.",
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "explorador-bid>kafka/exploracion.terminada",
+   "de": "explorador-bid",
+   "a": "kafka/exploracion.terminada",
+   "tipo": "emite",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "terminé",
+   "detalle": "Avisará cuándo terminó.",
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "explorador-bid>kafka/fuente.fallida",
+   "de": "explorador-bid",
+   "a": "kafka/fuente.fallida",
+   "tipo": "emite",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "la fuente falló",
+   "detalle": "Avisará si su fuente no respondió.",
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "kafka/corrida.iniciada>explorador-banco-mundial",
+   "de": "kafka/corrida.iniciada",
+   "a": "explorador-banco-mundial",
+   "tipo": "escucha",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "empieza a explorar",
+   "detalle": "Escuchará corrida.iniciada como el de ARCE.",
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "explorador-banco-mundial>afuera/banco-mundial",
+   "de": "explorador-banco-mundial",
+   "a": "afuera/banco-mundial",
+   "tipo": "llama",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "lee la fuente",
+   "detalle": "Leerá lo publicado la noche objetivo.",
+   "fuente": "docs/fuentes/banco-mundial.md",
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "explorador-banco-mundial>kafka/candidatos",
+   "de": "explorador-banco-mundial",
+   "a": "kafka/candidatos",
+   "tipo": "emite",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "candidatos",
+   "detalle": "Emitirá candidatos con el mismo contrato.",
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "explorador-banco-mundial>kafka/exploracion.terminada",
+   "de": "explorador-banco-mundial",
+   "a": "kafka/exploracion.terminada",
+   "tipo": "emite",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "terminé",
+   "detalle": "Avisará cuándo terminó.",
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "explorador-banco-mundial>kafka/fuente.fallida",
+   "de": "explorador-banco-mundial",
+   "a": "kafka/fuente.fallida",
+   "tipo": "emite",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "la fuente falló",
+   "detalle": "Avisará si su fuente no respondió.",
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "kafka/corrida.iniciada>explorador-presidencia",
+   "de": "kafka/corrida.iniciada",
+   "a": "explorador-presidencia",
+   "tipo": "escucha",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "empieza a explorar",
+   "detalle": "Escuchará corrida.iniciada como el de ARCE.",
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "explorador-presidencia>afuera/presidencia",
+   "de": "explorador-presidencia",
+   "a": "afuera/presidencia",
+   "tipo": "llama",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "lee la fuente",
+   "detalle": "Leerá lo publicado la noche objetivo.",
+   "fuente": "docs/fuentes/presidencia.md",
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "explorador-presidencia>kafka/candidatos",
+   "de": "explorador-presidencia",
+   "a": "kafka/candidatos",
+   "tipo": "emite",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "candidatos",
+   "detalle": "Emitirá candidatos con el mismo contrato.",
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "explorador-presidencia>kafka/exploracion.terminada",
+   "de": "explorador-presidencia",
+   "a": "kafka/exploracion.terminada",
+   "tipo": "emite",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "terminé",
+   "detalle": "Avisará cuándo terminó.",
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "explorador-presidencia>kafka/fuente.fallida",
+   "de": "explorador-presidencia",
+   "a": "kafka/fuente.fallida",
+   "tipo": "emite",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "la fuente falló",
+   "detalle": "Avisará si su fuente no respondió.",
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "kafka/corrida.iniciada>explorador-impo",
+   "de": "kafka/corrida.iniciada",
+   "a": "explorador-impo",
+   "tipo": "escucha",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "empieza a explorar",
+   "detalle": "Escuchará corrida.iniciada como el de ARCE.",
+   "tarjetas": [
+    "T30"
+   ]
+  },
+  {
+   "id": "explorador-impo>afuera/impo",
+   "de": "explorador-impo",
+   "a": "afuera/impo",
+   "tipo": "llama",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "lee la fuente",
+   "detalle": "Leerá lo publicado la noche objetivo.",
+   "fuente": "docs/fuentes/impo.md",
+   "tarjetas": [
+    "T30"
+   ]
+  },
+  {
+   "id": "explorador-impo>kafka/candidatos",
+   "de": "explorador-impo",
+   "a": "kafka/candidatos",
+   "tipo": "emite",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "candidatos",
+   "detalle": "Emitirá candidatos con el mismo contrato.",
+   "tarjetas": [
+    "T30"
+   ]
+  },
+  {
+   "id": "explorador-impo>kafka/exploracion.terminada",
+   "de": "explorador-impo",
+   "a": "kafka/exploracion.terminada",
+   "tipo": "emite",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "terminé",
+   "detalle": "Avisará cuándo terminó.",
+   "tarjetas": [
+    "T30"
+   ]
+  },
+  {
+   "id": "explorador-impo>kafka/fuente.fallida",
+   "de": "explorador-impo",
+   "a": "kafka/fuente.fallida",
+   "tipo": "emite",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "la fuente falló",
+   "detalle": "Avisará si su fuente no respondió.",
+   "tarjetas": [
+    "T30"
+   ]
+  },
+  {
+   "id": "analista>modelo",
+   "de": "analista",
+   "a": "modelo",
+   "tipo": "usa",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "escribe el análisis",
+   "detalle": "Le pedirá al modelo qué dice, por qué importa y qué mirar.",
+   "tarjetas": [
+    "T21"
+   ]
+  },
+  {
+   "id": "modelo>presupuesto",
+   "de": "modelo",
+   "a": "presupuesto",
+   "tipo": "usa",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "reserva antes de llamar",
+   "detalle": "Cada llamada reservará el peor caso en el libro de la corrida; si no alcanza, no se hace.",
+   "tarjetas": [
+    "T22"
+   ]
+  },
+  {
+   "id": "presupuesto>base/libros_de_corrida",
+   "de": "presupuesto",
+   "a": "base/libros_de_corrida",
+   "tipo": "escribe",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "reserva y gasto",
+   "detalle": "Llevará la reserva y el gasto real de cada llamada.",
+   "tarjetas": [
+    "T22"
+   ]
+  },
+  {
+   "id": "presupuesto>kafka/corrida.cortada",
+   "de": "presupuesto",
+   "a": "kafka/corrida.cortada",
+   "tipo": "emite",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "corta por costo o pasos",
+   "detalle": "Cortará la corrida cuando se acabe el presupuesto.",
+   "tarjetas": [
+    "T22"
+   ]
+  },
+  {
+   "id": "medicion-banco>inicio",
+   "de": "medicion-banco",
+   "a": "inicio",
+   "tipo": "usa",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "una corrida por noche del registro",
+   "detalle": "Correrá la rebanada en modo banco sobre cada noche del registro.",
+   "tarjetas": [
+    "T20"
+   ]
+  },
+  {
+   "id": "medicion-banco>afuera/registro-banco",
+   "de": "medicion-banco",
+   "a": "afuera/registro-banco",
+   "tipo": "llama",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "lee lo que encontró la vigilancia",
+   "detalle": "Leerá el registro para comparar noche por noche.",
+   "tarjetas": [
+    "T12",
+    "T20"
+   ]
+  },
+  {
+   "id": "web/revision>base/revisiones",
+   "de": "web/revision",
+   "a": "base/revisiones",
+   "tipo": "escribe",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "la revisión",
+   "detalle": "Guardará cada revisión humana.",
+   "tarjetas": [
+    "T23"
+   ]
+  },
+  {
+   "id": "web/revision>base/versiones_de_hecho",
+   "de": "web/revision",
+   "a": "base/versiones_de_hecho",
+   "tipo": "escribe",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "el estado de revisión",
+   "detalle": "Pasará la versión de pendiente a revisada.",
+   "tarjetas": [
+    "T23"
+   ]
+  },
+  {
+   "id": "web/responsable>base/modelos_de_agente",
+   "de": "web/responsable",
+   "a": "base/modelos_de_agente",
+   "tipo": "escribe",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "cambia un modelo",
+   "detalle": "Una fila nueva por cambio; vale desde la corrida siguiente.",
+   "tarjetas": [
+    "T29"
+   ]
+  },
+  {
+   "id": "web/responsable>base/precios_de_modelo",
+   "de": "web/responsable",
+   "a": "base/precios_de_modelo",
+   "tipo": "escribe",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "cambia un precio",
+   "detalle": "Una fila nueva por cambio, con su fuente y fecha.",
+   "tarjetas": [
+    "T29"
+   ]
+  },
+  {
+   "id": "base/hecho_entidades>web/expediente",
+   "de": "base/hecho_entidades",
+   "a": "web/expediente",
+   "tipo": "lee",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "los hechos de la entidad",
+   "detalle": "Los hechos que mencionan a la entidad.",
+   "tarjetas": [
+    "T33"
+   ]
+  },
+  {
+   "id": "base/versiones_de_hecho>web/expediente",
+   "de": "base/versiones_de_hecho",
+   "a": "web/expediente",
+   "tipo": "lee",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "todas las versiones",
+   "detalle": "Cada versión, en orden.",
+   "tarjetas": [
+    "T33"
+   ]
+  },
+  {
+   "id": "web/login>base/usuarios",
+   "de": "web/login",
+   "a": "base/usuarios",
+   "tipo": "escribe",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "invitados y tokens",
+   "detalle": "Los correos de los invitados y los tokens del login.",
+   "tarjetas": [
+    "T25"
+   ]
+  },
+  {
+   "id": "web/login>afuera/mailpit",
+   "de": "web/login",
+   "a": "afuera/mailpit",
+   "tipo": "llama",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "manda el enlace",
+   "detalle": "El enlace de un solo uso, al buzón de prueba.",
+   "tarjetas": [
+    "T25"
+   ]
+  }
+ ],
+ "recorridos": [
+  {
+   "id": "noche",
+   "titulo": "Una noche normal",
+   "sub": "una compra del BPS, de ARCE a la página de la mañana",
+   "pasos": [
+    {
+     "en": "web/sala",
+     "texto": "En la sala de máquinas se elige una noche y se aprieta Correr. Si el reloj está encendido, lo hace la corrida por reloj."
+    },
+    {
+     "en": "web/sala>inicio",
+     "texto": "La sala le pide al inicio una corrida normal para esa noche."
+    },
+    {
+     "en": "base/modelos_de_agente>inicio",
+     "texto": "El inicio lee las fuentes activas, las entidades que alguien sigue y el modelo vigente de cada agente."
+    },
+    {
+     "en": "inicio>base/corridas",
+     "texto": "Guarda la corrida en curso y le abre su libro de gasto."
+    },
+    {
+     "en": "inicio>kafka/corrida.iniciada",
+     "texto": "Anuncia la corrida: noche, fuentes, entidades seguidas, presupuesto y modelos, congelados para todos."
+    },
+    {
+     "en": "kafka/corrida.iniciada>explorador-arce",
+     "texto": "El explorador de ARCE se despierta."
+    },
+    {
+     "en": "lector-arce>afuera/arce",
+     "texto": "Por el lector, lee el feed del mes y cada publicación de la noche y del día de margen. El feed no dice quién compra: hay que leerlas todas."
+    },
+    {
+     "en": "explorador-arce>grabaciones",
+     "texto": "Graba cada lectura, ya enmascarada, y sigue con lo grabado."
+    },
+    {
+     "en": "explorador-arce>kafka/candidatos",
+     "texto": "Por cada compra del BPS, un candidato armado con los campos de la publicación, sin el modelo."
+    },
+    {
+     "en": "kafka/candidatos>archivista",
+     "texto": "El archivista recibe el candidato."
+    },
+    {
+     "en": "base/evidencias>archivista",
+     "texto": "Busca el hecho con la misma clave en corridas anteriores y compara la huella del contenido."
+    },
+    {
+     "en": "archivista>kafka/candidatos.cotejados",
+     "texto": "Es nuevo: sigue. Si fuera conocido, terminaría acá."
+    },
+    {
+     "en": "kafka/candidatos.cotejados>refutador",
+     "texto": "El refutador intenta tirarlo abajo."
+    },
+    {
+     "en": "refutador>lector-arce",
+     "texto": "Vuelve a leer la publicación por su cuenta."
+    },
+    {
+     "en": "refutador>modelo",
+     "texto": "Le pide al modelo que compare la afirmación con la publicación."
+    },
+    {
+     "en": "modelo>afuera/anthropic",
+     "texto": "El servicio del modelo llama a Claude Sonnet, el modelo que la corrida fijó para el refutador, y graba la respuesta."
+    },
+    {
+     "en": "modelo>kafka/uso.modelo",
+     "texto": "Anota los tokens y el costo de la llamada."
+    },
+    {
+     "en": "refutador>kafka/candidatos.graduados",
+     "texto": "PROVEN: todo lo afirmado está literal en la publicación."
+    },
+    {
+     "en": "kafka/candidatos.graduados>analista",
+     "texto": "El analista recibe lo graduado."
+    },
+    {
+     "en": "analista>kafka/hechos.analizados",
+     "texto": "Lo pasa al editor. El análisis con el modelo llega con T21."
+    },
+    {
+     "en": "kafka/hechos.analizados>editor",
+     "texto": "El editor lo publica."
+    },
+    {
+     "en": "editor>base/versiones_de_hecho",
+     "texto": "Guarda el hecho, su versión, su evidencia y sus entidades. Si fuera INFERRED, además lo mandaría a revisión."
+    },
+    {
+     "en": "cierre",
+     "texto": "Cada dos segundos, el cierre cuenta si todos los candidatos llegaron a un final."
+    },
+    {
+     "en": "cierre>armado-de-informes",
+     "texto": "Llegaron: arma el informe de cada cliente."
+    },
+    {
+     "en": "armado-de-informes>base/informes",
+     "texto": "Guarda el informe con sus hechos y lo anuncia en informes."
+    },
+    {
+     "en": "cierre>kafka/corrida.terminada",
+     "texto": "Cierra la corrida con sus conteos, su costo y su duración."
+    },
+    {
+     "en": "web/manana",
+     "texto": "A la mañana, la página muestra el hecho con su grado, su evidencia y el enlace a su traza en la sala de máquinas."
+    }
+   ]
+  },
+  {
+   "id": "repeticion",
+   "titulo": "La misma noche, repetida",
+   "sub": "sin red ni costo, con los mismos mensajes",
+   "pasos": [
+    {
+     "en": "web/sala",
+     "texto": "En la sala de máquinas se elige una corrida terminada y se aprieta Repetir."
+    },
+    {
+     "en": "web/sala>inicio",
+     "texto": "El inicio arma una corrida en modo reproducción, con lo mismo que congeló la original."
+    },
+    {
+     "en": "inicio>kafka/corrida.iniciada",
+     "texto": "corrida.iniciada dice el modo y la corrida que se repite (reproduceA)."
+    },
+    {
+     "en": "explorador-arce>grabaciones",
+     "texto": "El explorador no llama al lector: lee las grabaciones de la original. Si falta una, la corrida falla en vez de salir a la red."
+    },
+    {
+     "en": "explorador-arce>kafka/candidatos",
+     "texto": "Emite los mismos candidatos, con los mismos identificadores salvo por la corrida."
+    },
+    {
+     "en": "base/corridas>archivista",
+     "texto": "El archivista coteja contra los hechos de corridas anteriores a la original: decide lo mismo que ella."
+    },
+    {
+     "en": "refutador>grabaciones",
+     "texto": "La relectura del refutador también sale de la grabación."
+    },
+    {
+     "en": "modelo>grabaciones",
+     "texto": "La respuesta del modelo sale de la grabación: no se llama a la API."
+    },
+    {
+     "en": "modelo>kafka/uso.modelo",
+     "texto": "uso.modelo dice reproducida, con costo cero."
+    },
+    {
+     "en": "editor",
+     "texto": "El editor emite los mismos mensajes pero no escribe la base, y el armado no guarda informes."
+    },
+    {
+     "en": "comparacion",
+     "texto": "La comparación pone lado a lado los mensajes: tipo, agente y contenido, sin identificadores, horas ni costos."
+    },
+    {
+     "en": "web/sala>comparacion",
+     "texto": "La página de la repetición dice si los mensajes son idénticos."
+    }
+   ]
+  },
+  {
+   "id": "fallas",
+   "titulo": "Cuando algo falla",
+   "sub": "una fuente que no responde, un modelo que no contesta",
+   "pasos": [
+    {
+     "en": "lector-arce>afuera/arce",
+     "texto": "ARCE no responde: el lector lo intenta tres veces, con una espera que crece."
+    },
+    {
+     "en": "explorador-arce>grabaciones",
+     "texto": "La falla también se graba, así una repetición falla en el mismo lugar."
+    },
+    {
+     "en": "explorador-arce>kafka/fuente.fallida",
+     "texto": "Emite fuente.fallida con la URL y el tipo de falla."
+    },
+    {
+     "en": "explorador-arce>kafka/exploracion.terminada",
+     "texto": "Igual avisa que terminó, con lo que quedó sin procesar."
+    },
+    {
+     "en": "refutador>modelo",
+     "texto": "Si el modelo no contesta o contesta algo ilegible, el error se graba y el candidato sale NOT_MENTIONED: sin veredicto no se publica."
+    },
+    {
+     "en": "cierre",
+     "texto": "El cierre cierra la corrida con lo que hubo."
+    },
+    {
+     "en": "base/mensajes>web/manana",
+     "texto": "La página de la mañana avisa que no se pudo leer todo y que puede faltar algo."
+    }
+   ]
+  },
+  {
+   "id": "conocido",
+   "titulo": "La misma compra, otra noche",
+   "sub": "lo que ya se publicó no se publica de nuevo",
+   "pasos": [
+    {
+     "en": "kafka/candidatos>archivista",
+     "texto": "Al otro día, el día de margen trae otra vez la misma publicación."
+    },
+    {
+     "en": "base/evidencias>archivista",
+     "texto": "La huella del contenido es la misma que la de la versión guardada."
+    },
+    {
+     "en": "archivista>kafka/candidatos.cotejados",
+     "texto": "Conocido: el candidato termina acá, sin llamar al modelo."
+    },
+    {
+     "en": "cierre",
+     "texto": "El cierre lo cuenta como un final."
+    },
+    {
+     "en": "web/manana",
+     "texto": "Si no hubo otra cosa, el informe dice que no hubo nada nuevo."
+    }
+   ]
+  },
+  {
+   "id": "cierre",
+   "titulo": "Cómo termina una corrida",
+   "sub": "del observador al informe",
+   "pasos": [
+    {
+     "en": "kafka/todos>observador",
+     "texto": "El observador escucha los doce tópicos."
+    },
+    {
+     "en": "observador>base/mensajes",
+     "texto": "Copia cada mensaje a la base: es la historia de la corrida."
+    },
+    {
+     "en": "cierre",
+     "texto": "Cada dos segundos, el cierre mira las corridas en curso."
+    },
+    {
+     "en": "kafka/exploracion.terminada",
+     "texto": "Toma el total de candidatos de exploracion.terminada, no de contar candidatos: el observador guarda cada tópico a su ritmo."
+    },
+    {
+     "en": "base/mensajes_procesados>cierre",
+     "texto": "Cuenta los finales: conocidos, NOT_MENTIONED y lo que ya procesó el editor."
+    },
+    {
+     "en": "cierre>base/corridas",
+     "texto": "Si llegaron todos, marca la corrida completa."
+    },
+    {
+     "en": "cierre>armado-de-informes",
+     "texto": "Arma los informes."
+    },
+    {
+     "en": "cierre>kafka/corrida.terminada",
+     "texto": "Y emite corrida.terminada."
+    },
+    {
+     "en": "cierre>kafka/corrida.cortada",
+     "texto": "Si pasaron los 45 minutos, la corta: corrida.cortada, los informes marcados y corrida.terminada."
+    }
+   ]
+  },
+  {
+   "id": "falta",
+   "titulo": "Lo que falta construir",
+   "sub": "lo diseñado, con su tarjeta",
+   "pasos": [
+    {
+     "en": "medicion-banco",
+     "texto": "La medición contra el banco de pruebas (T20), después del formato y la muestra del banco (T12)."
+    },
+    {
+     "en": "analista>modelo",
+     "texto": "El análisis con el modelo (T21)."
+    },
+    {
+     "en": "presupuesto",
+     "texto": "El presupuesto que corta, por costo y por pasos (T22)."
+    },
+    {
+     "en": "web/revision",
+     "texto": "La cola de revisión humana (T23)."
+    },
+    {
+     "en": "explorador-bid",
+     "texto": "Los exploradores del BID, el Banco Mundial y Presidencia (T24)."
+    },
+    {
+     "en": "web/login",
+     "texto": "El login por enlace y los usuarios invitados (T25)."
+    },
+    {
+     "en": "web/como-funciona",
+     "texto": "La sección Cómo funciona (T26)."
+    },
+    {
+     "en": "web/responsable",
+     "texto": "La pantalla del responsable para cambiar modelos y precios (T29)."
+    },
+    {
+     "en": "explorador-impo",
+     "texto": "El explorador de IMPO (T30)."
+    },
+    {
+     "en": "web/expediente",
+     "texto": "El expediente de cada entidad (T33)."
+    }
+   ]
+  }
+ ],
+ "historial": [
+  {
+   "fecha": "2026-11-14",
+   "texto": "Primera versión del tablero: la primera rebanada construida (T08) y lo diseñado de la versión 0, verificado contra el código (ADR 0012).",
+   "objetos": [
+    "explorador-arce",
+    "lector-arce",
+    "archivista",
+    "refutador",
+    "analista",
+    "editor",
+    "armado-de-informes",
+    "cierre",
+    "grabaciones",
+    "modelo",
+    "observador",
+    "web/manana",
+    "web/sala"
+   ]
+  }
+ ]
+}

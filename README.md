@@ -16,7 +16,7 @@ Si llegás por primera vez, seas persona o asistente, leé la carpeta [`arranque
 
 ## Estado
 
-Fase de documentación: todavía no hay código. Lo que está en curso y lo que falta está en el [tablero](tablero.md), que también se ve como kanban en [`kanban/index.html`](kanban/index.html) (se abre en cualquier navegador). Lo que cambió, en el [CHANGELOG](CHANGELOG.md).
+En construcción: la primera rebanada anda de punta a punta, con una fuente. Cómo es el sistema, objeto por objeto, está en el [tablero de arquitectura](docs/tablero-de-arquitectura/README.md). Lo que está en curso y lo que falta está en el [tablero](tablero.md), que también se ve como kanban en [`kanban/index.html`](kanban/index.html) (se abre en cualquier navegador). Lo que cambió, en el [CHANGELOG](CHANGELOG.md).
 
 ## Las reglas del proyecto
 
@@ -32,6 +32,7 @@ Fase de documentación: todavía no hay código. Lo que está en curso y lo que 
 10. **El repositorio es el único handoff:** una sesión nueva, de una persona o de un asistente, arranca desde la carpeta [`arranque/`](arranque/README.md) sin necesitar nada más.
 11. **Sin datos personales en la base ni en la demo;** solo fuentes públicas y datos sintéticos para las pruebas. El proyecto es independiente de cualquier trabajo para clientes y no incluye material de otros proyectos.
 12. **Después de cada escritura se relee el archivo y se comprueba el cambio.** Nada se da por hecho sin verlo.
+13. **El [tablero de arquitectura](docs/tablero-de-arquitectura/README.md) refleja el sistema con precisión y exactitud en todo momento.** Todo cambio de la arquitectura se hace en el tablero en el mismo momento, los pedidos se hacen citando sus objetos, y el verificador falla si el tablero y el código no coinciden ([ADR 0012](adrs/0012-tablero-de-arquitectura.md)).
 
 Cómo se cumple cada regla en la práctica está en [`arranque/como-se-trabaja.md`](arranque/como-se-trabaja.md).
 

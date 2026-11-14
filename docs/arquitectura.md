@@ -2,6 +2,8 @@
 
 Cómo está armado El Parte en la versión 0: qué piezas tiene, cómo se pasan el trabajo durante una noche, qué ve cada persona a la mañana y qué pasa cuando algo falla. Se apoya en los ADRs [0002](../adrs/0002-orquestacion-por-mensajes.md) a [0008](../adrs/0008-datos-personales.md), todos aceptados: si alguno cambia, este documento cambia con él.
 
+Este documento explica el porqué. El sistema tal como es, objeto por objeto, con cada tópico, cada tabla y cada conexión, está en el [tablero de arquitectura](tablero-de-arquitectura/README.md), que el verificador compara con el código y que es la referencia para pedir cambios ([ADR 0012](../adrs/0012-tablero-de-arquitectura.md)).
+
 ## La lámina
 
 ![Arquitectura de la versión 0: cinco fuentes públicas alimentan a los exploradores; los agentes se pasan el trabajo por Kafka; el observador guarda todo en PostgreSQL; la web muestra la página de la mañana, el expediente y la sala de máquinas.](laminas/arquitectura.svg)

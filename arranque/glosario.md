@@ -59,6 +59,7 @@ Los términos que usa el proyecto, en orden alfabético. Si un documento usa un 
 | Presupuesto por corrida | Límite de pasos, tiempo y costo de una corrida. Cuando se pasa, la corrida se corta y lo dice. |
 | PROVEN | Grado: verificado. En un hecho, la fuente lo dice. En un documento, hay URL oficial o comprobación descrita, con fecha. |
 | Rebanada de punta a punta | Una versión chica pero completa del sistema, que atraviesa todas las capas: de la fuente a la página de la mañana. |
+| Recorrido | En el tablero de arquitectura, un camino por el sistema parada por parada, por ejemplo una noche normal o una corrida repetida. |
 | Refutador | Agente que intenta tirar abajo cada candidato y le pone un grado. |
 | Reproducción | El modo de una corrida que repite otra leyendo solo sus grabaciones: sin red, sin costo y con los mismos mensajes. Ver [docs/contratos.md](../docs/contratos.md), "Repetir una corrida". |
 | Revisión humana | Cola de hechos dudosos que revisa una persona. Mientras no se revisan, se muestran marcados. |
@@ -70,7 +71,8 @@ Los términos que usa el proyecto, en orden alfabético. Si un documento usa un 
 | Spring AI | Proyecto del ecosistema Spring para usar modelos de lenguaje desde Java. Su estado actual se verifica en el ADR del stack. |
 | Spring Boot | Forma estándar de armar aplicaciones Java con Spring, con configuración por defecto. |
 | SVG | Formato de imagen vectorial escrito en texto. Se usa para las láminas. |
-| Tablero | Archivo `tablero.md` con todo lo pendiente, en tarjetas. Es la única fuente del kanban. |
+| Tablero | Archivo `tablero.md` con todo lo pendiente, en tarjetas. Es la única fuente del kanban. No confundir con el tablero de arquitectura. |
+| Tablero de arquitectura | La página de `docs/tablero-de-arquitectura/` con el sistema objeto por objeto: refleja la arquitectura en todo momento, el verificador la compara con el código y los pedidos citan sus objetos (`arquitectura: <id>`). No es el tablero de tareas. Ver el ADR 0012. |
 | Tarjeta | Un pendiente del tablero: un bloque `###` de `tablero.md` con tipo, dueño, notas, etapas, lista y registro. |
 | Testcontainers | Biblioteca que levanta contenedores de Docker desde una prueba, para probar contra un PostgreSQL o un Kafka de verdad y no contra imitaciones. |
 | Token | Unidad en la que un modelo de lenguaje mide el texto que lee y escribe. Los proveedores cobran por millón de tokens. |

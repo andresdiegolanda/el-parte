@@ -22,6 +22,11 @@ Controla, sobre todo el repositorio:
 9. Que la primera migración de la base (app/.../db/migration/V1__base.sql) sea,
    aparte de su encabezado de comentarios, el primer bloque SQL de
    docs/base-de-afirmaciones.md: el documento manda.
+10. Que el tablero de arquitectura coincida con el código (ADR 0012): cada clase y
+    plantilla en un objeto, los tópicos y las tablas del código, quién emite,
+    escucha, escribe, lee y usa qué, las rutas de cada página, lo diseñado con
+    tarjetas vivas, y index.html igual a lo que genera sistema.json. El detalle
+    está en herramientas/tablero_arquitectura.py.
 
 Uso:  python3 herramientas/verificar_docs.py
 Sale con codigo 0 si todo esta bien y 1 si encuentra algun problema.
@@ -41,6 +46,7 @@ from urllib.parse import unquote
 
 import generar_kanban
 import generar_laminas
+import tablero_arquitectura
 import tablero_md
 
 RAIZ = Path(__file__).resolve().parent.parent
@@ -259,6 +265,7 @@ def main():
     verificar_mermaid(markdowns, errores, avisos)
     verificar_referencias(markdowns, ids, decisiones_definidas(), errores)
     verificar_migracion(errores)
+    errores.extend(tablero_arquitectura.verificar())
 
     for aviso in avisos:
         print(f"Aviso: {aviso}")
