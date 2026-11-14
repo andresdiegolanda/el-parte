@@ -3,7 +3,7 @@
 Todo pendiente de El Parte vive acá, con dueño (regla 8). Este archivo es lo que manda. El kanban publicado es editable y se sincroniza con este archivo cada vez que una sesión de desarrollo lee o escribe el repositorio, o cuando se le pide; su copia sin conexión, [`kanban/index.html`](kanban/index.html), se genera desde acá con `python3 herramientas/generar_kanban.py` y no se edita a mano ([ADR 0009](adrs/0009-kanban-editable-sincronizado.md)).
 
 - Actualizado: 2026-11-14
-- Nota: El kanban publicado ahora se puede editar, y cada sesión lo sincroniza con este archivo (T28, ADR 0009). La primera rebanada (T08) sigue esperando la revisión de los ADRs (T19), la clave (T14) y el registro del banco (T11).
+- Nota: Los ADRs 0002 a 0005, 0007 y 0008 están aceptados. La primera rebanada (T08) espera solo la clave del proveedor (T14); medirla contra el banco de pruebas espera el registro (T11).
 - Calendario: 2026-11-07, 2026-11-14, 2026-11-21, 2026-11-28
 - Repositorio: https://github.com/andresdiegolanda/el-parte
 
@@ -87,20 +87,33 @@ Los campos van pegados al título, sin línea en blanco. Los que no aplican se o
 - Dueño: Andrés
 - Detalle: [adrs/README.md](adrs/README.md)
 
-Los ADRs 0002 a 0009 están propuestos; el 0001 quedó reemplazado por el 0009. Cada uno se acepta, se corrige o se rechaza; al aceptarlo, su estado pasa a "aceptado" en el archivo y en el índice.
+Cada ADR propuesto se acepta, se corrige o se rechaza; al aceptarlo, su estado pasa a "aceptado" en el archivo y en el índice. El 0001 quedó reemplazado por el 0009. Quedan el 0006 y el 0009.
 
 Lista:
-- [ ] 0002: orquestación por mensajes
-- [ ] 0003: elección del stack
-- [ ] 0004: grados de evidencia
-- [ ] 0005: presupuesto por corrida
+- [x] 0002: orquestación por mensajes
+- [x] 0003: elección del stack
+- [x] 0004: grados de evidencia
+- [x] 0005: presupuesto por corrida
 - [ ] 0006: fuentes de la versión 0
-- [ ] 0007: registro del banco de pruebas fuera del repositorio
-- [ ] 0008: datos personales
+- [x] 0007: registro del banco de pruebas fuera del repositorio
+- [x] 0008: datos personales
 - [ ] 0009: kanban editable, sincronizado con el tablero
 
 Registro:
 - 2026-11-07: Creada.
+- 2026-11-14: Aceptados el 0007 y el 0008.
+- 2026-11-14: Aceptados del 0002 al 0005, con correcciones en el 0003, el 0004 y el 0005.
+
+### T14 · Dejar la clave del proveedor de modelos fuera del repositorio
+- Tipo: Gestión
+- Dueño: Andrés
+- Depende de: T05
+
+Para las corridas reales (D4). Las pruebas automáticas no la necesitan: usan respuestas grabadas.
+
+Registro:
+- 2026-11-07: Creada.
+- 2026-11-14: Pasa a Para empezar: T05 está hecha.
 
 ### T18 · Pedir a IMPO que aclare si su JSON de normas se puede reutilizar
 - Tipo: Gestión
@@ -123,58 +136,6 @@ Registro:
 - 2026-11-07: Creada.
 
 ## Esperando
-
-### T06 · Escribir los ADRs de las decisiones D2 y D3
-- Tipo: ADR
-- Dueño: desarrollo
-- Espera a: Andrés, que acepte o corrija los ADRs 0007 y 0008 (T19)
-- Detalle: [adrs/0007-registro-del-banco-fuera-del-repositorio.md](adrs/0007-registro-del-banco-fuera-del-repositorio.md), [adrs/0008-datos-personales.md](adrs/0008-datos-personales.md)
-
-D2 deja el registro del banco de pruebas fuera del repositorio y D3 fija cómo se tratan los datos personales. Las dos son significativas y pasan a ADR (regla 3).
-
-Etapas:
-- [x] Contexto y alternativas
-- [x] Fuentes verificadas
-- [x] Escrito
-- [ ] Aceptado
-
-Lista:
-- [x] ADR de D2: registro fuera del repositorio
-- [x] ADR de D3: datos personales
-
-Registro:
-- 2026-11-07: Creada.
-- 2026-11-07: Escritos los ADRs 0007 y 0008, propuestos. Pasa a Esperando hasta que se acepten.
-
-### T05 · Escribir los primeros ADRs
-- Tipo: ADR
-- Dueño: desarrollo
-- Depende de: T09
-- Espera a: Andrés, que acepte o corrija los ADRs 0002 a 0005 (T19)
-- Detalle: [adrs/0002-orquestacion-por-mensajes.md](adrs/0002-orquestacion-por-mensajes.md), [adrs/0003-eleccion-del-stack.md](adrs/0003-eleccion-del-stack.md), [adrs/0004-grados-de-evidencia.md](adrs/0004-grados-de-evidencia.md), [adrs/0005-presupuesto-por-corrida.md](adrs/0005-presupuesto-por-corrida.md)
-
-Las cuatro decisiones de base del sistema. El del stack fija los modelos concretos, el sistema de mensajería, la interfaz web y el buzón de correo de prueba (D9).
-
-Etapas:
-- [x] Contexto y alternativas
-- [x] Fuentes verificadas
-- [x] Escrito
-- [ ] Aceptado
-
-Lista:
-- [x] Orquestación por mensajes
-- [x] Elección del stack
-- [x] Grados de evidencia
-- [x] Presupuesto por corrida (D4)
-- [x] Versión de Spring AI (2.0.x o 2.1) y de Java
-- [x] Proyecto de mensajería compatible con Spring Boot 4
-- [x] Cómo grabar y repetir respuestas del modelo en las pruebas (D4)
-
-Registro:
-- 2026-11-07: Creada.
-- 2026-11-07: Pasa a Para empezar: T09 está hecha. Suma tres puntos que la verificación dejó abiertos.
-- 2026-11-07: Pasa a En curso.
-- 2026-11-07: Escritos los ADRs 0002 a 0005, propuestos. Pasa a Esperando hasta que se acepten.
 
 ## Pendiente
 
@@ -224,16 +185,6 @@ Lista:
 - [ ] Formato del registro
 - [ ] Muestra sintética
 - [ ] Forma de las métricas
-
-Registro:
-- 2026-11-07: Creada.
-
-### T14 · Dejar la clave del proveedor de modelos fuera del repositorio
-- Tipo: Gestión
-- Dueño: Andrés
-- Depende de: T05
-
-Para las corridas reales (D4). Las pruebas automáticas no la necesitan: usan respuestas grabadas.
 
 Registro:
 - 2026-11-07: Creada.
@@ -291,7 +242,7 @@ Etapas:
 Lista:
 - [ ] Advisor de presupuesto en todos los ChatClient
 - [ ] Libro de la corrida con actualización atómica
-- [ ] Tabla de precios con fuente y fecha
+- [ ] Tabla de precios en la base, con fuente y fecha, y sus valores iniciales en una migración
 - [ ] Corte por tiempo y mensaje corrida.cortada
 
 Registro:
@@ -388,7 +339,84 @@ Etapas:
 Registro:
 - 2026-11-07: Creada con el plan (T07).
 
+### T29 · Cambiar el modelo de cada agente sin reiniciar la aplicación
+- Tipo: Web
+- Dueño: desarrollo
+- Depende de: T22, T25
+- Detalle: [adrs/0003-eleccion-del-stack.md](adrs/0003-eleccion-del-stack.md), [adrs/0005-presupuesto-por-corrida.md](adrs/0005-presupuesto-por-corrida.md), [docs/base-de-afirmaciones.md](docs/base-de-afirmaciones.md)
+
+El modelo de cada agente y los precios viven en la base, con historia, y el responsable los cambia desde la sala de máquinas. Cada cambio vale desde la corrida siguiente.
+
+Etapas:
+- [ ] Diseño
+- [ ] Código
+- [ ] Pruebas
+- [ ] Página cómo se hizo
+
+Lista:
+- [ ] Tablas de modelos y precios, con los valores iniciales en una migración
+- [ ] El inicio de la corrida congela los modelos en corrida.iniciada
+- [ ] Cada agente pasa su modelo en las opciones de cada pedido
+- [ ] Rol de responsable en la lista de invitados
+- [ ] Pantalla del responsable, que no deja elegir un modelo sin precio
+- [ ] La sala de máquinas muestra qué modelo usó cada agente
+
+Registro:
+- 2026-11-14: Creada al aceptar el ADR 0003.
+
 ## Hecho
+
+### T05 · Escribir los primeros ADRs
+- Tipo: ADR
+- Dueño: desarrollo
+- Depende de: T09
+- Detalle: [adrs/0002-orquestacion-por-mensajes.md](adrs/0002-orquestacion-por-mensajes.md), [adrs/0003-eleccion-del-stack.md](adrs/0003-eleccion-del-stack.md), [adrs/0004-grados-de-evidencia.md](adrs/0004-grados-de-evidencia.md), [adrs/0005-presupuesto-por-corrida.md](adrs/0005-presupuesto-por-corrida.md)
+
+Las cuatro decisiones de base del sistema. El del stack fija los modelos concretos, el sistema de mensajería, la interfaz web y el buzón de correo de prueba (D9).
+
+Etapas:
+- [x] Contexto y alternativas
+- [x] Fuentes verificadas
+- [x] Escrito
+- [x] Aceptado
+
+Lista:
+- [x] Orquestación por mensajes
+- [x] Elección del stack
+- [x] Grados de evidencia
+- [x] Presupuesto por corrida (D4)
+- [x] Versión de Spring AI (2.0.x o 2.1) y de Java
+- [x] Proyecto de mensajería compatible con Spring Boot 4
+- [x] Cómo grabar y repetir respuestas del modelo en las pruebas (D4)
+
+Registro:
+- 2026-11-07: Creada.
+- 2026-11-07: Pasa a Para empezar: T09 está hecha. Suma tres puntos que la verificación dejó abiertos.
+- 2026-11-07: Pasa a En curso.
+- 2026-11-07: Escritos los ADRs 0002 a 0005, propuestos. Pasa a Esperando hasta que se acepten.
+- 2026-11-14: Aceptados los ADRs 0002 a 0005, con dos correcciones: el grado NOT_MENTIONED en inglés (0004) y el modelo de cada agente configurable sin reiniciar (0003 y 0005, implementado en T29). Pasa a Hecho.
+
+### T06 · Escribir los ADRs de las decisiones D2 y D3
+- Tipo: ADR
+- Dueño: desarrollo
+- Detalle: [adrs/0007-registro-del-banco-fuera-del-repositorio.md](adrs/0007-registro-del-banco-fuera-del-repositorio.md), [adrs/0008-datos-personales.md](adrs/0008-datos-personales.md)
+
+D2 deja el registro del banco de pruebas fuera del repositorio y D3 fija cómo se tratan los datos personales. Las dos son significativas y pasan a ADR (regla 3).
+
+Etapas:
+- [x] Contexto y alternativas
+- [x] Fuentes verificadas
+- [x] Escrito
+- [x] Aceptado
+
+Lista:
+- [x] ADR de D2: registro fuera del repositorio
+- [x] ADR de D3: datos personales
+
+Registro:
+- 2026-11-07: Creada.
+- 2026-11-07: Escritos los ADRs 0007 y 0008, propuestos. Pasa a Esperando hasta que se acepten.
+- 2026-11-14: Aceptados los ADRs 0007 y 0008. Pasa a Hecho.
 
 ### T28 · Hacer editable el kanban y sincronizarlo con el tablero
 - Tipo: Herramienta
@@ -404,6 +432,7 @@ Etapas:
 
 Registro:
 - 2026-11-14: Creada y hecha.
+- 2026-11-14: La sincronización también lleva a la base los cambios de orden hechos en tablero.md, con una operación que solo escribe el orden.
 
 ### T07 · Escribir docs/plan.md
 - Tipo: Documento

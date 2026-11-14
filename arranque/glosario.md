@@ -32,7 +32,7 @@ Los términos que usa el proyecto, en orden alfabético. Si un documento usa un 
 | Flujo de trabajo | Sistema de agentes en el que el código fija el camino y los modelos se llaman en pasos predefinidos. Una noche de El Parte es un flujo de trabajo. |
 | Fuera de alcance | Hallazgo del banco de pruebas que vino de un lugar que El Parte no lee (prensa, buscadores). Se cuenta aparte en la medición. |
 | Grado (de un documento) | Lo que lleva cada afirmación técnica de los documentos del proyecto: PROVEN con fuente, INFERRED o ASSUMED. Ver [como-se-trabaja.md](como-se-trabaja.md). |
-| Grado (de un hecho) | Lo que pone el refutador a cada hecho: PROVEN (la fuente lo dice), INFERRED (se deduce de lo que dice la fuente) o "las fuentes no lo mencionan". |
+| Grado (de un hecho) | Lo que pone el refutador a cada hecho: PROVEN (la fuente lo dice), INFERRED (se deduce de lo que dice la fuente) o NOT_MENTIONED (las fuentes no lo mencionan). |
 | Huella | Resumen corto (hash) de un contenido. Si el contenido cambia, la huella cambia. La sincronización del kanban la usa para saber si una tarjeta cambió en GitHub. |
 | IATI | Estándar internacional para publicar datos de proyectos de cooperación (*International Aid Transparency Initiative*). |
 | Idempotencia | Propiedad de una operación que, repetida, deja todo igual que si se hubiera hecho una sola vez. Acá: procesar dos veces el mismo mensaje no crea dos hechos. |
@@ -47,6 +47,7 @@ Los términos que usa el proyecto, en orden alfabético. Si un documento usa un 
 | Mermaid | Lenguaje de texto para escribir diagramas dentro de un Markdown. GitHub los dibuja al mostrar el archivo. |
 | Micrometer | Biblioteca de métricas de Spring. Spring AI la usa para contar llamadas al modelo y tokens. |
 | Modelo de lenguaje | El sistema de inteligencia artificial que lee y escribe texto y que usan los agentes por dentro. |
+| NOT_MENTIONED | Grado de un hecho: las fuentes no respaldan lo que afirma el candidato. No se publica; queda en la sala de máquinas con lo que se buscó. |
 | Observador | Agente que mide precisión por fuente, costo y duración por corrida y por agente, y fuentes bloqueadas. |
 | OCDS | Estándar abierto de datos de contrataciones públicas (*Open Contracting Data Standard*). Es el formato en que publica ARCE. |
 | Orquestación | La forma en que los agentes se reparten el trabajo y se pasan los resultados, con reglas fijas. |

@@ -225,7 +225,7 @@
 <script type="application/json" id="datos">{
  "meta": {
   "actualizado": "2026-11-14",
-  "nota": "El kanban publicado ahora se puede editar, y cada sesión lo sincroniza con este archivo (T28, ADR 0009). La primera rebanada (T08) sigue esperando la revisión de los ADRs (T19), la clave (T14) y el registro del banco (T11).",
+  "nota": "Los ADRs 0002 a 0005, 0007 y 0008 están aceptados. La primera rebanada (T08) espera solo la clave del proveedor (T14); medirla contra el banco de pruebas espera el registro (T11).",
   "calendario": [
    "2026-11-07",
    "2026-11-14",
@@ -348,19 +348,19 @@
    "lista": [
     {
      "texto": "0002: orquestación por mensajes",
-     "hecho": false
+     "hecho": true
     },
     {
      "texto": "0003: elección del stack",
-     "hecho": false
+     "hecho": true
     },
     {
      "texto": "0004: grados de evidencia",
-     "hecho": false
+     "hecho": true
     },
     {
      "texto": "0005: presupuesto por corrida",
-     "hecho": false
+     "hecho": true
     },
     {
      "texto": "0006: fuentes de la versión 0",
@@ -368,11 +368,11 @@
     },
     {
      "texto": "0007: registro del banco de pruebas fuera del repositorio",
-     "hecho": false
+     "hecho": true
     },
     {
      "texto": "0008: datos personales",
-     "hecho": false
+     "hecho": true
     },
     {
      "texto": "0009: kanban editable, sincronizado con el tablero",
@@ -380,12 +380,47 @@
     }
    ],
    "notas": [
-    "Los ADRs 0002 a 0009 están propuestos; el 0001 quedó reemplazado por el 0009. Cada uno se acepta, se corrige o se rechaza; al aceptarlo, su estado pasa a \"aceptado\" en el archivo y en el índice."
+    "Cada ADR propuesto se acepta, se corrige o se rechaza; al aceptarlo, su estado pasa a \"aceptado\" en el archivo y en el índice. El 0001 quedó reemplazado por el 0009. Quedan el 0006 y el 0009."
    ],
    "registro": [
     {
      "fecha": "2026-11-07",
      "texto": "Creada."
+    },
+    {
+     "fecha": "2026-11-14",
+     "texto": "Aceptados el 0007 y el 0008."
+    },
+    {
+     "fecha": "2026-11-14",
+     "texto": "Aceptados del 0002 al 0005, con correcciones en el 0003, el 0004 y el 0005."
+    }
+   ]
+  },
+  {
+   "id": "T14",
+   "titulo": "Dejar la clave del proveedor de modelos fuera del repositorio",
+   "columna": "para-empezar",
+   "orden": 2,
+   "tipo": "gestion",
+   "dueno": "Andrés",
+   "dependeDe": "T05",
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [],
+   "etapas": [],
+   "lista": [],
+   "notas": [
+    "Para las corridas reales (D4). Las pruebas automáticas no la necesitan: usan respuestas grabadas."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    },
+    {
+     "fecha": "2026-11-14",
+     "texto": "Pasa a Para empezar: T05 está hecha."
     }
    ]
   },
@@ -393,7 +428,7 @@
    "id": "T18",
    "titulo": "Pedir a IMPO que aclare si su JSON de normas se puede reutilizar",
    "columna": "para-empezar",
-   "orden": 2,
+   "orden": 3,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -421,7 +456,7 @@
    "id": "T11",
    "titulo": "Entregar el registro completo del banco de pruebas",
    "columna": "para-empezar",
-   "orden": 3,
+   "orden": 4,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -442,166 +477,6 @@
     {
      "fecha": "2026-11-07",
      "texto": "Creada."
-    }
-   ]
-  },
-  {
-   "id": "T06",
-   "titulo": "Escribir los ADRs de las decisiones D2 y D3",
-   "columna": "esperando",
-   "orden": 1,
-   "tipo": "adr",
-   "dueno": "desarrollo",
-   "dependeDe": "",
-   "esperaA": "Andrés, que acepte o corrija los ADRs 0007 y 0008 (T19)",
-   "fecha": "",
-   "detalle": [
-    {
-     "texto": "adrs/0007-registro-del-banco-fuera-del-repositorio.md",
-     "ruta": "adrs/0007-registro-del-banco-fuera-del-repositorio.md"
-    },
-    {
-     "texto": "adrs/0008-datos-personales.md",
-     "ruta": "adrs/0008-datos-personales.md"
-    }
-   ],
-   "etapas": [
-    {
-     "texto": "Contexto y alternativas",
-     "hecho": true
-    },
-    {
-     "texto": "Fuentes verificadas",
-     "hecho": true
-    },
-    {
-     "texto": "Escrito",
-     "hecho": true
-    },
-    {
-     "texto": "Aceptado",
-     "hecho": false
-    }
-   ],
-   "lista": [
-    {
-     "texto": "ADR de D2: registro fuera del repositorio",
-     "hecho": true
-    },
-    {
-     "texto": "ADR de D3: datos personales",
-     "hecho": true
-    }
-   ],
-   "notas": [
-    "D2 deja el registro del banco de pruebas fuera del repositorio y D3 fija cómo se tratan los datos personales. Las dos son significativas y pasan a ADR (regla 3)."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-07",
-     "texto": "Creada."
-    },
-    {
-     "fecha": "2026-11-07",
-     "texto": "Escritos los ADRs 0007 y 0008, propuestos. Pasa a Esperando hasta que se acepten."
-    }
-   ]
-  },
-  {
-   "id": "T05",
-   "titulo": "Escribir los primeros ADRs",
-   "columna": "esperando",
-   "orden": 2,
-   "tipo": "adr",
-   "dueno": "desarrollo",
-   "dependeDe": "T09",
-   "esperaA": "Andrés, que acepte o corrija los ADRs 0002 a 0005 (T19)",
-   "fecha": "",
-   "detalle": [
-    {
-     "texto": "adrs/0002-orquestacion-por-mensajes.md",
-     "ruta": "adrs/0002-orquestacion-por-mensajes.md"
-    },
-    {
-     "texto": "adrs/0003-eleccion-del-stack.md",
-     "ruta": "adrs/0003-eleccion-del-stack.md"
-    },
-    {
-     "texto": "adrs/0004-grados-de-evidencia.md",
-     "ruta": "adrs/0004-grados-de-evidencia.md"
-    },
-    {
-     "texto": "adrs/0005-presupuesto-por-corrida.md",
-     "ruta": "adrs/0005-presupuesto-por-corrida.md"
-    }
-   ],
-   "etapas": [
-    {
-     "texto": "Contexto y alternativas",
-     "hecho": true
-    },
-    {
-     "texto": "Fuentes verificadas",
-     "hecho": true
-    },
-    {
-     "texto": "Escrito",
-     "hecho": true
-    },
-    {
-     "texto": "Aceptado",
-     "hecho": false
-    }
-   ],
-   "lista": [
-    {
-     "texto": "Orquestación por mensajes",
-     "hecho": true
-    },
-    {
-     "texto": "Elección del stack",
-     "hecho": true
-    },
-    {
-     "texto": "Grados de evidencia",
-     "hecho": true
-    },
-    {
-     "texto": "Presupuesto por corrida (D4)",
-     "hecho": true
-    },
-    {
-     "texto": "Versión de Spring AI (2.0.x o 2.1) y de Java",
-     "hecho": true
-    },
-    {
-     "texto": "Proyecto de mensajería compatible con Spring Boot 4",
-     "hecho": true
-    },
-    {
-     "texto": "Cómo grabar y repetir respuestas del modelo en las pruebas (D4)",
-     "hecho": true
-    }
-   ],
-   "notas": [
-    "Las cuatro decisiones de base del sistema. El del stack fija los modelos concretos, el sistema de mensajería, la interfaz web y el buzón de correo de prueba (D9)."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-07",
-     "texto": "Creada."
-    },
-    {
-     "fecha": "2026-11-07",
-     "texto": "Pasa a Para empezar: T09 está hecha. Suma tres puntos que la verificación dejó abiertos."
-    },
-    {
-     "fecha": "2026-11-07",
-     "texto": "Pasa a En curso."
-    },
-    {
-     "fecha": "2026-11-07",
-     "texto": "Escritos los ADRs 0002 a 0005, propuestos. Pasa a Esperando hasta que se acepten."
     }
    ]
   },
@@ -749,33 +624,10 @@
    ]
   },
   {
-   "id": "T14",
-   "titulo": "Dejar la clave del proveedor de modelos fuera del repositorio",
-   "columna": "pendiente",
-   "orden": 3,
-   "tipo": "gestion",
-   "dueno": "Andrés",
-   "dependeDe": "T05",
-   "esperaA": "",
-   "fecha": "",
-   "detalle": [],
-   "etapas": [],
-   "lista": [],
-   "notas": [
-    "Para las corridas reales (D4). Las pruebas automáticas no la necesitan: usan respuestas grabadas."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-07",
-     "texto": "Creada."
-    }
-   ]
-  },
-  {
    "id": "T20",
    "titulo": "Medir la primera rebanada contra el banco de pruebas",
    "columna": "pendiente",
-   "orden": 4,
+   "orden": 3,
    "tipo": "verificacion",
    "dueno": "desarrollo",
    "dependeDe": "T08, T12",
@@ -820,7 +672,7 @@
    "id": "T21",
    "titulo": "Completar el analista",
    "columna": "pendiente",
-   "orden": 5,
+   "orden": 4,
    "tipo": "componente",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -869,7 +721,7 @@
    "id": "T22",
    "titulo": "Implementar el presupuesto que corta",
    "columna": "pendiente",
-   "orden": 6,
+   "orden": 5,
    "tipo": "componente",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -913,7 +765,7 @@
      "hecho": false
     },
     {
-     "texto": "Tabla de precios con fuente y fecha",
+     "texto": "Tabla de precios en la base, con fuente y fecha, y sus valores iniciales en una migración",
      "hecho": false
     },
     {
@@ -935,7 +787,7 @@
    "id": "T23",
    "titulo": "Armar la cola de revisión humana",
    "columna": "pendiente",
-   "orden": 7,
+   "orden": 6,
    "tipo": "web",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -980,7 +832,7 @@
    "id": "T24",
    "titulo": "Sumar los exploradores del BID, el Banco Mundial y Presidencia",
    "columna": "pendiente",
-   "orden": 8,
+   "orden": 7,
    "tipo": "componente",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -1046,7 +898,7 @@
    "id": "T25",
    "titulo": "Armar el login por enlace, los cuatro usuarios y la cuenta de demostración",
    "columna": "pendiente",
-   "orden": 9,
+   "orden": 8,
    "tipo": "web",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -1095,7 +947,7 @@
    "id": "T26",
    "titulo": "Escribir la sección \"Cómo funciona\" y las páginas \"cómo se hizo\"",
    "columna": "pendiente",
-   "orden": 10,
+   "orden": 9,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -1140,7 +992,7 @@
    "id": "T27",
    "titulo": "Escribir el ADR de despliegue",
    "columna": "pendiente",
-   "orden": 11,
+   "orden": 10,
    "tipo": "adr",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -1182,10 +1034,256 @@
    ]
   },
   {
+   "id": "T29",
+   "titulo": "Cambiar el modelo de cada agente sin reiniciar la aplicación",
+   "columna": "pendiente",
+   "orden": 11,
+   "tipo": "web",
+   "dueno": "desarrollo",
+   "dependeDe": "T22, T25",
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "adrs/0003-eleccion-del-stack.md",
+     "ruta": "adrs/0003-eleccion-del-stack.md"
+    },
+    {
+     "texto": "adrs/0005-presupuesto-por-corrida.md",
+     "ruta": "adrs/0005-presupuesto-por-corrida.md"
+    },
+    {
+     "texto": "docs/base-de-afirmaciones.md",
+     "ruta": "docs/base-de-afirmaciones.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Diseño",
+     "hecho": false
+    },
+    {
+     "texto": "Código",
+     "hecho": false
+    },
+    {
+     "texto": "Pruebas",
+     "hecho": false
+    },
+    {
+     "texto": "Página cómo se hizo",
+     "hecho": false
+    }
+   ],
+   "lista": [
+    {
+     "texto": "Tablas de modelos y precios, con los valores iniciales en una migración",
+     "hecho": false
+    },
+    {
+     "texto": "El inicio de la corrida congela los modelos en corrida.iniciada",
+     "hecho": false
+    },
+    {
+     "texto": "Cada agente pasa su modelo en las opciones de cada pedido",
+     "hecho": false
+    },
+    {
+     "texto": "Rol de responsable en la lista de invitados",
+     "hecho": false
+    },
+    {
+     "texto": "Pantalla del responsable, que no deja elegir un modelo sin precio",
+     "hecho": false
+    },
+    {
+     "texto": "La sala de máquinas muestra qué modelo usó cada agente",
+     "hecho": false
+    }
+   ],
+   "notas": [
+    "El modelo de cada agente y los precios viven en la base, con historia, y el responsable los cambia desde la sala de máquinas. Cada cambio vale desde la corrida siguiente."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-14",
+     "texto": "Creada al aceptar el ADR 0003."
+    }
+   ]
+  },
+  {
+   "id": "T05",
+   "titulo": "Escribir los primeros ADRs",
+   "columna": "hecho",
+   "orden": 1,
+   "tipo": "adr",
+   "dueno": "desarrollo",
+   "dependeDe": "T09",
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "adrs/0002-orquestacion-por-mensajes.md",
+     "ruta": "adrs/0002-orquestacion-por-mensajes.md"
+    },
+    {
+     "texto": "adrs/0003-eleccion-del-stack.md",
+     "ruta": "adrs/0003-eleccion-del-stack.md"
+    },
+    {
+     "texto": "adrs/0004-grados-de-evidencia.md",
+     "ruta": "adrs/0004-grados-de-evidencia.md"
+    },
+    {
+     "texto": "adrs/0005-presupuesto-por-corrida.md",
+     "ruta": "adrs/0005-presupuesto-por-corrida.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Contexto y alternativas",
+     "hecho": true
+    },
+    {
+     "texto": "Fuentes verificadas",
+     "hecho": true
+    },
+    {
+     "texto": "Escrito",
+     "hecho": true
+    },
+    {
+     "texto": "Aceptado",
+     "hecho": true
+    }
+   ],
+   "lista": [
+    {
+     "texto": "Orquestación por mensajes",
+     "hecho": true
+    },
+    {
+     "texto": "Elección del stack",
+     "hecho": true
+    },
+    {
+     "texto": "Grados de evidencia",
+     "hecho": true
+    },
+    {
+     "texto": "Presupuesto por corrida (D4)",
+     "hecho": true
+    },
+    {
+     "texto": "Versión de Spring AI (2.0.x o 2.1) y de Java",
+     "hecho": true
+    },
+    {
+     "texto": "Proyecto de mensajería compatible con Spring Boot 4",
+     "hecho": true
+    },
+    {
+     "texto": "Cómo grabar y repetir respuestas del modelo en las pruebas (D4)",
+     "hecho": true
+    }
+   ],
+   "notas": [
+    "Las cuatro decisiones de base del sistema. El del stack fija los modelos concretos, el sistema de mensajería, la interfaz web y el buzón de correo de prueba (D9)."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    },
+    {
+     "fecha": "2026-11-07",
+     "texto": "Pasa a Para empezar: T09 está hecha. Suma tres puntos que la verificación dejó abiertos."
+    },
+    {
+     "fecha": "2026-11-07",
+     "texto": "Pasa a En curso."
+    },
+    {
+     "fecha": "2026-11-07",
+     "texto": "Escritos los ADRs 0002 a 0005, propuestos. Pasa a Esperando hasta que se acepten."
+    },
+    {
+     "fecha": "2026-11-14",
+     "texto": "Aceptados los ADRs 0002 a 0005, con dos correcciones: el grado NOT_MENTIONED en inglés (0004) y el modelo de cada agente configurable sin reiniciar (0003 y 0005, implementado en T29). Pasa a Hecho."
+    }
+   ]
+  },
+  {
+   "id": "T06",
+   "titulo": "Escribir los ADRs de las decisiones D2 y D3",
+   "columna": "hecho",
+   "orden": 2,
+   "tipo": "adr",
+   "dueno": "desarrollo",
+   "dependeDe": "",
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "adrs/0007-registro-del-banco-fuera-del-repositorio.md",
+     "ruta": "adrs/0007-registro-del-banco-fuera-del-repositorio.md"
+    },
+    {
+     "texto": "adrs/0008-datos-personales.md",
+     "ruta": "adrs/0008-datos-personales.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Contexto y alternativas",
+     "hecho": true
+    },
+    {
+     "texto": "Fuentes verificadas",
+     "hecho": true
+    },
+    {
+     "texto": "Escrito",
+     "hecho": true
+    },
+    {
+     "texto": "Aceptado",
+     "hecho": true
+    }
+   ],
+   "lista": [
+    {
+     "texto": "ADR de D2: registro fuera del repositorio",
+     "hecho": true
+    },
+    {
+     "texto": "ADR de D3: datos personales",
+     "hecho": true
+    }
+   ],
+   "notas": [
+    "D2 deja el registro del banco de pruebas fuera del repositorio y D3 fija cómo se tratan los datos personales. Las dos son significativas y pasan a ADR (regla 3)."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    },
+    {
+     "fecha": "2026-11-07",
+     "texto": "Escritos los ADRs 0007 y 0008, propuestos. Pasa a Esperando hasta que se acepten."
+    },
+    {
+     "fecha": "2026-11-14",
+     "texto": "Aceptados los ADRs 0007 y 0008. Pasa a Hecho."
+    }
+   ]
+  },
+  {
    "id": "T28",
    "titulo": "Hacer editable el kanban y sincronizarlo con el tablero",
    "columna": "hecho",
-   "orden": 1,
+   "orden": 3,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1227,6 +1325,10 @@
     {
      "fecha": "2026-11-14",
      "texto": "Creada y hecha."
+    },
+    {
+     "fecha": "2026-11-14",
+     "texto": "La sincronización también lleva a la base los cambios de orden hechos en tablero.md, con una operación que solo escribe el orden."
     }
    ]
   },
@@ -1234,7 +1336,7 @@
    "id": "T07",
    "titulo": "Escribir docs/plan.md",
    "columna": "hecho",
-   "orden": 2,
+   "orden": 4,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T02",
@@ -1296,7 +1398,7 @@
    "id": "T04",
    "titulo": "Escribir docs/base-de-afirmaciones.md",
    "columna": "hecho",
-   "orden": 3,
+   "orden": 5,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T03",
@@ -1366,7 +1468,7 @@
    "id": "T03",
    "titulo": "Escribir docs/contratos.md",
    "columna": "hecho",
-   "orden": 4,
+   "orden": 6,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T02",
@@ -1436,7 +1538,7 @@
    "id": "T15",
    "titulo": "Comprobar en el verificador que los diagramas Mermaid se dibujan",
    "columna": "hecho",
-   "orden": 5,
+   "orden": 7,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1481,7 +1583,7 @@
    "id": "T02",
    "titulo": "Escribir docs/arquitectura.md",
    "columna": "hecho",
-   "orden": 6,
+   "orden": 8,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T09",
@@ -1567,7 +1669,7 @@
    "id": "T10",
    "titulo": "Verificar las fuentes candidatas",
    "columna": "hecho",
-   "orden": 7,
+   "orden": 9,
    "tipo": "verificacion",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1640,7 +1742,7 @@
    "id": "T09",
    "titulo": "Verificar Spring AI y sus patrones de orquestación",
    "columna": "hecho",
-   "orden": 8,
+   "orden": 10,
    "tipo": "verificacion",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1693,7 +1795,7 @@
    "id": "T13",
    "titulo": "Elegir la licencia del repositorio",
    "columna": "hecho",
-   "orden": 9,
+   "orden": 11,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1729,7 +1831,7 @@
    "id": "T17",
    "titulo": "Dar acceso de escritura al repositorio a las sesiones en la nube",
    "columna": "hecho",
-   "orden": 10,
+   "orden": 12,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1756,7 +1858,7 @@
    "id": "T16",
    "titulo": "Armar el kanban generado desde el tablero",
    "columna": "hecho",
-   "orden": 11,
+   "orden": 13,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1805,7 +1907,7 @@
    "id": "T01",
    "titulo": "Armar la base documental",
    "columna": "hecho",
-   "orden": 12,
+   "orden": 14,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "",

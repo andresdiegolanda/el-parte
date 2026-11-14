@@ -1,6 +1,6 @@
 # 0004. Grados de evidencia
 
-- Estado: propuesto
+- Estado: aceptado
 - Fecha: 2026-11-07
 
 ## Contexto
@@ -19,7 +19,7 @@ Los pone solo el refutador, y nadie después los cambia: el analista los usa y e
 |---|---|---|
 | PROVEN | La fuente lo dice de manera explícita. | La URL, la fecha de publicación verificada y el fragmento de la fuente que lo dice. |
 | INFERRED | Se deduce de lo que dice la fuente, pero la fuente no lo dice con esas palabras. | Los fragmentos de los que se deduce y el razonamiento, en una o dos frases. |
-| NO_MENCIONADO ("las fuentes no lo mencionan") | Las fuentes no respaldan lo que afirma el candidato. | Qué se buscó y dónde. |
+| NOT_MENTIONED ("las fuentes no lo mencionan") | Las fuentes no respaldan lo que afirma el candidato. | Qué se buscó y dónde. |
 
 ```mermaid
 stateDiagram-v2
@@ -27,17 +27,17 @@ stateDiagram-v2
     Candidato --> Refutacion: lo envía el archivista
     Refutacion --> PROVEN: la fuente lo dice
     Refutacion --> INFERRED: se deduce de la fuente
-    Refutacion --> NO_MENCIONADO: la fuente no lo respalda
+    Refutacion --> NOT_MENTIONED: la fuente no lo respalda
     PROVEN --> Publicado
     INFERRED --> Publicado: con su grado visible
     INFERRED --> RevisionHumana: si supera el umbral
-    NO_MENCIONADO --> SalaDeMaquinas: no se publica
+    NOT_MENTIONED --> SalaDeMaquinas: no se publica
     RevisionHumana --> Publicado
 ```
 
 Reglas:
 
-1. **Un hecho NO_MENCIONADO no se publica como hecho.** Queda en la sala de máquinas, con lo que se buscó.
+1. **Un hecho NOT_MENTIONED no se publica como hecho.** Queda en la sala de máquinas, con lo que se buscó.
 2. **La fecha se califica aparte.** Que la fuente diga algo (grado) es distinto de que lo haya dicho hace poco (fecha confirmada o no). Un hecho puede ser PROVEN con la fecha sin confirmar, y la página lo dice.
 3. **La página de la mañana muestra el grado de cada hecho** y explica qué quiere decir INFERRED la primera vez que aparece.
 4. **El umbral de "demasiado INFERRED"** que manda un hecho a revisión humana se define en `docs/contratos.md` (T03), y mientras nadie revisa el hecho se muestra marcado (D6).

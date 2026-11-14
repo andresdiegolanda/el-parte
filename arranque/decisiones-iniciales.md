@@ -18,7 +18,7 @@ Cada decisión dice qué se decidió, por qué, qué cuesta y qué la haría cam
 - **Por qué.** El registro es material de otro proyecto (regla 11).
 - **Costo.** Una sesión que no tenga el registro no puede repetir la medición real, solo la muestra sintética. Es una excepción acotada a la regla 10, y queda escrita como tal.
 - **Qué la haría cambiar.** Una versión depurada del registro que se pueda publicar.
-- **Estado.** Pasó al [ADR 0007](../adrs/0007-registro-del-banco-fuera-del-repositorio.md), propuesto.
+- **Estado.** Pasó al [ADR 0007](../adrs/0007-registro-del-banco-fuera-del-repositorio.md), aceptado.
 
 ## D3. Datos personales
 
@@ -29,7 +29,7 @@ Cada decisión dice qué se decidió, por qué, qué cuesta y qué la haría cam
 - **Por qué.** La regla 11 prohíbe datos personales en la base y en la demo, pero el login por enlace obliga a guardar correos, y casi todas las fuentes verificadas nombran personas: contactos, firmantes, consultores individuales, designaciones. [PROVEN: [docs/fuentes/](../docs/fuentes/README.md), 2026-11-07]
 - **Costo.** Hay hechos que pierden información, y enmascarar exige detectar nombres, cosa que puede fallar.
 - **Qué la haría cambiar.** Que el enmascarado haga que dos hechos distintos queden iguales, o que una fuente importante sea casi toda sobre personas.
-- **Estado.** Pasó al [ADR 0008](../adrs/0008-datos-personales.md), propuesto, que fija qué se descarta en cada fuente.
+- **Estado.** Pasó al [ADR 0008](../adrs/0008-datos-personales.md), aceptado, que fija qué se descarta en cada fuente.
 
 ## D4. Modelo de lenguaje y tope de gasto
 
@@ -41,7 +41,7 @@ Cada decisión dice qué se decidió, por qué, qué cuesta y qué la haría cam
 - **Por qué.** El presupuesto que corta necesita números desde el principio. Las respuestas grabadas hacen que las pruebas sean reproducibles y gratis.
 - **Costo.** Atarse a un proveedor. Spring AI abstrae el proveedor, pero eso se verifica en el ADR. [ASSUMED]
 - **Qué la haría cambiar.** Que el costo medido por corrida quede muy lejos del tope, por arriba o por abajo.
-- **Estado.** Pasó a los ADRs [0003](../adrs/0003-eleccion-del-stack.md) y [0005](../adrs/0005-presupuesto-por-corrida.md), propuestos.
+- **Estado.** Pasó a los ADRs [0003](../adrs/0003-eleccion-del-stack.md) y [0005](../adrs/0005-presupuesto-por-corrida.md), aceptados.
 
 ## D5. Las fuentes de la versión 0
 

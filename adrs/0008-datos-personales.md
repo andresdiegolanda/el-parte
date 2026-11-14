@@ -1,6 +1,6 @@
 # 0008. Datos personales
 
-- Estado: propuesto
+- Estado: aceptado
 - Fecha: 2026-11-07
 
 ## Contexto

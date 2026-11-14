@@ -46,7 +46,7 @@ Ejemplo:
 
 Cuando una sección entera tiene el mismo grado y la misma fuente, se dice una vez al principio de la sección.
 
-Ojo con un nombre parecido: los agentes también ponen grados a los hechos que encuentran (PROVEN, INFERRED, "las fuentes no lo mencionan"). Son las mismas palabras con otro alcance: unos califican lo que dicen los documentos del proyecto, los otros califican lo que dicen las fuentes del Estado. Los dos usos están en el [glosario](glosario.md).
+Ojo con un nombre parecido: los agentes también ponen grados a los hechos que encuentran (PROVEN, INFERRED, NOT_MENTIONED). Son las mismas palabras con otro alcance: unos califican lo que dicen los documentos del proyecto, los otros califican lo que dicen las fuentes del Estado. Los dos usos están en el [glosario](glosario.md).
 
 ### Nada de memoria
 
@@ -130,7 +130,7 @@ flowchart TD
     D --> E[Volver a publicar la página<br/>si cambió la plantilla]
 ```
 
-1. **Volcar la base.** Con `db_list` sobre la colección `tarjetas` y `db_get` sobre `meta/tablero`, se arma `tmp/kanban-volcado.json` con la forma `{"tarjetas": [{"id", "version", "data"}], "meta": {"version"} o null}`. De las tarjetas marcadas con `editadaEnKanban` se copia `data` completo; de las demás alcanza con `editadaEnKanban`, `huellaRepo` y `huellaContenido`, así el volcado es corto.
+1. **Volcar la base.** Con `db_list` sobre la colección `tarjetas` y `db_get` sobre `meta/tablero`, se arma `tmp/kanban-volcado.json` con la forma `{"tarjetas": [{"id", "version", "data"}], "meta": {"version"} o null}`. De las tarjetas marcadas con `editadaEnKanban` se copia `data` completo; de las demás alcanza con `editadaEnKanban`, `huellaRepo`, `huellaContenido` y `orden`, así el volcado es corto.
 2. **Correr el script.** Aplica a `tablero.md` los cambios del kanban, salvo los que chocan con el repositorio (gana el repositorio y se anota en el registro de la tarjeta) o rompen sus reglas (quedan en el kanban con el motivo). Si `tablero.md` cambió, regenera la copia, suma una línea al CHANGELOG y sale con código 2.
 3. **Commit y push del tablero.** Si salió con 2, se hace commit y push de `tablero.md`, `kanban/index.html` y `CHANGELOG.md`, sin esperar pedido: es la única excepción a la regla de los commits ([ADR 0009](../adrs/0009-kanban-editable-sincronizado.md)). Después se vuelve al paso 1.
 4. **Escribir en la base.** Cuando el script sale con 0, `tmp/kanban-operaciones.json` tiene las llamadas a `db_write`, de a 40 operaciones: solo las tarjetas que cambiaron y el documento `meta/tablero`. Se mandan de a una, esperando 2 segundos entre llamadas. Si una llamada se rechaza por versión, alguien editó el kanban mientras tanto: se vuelve al paso 1.

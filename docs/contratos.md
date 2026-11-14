@@ -65,6 +65,7 @@ Lo emite el inicio de corrida. Arranca la noche.
 | `fuentes` | Las fuentes de esta corrida. |
 | `entidadesSeguidas` | Las entidades con algún suscriptor. Los exploradores filtran por ellas antes de usar el modelo. |
 | `presupuesto` | `costoMaximoUsd`, `pasosMaximos` y `minutosMaximos` ([ADR 0005](../adrs/0005-presupuesto-por-corrida.md)). |
+| `modelos` | El modelo de cada agente en esta corrida, el vigente al empezar ([ADR 0003](../adrs/0003-eleccion-del-stack.md)). Cada agente usa este y no otro. |
 
 ```json
 {
@@ -76,7 +77,9 @@ Lo emite el inicio de corrida. Arranca la noche.
     "fechaObjetivo": "2026-11-06",
     "fuentes": ["arce"],
     "entidadesSeguidas": ["organismo:bps"],
-    "presupuesto": { "costoMaximoUsd": 0.50, "pasosMaximos": 200, "minutosMaximos": 45 }
+    "presupuesto": { "costoMaximoUsd": 0.50, "pasosMaximos": 200, "minutosMaximos": 45 },
+    "modelos": { "explorador-arce": "claude-haiku-5-5", "archivista": "claude-haiku-5-5",
+                 "refutador": "claude-sonnet-5-5", "analista": "claude-sonnet-5-5", "editor": "claude-haiku-5-5" }
   }
 }
 ```
@@ -163,10 +166,10 @@ Lo emite el refutador, uno por candidato nuevo o actualizado. Los grados y lo qu
 |---|---|
 | `candidatoId`, `claveDeHecho` | Lo que se graduó. |
 | `afirmacion` | La afirmación tal como queda después de la refutación. Puede ser más acotada que el resumen del explorador. |
-| `grado` | `PROVEN`, `INFERRED` o `NO_MENCIONADO`. |
+| `grado` | `PROVEN`, `INFERRED` o `NOT_MENTIONED`. |
 | `evidencia` | Los fragmentos de la fuente que respaldan la afirmación, cada uno con su URL. |
 | `razonamiento` | Obligatorio si el grado es `INFERRED`: de qué se deduce. |
-| `busqueda` | Obligatorio si el grado es `NO_MENCIONADO`: qué se buscó y dónde. |
+| `busqueda` | Obligatorio si el grado es `NOT_MENTIONED`: qué se buscó y dónde. |
 | `fechaConfirmada` | Si la fecha de publicación se pudo confirmar como de la noche leída. |
 | `pruebas` | Cada intento de tirar abajo el candidato: `fecha`, `duplicado` o `fuenteDice`, con su resultado y detalle. |
 
@@ -293,7 +296,7 @@ Lo emite el advisor de presupuesto por cada llamada al modelo, se haga o no ([AD
 ```json
 { "estado": "completa",
   "conteos": { "candidatos": 7, "conocidos": 5, "actualizaciones": 0, "nuevos": 2,
-               "PROVEN": 1, "INFERRED": 1, "NO_MENCIONADO": 0, "sinProcesar": 0 },
+               "PROVEN": 1, "INFERRED": 1, "NOT_MENTIONED": 0, "sinProcesar": 0 },
   "costoUsd": 0.0623, "duracionSegundos": 248 }
 ```
 

@@ -20,9 +20,10 @@ VOLCADO.json tiene la forma:
    "meta": {"version": 1} o null}
 
 De las tarjetas que no están marcadas como editadas en el kanban alcanza con
-copiar id, version y, de data, editadaEnKanban, huellaRepo y huellaContenido:
-el script solo lee el resto en las marcadas. Las operaciones solo reescriben las
-tarjetas que cambiaron, más el documento meta.
+copiar id, version y, de data, editadaEnKanban, huellaRepo, huellaContenido y
+orden: el script solo lee el resto en las marcadas. Las operaciones solo
+reescriben las tarjetas que cambiaron, más el documento meta. Si de una tarjeta
+solo cambió el lugar dentro de su columna, la operación lleva solo el orden.
 
 Sale con 0 si tablero.md no cambió, con 2 si cambió (hay que hacer commit y
 push del tablero y volver a correrlo) y con 1 si hubo un error.
@@ -277,6 +278,10 @@ def operaciones(local, base_por_id, commit, volcado, ahora, informe):
         sin_cambios = (previo is not None and t["id"] not in marcadas and previo.get("huellaContenido") == h_local
                        and previo.get("huellaRepo") == h_base and not previo.get("rechazoSincronizacion"))
         if sin_cambios:
+            # La huella no incluye el orden: si la tarjeta cambió de lugar en su columna, solo se escribe eso.
+            if previo.get("orden") is None or float(previo["orden"]) != float(t["orden"]):
+                ops.append({"op": "update", "path": f"{COLECCION}/{t['id']}", "ifVersion": versiones[t["id"]],
+                            "data": {"orden": t["orden"], "sincronizadaEn": ahora}})
             continue
         data = {
             "titulo": t["titulo"], "columna": t["columna"], "orden": t["orden"], "tipo": t["tipo"],

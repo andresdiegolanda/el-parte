@@ -4,7 +4,7 @@ El modelo de datos de El Parte en PostgreSQL 18 ([ADR 0003](../adrs/0003-eleccio
 
 ## Dos esquemas separados
 
-- **`parte`**: hechos, entidades, corridas, mensajes, suscripciones e informes. Es la base de afirmaciones. No tiene ningún dato personal.
+- **`parte`**: hechos, entidades, corridas, mensajes, suscripciones e informes, y los modelos y precios vigentes. Es la base de afirmaciones. No tiene ningún dato personal.
 - **`cuentas`**: los correos de los usuarios y los tokens del login. Solo lo usa el módulo de login ([ADR 0008](../adrs/0008-datos-personales.md)).
 
 La aplicación se conecta con dos roles de base distintos: el de los agentes y la web no tiene permiso sobre `cuentas`, y el del login no tiene permiso sobre `parte`. [ASSUMED: el reparto de permisos por esquema se prueba al escribir las migraciones de la primera rebanada (T08)]
@@ -66,7 +66,7 @@ erDiagram
 
 ## Las tablas
 
-El DDL de abajo es el modelo de la versión 0. Las migraciones de la primera rebanada (T08) parten de acá. Se probó entero contra PostgreSQL 18.6 el 2026-11-07, en un contenedor de la imagen oficial `postgres:18`: crea las 16 tablas sin errores, la consulta de la página de la mañana corre, y una versión INFERRED sin razonamiento es rechazada por la base. [PROVEN: ejecución del bloque SQL y de una inserción de prueba, 2026-11-07]
+El DDL de abajo es el modelo de la versión 0. Las migraciones de la primera rebanada (T08) parten de acá. Se probó entero contra PostgreSQL 18.6 el 2026-11-07, en un contenedor de la imagen oficial `postgres:18`: crea las tablas sin errores, la consulta de la página de la mañana corre, y una versión INFERRED sin razonamiento es rechazada por la base. [PROVEN: ejecución del bloque SQL y de una inserción de prueba, 2026-11-07] Las dos tablas de modelos y precios se sumaron el 2026-11-14 y se probaron igual: con ellas son 18, y la consulta del modelo vigente de cada agente corre. [PROVEN: ejecución del bloque SQL completo contra `postgres:18`, 2026-11-14]
 
 ```sql
 create schema parte;
@@ -101,6 +101,7 @@ create table parte.corridas (
     presupuesto_usd       numeric(10, 4) not null,
     presupuesto_pasos     integer not null,
     presupuesto_minutos   integer not null,
+    modelos               jsonb not null,            -- el modelo de cada agente, congelado al empezar (ADR 0003)
     iniciada_en           timestamptz not null,
     terminada_en          timestamptz
 );
@@ -111,6 +112,29 @@ create table parte.libros_de_corrida (
     reservado_usd   numeric(10, 6) not null default 0,
     pasos           integer not null default 0,
     actualizado_en  timestamptz not null default now()
+);
+
+-- Modelo de cada agente (ADR 0003). Un cambio es una fila nueva: el vigente es la más nueva de cada agente.
+create table parte.modelos_de_agente (
+    id        bigint generated always as identity primary key,
+    agente    text not null,                    -- 'explorador-arce', 'archivista', 'refutador', ...
+    modelo    text not null,                    -- por ejemplo 'claude-sonnet-5-5'
+    desde     timestamptz not null default now(),
+    unique (agente, desde)
+);
+
+-- Precio de cada modelo, con su fuente (ADR 0005). También se cambia con una fila nueva.
+create table parte.precios_de_modelo (
+    id                          bigint generated always as identity primary key,
+    modelo                      text not null,
+    usd_millon_entrada          numeric(10, 4) not null,
+    usd_millon_salida           numeric(10, 4) not null,
+    usd_millon_cache_lectura    numeric(10, 4) not null,
+    usd_millon_cache_escritura  numeric(10, 4) not null,
+    fuente_url                  text not null,
+    consultado_el               date not null,
+    desde                       timestamptz not null default now(),
+    unique (modelo, desde)
 );
 
 -- Registro de mensajes: lo escribe el observador (ADR 0002). La sala de máquinas sale de acá.
@@ -232,9 +256,10 @@ create table cuentas.usuarios (
 
 Algunas decisiones que se ven en el DDL:
 
-- **Los grados guardados son solo PROVEN e INFERRED.** Un candidato NO_MENCIONADO no es un hecho: queda en el registro de mensajes, donde lo muestra la sala de máquinas ([ADR 0004](../adrs/0004-grados-de-evidencia.md)).
+- **Los grados guardados son solo PROVEN e INFERRED.** Un candidato NOT_MENTIONED no es un hecho: queda en el registro de mensajes, donde lo muestra la sala de máquinas ([ADR 0004](../adrs/0004-grados-de-evidencia.md)).
 - **Un INFERRED sin razonamiento no entra.** Lo impide una restricción de la tabla, no solo el código.
 - **La traza es parte de cada versión.** Cada versión apunta a los cuatro mensajes que la produjeron: candidato, cotejo, graduación y análisis. Desde ahí, siguiendo `causa_id`, se llega a la corrida.
+- **Los modelos y los precios no se pisan.** Un cambio es una fila nueva con su `desde`, así cada corrida se explica con los modelos y precios que regían. El modelo vigente de cada agente sale de `select distinct on (agente) agente, modelo from parte.modelos_de_agente order by agente, desde desc`. Que no se elija un modelo sin precio lo controlan la pantalla del responsable y el advisor de presupuesto, no la base.
 - **`cuentas.usuarios` no tiene clave foránea hacia `parte.clientes`.** Los dos esquemas comparten el identificador, pero ninguno depende del otro, así se pueden separar en bases distintas si hace falta.
 
 ## Cómo salen las vistas
@@ -261,6 +286,5 @@ order by v.grado, h.tipo_de_hecho;
 
 ## Lo que no está en la base
 
-- **La tabla de precios de los modelos** está en un archivo versionado del repositorio, con la fuente y la fecha de cada precio ([ADR 0005](../adrs/0005-presupuesto-por-corrida.md)).
 - **El registro del banco de pruebas** está fuera del repositorio y fuera de la base ([ADR 0007](../adrs/0007-registro-del-banco-fuera-del-repositorio.md)). Las métricas de cada medición se guardan en el repositorio (T12).
 - **Los textos crudos completos de las fuentes**: solo se guarda el fragmento enmascarado de la evidencia y la huella del contenido. La URL lleva al original.

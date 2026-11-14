@@ -1,6 +1,6 @@
 # 0002. Los agentes se coordinan por mensajes en tópicos
 
-- Estado: propuesto
+- Estado: aceptado
 - Fecha: 2026-11-07
 
 ## Contexto

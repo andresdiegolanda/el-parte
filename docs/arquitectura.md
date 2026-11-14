@@ -1,6 +1,6 @@
 # Arquitectura
 
-Cómo está armado El Parte en la versión 0: qué piezas tiene, cómo se pasan el trabajo durante una noche, qué ve cada persona a la mañana y qué pasa cuando algo falla. Se apoya en los ADRs [0002](../adrs/0002-orquestacion-por-mensajes.md) a [0008](../adrs/0008-datos-personales.md), todavía propuestos: si alguno cambia, este documento cambia con él.
+Cómo está armado El Parte en la versión 0: qué piezas tiene, cómo se pasan el trabajo durante una noche, qué ve cada persona a la mañana y qué pasa cuando algo falla. Se apoya en los ADRs [0002](../adrs/0002-orquestacion-por-mensajes.md) a [0008](../adrs/0008-datos-personales.md), todos aceptados salvo el 0006, que sigue propuesto: si alguno cambia, este documento cambia con él.
 
 ## La lámina
 
@@ -60,7 +60,7 @@ Por qué existe cada uno está en [arranque/proyecto.md](../arranque/proyecto.md
 | Editor | `hechos.analizados` | `informes`, `revision.pendiente` | Haiku 5.5 | Escribe hechos e informes |
 | Observador | todos los tópicos | nada | ninguno | Escribe el registro y el libro |
 
-Los modelos salen del [ADR 0003](../adrs/0003-eleccion-del-stack.md). El contenido de cada mensaje está en [contratos.md](contratos.md) y las tablas en [base-de-afirmaciones.md](base-de-afirmaciones.md).
+Los modelos de la tabla son los valores iniciales del [ADR 0003](../adrs/0003-eleccion-del-stack.md): el de cada agente se cambia sin reiniciar la aplicación y vale desde la corrida siguiente. El contenido de cada mensaje está en [contratos.md](contratos.md) y las tablas en [base-de-afirmaciones.md](base-de-afirmaciones.md).
 
 Dos decisiones de diseño que no se ven en la tabla:
 
@@ -102,7 +102,7 @@ sequenceDiagram
     IC->>K: corrida.terminada
 ```
 
-Los candidatos marcados como **conocidos** por el archivista no siguen al refutador: solo se registra que se volvieron a ver. Las **actualizaciones** y los **nuevos** siguen la cadena. Los que el refutador gradúa como **NO_MENCIONADO** no llegan al analista ([ADR 0004](../adrs/0004-grados-de-evidencia.md)).
+Los candidatos marcados como **conocidos** por el archivista no siguen al refutador: solo se registra que se volvieron a ver. Las **actualizaciones** y los **nuevos** siguen la cadena. Los que el refutador gradúa como **NOT_MENTIONED** no llegan al analista ([ADR 0004](../adrs/0004-grados-de-evidencia.md)).
 
 ## La mañana
 

@@ -1,6 +1,6 @@
 # 0007. El registro del banco de pruebas no entra al repositorio
 
-- Estado: propuesto
+- Estado: aceptado
 - Fecha: 2026-11-07
 
 ## Contexto

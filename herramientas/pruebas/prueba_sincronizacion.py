@@ -126,6 +126,25 @@ def main():
         comprobar(escritas == ["meta/tablero"], f"sin cambios, solo se reescribe el documento meta ({len(escritas)} operaciones)")
         v = volcado_desde_ops(ops, v)
 
+        # 3b. Si en tablero.md una tarjeta cambia de lugar en su columna, la base recibe solo el orden nuevo.
+        texto = tablero.read_text(encoding="utf-8")
+        inicio = texto.index("## Hecho\n\n") + len("## Hecho\n\n")
+        fin = texto.index("\n### ", inicio) + 1
+        primera = texto[inicio:fin]
+        texto = texto[:inicio] + texto[fin:].rstrip("\n") + "\n\n" + primera.rstrip("\n") + "\n"
+        tablero.write_text(texto, encoding="utf-8")
+        correr(raiz, "herramientas/generar_kanban.py")
+        verif = correr(raiz, "herramientas/verificar_docs.py")
+        comprobar(verif.returncode == 0, "el tablero reordenado sigue en formato canónico")
+        publicar(raiz)
+        r, ops = sincronizar(raiz, v)
+        tarjetas_ops = [op for llamada in ops for op in llamada if op["path"].startswith("tarjetas/")]
+        comprobar(r.returncode == 0 and tarjetas_ops and all(op["op"] == "update" and set(op["data"]) == {"orden", "sincronizadaEn"} for op in tarjetas_ops),
+                  f"un cambio de orden en tablero.md se escribe como orden solo ({len(tarjetas_ops)} operaciones)")
+        v = volcado_desde_ops(ops, v)
+        comprobar([d["id"] for d in sorted((d for d in v["tarjetas"] if d["data"]["columna"] == "hecho"), key=lambda d: (d["data"]["orden"], d["id"]))][-1]
+                  == primera.split(" ")[1], "y en la base la tarjeta movida queda última en Hecho")
+
         # 4. Conflicto: T11 cambia en el repositorio y en el kanban. Gana el repositorio.
         texto = tablero.read_text(encoding="utf-8")
         texto = texto.replace("El seguimiento acumulado y las bitácoras", "Cambio del repositorio. El seguimiento acumulado y las bitácoras", 1)
