@@ -433,6 +433,7 @@ Etapas:
 Registro:
 - 2026-11-14: Creada y hecha.
 - 2026-11-14: La sincronización también lleva a la base los cambios de orden hechos en tablero.md, con una operación que solo escribe el orden.
+- 2026-11-14: Después de un push, la sincronización escribe solo la huella nueva de las tarjetas que no cambiaron de contenido, en vez de la tarjeta entera.
 
 ### T07 · Escribir docs/plan.md
 - Tipo: Documento

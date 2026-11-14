@@ -23,7 +23,8 @@ De las tarjetas que no están marcadas como editadas en el kanban alcanza con
 copiar id, version y, de data, editadaEnKanban, huellaRepo, huellaContenido y
 orden: el script solo lee el resto en las marcadas. Las operaciones solo
 reescriben las tarjetas que cambiaron, más el documento meta. Si de una tarjeta
-solo cambió el lugar dentro de su columna, la operación lleva solo el orden.
+solo cambió su lugar en la columna o su huella en GitHub (por ejemplo, después de
+un push), la operación lleva solo esos campos.
 
 Sale con 0 si tablero.md no cambió, con 2 si cambió (hay que hacer commit y
 push del tablero y volver a correrlo) y con 1 si hubo un error.
@@ -275,13 +276,19 @@ def operaciones(local, base_por_id, commit, volcado, ahora, informe):
         en_github = h_base == h_local
         pendiente_de_subir |= not en_github
         previo = previos.get(t["id"])
-        sin_cambios = (previo is not None and t["id"] not in marcadas and previo.get("huellaContenido") == h_local
-                       and previo.get("huellaRepo") == h_base and not previo.get("rechazoSincronizacion"))
-        if sin_cambios:
-            # La huella no incluye el orden: si la tarjeta cambió de lugar en su columna, solo se escribe eso.
+        mismo_contenido = (previo is not None and t["id"] not in marcadas and previo.get("huellaContenido") == h_local
+                           and not previo.get("rechazoSincronizacion"))
+        if mismo_contenido:
+            # El contenido de la base ya es el de tablero.md. Solo se escribe lo que haya cambiado fuera de la
+            # huella: el lugar en la columna, o la huella de GitHub después de un push.
+            cambios = {}
+            if previo.get("huellaRepo") != h_base:
+                cambios["huellaRepo"] = h_base
             if previo.get("orden") is None or float(previo["orden"]) != float(t["orden"]):
+                cambios["orden"] = t["orden"]
+            if cambios:
                 ops.append({"op": "update", "path": f"{COLECCION}/{t['id']}", "ifVersion": versiones[t["id"]],
-                            "data": {"orden": t["orden"], "sincronizadaEn": ahora}})
+                            "data": {**cambios, "sincronizadaEn": ahora}})
             continue
         data = {
             "titulo": t["titulo"], "columna": t["columna"], "orden": t["orden"], "tipo": t["tipo"],

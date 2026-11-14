@@ -120,6 +120,10 @@ def main():
         comprobar(r.returncode == 0, "después del push, la segunda pasada no cambia tablero.md")
         marcadas = [op["path"] for llamada in ops for op in llamada if op["op"] == "set" and op["data"].get("editadaEnKanban")]
         comprobar(not marcadas, "y ninguna tarjeta queda marcada")
+        id_nueva = nuevas[0].split(" ")[1]
+        op_nueva = [op for llamada in ops for op in llamada if op["path"] == f"tarjetas/{id_nueva}"]
+        comprobar(len(op_nueva) == 1 and op_nueva[0]["op"] == "update" and set(op_nueva[0]["data"]) == {"huellaRepo", "sincronizadaEn"},
+                  f"de la tarjeta nueva, que ya está en GitHub, solo se escribe la huella ({id_nueva})")
         v = volcado_desde_ops(ops, v)
         r, ops = sincronizar(raiz, v)
         escritas = [op["path"] for llamada in ops for op in llamada]
