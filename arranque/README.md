@@ -28,7 +28,7 @@ Después de eso, cada tarea del tablero enlaza a los documentos que necesita. El
 
 ## Estado en una línea
 
-Spring AI y las fuentes verificados (T09 y T10), los ADRs 0002 a 0005, 0007 y 0008 aceptados (T05 y T06), y el 0006 y el 0009 esperando revisión (T19). La arquitectura está en [docs/arquitectura.md](../docs/arquitectura.md) (T02). Los contratos entre agentes están en [docs/contratos.md](../docs/contratos.md) (T03). El modelo de la base está en [docs/base-de-afirmaciones.md](../docs/base-de-afirmaciones.md) (T04). El plan está en [docs/plan.md](../docs/plan.md) (T07). Lo próximo es la primera rebanada (T08), que espera la clave del proveedor (T14); medirla contra el banco espera el registro (T11). El detalle está en el [tablero](../tablero.md).
+Spring AI y las fuentes verificados (T09 y T10), y los ADRs 0002 a 0009 aceptados (T19). La arquitectura está en [docs/arquitectura.md](../docs/arquitectura.md) (T02). Los contratos entre agentes están en [docs/contratos.md](../docs/contratos.md) (T03). El modelo de la base está en [docs/base-de-afirmaciones.md](../docs/base-de-afirmaciones.md) (T04). El plan está en [docs/plan.md](../docs/plan.md) (T07). Lo próximo es la primera rebanada (T08), que ya se puede empezar; medirla contra el banco espera el registro (T11). El detalle está en el [tablero](../tablero.md).
 
 Esta línea se actualiza en cada entrega.
 

@@ -1,6 +1,6 @@
 # Arquitectura
 
-Cómo está armado El Parte en la versión 0: qué piezas tiene, cómo se pasan el trabajo durante una noche, qué ve cada persona a la mañana y qué pasa cuando algo falla. Se apoya en los ADRs [0002](../adrs/0002-orquestacion-por-mensajes.md) a [0008](../adrs/0008-datos-personales.md), todos aceptados salvo el 0006, que sigue propuesto: si alguno cambia, este documento cambia con él.
+Cómo está armado El Parte en la versión 0: qué piezas tiene, cómo se pasan el trabajo durante una noche, qué ve cada persona a la mañana y qué pasa cuando algo falla. Se apoya en los ADRs [0002](../adrs/0002-orquestacion-por-mensajes.md) a [0008](../adrs/0008-datos-personales.md), todos aceptados: si alguno cambia, este documento cambia con él.
 
 ## La lámina
 

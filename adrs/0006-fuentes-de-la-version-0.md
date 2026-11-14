@@ -1,6 +1,6 @@
 # 0006. Fuentes de la versión 0 y de la primera rebanada
 
-- Estado: propuesto
+- Estado: aceptado
 - Fecha: 2026-11-07
 
 ## Contexto

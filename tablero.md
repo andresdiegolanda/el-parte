@@ -3,7 +3,7 @@
 Todo pendiente de El Parte vive acá, con dueño (regla 8). Este archivo es lo que manda. El kanban publicado es editable y se sincroniza con este archivo cada vez que una sesión de desarrollo lee o escribe el repositorio, o cuando se le pide; su copia sin conexión, [`kanban/index.html`](kanban/index.html), se genera desde acá con `python3 herramientas/generar_kanban.py` y no se edita a mano ([ADR 0009](adrs/0009-kanban-editable-sincronizado.md)).
 
 - Actualizado: 2026-11-14
-- Nota: Los ADRs 0002 a 0005, 0007 y 0008 están aceptados. La primera rebanada (T08) espera solo la clave del proveedor (T14); medirla contra el banco de pruebas espera el registro (T11).
+- Nota: Todos los ADRs están aceptados (T19). La primera rebanada (T08) está para empezar; medirla contra el banco de pruebas espera el registro (T11).
 - Calendario: 2026-11-07, 2026-11-14, 2026-11-21, 2026-11-28
 - Repositorio: https://github.com/andresdiegolanda/el-parte
 
@@ -82,63 +82,6 @@ Los campos van pegados al título, sin línea en blanco. Los que no aplican se o
 
 ## Para empezar
 
-### T19 · Aceptar o corregir los ADRs propuestos
-- Tipo: Gestión
-- Dueño: Andrés
-- Detalle: [adrs/README.md](adrs/README.md)
-
-Cada ADR propuesto se acepta, se corrige o se rechaza; al aceptarlo, su estado pasa a "aceptado" en el archivo y en el índice. El 0001 quedó reemplazado por el 0009. Quedan el 0006 y el 0009.
-
-Lista:
-- [x] 0002: orquestación por mensajes
-- [x] 0003: elección del stack
-- [x] 0004: grados de evidencia
-- [x] 0005: presupuesto por corrida
-- [ ] 0006: fuentes de la versión 0
-- [x] 0007: registro del banco de pruebas fuera del repositorio
-- [x] 0008: datos personales
-- [ ] 0009: kanban editable, sincronizado con el tablero
-
-Registro:
-- 2026-11-07: Creada.
-- 2026-11-14: Aceptados el 0007 y el 0008.
-- 2026-11-14: Aceptados del 0002 al 0005, con correcciones en el 0003, el 0004 y el 0005.
-
-### T14 · Dejar la clave del proveedor de modelos fuera del repositorio
-- Tipo: Gestión
-- Dueño: Andrés
-- Depende de: T05
-
-Para las corridas reales (D4). Las pruebas automáticas no la necesitan: usan respuestas grabadas.
-
-Registro:
-- 2026-11-07: Creada.
-- 2026-11-14: Pasa a Para empezar: T05 está hecha.
-
-### T18 · Pedir a IMPO que aclare si su JSON de normas se puede reutilizar
-- Tipo: Gestión
-- Dueño: Andrés
-- Detalle: [docs/fuentes/impo.md](docs/fuentes/impo.md)
-
-Su página de datos abiertos ofrece el JSON con licencia abierta, pero sus condiciones de uso prohíben copiar. Con una aclaración por escrito a favor, IMPO entra como quinta fuente (ADR 0006).
-
-Registro:
-- 2026-11-07: Creada.
-
-### T11 · Entregar el registro completo del banco de pruebas
-- Tipo: Gestión
-- Dueño: Andrés
-- Detalle: [arranque/proyecto.md](arranque/proyecto.md)
-
-El seguimiento acumulado y las bitácoras por corrida van en `banco-de-pruebas/privado/`, que no se versiona (D2). Hay que confirmar cuántas noches cubre: la muestra sugiere unas cincuenta desde el 2026-09-17 y la definición del proyecto habla de unas setenta.
-
-Registro:
-- 2026-11-07: Creada.
-
-## Esperando
-
-## Pendiente
-
 ### T08 · Construir la primera rebanada de punta a punta
 - Tipo: Componente
 - Dueño: desarrollo
@@ -167,6 +110,31 @@ Lista:
 Registro:
 - 2026-11-07: Creada.
 - 2026-11-07: La fuente es ARCE (ADR 0006).
+- 2026-11-14: Pasa a Para empezar: T14 está hecha.
+
+### T18 · Pedir a IMPO que aclare si su JSON de normas se puede reutilizar
+- Tipo: Gestión
+- Dueño: Andrés
+- Detalle: [docs/fuentes/impo.md](docs/fuentes/impo.md)
+
+Su página de datos abiertos ofrece el JSON con licencia abierta, pero sus condiciones de uso prohíben copiar. Con una aclaración por escrito a favor, IMPO entra como quinta fuente (ADR 0006).
+
+Registro:
+- 2026-11-07: Creada.
+
+### T11 · Entregar el registro completo del banco de pruebas
+- Tipo: Gestión
+- Dueño: Andrés
+- Detalle: [arranque/proyecto.md](arranque/proyecto.md)
+
+El seguimiento acumulado y las bitácoras por corrida van en `banco-de-pruebas/privado/`, que no se versiona (D2). Hay que confirmar cuántas noches cubre: la muestra sugiere unas cincuenta desde el 2026-09-17 y la definición del proyecto habla de unas setenta.
+
+Registro:
+- 2026-11-07: Creada.
+
+## Esperando
+
+## Pendiente
 
 ### T12 · Escribir el formato, la muestra sintética y las métricas del banco de pruebas
 - Tipo: Documento
@@ -365,6 +333,51 @@ Registro:
 - 2026-11-14: Creada al aceptar el ADR 0003.
 
 ## Hecho
+
+### T14 · Dejar la clave del proveedor de modelos fuera del repositorio
+- Tipo: Gestión
+- Dueño: Andrés
+- Depende de: T05
+
+Para las corridas reales (D4). Las pruebas automáticas no la necesitan: usan respuestas grabadas.
+
+La clave vive solo en la máquina que corre las noches reales y graba respuestas, en un archivo `.env` en la raíz del clon, que `.gitignore` deja afuera, con la variable `ANTHROPIC_API_KEY`. No va en el chat ni en las variables del entorno en la nube: esas variables las puede leer cualquiera que use el entorno, y el proxy de las sesiones en la nube no inyecta secretos en `api.anthropic.com`. [PROVEN: https://code.claude.com/docs/en/cloud-environments.md, 2026-11-14] Las sesiones en la nube trabajan con respuestas grabadas.
+
+Lista:
+- [x] Un espacio de trabajo propio para El Parte en la consola de Claude
+- [x] Tope de gasto mensual y aviso en ese espacio de trabajo
+- [x] Clave creada en ese espacio de trabajo y guardada fuera del repositorio
+- [x] Saldo de créditos de la API disponible
+
+Registro:
+- 2026-11-07: Creada.
+- 2026-11-14: Pasa a Para empezar: T05 está hecha.
+- 2026-11-14: Suma dónde vive la clave y los pasos para crearla.
+- 2026-11-14: Hecha: espacio de trabajo el-parte con tope de 20 USD por mes y aviso a los 10, tope de la organización de 30 USD, saldo de créditos cargado y clave creada en ese espacio, guardada fuera del repositorio. Pasa a Hecho.
+
+### T19 · Aceptar o corregir los ADRs propuestos
+- Tipo: Gestión
+- Dueño: Andrés
+- Detalle: [adrs/README.md](adrs/README.md)
+
+Cada ADR propuesto se acepta, se corrige o se rechaza; al aceptarlo, su estado pasa a "aceptado" en el archivo y en el índice. El 0001 quedó reemplazado por el 0009.
+
+Lista:
+- [x] 0002: orquestación por mensajes
+- [x] 0003: elección del stack
+- [x] 0004: grados de evidencia
+- [x] 0005: presupuesto por corrida
+- [x] 0006: fuentes de la versión 0
+- [x] 0007: registro del banco de pruebas fuera del repositorio
+- [x] 0008: datos personales
+- [x] 0009: kanban editable, sincronizado con el tablero
+
+Registro:
+- 2026-11-07: Creada.
+- 2026-11-14: Aceptados el 0007 y el 0008.
+- 2026-11-14: Aceptados del 0002 al 0005, con correcciones en el 0003, el 0004 y el 0005.
+- 2026-11-14: Aceptados el 0006 y el 0009. Pasa a Hecho.
+- 2026-11-14: El cambio hecho en el kanban no se aplicó porque la tarjeta también cambió en el repositorio.
 
 ### T05 · Escribir los primeros ADRs
 - Tipo: ADR

@@ -1,6 +1,6 @@
 # 0009. Kanban editable, sincronizado con el tablero
 
-- Estado: propuesto
+- Estado: aceptado
 - Fecha: 2026-11-14
 - Reemplaza a: [0001](0001-tablero-fuente-unica-kanban-generado.md)
 

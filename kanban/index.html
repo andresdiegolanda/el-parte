@@ -225,7 +225,7 @@
 <script type="application/json" id="datos">{
  "meta": {
   "actualizado": "2026-11-14",
-  "nota": "Los ADRs 0002 a 0005, 0007 y 0008 están aceptados. La primera rebanada (T08) espera solo la clave del proveedor (T14); medirla contra el banco de pruebas espera el registro (T11).",
+  "nota": "Todos los ADRs están aceptados (T19). La primera rebanada (T08) está para empezar; medirla contra el banco de pruebas espera el registro (T11).",
   "calendario": [
    "2026-11-07",
    "2026-11-14",
@@ -329,161 +329,9 @@
  },
  "tarjetas": [
   {
-   "id": "T19",
-   "titulo": "Aceptar o corregir los ADRs propuestos",
-   "columna": "para-empezar",
-   "orden": 1,
-   "tipo": "gestion",
-   "dueno": "Andrés",
-   "dependeDe": "",
-   "esperaA": "",
-   "fecha": "",
-   "detalle": [
-    {
-     "texto": "adrs/README.md",
-     "ruta": "adrs/README.md"
-    }
-   ],
-   "etapas": [],
-   "lista": [
-    {
-     "texto": "0002: orquestación por mensajes",
-     "hecho": true
-    },
-    {
-     "texto": "0003: elección del stack",
-     "hecho": true
-    },
-    {
-     "texto": "0004: grados de evidencia",
-     "hecho": true
-    },
-    {
-     "texto": "0005: presupuesto por corrida",
-     "hecho": true
-    },
-    {
-     "texto": "0006: fuentes de la versión 0",
-     "hecho": false
-    },
-    {
-     "texto": "0007: registro del banco de pruebas fuera del repositorio",
-     "hecho": true
-    },
-    {
-     "texto": "0008: datos personales",
-     "hecho": true
-    },
-    {
-     "texto": "0009: kanban editable, sincronizado con el tablero",
-     "hecho": false
-    }
-   ],
-   "notas": [
-    "Cada ADR propuesto se acepta, se corrige o se rechaza; al aceptarlo, su estado pasa a \"aceptado\" en el archivo y en el índice. El 0001 quedó reemplazado por el 0009. Quedan el 0006 y el 0009."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-07",
-     "texto": "Creada."
-    },
-    {
-     "fecha": "2026-11-14",
-     "texto": "Aceptados el 0007 y el 0008."
-    },
-    {
-     "fecha": "2026-11-14",
-     "texto": "Aceptados del 0002 al 0005, con correcciones en el 0003, el 0004 y el 0005."
-    }
-   ]
-  },
-  {
-   "id": "T14",
-   "titulo": "Dejar la clave del proveedor de modelos fuera del repositorio",
-   "columna": "para-empezar",
-   "orden": 2,
-   "tipo": "gestion",
-   "dueno": "Andrés",
-   "dependeDe": "T05",
-   "esperaA": "",
-   "fecha": "",
-   "detalle": [],
-   "etapas": [],
-   "lista": [],
-   "notas": [
-    "Para las corridas reales (D4). Las pruebas automáticas no la necesitan: usan respuestas grabadas."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-07",
-     "texto": "Creada."
-    },
-    {
-     "fecha": "2026-11-14",
-     "texto": "Pasa a Para empezar: T05 está hecha."
-    }
-   ]
-  },
-  {
-   "id": "T18",
-   "titulo": "Pedir a IMPO que aclare si su JSON de normas se puede reutilizar",
-   "columna": "para-empezar",
-   "orden": 3,
-   "tipo": "gestion",
-   "dueno": "Andrés",
-   "dependeDe": "",
-   "esperaA": "",
-   "fecha": "",
-   "detalle": [
-    {
-     "texto": "docs/fuentes/impo.md",
-     "ruta": "docs/fuentes/impo.md"
-    }
-   ],
-   "etapas": [],
-   "lista": [],
-   "notas": [
-    "Su página de datos abiertos ofrece el JSON con licencia abierta, pero sus condiciones de uso prohíben copiar. Con una aclaración por escrito a favor, IMPO entra como quinta fuente (ADR 0006)."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-07",
-     "texto": "Creada."
-    }
-   ]
-  },
-  {
-   "id": "T11",
-   "titulo": "Entregar el registro completo del banco de pruebas",
-   "columna": "para-empezar",
-   "orden": 4,
-   "tipo": "gestion",
-   "dueno": "Andrés",
-   "dependeDe": "",
-   "esperaA": "",
-   "fecha": "",
-   "detalle": [
-    {
-     "texto": "arranque/proyecto.md",
-     "ruta": "arranque/proyecto.md"
-    }
-   ],
-   "etapas": [],
-   "lista": [],
-   "notas": [
-    "El seguimiento acumulado y las bitácoras por corrida van en `banco-de-pruebas/privado/`, que no se versiona (D2). Hay que confirmar cuántas noches cubre: la muestra sugiere unas cincuenta desde el 2026-09-17 y la definición del proyecto habla de unas setenta."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-07",
-     "texto": "Creada."
-    }
-   ]
-  },
-  {
    "id": "T08",
    "titulo": "Construir la primera rebanada de punta a punta",
-   "columna": "pendiente",
+   "columna": "para-empezar",
    "orden": 1,
    "tipo": "componente",
    "dueno": "desarrollo",
@@ -567,6 +415,66 @@
     {
      "fecha": "2026-11-07",
      "texto": "La fuente es ARCE (ADR 0006)."
+    },
+    {
+     "fecha": "2026-11-14",
+     "texto": "Pasa a Para empezar: T14 está hecha."
+    }
+   ]
+  },
+  {
+   "id": "T18",
+   "titulo": "Pedir a IMPO que aclare si su JSON de normas se puede reutilizar",
+   "columna": "para-empezar",
+   "orden": 2,
+   "tipo": "gestion",
+   "dueno": "Andrés",
+   "dependeDe": "",
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "docs/fuentes/impo.md",
+     "ruta": "docs/fuentes/impo.md"
+    }
+   ],
+   "etapas": [],
+   "lista": [],
+   "notas": [
+    "Su página de datos abiertos ofrece el JSON con licencia abierta, pero sus condiciones de uso prohíben copiar. Con una aclaración por escrito a favor, IMPO entra como quinta fuente (ADR 0006)."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    }
+   ]
+  },
+  {
+   "id": "T11",
+   "titulo": "Entregar el registro completo del banco de pruebas",
+   "columna": "para-empezar",
+   "orden": 3,
+   "tipo": "gestion",
+   "dueno": "Andrés",
+   "dependeDe": "",
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "arranque/proyecto.md",
+     "ruta": "arranque/proyecto.md"
+    }
+   ],
+   "etapas": [],
+   "lista": [],
+   "notas": [
+    "El seguimiento acumulado y las bitácoras por corrida van en `banco-de-pruebas/privado/`, que no se versiona (D2). Hay que confirmar cuántas noches cubre: la muestra sugiere unas cincuenta desde el 2026-09-17 y la definición del proyecto habla de unas setenta."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
     }
    ]
   },
@@ -574,7 +482,7 @@
    "id": "T12",
    "titulo": "Escribir el formato, la muestra sintética y las métricas del banco de pruebas",
    "columna": "pendiente",
-   "orden": 2,
+   "orden": 1,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T11",
@@ -627,7 +535,7 @@
    "id": "T20",
    "titulo": "Medir la primera rebanada contra el banco de pruebas",
    "columna": "pendiente",
-   "orden": 3,
+   "orden": 2,
    "tipo": "verificacion",
    "dueno": "desarrollo",
    "dependeDe": "T08, T12",
@@ -672,7 +580,7 @@
    "id": "T21",
    "titulo": "Completar el analista",
    "columna": "pendiente",
-   "orden": 4,
+   "orden": 3,
    "tipo": "componente",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -721,7 +629,7 @@
    "id": "T22",
    "titulo": "Implementar el presupuesto que corta",
    "columna": "pendiente",
-   "orden": 5,
+   "orden": 4,
    "tipo": "componente",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -787,7 +695,7 @@
    "id": "T23",
    "titulo": "Armar la cola de revisión humana",
    "columna": "pendiente",
-   "orden": 6,
+   "orden": 5,
    "tipo": "web",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -832,7 +740,7 @@
    "id": "T24",
    "titulo": "Sumar los exploradores del BID, el Banco Mundial y Presidencia",
    "columna": "pendiente",
-   "orden": 7,
+   "orden": 6,
    "tipo": "componente",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -898,7 +806,7 @@
    "id": "T25",
    "titulo": "Armar el login por enlace, los cuatro usuarios y la cuenta de demostración",
    "columna": "pendiente",
-   "orden": 8,
+   "orden": 7,
    "tipo": "web",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -947,7 +855,7 @@
    "id": "T26",
    "titulo": "Escribir la sección \"Cómo funciona\" y las páginas \"cómo se hizo\"",
    "columna": "pendiente",
-   "orden": 9,
+   "orden": 8,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -992,7 +900,7 @@
    "id": "T27",
    "titulo": "Escribir el ADR de despliegue",
    "columna": "pendiente",
-   "orden": 10,
+   "orden": 9,
    "tipo": "adr",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -1037,7 +945,7 @@
    "id": "T29",
    "titulo": "Cambiar el modelo de cada agente sin reiniciar la aplicación",
    "columna": "pendiente",
-   "orden": 11,
+   "orden": 10,
    "tipo": "web",
    "dueno": "desarrollo",
    "dependeDe": "T22, T25",
@@ -1112,10 +1020,140 @@
    ]
   },
   {
+   "id": "T14",
+   "titulo": "Dejar la clave del proveedor de modelos fuera del repositorio",
+   "columna": "hecho",
+   "orden": 1,
+   "tipo": "gestion",
+   "dueno": "Andrés",
+   "dependeDe": "T05",
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [],
+   "etapas": [],
+   "lista": [
+    {
+     "texto": "Un espacio de trabajo propio para El Parte en la consola de Claude",
+     "hecho": true
+    },
+    {
+     "texto": "Tope de gasto mensual y aviso en ese espacio de trabajo",
+     "hecho": true
+    },
+    {
+     "texto": "Clave creada en ese espacio de trabajo y guardada fuera del repositorio",
+     "hecho": true
+    },
+    {
+     "texto": "Saldo de créditos de la API disponible",
+     "hecho": true
+    }
+   ],
+   "notas": [
+    "Para las corridas reales (D4). Las pruebas automáticas no la necesitan: usan respuestas grabadas.",
+    "La clave vive solo en la máquina que corre las noches reales y graba respuestas, en un archivo `.env` en la raíz del clon, que `.gitignore` deja afuera, con la variable `ANTHROPIC_API_KEY`. No va en el chat ni en las variables del entorno en la nube: esas variables las puede leer cualquiera que use el entorno, y el proxy de las sesiones en la nube no inyecta secretos en `api.anthropic.com`. [PROVEN: https://code.claude.com/docs/en/cloud-environments.md, 2026-11-14] Las sesiones en la nube trabajan con respuestas grabadas."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    },
+    {
+     "fecha": "2026-11-14",
+     "texto": "Pasa a Para empezar: T05 está hecha."
+    },
+    {
+     "fecha": "2026-11-14",
+     "texto": "Suma dónde vive la clave y los pasos para crearla."
+    },
+    {
+     "fecha": "2026-11-14",
+     "texto": "Hecha: espacio de trabajo el-parte con tope de 20 USD por mes y aviso a los 10, tope de la organización de 30 USD, saldo de créditos cargado y clave creada en ese espacio, guardada fuera del repositorio. Pasa a Hecho."
+    }
+   ]
+  },
+  {
+   "id": "T19",
+   "titulo": "Aceptar o corregir los ADRs propuestos",
+   "columna": "hecho",
+   "orden": 2,
+   "tipo": "gestion",
+   "dueno": "Andrés",
+   "dependeDe": "",
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "adrs/README.md",
+     "ruta": "adrs/README.md"
+    }
+   ],
+   "etapas": [],
+   "lista": [
+    {
+     "texto": "0002: orquestación por mensajes",
+     "hecho": true
+    },
+    {
+     "texto": "0003: elección del stack",
+     "hecho": true
+    },
+    {
+     "texto": "0004: grados de evidencia",
+     "hecho": true
+    },
+    {
+     "texto": "0005: presupuesto por corrida",
+     "hecho": true
+    },
+    {
+     "texto": "0006: fuentes de la versión 0",
+     "hecho": true
+    },
+    {
+     "texto": "0007: registro del banco de pruebas fuera del repositorio",
+     "hecho": true
+    },
+    {
+     "texto": "0008: datos personales",
+     "hecho": true
+    },
+    {
+     "texto": "0009: kanban editable, sincronizado con el tablero",
+     "hecho": true
+    }
+   ],
+   "notas": [
+    "Cada ADR propuesto se acepta, se corrige o se rechaza; al aceptarlo, su estado pasa a \"aceptado\" en el archivo y en el índice. El 0001 quedó reemplazado por el 0009."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    },
+    {
+     "fecha": "2026-11-14",
+     "texto": "Aceptados el 0007 y el 0008."
+    },
+    {
+     "fecha": "2026-11-14",
+     "texto": "Aceptados del 0002 al 0005, con correcciones en el 0003, el 0004 y el 0005."
+    },
+    {
+     "fecha": "2026-11-14",
+     "texto": "Aceptados el 0006 y el 0009. Pasa a Hecho."
+    },
+    {
+     "fecha": "2026-11-14",
+     "texto": "El cambio hecho en el kanban no se aplicó porque la tarjeta también cambió en el repositorio."
+    }
+   ]
+  },
+  {
    "id": "T05",
    "titulo": "Escribir los primeros ADRs",
    "columna": "hecho",
-   "orden": 1,
+   "orden": 3,
    "tipo": "adr",
    "dueno": "desarrollo",
    "dependeDe": "T09",
@@ -1217,7 +1255,7 @@
    "id": "T06",
    "titulo": "Escribir los ADRs de las decisiones D2 y D3",
    "columna": "hecho",
-   "orden": 2,
+   "orden": 4,
    "tipo": "adr",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1283,7 +1321,7 @@
    "id": "T28",
    "titulo": "Hacer editable el kanban y sincronizarlo con el tablero",
    "columna": "hecho",
-   "orden": 3,
+   "orden": 5,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1340,7 +1378,7 @@
    "id": "T07",
    "titulo": "Escribir docs/plan.md",
    "columna": "hecho",
-   "orden": 4,
+   "orden": 6,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T02",
@@ -1402,7 +1440,7 @@
    "id": "T04",
    "titulo": "Escribir docs/base-de-afirmaciones.md",
    "columna": "hecho",
-   "orden": 5,
+   "orden": 7,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T03",
@@ -1472,7 +1510,7 @@
    "id": "T03",
    "titulo": "Escribir docs/contratos.md",
    "columna": "hecho",
-   "orden": 6,
+   "orden": 8,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T02",
@@ -1542,7 +1580,7 @@
    "id": "T15",
    "titulo": "Comprobar en el verificador que los diagramas Mermaid se dibujan",
    "columna": "hecho",
-   "orden": 7,
+   "orden": 9,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1587,7 +1625,7 @@
    "id": "T02",
    "titulo": "Escribir docs/arquitectura.md",
    "columna": "hecho",
-   "orden": 8,
+   "orden": 10,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T09",
@@ -1673,7 +1711,7 @@
    "id": "T10",
    "titulo": "Verificar las fuentes candidatas",
    "columna": "hecho",
-   "orden": 9,
+   "orden": 11,
    "tipo": "verificacion",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1746,7 +1784,7 @@
    "id": "T09",
    "titulo": "Verificar Spring AI y sus patrones de orquestación",
    "columna": "hecho",
-   "orden": 10,
+   "orden": 12,
    "tipo": "verificacion",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1799,7 +1837,7 @@
    "id": "T13",
    "titulo": "Elegir la licencia del repositorio",
    "columna": "hecho",
-   "orden": 11,
+   "orden": 13,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1835,7 +1873,7 @@
    "id": "T17",
    "titulo": "Dar acceso de escritura al repositorio a las sesiones en la nube",
    "columna": "hecho",
-   "orden": 12,
+   "orden": 14,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1862,7 +1900,7 @@
    "id": "T16",
    "titulo": "Armar el kanban generado desde el tablero",
    "columna": "hecho",
-   "orden": 13,
+   "orden": 15,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1911,7 +1949,7 @@
    "id": "T01",
    "titulo": "Armar la base documental",
    "columna": "hecho",
-   "orden": 14,
+   "orden": 16,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "",
