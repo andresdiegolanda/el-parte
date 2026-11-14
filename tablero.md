@@ -249,18 +249,77 @@ Registro:
 - Tipo: Web
 - Dueño: desarrollo
 - Depende de: T08
-- Detalle: [adrs/0003-eleccion-del-stack.md](adrs/0003-eleccion-del-stack.md), [adrs/0008-datos-personales.md](adrs/0008-datos-personales.md)
+- Detalle: [adrs/0013-acceso-perfil-y-parte-diario.md](adrs/0013-acceso-perfil-y-parte-diario.md), [adrs/0003-eleccion-del-stack.md](adrs/0003-eleccion-del-stack.md), [adrs/0008-datos-personales.md](adrs/0008-datos-personales.md)
 
-Login con token de un solo uso de Spring Security, correos en el esquema cuentas y lista de invitados desde la configuración.
+Login con token de un solo uso de Spring Security, correos en el esquema cuentas y lista de invitados desde la configuración. El diseño está en el ADR 0013 y en la vista del usuario del tablero de arquitectura.
 
 Etapas:
-- [ ] Diseño
+- [x] Diseño
 - [ ] Código
 - [ ] Pruebas
 - [ ] Página cómo se hizo
 
+Lista:
+- [ ] Alta de invitados desde elparte.invitados: cuentas.usuarios y parte.clientes con el mismo identificador
+- [ ] Dos fuentes de datos, una por rol, y un UserDetailsService que lee cuentas.usuarios
+- [ ] Entrar por enlace: tokens en cuentas.one_time_tokens y el enlace por el correo saliente
+- [ ] La misma respuesta para un correo no invitado
+- [ ] Sesión recordada 30 días en cuentas.persistent_logins, y probar que se combina con el login por token
+- [ ] La página de la mañana muestra el informe de quien entró; sin sesión, el de demostración
+- [ ] La cuenta de demostración, de solo lectura
+
 Registro:
 - 2026-11-07: Creada con el plan (T07).
+- 2026-11-14: Diseño hecho: alta de invitados, entrar por enlace y sesión recordada (ADR 0013, propuesto). El perfil queda en T34 y el aviso diario en T35.
+
+### T34 · Armar la página del perfil
+- Tipo: Web
+- Dueño: desarrollo
+- Depende de: T25
+- Detalle: [adrs/0013-acceso-perfil-y-parte-diario.md](adrs/0013-acceso-perfil-y-parte-diario.md)
+
+Donde cada invitado elige qué entidades seguir y si quiere el aviso diario por correo. Los cambios valen desde la corrida siguiente.
+
+Etapas:
+- [x] Diseño
+- [ ] Código
+- [ ] Pruebas
+- [ ] Página cómo se hizo
+
+Lista:
+- [ ] Lo que sigue y el catálogo de lo que se puede seguir: las entidades con su identificador en alguna fuente
+- [ ] Seguir y dejar de seguir, en parte.suscripciones
+- [ ] Aviso diario sí o no, en cuentas.usuarios, con el rol de cuentas
+- [ ] La cuenta de demostración lo ve pero no lo cambia
+- [ ] Catálogo inicial: organismos con su código de comprador en ARCE, verificado
+
+Registro:
+- 2026-11-14: Creada con el diseño del acceso y el perfil (ADR 0013).
+
+### T35 · Mandar el aviso diario del parte
+- Tipo: Componente
+- Dueño: desarrollo
+- Depende de: T25
+- Detalle: [adrs/0013-acceso-perfil-y-parte-diario.md](adrs/0013-acceso-perfil-y-parte-diario.md), [docs/contratos.md](docs/contratos.md)
+
+Cada mañana, a cada invitado que lo quiere, un aviso corto con la noche, cuántos hechos hay y el enlace a su página. No manda el contenido de los hechos.
+
+Etapas:
+- [ ] Contrato
+- [ ] Código
+- [ ] Pruebas
+- [ ] Medido contra el banco
+- [ ] Página cómo se hizo
+
+Lista:
+- [ ] El mensaje informes suma el modo de la corrida, y el aviso saltea lo que no es normal
+- [ ] Correo y preferencia con el rol de cuentas
+- [ ] Registro de envíos en cuentas.envios_del_parte, para no mandar dos veces
+- [ ] El aviso: asunto con la noche y cuántos hechos; cuerpo con pendientes, corrida cortada y el enlace
+- [ ] El correo saliente por SMTP; el servicio real se decide en T27
+
+Registro:
+- 2026-11-14: Creada con el diseño del parte diario (ADR 0013).
 
 ### T26 · Escribir la sección "Cómo funciona" y las páginas "cómo se hizo"
 - Tipo: Documento
@@ -364,6 +423,20 @@ Registro:
 - 2026-11-14: Creada con el ADR 0010.
 
 ## Hecho
+
+### T36 · Aceptar o corregir el ADR 0013
+- Tipo: Gestión
+- Dueño: Andrés
+- Detalle: [adrs/0013-acceso-perfil-y-parte-diario.md](adrs/0013-acceso-perfil-y-parte-diario.md), [docs/tablero-de-arquitectura/README.md](docs/tablero-de-arquitectura/README.md)
+
+Cómo entra cada usuario, dónde queda su perfil y cómo lee su parte cada mañana. Se ve en la vista del usuario del tablero de arquitectura, `docs/tablero-de-arquitectura/usuarios.html`. Al aceptarlo, su estado pasa a "aceptado" en el archivo y en el índice.
+
+Lista:
+- [x] 0013: acceso, perfil y parte diario
+
+Registro:
+- 2026-11-14: Creada con el ADR 0013.
+- 2026-11-14: Aceptado el 0013, sin cambios. Pasa a Hecho.
 
 ### T32 · Armar el tablero de arquitectura
 - Tipo: Herramienta

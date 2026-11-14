@@ -113,6 +113,22 @@ m = copy.deepcopy(MODELO)
 m["nodos"][1]["col"], m["nodos"][1]["fila"] = m["nodos"][0]["col"], m["nodos"][0]["fila"]
 comprobar(any("en la misma celda" in x for x in ta.validar_modelo(m)), "dos nodos en la misma celda se detectan")
 
+# Las vistas: lo que ubican tiene que existir, sin dos objetos en una celda, y sus recorridos tienen que caber.
+m = copy.deepcopy(MODELO)
+m["vistas"][0]["posiciones"]["no-existe"] = [9, 9]
+comprobar(any("ubica a no-existe" in x for x in ta.validar_modelo(m)), "una vista que ubica un nodo que no existe se detecta")
+m = copy.deepcopy(MODELO)
+m["vistas"][0]["posiciones"]["correo"] = m["vistas"][0]["posiciones"]["web/login"]
+comprobar(any("en la misma celda" in x and "vista" in x for x in ta.validar_modelo(m)), "dos objetos en la misma celda de una vista se detectan")
+m = copy.deepcopy(MODELO)
+del m["vistas"][0]["posiciones"]["base/envios"]
+comprobar(any("no está en la vista usuarios" in x for x in ta.validar_modelo(m)), "un recorrido que se sale de su vista se detecta")
+vista = ta.datos_de_vista(MODELO, MODELO["vistas"][0])
+comprobar(all(f["de"] in MODELO["vistas"][0]["posiciones"] and f["a"] in MODELO["vistas"][0]["posiciones"] for f in vista["flechas"]),
+          "la vista solo dibuja las flechas entre sus objetos")
+comprobar(any(c["id"] == "inicio>kafka/corrida.iniciada" for c in vista["fuera"].get("inicio", [])),
+          "la vista guarda las conexiones que le quedan afuera")
+
 if fallas:
     print(f"\n{len(fallas)} fallas")
     sys.exit(1)

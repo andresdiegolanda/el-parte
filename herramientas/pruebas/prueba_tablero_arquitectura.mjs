@@ -96,6 +96,24 @@ comprobar((await pagina.$$("g.nodo.cambio")).length > 0, "Cambios resalta lo úl
 await pagina.click("#btn-leyenda");
 comprobar((await texto("#panel-titulo")) === "Leyenda", "Leyenda abre la leyenda");
 
+// 8. La vista del usuario: el mismo modelo, con sus objetos, sus recorridos y lo que le queda afuera.
+for (const v of sistema.vistas) {
+  const urlVista = pathToFileURL(path.join(raiz, "docs", "tablero-de-arquitectura", v.archivo)).href;
+  await pagina.goto(urlVista);
+  comprobar((await pagina.$$("g.nodo")).length === Object.keys(v.posiciones).length, `la vista ${v.id} dibuja sus ${Object.keys(v.posiciones).length} objetos`);
+  comprobar((await texto("#titulo")).startsWith(v.titulo), `la vista ${v.id} lleva su título`);
+  comprobar((await pagina.$eval("#vistas a.activa", (a) => a.getAttribute("href"))) === v.archivo, `el botón de la vista ${v.id} queda marcado`);
+  for (const rid of v.recorridos) {
+    const n = sistema.recorridos.find((r) => r.id === rid).pasos.length;
+    const ok = await pagina.evaluate((rid, n) => { empezar(rid, 0); for (let i = 1; i < n; i++) { siguiente(); }
+      return document.getElementById("pie").textContent.includes("parada " + n + " de " + n); }, rid, n);
+    comprobar(ok, `en la vista ${v.id}, el recorrido ${rid} llega a su última parada`);
+  }
+  await pagina.keyboard.press("Escape");
+  await pagina.$eval('g.nodo[data-id="inicio"]', (g) => g.dispatchEvent(new MouseEvent("click", { bubbles: true })));
+  comprobar((await texto("#panel-cuerpo")).includes("Fuera de esta vista"), `en la vista ${v.id}, la ficha dice lo que queda afuera`);
+}
+
 comprobar(errores.length === 0, "sin errores en la consola" + (errores.length ? ": " + errores.join(" | ") : ""));
 await navegador.close();
 if (fallas.length) { console.log(`\n${fallas.length} fallas`); process.exit(1); }

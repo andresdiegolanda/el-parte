@@ -9,7 +9,8 @@ de cambios (ADR 0012). Este módulo:
    clase, qué tablas escribe y lee, de qué otras clases depende y qué rutas web atiende.
 3. Compara las dos cosas. Cada relación construida del modelo tiene que estar en el código, y cada
    relación del código tiene que estar en el modelo como construida.
-4. Genera docs/tablero-de-arquitectura/index.html desde plantilla.html y el modelo.
+4. Genera docs/tablero-de-arquitectura/index.html desde plantilla.html y el modelo, y una página más
+   por cada vista: una parte del sistema con su propia grilla, sacada del mismo modelo.
 
 Lo usan herramientas/generar_tablero_arquitectura.py y herramientas/verificar_docs.py. Solo usa la
 biblioteca estándar de Python.
@@ -120,6 +121,40 @@ def validar_modelo(modelo):
         for objeto in h.get("objetos", []):
             if objeto not in todos:
                 errores.append(f"{donde}: el historial del {h.get('fecha')} cita {objeto}, que no existe")
+    errores += _validar_vistas(modelo, por_id, donde)
+    return errores
+
+
+def _validar_vistas(modelo, por_id, donde):
+    errores, archivos = [], set()
+    flechas = {f["id"]: f for f in modelo.get("flechas", [])}
+    recorridos = {r["id"]: r for r in modelo.get("recorridos", [])}
+    for v in modelo.get("vistas", []):
+        vid = v.get("id", "?")
+        if not v.get("boton") or not v.get("titulo") or not v.get("sub"):
+            errores.append(f"{donde}: a la vista {vid} le falta 'boton', 'titulo' o 'sub'")
+        archivo = v.get("archivo", "")
+        if not re.fullmatch(r"[a-z0-9-]+\.html", archivo) or archivo == "index.html" or archivo in archivos:
+            errores.append(f"{donde}: la vista {vid} tiene un archivo inválido o repetido: {archivo}")
+        archivos.add(archivo)
+        posiciones = v.get("posiciones", {})
+        celdas = {}
+        for nid, celda in posiciones.items():
+            if nid not in por_id:
+                errores.append(f"{donde}: la vista {vid} ubica a {nid}, que no es un nodo")
+            if tuple(celda) in celdas:
+                errores.append(f"{donde}: en la vista {vid}, {celdas[tuple(celda)]} y {nid} están en la misma celda {celda}")
+            celdas[tuple(celda)] = nid
+        for rid in v.get("recorridos", []):
+            if rid not in recorridos:
+                errores.append(f"{donde}: la vista {vid} cita el recorrido {rid}, que no existe")
+                continue
+            for i, paso in enumerate(recorridos[rid]["pasos"], start=1):
+                en = paso.get("en")
+                f = flechas.get(en)
+                adentro = en in posiciones or (f is not None and f["de"] in posiciones and f["a"] in posiciones)
+                if not adentro:
+                    errores.append(f"{donde}: el paso {i} del recorrido {rid} va a {en}, que no está en la vista {vid}")
     return errores
 
 
@@ -347,17 +382,57 @@ def tarjetas_del_tablero():
 
 # ---------------------------------------------------------------- la página
 
+def datos_de_vista(modelo, vista):
+    """Lo que la página de una vista necesita: sus nodos en su grilla, las flechas entre ellos, sus
+    recorridos y, por cada nodo, las conexiones que quedan fuera de la vista."""
+    posiciones = vista["posiciones"]
+    titulos = {n["id"]: n["titulo"] for n in modelo["nodos"]}
+    nodos = []
+    for n in modelo["nodos"]:
+        if n["id"] in posiciones:
+            copia = dict(n)
+            copia["col"], copia["fila"] = posiciones[n["id"]]
+            nodos.append(copia)
+    flechas = [f for f in modelo["flechas"] if f["de"] in posiciones and f["a"] in posiciones]
+    adentro = {f["id"] for f in flechas}
+    fuera = {}
+    for f in modelo["flechas"]:
+        if f["id"] in adentro:
+            continue
+        for extremo, otro, lado in (("de", "a", "sale"), ("a", "de", "entra")):
+            if f[extremo] in posiciones:
+                fuera.setdefault(f[extremo], []).append({"id": f["id"], "lado": lado, "otro": titulos[f[otro]],
+                                                        "etiqueta": f["etiqueta"], "estado": f["estado"]})
+    datos = {k: modelo[k] for k in ("actualizado", "repositorio", "tablero", "kanban")}
+    datos.update({
+        "titulo": vista["titulo"], "franjas": vista["franjas"], "columnas": vista["columnas"], "grupos": vista["grupos"],
+        "nodos": nodos, "flechas": flechas,
+        "recorridos": [r for r in modelo["recorridos"] if r["id"] in vista["recorridos"]],
+        "historial": [dict(h, objetos=[o for o in h["objetos"] if o in posiciones or o in adentro]) for h in modelo["historial"]],
+        "fuera": fuera, "vista": {"id": vista["id"], "titulo": vista["titulo"], "sub": vista["sub"], "archivo": vista["archivo"]},
+        "vistas": [{"id": v["id"], "boton": v["boton"], "archivo": v["archivo"]} for v in modelo.get("vistas", [])],
+    })
+    return datos
+
+
+def _pagina(plantilla, datos):
+    contenido = json.dumps(datos, ensure_ascii=False, indent=1).replace("</", "<\\/")
+    return plantilla.replace(MARCA_AVISO, AVISO).replace(MARCA_DATOS, contenido)
+
+
 def generar(modelo=None):
-    """Devuelve (html, errores). Si hay errores de forma, html es None."""
+    """Devuelve ({archivo: html}, errores): index.html y una página por vista. Con errores, {}."""
     modelo = modelo or leer_modelo()
     errores = validar_modelo(modelo)
     if errores:
-        return None, errores
+        return {}, errores
     plantilla = PLANTILLA.read_text(encoding="utf-8")
     if plantilla.count(MARCA_DATOS) != 1 or plantilla.count(MARCA_AVISO) != 1:
-        return None, [f"{PLANTILLA.relative_to(RAIZ)}: tiene que tener una vez {MARCA_DATOS} y una vez {MARCA_AVISO}"]
-    contenido = json.dumps(modelo, ensure_ascii=False, indent=1).replace("</", "<\\/")
-    return plantilla.replace(MARCA_AVISO, AVISO).replace(MARCA_DATOS, contenido), []
+        return {}, [f"{PLANTILLA.relative_to(RAIZ)}: tiene que tener una vez {MARCA_DATOS} y una vez {MARCA_AVISO}"]
+    paginas = {"index.html": _pagina(plantilla, modelo)}
+    for v in modelo.get("vistas", []):
+        paginas[v["archivo"]] = _pagina(plantilla, datos_de_vista(modelo, v))
+    return paginas, []
 
 
 def verificar():
@@ -367,8 +442,14 @@ def verificar():
     if errores:
         return errores
     errores += verificar_contra_el_codigo(modelo, hechos_del_codigo(), tarjetas_del_tablero())
-    html, problemas = generar(modelo)
+    paginas, problemas = generar(modelo)
     errores += problemas
-    if html is not None and (not SALIDA.exists() or SALIDA.read_text(encoding="utf-8") != html):
-        errores.append(f"{SALIDA.relative_to(RAIZ)}: no coincide con sistema.json; corré python3 herramientas/generar_tablero_arquitectura.py")
+    for archivo, html in paginas.items():
+        ruta = CARPETA / archivo
+        if not ruta.exists() or ruta.read_text(encoding="utf-8") != html:
+            errores.append(f"{ruta.relative_to(RAIZ)}: no coincide con sistema.json; corré python3 herramientas/generar_tablero_arquitectura.py")
+    generadas = set(paginas) | {"plantilla.html"}
+    for sobrante in sorted(CARPETA.glob("*.html")):
+        if paginas and sobrante.name not in generadas:
+            errores.append(f"{sobrante.relative_to(RAIZ)}: no lo genera ninguna vista de sistema.json; si la vista se quitó, el archivo va a obsoletos/")
     return errores

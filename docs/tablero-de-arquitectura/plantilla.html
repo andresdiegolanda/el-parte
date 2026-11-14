@@ -139,6 +139,7 @@
   .referencia { display: flex; gap: 8px; align-items: center; background: var(--fondo2); border: 1px solid var(--linea2);
                 border-radius: 8px; padding: 6px 8px; margin: 8px 0; }
   .referencia code { flex: 1; color: var(--token); }
+  a.conexion { text-decoration: none; }
   .conexion { display: block; width: 100%; text-align: left; background: none; border: 0; color: var(--texto); font: inherit;
               font-size: 13px; padding: 4px 6px; border-radius: 6px; cursor: pointer; }
   .conexion:hover { background: var(--fondo2); }
@@ -152,6 +153,8 @@
   footer .controles { display: flex; gap: 6px; }
   footer .texto { flex: 1; }
   footer .texto small { display: block; color: var(--texto3); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
+  #vistas { display: flex; gap: 6px; flex-wrap: wrap; }
+  #vistas a.boton.activa { pointer-events: none; }
   .aviso-regla { border: 1px solid #3b4a6b; background: rgba(56, 189, 248, .06); border-radius: 8px; padding: 8px 10px; margin: 8px 0; }
 </style>
 </head>
@@ -170,7 +173,10 @@
 </header>
 <main>
   <nav>
-    <h2>Recorridos</h2>
+    <h2>Vistas</h2>
+    <div class="sub">El mismo modelo, entero o por partes.</div>
+    <div id="vistas"></div>
+    <h2 style="margin-top:18px">Recorridos</h2>
     <div class="sub">Un camino por el sistema, parada por parada. Clic: arranca desde la primera.</div>
     <div id="lista-recorridos"></div>
     <h2 style="margin-top:18px">Buscar un objeto</h2>
@@ -360,11 +366,11 @@ function dibujar() {
   var gF = $("franjas"), gG = $("grupos"), gA = $("flechas"), gN = $("nodos");
   S.franjas.forEach(function (fr) {
     var g = el("g", { "class": "franja" }, gF);
-    var y0 = filaY(fr.fila[0]) - (fr.id === "noche" ? 62 : 36), y1 = filaY(fr.fila[1] + 1) + 8;
+    var y0 = filaY(fr.fila[0]) - (fr.columnas ? 62 : 36), y1 = filaY(fr.fila[1] + 1) + 8;
     el("rect", { x: 10, y: y0, width: ANCHO - 20, height: y1 - y0 }, g);
     var t = el("text", { x: 26, y: y0 + 20, "class": "titulo" }, g); t.textContent = fr.titulo;
     var s = el("text", { x: 26 + fr.titulo.length * 8.6 + 16, y: y0 + 20, "class": "sub" }, g); s.textContent = fr.sub;
-    if (fr.id === "noche") {
+    if (fr.columnas) {
       S.columnas.forEach(function (c) {
         if (c.kafka) { el("rect", { x: colX(c.col) + 4, y: y0 + 30, width: COLW - 8, height: y1 - y0 - 38, rx: 10, "class": "columna-kafka" }, g); }
         var ct = el("text", { x: colX(c.col) + COLW / 2, y: y0 + 46, "class": "columna-titulo" }, g); ct.textContent = c.titulo;
@@ -373,9 +379,9 @@ function dibujar() {
   });
   S.grupos.forEach(function (gr) {
     var g = el("g", { "class": "grupo" }, gG);
-    var x0 = colX(gr.col[0]) + 4, x1 = colX(gr.col[1] + 1) - 4, y0 = filaY(gr.fila[0]) - 4, y1 = filaY(gr.fila[1] + 1) - 2;
+    var x0 = colX(gr.col[0]) + 4, x1 = colX(gr.col[1] + 1) - 4, y0 = filaY(gr.fila[0]) - 4, y1 = filaY(gr.fila[1] + 1) + 5;
     el("rect", { x: x0, y: y0, width: x1 - x0, height: y1 - y0 }, g);
-    var t = el("text", { x: x0 + 8, y: y1 - 6 }, g); t.textContent = gr.titulo;
+    var t = el("text", { x: x0 + 8, y: y1 - 4 }, g); t.textContent = gr.titulo;
   });
   puertos();
   S.flechas.forEach(function (f) {
@@ -408,7 +414,7 @@ function dibujar() {
     var marcas = [];
     if (n.estado === "disenado") { marcas.push(["DISEÑADO", "var(--disenado)"]); }
     if (n.comun) { marcas.push(["COMÚN", "var(--texto3)"]); }
-    if (n.nota) { marcas.push(["APAGADA", "var(--activo)"]); }
+    if (n.apagado) { marcas.push(["APAGADA", "var(--activo)"]); }
     var mx = NW - 6;
     marcas.forEach(function (m) {
       var w = m[0].length * 6 + 8; mx -= w;
@@ -561,6 +567,12 @@ function abrirNodo(id, sinCentrar) {
   }
   if (entra.length) { h += "<h3>Le llega de</h3>" + lista(entra, "de"); }
   if (sale.length) { h += "<h3>Va hacia</h3>" + lista(sale, "a"); }
+  if (S.fuera && S.fuera[id]) {
+    h += "<h3>Fuera de esta vista</h3>" + S.fuera[id].map(function (c) {
+      return '<a class="conexion ' + c.estado + '" href="index.html?objeto=' + encodeURIComponent(c.id) + '">' + (c.lado === "sale" ? "→ " : "← ") +
+             esc(c.otro) + " <small>· " + esc(c.etiqueta) + (c.estado === "disenado" ? " · diseñada" : "") + " · en el tablero completo</small></a>";
+    }).join("");
+  }
   if (n.codigo) { h += "<h3>Código</h3><ul class='lista'>" + n.codigo.map(function (c) { return "<li>" + enlace(c) + "</li>"; }).join("") + "</ul>"; }
   if (n.docs) { h += "<h3>Documentos</h3><ul class='lista'>" + n.docs.map(function (c) { return "<li>" + enlace(c) + "</li>"; }).join("") + "</ul>"; }
   if (n.tarjetas) { h += "<h3>Tarjetas del tablero</h3><p>" + n.tarjetas.map(tarjeta).join(", ") + "</p>"; }
@@ -583,7 +595,10 @@ function abrirFlecha(id, sinCentrar) {
   panel(a.titulo + " → " + b.titulo, h);
   if (!sinCentrar) { asegurarVisible(id); }
 }
-function ir(id) { if (nodos[id]) { abrirNodo(id); } else if (flechas[id]) { abrirFlecha(id); } }
+function ir(id) {
+  if (nodos[id]) { abrirNodo(id); } else if (flechas[id]) { abrirFlecha(id); }
+  else if (S.vista) { location.href = "index.html?objeto=" + encodeURIComponent(id); }
+}
 function asegurarVisible(id) {
   var c = centro(id), r = $("lienzo").getBoundingClientRect();
   var x = c[0] * cam.k + cam.x, y = c[1] * cam.k + cam.y;
@@ -759,7 +774,7 @@ function leyenda() {
     h += '<div class="leyenda-fila">' + muestraNodo(t) + "<span>" + TIPOS[t] + "</span></div>";
   });
   h += '<div class="leyenda-fila">' + muestraNodo("agente", true) + "<span>Diseñado: escrito en un ADR o un contrato, con su tarjeta, pero sin construir.</span></div>";
-  h += "<p>Las marcas sobre la caja: <b>DISEÑADO</b>; <b>COMÚN</b>, lo usan muchos y no se le dibujan las flechas de uso; <b>APAGADA</b>, existe pero viene apagada.</p>";
+  h += "<p>Las marcas sobre la caja: <b>DISEÑADO</b>; <b>COMÚN</b>, lo usan muchos y no se le dibujan las flechas de uso; <b>APAGADA</b>, existe pero viene apagada. Un objeto construido puede tener una parte diseñada: lo dice su nota.</p>";
   h += "<h3>Flechas</h3>";
   h += '<div class="leyenda-fila">' + muestraFlecha("", "#38bdf8", "", 2.6) + "<span>Un mensaje por Kafka: emite a un tópico, o lo escucha.</span></div>";
   h += '<div class="leyenda-fila">' + muestraFlecha("", "#34d399", "", 1.3) + "<span>Escribe una tabla.</span></div>";
@@ -778,7 +793,10 @@ function contar() {
 function ayuda() {
   var c = contar();
   var h = '<div class="aviso-regla"><b>Este tablero es el sistema.</b> Refleja la arquitectura de El Parte con precisión en todo momento: cada cambio del sistema se hace acá en el mismo momento, y los pedidos se hacen citando sus objetos (<a href="' + esc(S.repositorio) + 'adrs/0012-tablero-de-arquitectura.md" target="_blank" rel="noopener">ADR 0012</a>). El verificador compara este tablero con el código en cada cambio.</div>';
-  h += "<p>Hoy tiene <b>" + c.n.construido + "</b> objetos construidos y <b>" + c.n.disenado + "</b> diseñados, unidos por <b>" + c.f.construido + "</b> flechas construidas y <b>" + c.f.disenado + "</b> diseñadas. Modelo del " + esc(S.actualizado) + ".</p>";
+  if (S.vista) {
+    h += '<div class="aviso-regla"><b>Esta es una vista:</b> ' + esc(S.vista.sub) + '. Muestra una parte del sistema con su propia grilla, sacada del mismo modelo que el <a href="index.html">tablero completo</a>; cada ficha dice qué conexiones quedan fuera de la vista.</div>';
+  }
+  h += "<p>" + (S.vista ? "Esta vista tiene" : "Hoy tiene") + " <b>" + c.n.construido + "</b> objetos construidos y <b>" + c.n.disenado + "</b> diseñados, unidos por <b>" + c.f.construido + "</b> flechas construidas y <b>" + c.f.disenado + "</b> diseñadas. Modelo del " + esc(S.actualizado) + ".</p>";
   h += "<h3>Cómo se usa</h3><ul class='lista'>" +
        "<li><b>Clic</b> sobre un objeto o una flecha: su ficha, con qué es, para qué sirve, sus conexiones, su código y su referencia.</li>" +
        "<li><b>Botón derecho</b>: el menú del objeto (copiar la referencia, centrar, abrir el código).</li>" +
@@ -814,6 +832,17 @@ window.addEventListener("keydown", function (e) {
 window.addEventListener("resize", function () { if (!estado.sel && !estado.recorrido) { ajustar(); } });
 
 document.querySelector("#chip-modelo span").textContent = "modelo del " + S.actualizado + " · verificado contra el código";
+(function () {
+  var t = $("titulo");
+  t.innerHTML = esc(S.titulo) + "<small>" + esc(S.vista ? S.vista.sub : "el sistema objeto por objeto: lo construido y lo diseñado") + "</small>";
+  document.title = S.titulo;
+  var cont = $("vistas"), lista = [{ boton: "Todo el sistema", archivo: "index.html" }].concat(S.vistas || []);
+  lista.forEach(function (v) {
+    var a = document.createElement("a"); a.className = "boton"; a.href = v.archivo; a.textContent = v.boton;
+    if (v.archivo === (S.vista ? S.vista.archivo : "index.html")) { a.classList.add("activa"); }
+    cont.appendChild(a);
+  });
+})();
 dibujar();
 listaRecorridos();
 ajustar();

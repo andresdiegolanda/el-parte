@@ -139,6 +139,7 @@
   .referencia { display: flex; gap: 8px; align-items: center; background: var(--fondo2); border: 1px solid var(--linea2);
                 border-radius: 8px; padding: 6px 8px; margin: 8px 0; }
   .referencia code { flex: 1; color: var(--token); }
+  a.conexion { text-decoration: none; }
   .conexion { display: block; width: 100%; text-align: left; background: none; border: 0; color: var(--texto); font: inherit;
               font-size: 13px; padding: 4px 6px; border-radius: 6px; cursor: pointer; }
   .conexion:hover { background: var(--fondo2); }
@@ -152,6 +153,8 @@
   footer .controles { display: flex; gap: 6px; }
   footer .texto { flex: 1; }
   footer .texto small { display: block; color: var(--texto3); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
+  #vistas { display: flex; gap: 6px; flex-wrap: wrap; }
+  #vistas a.boton.activa { pointer-events: none; }
   .aviso-regla { border: 1px solid #3b4a6b; background: rgba(56, 189, 248, .06); border-radius: 8px; padding: 8px 10px; margin: 8px 0; }
 </style>
 </head>
@@ -170,7 +173,10 @@
 </header>
 <main>
   <nav>
-    <h2>Recorridos</h2>
+    <h2>Vistas</h2>
+    <div class="sub">El mismo modelo, entero o por partes.</div>
+    <div id="vistas"></div>
+    <h2 style="margin-top:18px">Recorridos</h2>
     <div class="sub">Un camino por el sistema, parada por parada. Clic: arranca desde la primera.</div>
     <div id="lista-recorridos"></div>
     <h2 style="margin-top:18px">Buscar un objeto</h2>
@@ -229,7 +235,8 @@ var S = {
    "fila": [
     0,
     6
-   ]
+   ],
+   "columnas": true
   },
   {
    "id": "servicios",
@@ -332,11 +339,11 @@ var S = {
    "titulo": "esquema cuentas",
    "col": [
     12,
-    12
+    13
    ],
    "fila": [
     12,
-    12
+    13
    ]
   }
  ],
@@ -457,13 +464,13 @@ var S = {
   {
    "id": "afuera/mailpit",
    "tipo": "infra",
-   "titulo": "Mailpit",
-   "sub": "buzón de correo de prueba · :8025",
+   "titulo": "Buzón de correo",
+   "sub": "Mailpit en local · SMTP real: T27",
    "col": 12,
    "fila": 9,
    "estado": "construido",
-   "que_es": "Un buzón de prueba que levanta Docker Compose. Recibe los correos sin mandarlos a nadie.",
-   "para_que": "Va a recibir los enlaces del login mientras no haya un servicio de correo de verdad (D9). Hoy nada le escribe.",
+   "que_es": "Por donde salen los correos. En local es Mailpit, un buzón de prueba que levanta Docker Compose y que captura los correos sin mandarlos; para los invitados de verdad hace falta un servicio de correo real, que se decide con el despliegue (T27).",
+   "para_que": "Llevar el enlace para entrar y el aviso de cada mañana. Hoy nada le escribe.",
    "docs": [
     "app/README.md"
    ]
@@ -1095,7 +1102,8 @@ var S = {
    "docs": [
     "app/README.md"
    ],
-   "nota": "Apagada por omisión: el cron vale \"-\"."
+   "nota": "Apagada por omisión: el cron vale \"-\".",
+   "apagado": true
   },
   {
    "id": "corridas",
@@ -1198,7 +1206,7 @@ var S = {
    "col": 8,
    "fila": 12,
    "estado": "construido",
-   "que_es": "Qué entidades sigue cada cliente.",
+   "que_es": "Qué entidades sigue cada cliente. Diseñado: la escribe la página del perfil (T34).",
    "para_que": "Define qué entidades sigue la corrida y qué va en cada informe.",
    "docs": [
     "docs/base-de-afirmaciones.md"
@@ -1273,7 +1281,7 @@ var S = {
    "col": 2,
    "fila": 13,
    "estado": "construido",
-   "que_es": "Organismos y personas jurídicas, con sus identificadores en cada fuente.",
+   "que_es": "Organismos y personas jurídicas, con sus identificadores en cada fuente. Diseñado: el perfil muestra como catálogo las que se pueden seguir, las que tienen su identificador en alguna fuente (T34).",
    "para_que": "El explorador saca de acá el código de comprador de cada entidad seguida.",
    "docs": [
     "docs/base-de-afirmaciones.md"
@@ -1393,10 +1401,11 @@ var S = {
    "col": 12,
    "fila": 12,
    "estado": "construido",
-   "que_es": "Los correos de los usuarios invitados. Es el único lugar con datos personales, en un esquema aparte.",
-   "para_que": "El login (T25). Hoy nadie la usa.",
+   "que_es": "El correo de cada usuario invitado, con el mismo identificador que su cliente en el esquema parte. Es el único lugar con datos personales, en un esquema aparte (ADR 0008). Diseñado: suma si quiere el aviso diario.",
+   "para_que": "Saber a qué correo mandar el enlace y el aviso, y a qué cliente corresponde quien entra. Hoy nadie la usa (T25).",
    "docs": [
-    "docs/base-de-afirmaciones.md"
+    "docs/base-de-afirmaciones.md",
+    "adrs/0013-acceso-perfil-y-parte-diario.md"
    ],
    "tabla": "cuentas.usuarios"
   },
@@ -1461,6 +1470,10 @@ var S = {
    ],
    "rutas": [
     "GET /manana"
+   ],
+   "nota": "Diseñado (T25): con sesión, muestra el informe de quien entró; sin sesión, el de la cuenta de demostración.",
+   "tarjetas": [
+    "T25"
    ]
   },
   {
@@ -1534,19 +1547,161 @@ var S = {
   {
    "id": "web/login",
    "tipo": "pagina",
-   "titulo": "Login por enlace",
-   "sub": "",
+   "titulo": "Entrar por enlace",
+   "sub": "GET /entrar · POST /ott/generate",
    "col": 12,
    "fila": 16,
    "estado": "disenado",
-   "que_es": "El login con un enlace de un solo uso por correo, para cuatro usuarios invitados y la cuenta de demostración.",
-   "para_que": "Que cada invitado vea su página; los correos quedan en el esquema cuentas (ADR 0008).",
+   "que_es": "La página para entrar: la persona pone su correo y, si está invitada, le llega un enlace de un solo uso. Al hacer clic entra, y la aplicación la recuerda 30 días. Es el login con token de un solo uso de Spring Security, con los tokens y los recordatorios guardados en el esquema cuentas.",
+   "para_que": "Que cada invitado vea su página y su perfil sin contraseña, y que no tenga que pedir un enlace cada mañana. Ante un correo no invitado responde lo mismo, así no se puede averiguar quién está.",
    "docs": [
+    "adrs/0013-acceso-perfil-y-parte-diario.md",
     "adrs/0008-datos-personales.md"
    ],
    "tarjetas": [
     "T25"
    ]
+  },
+  {
+   "id": "afuera/persona",
+   "tipo": "externo",
+   "titulo": "Usuario invitado",
+   "sub": "su navegador y su correo",
+   "col": 13,
+   "fila": 16,
+   "estado": "disenado",
+   "tarjetas": [
+    "T25"
+   ],
+   "docs": [
+    "adrs/0013-acceso-perfil-y-parte-diario.md"
+   ],
+   "que_es": "Una de las cuatro personas invitadas. Entra con un enlace que le llega por correo, elige qué entidades seguir y cada mañana lee su parte.",
+   "para_que": "Es para quien existe El Parte: el que sigue entidades del Estado y quiere saber cada mañana qué se publicó sobre ellas."
+  },
+  {
+   "id": "invitados",
+   "tipo": "servicio",
+   "titulo": "Alta de invitados",
+   "sub": "lista elparte.invitados",
+   "col": 12,
+   "fila": 10,
+   "estado": "disenado",
+   "tarjetas": [
+    "T25"
+   ],
+   "docs": [
+    "adrs/0013-acceso-perfil-y-parte-diario.md"
+   ],
+   "que_es": "Al arrancar, lee la lista de invitados de la configuración (correo y alias) y crea la cuenta de cada uno que no esté: su correo en el esquema cuentas y su cliente, con el mismo identificador y sin correo, en el esquema parte.",
+   "para_que": "Que nadie se registre solo: en la versión 0 entran cuatro personas invitadas. Sumar a alguien es sumar su correo a la lista."
+  },
+  {
+   "id": "correo",
+   "tipo": "servicio",
+   "titulo": "Correo saliente",
+   "sub": "Spring Boot Mail · SMTP",
+   "col": 13,
+   "fila": 9,
+   "estado": "disenado",
+   "tarjetas": [
+    "T25",
+    "T35"
+   ],
+   "docs": [
+    "adrs/0013-acceso-perfil-y-parte-diario.md"
+   ],
+   "que_es": "Manda correos por SMTP: el enlace para entrar y el aviso de cada mañana.",
+   "para_que": "Un solo lugar que sabe mandar correos, con el servidor que diga la configuración: Mailpit en local, uno real cuando se despliegue."
+  },
+  {
+   "id": "envio-del-parte",
+   "tipo": "servicio",
+   "titulo": "Aviso del parte",
+   "sub": "escucha informes · cada mañana",
+   "col": 13,
+   "fila": 10,
+   "estado": "disenado",
+   "tarjetas": [
+    "T35"
+   ],
+   "docs": [
+    "adrs/0013-acceso-perfil-y-parte-diario.md",
+    "docs/contratos.md"
+   ],
+   "que_es": "Escucha los informes de cada corrida normal y, a cada invitado que lo quiere, le manda un aviso corto: la noche, cuántos hechos hay, cuántos esperan revisión, si la corrida se cortó, y el enlace a su página. No manda el contenido de los hechos: el parte es la página.",
+   "para_que": "Que la persona se entere cada mañana sin tener que acordarse de entrar. Corre con el rol de cuentas: lee correos, nunca hechos."
+  },
+  {
+   "id": "web/perfil",
+   "tipo": "pagina",
+   "titulo": "Mi perfil",
+   "sub": "GET y POST /perfil",
+   "col": 10,
+   "fila": 16,
+   "estado": "disenado",
+   "tarjetas": [
+    "T34"
+   ],
+   "docs": [
+    "adrs/0013-acceso-perfil-y-parte-diario.md"
+   ],
+   "que_es": "La página donde cada invitado ve las entidades que sigue y el catálogo de las que se pueden seguir, sigue o deja de seguir con un botón, y elige si quiere el aviso diario por correo. La cuenta de demostración la ve pero no la cambia.",
+   "para_que": "Que cada persona decida qué le llega. Los cambios valen desde la corrida siguiente, que arma la lista de entidades seguidas al empezar."
+  },
+  {
+   "id": "base/tokens",
+   "tipo": "tabla",
+   "titulo": "one_time_tokens",
+   "sub": "cuentas.one_time_tokens",
+   "col": 12,
+   "fila": 13,
+   "estado": "disenado",
+   "tarjetas": [
+    "T25"
+   ],
+   "tabla": "cuentas.one_time_tokens",
+   "docs": [
+    "adrs/0013-acceso-perfil-y-parte-diario.md"
+   ],
+   "que_es": "Los tokens de un solo uso del login: el token, el correo y cuándo vence. Es la tabla de JdbcOneTimeTokenService de Spring Security, en el esquema cuentas porque guarda correos.",
+   "para_que": "Que un enlace pendiente sobreviva a un reinicio de la aplicación. Vence a los 5 minutos y se usa una vez."
+  },
+  {
+   "id": "base/recuerdos",
+   "tipo": "tabla",
+   "titulo": "persistent_logins",
+   "sub": "cuentas.persistent_logins",
+   "col": 13,
+   "fila": 13,
+   "estado": "disenado",
+   "tarjetas": [
+    "T25"
+   ],
+   "tabla": "cuentas.persistent_logins",
+   "docs": [
+    "adrs/0013-acceso-perfil-y-parte-diario.md"
+   ],
+   "que_es": "Los recordatorios de sesión: el correo, una serie, un token y cuándo se usó. Es la tabla de JdbcTokenRepositoryImpl de Spring Security, en el esquema cuentas.",
+   "para_que": "Que quien entró una vez siga adentro 30 días en ese navegador, así cada mañana abre su página sin pedir otro enlace."
+  },
+  {
+   "id": "base/envios",
+   "tipo": "tabla",
+   "titulo": "envios_del_parte",
+   "sub": "cuentas.envios_del_parte",
+   "col": 13,
+   "fila": 12,
+   "estado": "disenado",
+   "tarjetas": [
+    "T35"
+   ],
+   "tabla": "cuentas.envios_del_parte",
+   "docs": [
+    "adrs/0013-acceso-perfil-y-parte-diario.md"
+   ],
+   "que_es": "Un registro por aviso mandado: el cliente, la corrida y cuándo salió.",
+   "para_que": "Que un aviso no salga dos veces aunque el mensaje de informes llegue dos veces. Hace de registro de lo procesado para el aviso, que no puede escribir en el esquema parte."
   }
  ],
  "flechas": [
@@ -2684,27 +2839,264 @@ var S = {
    ]
   },
   {
-   "id": "web/login>base/usuarios",
-   "de": "web/login",
+   "id": "invitados>base/usuarios",
+   "de": "invitados",
    "a": "base/usuarios",
    "tipo": "escribe",
    "estado": "disenado",
    "papel": "auxiliar",
-   "etiqueta": "invitados y tokens",
-   "detalle": "Los correos de los invitados y los tokens del login.",
+   "etiqueta": "crea la cuenta",
+   "detalle": "Inserta el correo de cada invitado nuevo, con un identificador nuevo.",
    "tarjetas": [
     "T25"
    ]
   },
   {
-   "id": "web/login>afuera/mailpit",
+   "id": "invitados>base/clientes",
+   "de": "invitados",
+   "a": "base/clientes",
+   "tipo": "escribe",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "crea el cliente",
+   "detalle": "Inserta el cliente con el mismo identificador y su alias, sin correo.",
+   "tarjetas": [
+    "T25"
+   ]
+  },
+  {
+   "id": "afuera/persona>web/login",
+   "de": "afuera/persona",
+   "a": "web/login",
+   "tipo": "usa",
+   "estado": "disenado",
+   "papel": "camino",
+   "etiqueta": "pone su correo",
+   "detalle": "En /entrar escribe su correo y pide el enlace.",
+   "tarjetas": [
+    "T25"
+   ]
+  },
+  {
+   "id": "base/usuarios>web/login",
+   "de": "base/usuarios",
+   "a": "web/login",
+   "tipo": "lee",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "¿está invitado?",
+   "detalle": "Busca el correo; si está, sigue, y si no, responde lo mismo sin mandar nada. Al entrar, toma de acá el identificador del cliente y lo guarda en la sesión.",
+   "tarjetas": [
+    "T25"
+   ]
+  },
+  {
+   "id": "web/login>base/tokens",
    "de": "web/login",
+   "a": "base/tokens",
+   "tipo": "escribe",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "token de un solo uso",
+   "detalle": "Spring Security genera el token (POST /ott/generate) y lo guarda, con vencimiento a los 5 minutos.",
+   "tarjetas": [
+    "T25"
+   ],
+   "fuente": "https://docs.spring.io/spring-security/reference/servlet/authentication/onetimetoken.html"
+  },
+  {
+   "id": "web/login>correo",
+   "de": "web/login",
+   "a": "correo",
+   "tipo": "usa",
+   "estado": "disenado",
+   "papel": "camino",
+   "etiqueta": "manda el enlace",
+   "detalle": "Arma el enlace /login/ott?token=… y lo manda al correo de la persona.",
+   "tarjetas": [
+    "T25"
+   ]
+  },
+  {
+   "id": "correo>afuera/mailpit",
+   "de": "correo",
    "a": "afuera/mailpit",
    "tipo": "llama",
    "estado": "disenado",
+   "papel": "camino",
+   "etiqueta": "SMTP",
+   "detalle": "Entrega el correo al servidor de la configuración: Mailpit en local.",
+   "tarjetas": [
+    "T25",
+    "T35"
+   ]
+  },
+  {
+   "id": "afuera/persona>afuera/mailpit",
+   "de": "afuera/persona",
+   "a": "afuera/mailpit",
+   "tipo": "usa",
+   "estado": "disenado",
+   "papel": "camino",
+   "etiqueta": "abre su correo",
+   "detalle": "Lee el enlace para entrar, o el aviso de la mañana, y hace clic.",
+   "tarjetas": [
+    "T25"
+   ]
+  },
+  {
+   "id": "web/login>base/recuerdos",
+   "de": "web/login",
+   "a": "base/recuerdos",
+   "tipo": "escribe",
+   "estado": "disenado",
    "papel": "auxiliar",
-   "etiqueta": "manda el enlace",
-   "detalle": "El enlace de un solo uso, al buzón de prueba.",
+   "etiqueta": "la recuerda 30 días",
+   "detalle": "Al validar el token, la deja entrar y guarda un recordatorio de sesión.",
+   "tarjetas": [
+    "T25"
+   ],
+   "fuente": "https://docs.spring.io/spring-security/reference/servlet/authentication/rememberme.html"
+  },
+  {
+   "id": "base/recuerdos>web/login",
+   "de": "base/recuerdos",
+   "a": "web/login",
+   "tipo": "lee",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "¿la recuerda?",
+   "detalle": "En cada visita sin sesión, el recordatorio de la cookie se valida acá y la sesión se rehace sola.",
+   "tarjetas": [
+    "T25"
+   ]
+  },
+  {
+   "id": "afuera/persona>web/perfil",
+   "de": "afuera/persona",
+   "a": "web/perfil",
+   "tipo": "usa",
+   "estado": "disenado",
+   "papel": "camino",
+   "etiqueta": "elige qué seguir",
+   "detalle": "Entra a /perfil.",
+   "tarjetas": [
+    "T34"
+   ]
+  },
+  {
+   "id": "base/entidades>web/perfil",
+   "de": "base/entidades",
+   "a": "web/perfil",
+   "tipo": "lee",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "el catálogo",
+   "detalle": "Las entidades que se pueden seguir: las que tienen su identificador en alguna fuente.",
+   "tarjetas": [
+    "T34"
+   ]
+  },
+  {
+   "id": "base/suscripciones>web/perfil",
+   "de": "base/suscripciones",
+   "a": "web/perfil",
+   "tipo": "lee",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "lo que ya sigue",
+   "detalle": "Las suscripciones del cliente de la sesión.",
+   "tarjetas": [
+    "T34"
+   ]
+  },
+  {
+   "id": "web/perfil>base/suscripciones",
+   "de": "web/perfil",
+   "a": "base/suscripciones",
+   "tipo": "escribe",
+   "estado": "disenado",
+   "papel": "camino",
+   "etiqueta": "sigue o deja de seguir",
+   "detalle": "Inserta o borra la suscripción del cliente de la sesión. Vale desde la corrida siguiente.",
+   "tarjetas": [
+    "T34"
+   ]
+  },
+  {
+   "id": "web/perfil>base/usuarios",
+   "de": "web/perfil",
+   "a": "base/usuarios",
+   "tipo": "escribe",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "aviso diario sí o no",
+   "detalle": "Guarda si quiere el aviso por correo, con el rol de cuentas.",
+   "tarjetas": [
+    "T34"
+   ]
+  },
+  {
+   "id": "kafka/informes>envio-del-parte",
+   "de": "kafka/informes",
+   "a": "envio-del-parte",
+   "tipo": "escucha",
+   "estado": "disenado",
+   "papel": "camino",
+   "etiqueta": "un informe por cliente",
+   "detalle": "Escucha los informes; saltea los de las corridas que no son normales, por el modo que suma el mensaje (ADR 0013).",
+   "tarjetas": [
+    "T35"
+   ]
+  },
+  {
+   "id": "base/usuarios>envio-del-parte",
+   "de": "base/usuarios",
+   "a": "envio-del-parte",
+   "tipo": "lee",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "correo y preferencia",
+   "detalle": "El correo del cliente y si quiere el aviso. La cuenta de demostración no tiene correo: no recibe nada.",
+   "tarjetas": [
+    "T35"
+   ]
+  },
+  {
+   "id": "envio-del-parte>base/envios",
+   "de": "envio-del-parte",
+   "a": "base/envios",
+   "tipo": "escribe",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "anota el envío",
+   "detalle": "Una fila por cliente y corrida, antes de mandar: si ya estaba, no manda.",
+   "tarjetas": [
+    "T35"
+   ]
+  },
+  {
+   "id": "envio-del-parte>correo",
+   "de": "envio-del-parte",
+   "a": "correo",
+   "tipo": "usa",
+   "estado": "disenado",
+   "papel": "camino",
+   "etiqueta": "manda el aviso",
+   "detalle": "El asunto dice la noche y cuántos hechos hay; el cuerpo, cuántos esperan revisión, si la corrida se cortó y el enlace a /manana.",
+   "tarjetas": [
+    "T35"
+   ]
+  },
+  {
+   "id": "afuera/persona>web/manana",
+   "de": "afuera/persona",
+   "a": "web/manana",
+   "tipo": "usa",
+   "estado": "disenado",
+   "papel": "camino",
+   "etiqueta": "lee su parte",
+   "detalle": "Entra a /manana desde el aviso; el recordatorio la deja adentro sin pedir enlace.",
    "tarjetas": [
     "T25"
    ]
@@ -2823,6 +3215,120 @@ var S = {
     {
      "en": "web/manana",
      "texto": "A la mañana, la página muestra el hecho con su grado, su evidencia y el enlace a su traza en la sala de máquinas."
+    }
+   ]
+  },
+  {
+   "id": "alta",
+   "titulo": "Un usuario nuevo",
+   "sub": "de la invitación a su perfil",
+   "pasos": [
+    {
+     "en": "invitados",
+     "texto": "El responsable suma el correo de la persona a la lista de invitados de la configuración. Al arrancar, el alta la encuentra."
+    },
+    {
+     "en": "invitados>base/usuarios",
+     "texto": "Guarda su correo en el esquema cuentas, con un identificador nuevo."
+    },
+    {
+     "en": "invitados>base/clientes",
+     "texto": "Crea su cliente con el mismo identificador y un alias, sin correo, en el esquema parte."
+    },
+    {
+     "en": "afuera/persona>web/login",
+     "texto": "La persona entra a El Parte y pone su correo."
+    },
+    {
+     "en": "base/usuarios>web/login",
+     "texto": "Está invitada: sigue. Si no lo estuviera, la respuesta sería la misma y no saldría nada."
+    },
+    {
+     "en": "web/login>base/tokens",
+     "texto": "Spring Security genera un token de un solo uso, que vence a los 5 minutos."
+    },
+    {
+     "en": "web/login>correo",
+     "texto": "Le manda el enlace para entrar."
+    },
+    {
+     "en": "correo>afuera/mailpit",
+     "texto": "El correo sale por SMTP; en local lo captura Mailpit."
+    },
+    {
+     "en": "afuera/persona>afuera/mailpit",
+     "texto": "Abre el correo y hace clic en el enlace."
+    },
+    {
+     "en": "web/login>base/recuerdos",
+     "texto": "Entra, y la aplicación la recuerda 30 días en ese navegador."
+    },
+    {
+     "en": "afuera/persona>web/perfil",
+     "texto": "Va a su perfil."
+    },
+    {
+     "en": "base/entidades>web/perfil",
+     "texto": "Ve el catálogo: las entidades que El Parte puede seguir."
+    },
+    {
+     "en": "web/perfil>base/suscripciones",
+     "texto": "Elige las que quiere seguir. Valen desde la corrida de esta noche."
+    },
+    {
+     "en": "web/perfil>base/usuarios",
+     "texto": "Y elige si quiere el aviso diario por correo."
+    }
+   ]
+  },
+  {
+   "id": "cada-dia",
+   "titulo": "Cada día, su parte",
+   "sub": "de la corrida de la noche a su página",
+   "pasos": [
+    {
+     "en": "base/suscripciones>inicio",
+     "texto": "A la noche, el inicio junta las entidades que sigue alguien: también las que eligió esta persona."
+    },
+    {
+     "en": "armado-de-informes>base/informes",
+     "texto": "Al cerrar la corrida, el armado guarda su informe: los hechos sobre lo que sigue, o sin novedades."
+    },
+    {
+     "en": "armado-de-informes>kafka/informes",
+     "texto": "Y lo anuncia en informes."
+    },
+    {
+     "en": "kafka/informes>envio-del-parte",
+     "texto": "El aviso del parte lo escucha. Si la corrida es una repetición, no hace nada."
+    },
+    {
+     "en": "base/usuarios>envio-del-parte",
+     "texto": "Busca su correo y si quiere el aviso."
+    },
+    {
+     "en": "envio-del-parte>base/envios",
+     "texto": "Anota el envío, así no sale dos veces."
+    },
+    {
+     "en": "envio-del-parte>correo",
+     "texto": "Le manda el aviso: la noche, cuántos hechos hay y el enlace a su página."
+    },
+    {
+     "en": "afuera/persona>afuera/mailpit",
+     "texto": "A la mañana lee el aviso y hace clic."
+    },
+    {
+     "en": "base/recuerdos>web/login",
+     "texto": "El recordatorio sigue vigente: entra sin pedir enlace."
+    },
+    {
+     "en": "afuera/persona>web/manana",
+     "texto": "Llega a su página de la mañana."
+    },
+    {
+     "en": "base/informes>web/manana",
+     "texto": "La página muestra su último informe, con cada hecho, su grado, su evidencia y el aviso si una fuente falló."
     }
    ]
   },
@@ -3013,7 +3519,15 @@ var S = {
     },
     {
      "en": "web/login",
-     "texto": "El login por enlace y los usuarios invitados (T25)."
+     "texto": "El alta de invitados, entrar por enlace y la sesión recordada (T25)."
+    },
+    {
+     "en": "web/perfil",
+     "texto": "La página del perfil, para elegir qué seguir (T34)."
+    },
+    {
+     "en": "envio-del-parte",
+     "texto": "El aviso diario del parte por correo (T35)."
     },
     {
      "en": "web/como-funciona",
@@ -3052,6 +3566,196 @@ var S = {
     "observador",
     "web/manana",
     "web/sala"
+   ]
+  },
+  {
+   "fecha": "2026-11-14",
+   "texto": "Diseño del acceso, el perfil y el parte diario de cada usuario (ADR 0013, propuesto): alta de invitados, entrar por enlace con sesión recordada, la página del perfil, el aviso de cada mañana y sus tablas en el esquema cuentas. Suma la vista de usuarios y dos recorridos.",
+   "objetos": [
+    "afuera/persona",
+    "invitados",
+    "web/login",
+    "correo",
+    "web/perfil",
+    "envio-del-parte",
+    "base/tokens",
+    "base/recuerdos",
+    "base/envios",
+    "base/usuarios",
+    "web/manana"
+   ]
+  }
+ ],
+ "vistas": [
+  {
+   "id": "usuarios",
+   "archivo": "usuarios.html",
+   "boton": "El usuario",
+   "titulo": "El Parte · el usuario: acceso, perfil y parte diario",
+   "sub": "cómo entra cada persona, dónde queda su perfil y cómo lee su parte cada mañana",
+   "franjas": [
+    {
+     "id": "persona",
+     "titulo": "Lo que ve la persona",
+     "sub": "sus páginas y su correo",
+     "fila": [
+      0,
+      1
+     ],
+     "columnas": true
+    },
+    {
+     "id": "aplicacion",
+     "titulo": "Lo que hace la aplicación",
+     "sub": "con dos roles: el de cuentas lee correos, el de parte lee hechos",
+     "fila": [
+      3,
+      4
+     ]
+    },
+    {
+     "id": "guarda",
+     "titulo": "Lo que se guarda",
+     "sub": "PostgreSQL 18.7",
+     "fila": [
+      6,
+      7
+     ]
+    }
+   ],
+   "columnas": [
+    {
+     "col": 0,
+     "titulo": "La persona"
+    },
+    {
+     "col": 1,
+     "titulo": "Entrar"
+    },
+    {
+     "col": 2,
+     "titulo": "Su perfil"
+    },
+    {
+     "col": 3,
+     "titulo": "Cada noche"
+    },
+    {
+     "col": 4,
+     "titulo": "El aviso"
+    },
+    {
+     "col": 5,
+     "titulo": "Cada mañana"
+    }
+   ],
+   "grupos": [
+    {
+     "id": "v-cuentas",
+     "titulo": "esquema cuentas: con correos",
+     "col": [
+      0,
+      2
+     ],
+     "fila": [
+      6,
+      7
+     ]
+    },
+    {
+     "id": "v-parte",
+     "titulo": "esquema parte: sin datos personales",
+     "col": [
+      3,
+      5
+     ],
+     "fila": [
+      6,
+      7
+     ]
+    }
+   ],
+   "posiciones": {
+    "afuera/persona": [
+     0,
+     0
+    ],
+    "web/login": [
+     1,
+     0
+    ],
+    "web/perfil": [
+     2,
+     0
+    ],
+    "web/manana": [
+     5,
+     0
+    ],
+    "afuera/mailpit": [
+     0,
+     1
+    ],
+    "invitados": [
+     0,
+     3
+    ],
+    "correo": [
+     1,
+     4
+    ],
+    "inicio": [
+     3,
+     3
+    ],
+    "envio-del-parte": [
+     4,
+     3
+    ],
+    "armado-de-informes": [
+     3,
+     4
+    ],
+    "kafka/informes": [
+     4,
+     4
+    ],
+    "base/usuarios": [
+     0,
+     6
+    ],
+    "base/tokens": [
+     1,
+     6
+    ],
+    "base/recuerdos": [
+     2,
+     6
+    ],
+    "base/entidades": [
+     3,
+     6
+    ],
+    "base/suscripciones": [
+     4,
+     6
+    ],
+    "base/informes": [
+     5,
+     6
+    ],
+    "base/envios": [
+     0,
+     7
+    ],
+    "base/clientes": [
+     3,
+     7
+    ]
+   },
+   "recorridos": [
+    "alta",
+    "cada-dia"
    ]
   }
  ]
@@ -3200,11 +3904,11 @@ function dibujar() {
   var gF = $("franjas"), gG = $("grupos"), gA = $("flechas"), gN = $("nodos");
   S.franjas.forEach(function (fr) {
     var g = el("g", { "class": "franja" }, gF);
-    var y0 = filaY(fr.fila[0]) - (fr.id === "noche" ? 62 : 36), y1 = filaY(fr.fila[1] + 1) + 8;
+    var y0 = filaY(fr.fila[0]) - (fr.columnas ? 62 : 36), y1 = filaY(fr.fila[1] + 1) + 8;
     el("rect", { x: 10, y: y0, width: ANCHO - 20, height: y1 - y0 }, g);
     var t = el("text", { x: 26, y: y0 + 20, "class": "titulo" }, g); t.textContent = fr.titulo;
     var s = el("text", { x: 26 + fr.titulo.length * 8.6 + 16, y: y0 + 20, "class": "sub" }, g); s.textContent = fr.sub;
-    if (fr.id === "noche") {
+    if (fr.columnas) {
       S.columnas.forEach(function (c) {
         if (c.kafka) { el("rect", { x: colX(c.col) + 4, y: y0 + 30, width: COLW - 8, height: y1 - y0 - 38, rx: 10, "class": "columna-kafka" }, g); }
         var ct = el("text", { x: colX(c.col) + COLW / 2, y: y0 + 46, "class": "columna-titulo" }, g); ct.textContent = c.titulo;
@@ -3213,9 +3917,9 @@ function dibujar() {
   });
   S.grupos.forEach(function (gr) {
     var g = el("g", { "class": "grupo" }, gG);
-    var x0 = colX(gr.col[0]) + 4, x1 = colX(gr.col[1] + 1) - 4, y0 = filaY(gr.fila[0]) - 4, y1 = filaY(gr.fila[1] + 1) - 2;
+    var x0 = colX(gr.col[0]) + 4, x1 = colX(gr.col[1] + 1) - 4, y0 = filaY(gr.fila[0]) - 4, y1 = filaY(gr.fila[1] + 1) + 5;
     el("rect", { x: x0, y: y0, width: x1 - x0, height: y1 - y0 }, g);
-    var t = el("text", { x: x0 + 8, y: y1 - 6 }, g); t.textContent = gr.titulo;
+    var t = el("text", { x: x0 + 8, y: y1 - 4 }, g); t.textContent = gr.titulo;
   });
   puertos();
   S.flechas.forEach(function (f) {
@@ -3248,7 +3952,7 @@ function dibujar() {
     var marcas = [];
     if (n.estado === "disenado") { marcas.push(["DISEÑADO", "var(--disenado)"]); }
     if (n.comun) { marcas.push(["COMÚN", "var(--texto3)"]); }
-    if (n.nota) { marcas.push(["APAGADA", "var(--activo)"]); }
+    if (n.apagado) { marcas.push(["APAGADA", "var(--activo)"]); }
     var mx = NW - 6;
     marcas.forEach(function (m) {
       var w = m[0].length * 6 + 8; mx -= w;
@@ -3401,6 +4105,12 @@ function abrirNodo(id, sinCentrar) {
   }
   if (entra.length) { h += "<h3>Le llega de</h3>" + lista(entra, "de"); }
   if (sale.length) { h += "<h3>Va hacia</h3>" + lista(sale, "a"); }
+  if (S.fuera && S.fuera[id]) {
+    h += "<h3>Fuera de esta vista</h3>" + S.fuera[id].map(function (c) {
+      return '<a class="conexion ' + c.estado + '" href="index.html?objeto=' + encodeURIComponent(c.id) + '">' + (c.lado === "sale" ? "→ " : "← ") +
+             esc(c.otro) + " <small>· " + esc(c.etiqueta) + (c.estado === "disenado" ? " · diseñada" : "") + " · en el tablero completo</small></a>";
+    }).join("");
+  }
   if (n.codigo) { h += "<h3>Código</h3><ul class='lista'>" + n.codigo.map(function (c) { return "<li>" + enlace(c) + "</li>"; }).join("") + "</ul>"; }
   if (n.docs) { h += "<h3>Documentos</h3><ul class='lista'>" + n.docs.map(function (c) { return "<li>" + enlace(c) + "</li>"; }).join("") + "</ul>"; }
   if (n.tarjetas) { h += "<h3>Tarjetas del tablero</h3><p>" + n.tarjetas.map(tarjeta).join(", ") + "</p>"; }
@@ -3423,7 +4133,10 @@ function abrirFlecha(id, sinCentrar) {
   panel(a.titulo + " → " + b.titulo, h);
   if (!sinCentrar) { asegurarVisible(id); }
 }
-function ir(id) { if (nodos[id]) { abrirNodo(id); } else if (flechas[id]) { abrirFlecha(id); } }
+function ir(id) {
+  if (nodos[id]) { abrirNodo(id); } else if (flechas[id]) { abrirFlecha(id); }
+  else if (S.vista) { location.href = "index.html?objeto=" + encodeURIComponent(id); }
+}
 function asegurarVisible(id) {
   var c = centro(id), r = $("lienzo").getBoundingClientRect();
   var x = c[0] * cam.k + cam.x, y = c[1] * cam.k + cam.y;
@@ -3599,7 +4312,7 @@ function leyenda() {
     h += '<div class="leyenda-fila">' + muestraNodo(t) + "<span>" + TIPOS[t] + "</span></div>";
   });
   h += '<div class="leyenda-fila">' + muestraNodo("agente", true) + "<span>Diseñado: escrito en un ADR o un contrato, con su tarjeta, pero sin construir.</span></div>";
-  h += "<p>Las marcas sobre la caja: <b>DISEÑADO</b>; <b>COMÚN</b>, lo usan muchos y no se le dibujan las flechas de uso; <b>APAGADA</b>, existe pero viene apagada.</p>";
+  h += "<p>Las marcas sobre la caja: <b>DISEÑADO</b>; <b>COMÚN</b>, lo usan muchos y no se le dibujan las flechas de uso; <b>APAGADA</b>, existe pero viene apagada. Un objeto construido puede tener una parte diseñada: lo dice su nota.</p>";
   h += "<h3>Flechas</h3>";
   h += '<div class="leyenda-fila">' + muestraFlecha("", "#38bdf8", "", 2.6) + "<span>Un mensaje por Kafka: emite a un tópico, o lo escucha.</span></div>";
   h += '<div class="leyenda-fila">' + muestraFlecha("", "#34d399", "", 1.3) + "<span>Escribe una tabla.</span></div>";
@@ -3618,7 +4331,10 @@ function contar() {
 function ayuda() {
   var c = contar();
   var h = '<div class="aviso-regla"><b>Este tablero es el sistema.</b> Refleja la arquitectura de El Parte con precisión en todo momento: cada cambio del sistema se hace acá en el mismo momento, y los pedidos se hacen citando sus objetos (<a href="' + esc(S.repositorio) + 'adrs/0012-tablero-de-arquitectura.md" target="_blank" rel="noopener">ADR 0012</a>). El verificador compara este tablero con el código en cada cambio.</div>';
-  h += "<p>Hoy tiene <b>" + c.n.construido + "</b> objetos construidos y <b>" + c.n.disenado + "</b> diseñados, unidos por <b>" + c.f.construido + "</b> flechas construidas y <b>" + c.f.disenado + "</b> diseñadas. Modelo del " + esc(S.actualizado) + ".</p>";
+  if (S.vista) {
+    h += '<div class="aviso-regla"><b>Esta es una vista:</b> ' + esc(S.vista.sub) + '. Muestra una parte del sistema con su propia grilla, sacada del mismo modelo que el <a href="index.html">tablero completo</a>; cada ficha dice qué conexiones quedan fuera de la vista.</div>';
+  }
+  h += "<p>" + (S.vista ? "Esta vista tiene" : "Hoy tiene") + " <b>" + c.n.construido + "</b> objetos construidos y <b>" + c.n.disenado + "</b> diseñados, unidos por <b>" + c.f.construido + "</b> flechas construidas y <b>" + c.f.disenado + "</b> diseñadas. Modelo del " + esc(S.actualizado) + ".</p>";
   h += "<h3>Cómo se usa</h3><ul class='lista'>" +
        "<li><b>Clic</b> sobre un objeto o una flecha: su ficha, con qué es, para qué sirve, sus conexiones, su código y su referencia.</li>" +
        "<li><b>Botón derecho</b>: el menú del objeto (copiar la referencia, centrar, abrir el código).</li>" +
@@ -3654,6 +4370,17 @@ window.addEventListener("keydown", function (e) {
 window.addEventListener("resize", function () { if (!estado.sel && !estado.recorrido) { ajustar(); } });
 
 document.querySelector("#chip-modelo span").textContent = "modelo del " + S.actualizado + " · verificado contra el código";
+(function () {
+  var t = $("titulo");
+  t.innerHTML = esc(S.titulo) + "<small>" + esc(S.vista ? S.vista.sub : "el sistema objeto por objeto: lo construido y lo diseñado") + "</small>";
+  document.title = S.titulo;
+  var cont = $("vistas"), lista = [{ boton: "Todo el sistema", archivo: "index.html" }].concat(S.vistas || []);
+  lista.forEach(function (v) {
+    var a = document.createElement("a"); a.className = "boton"; a.href = v.archivo; a.textContent = v.boton;
+    if (v.archivo === (S.vista ? S.vista.archivo : "index.html")) { a.classList.add("activa"); }
+    cont.appendChild(a);
+  });
+})();
 dibujar();
 listaRecorridos();
 ajustar();

@@ -112,7 +112,7 @@ Los candidatos marcados como **conocidos** por el archivista no siguen al refuta
 - **Expediente.** Todo lo que la base sabe de una entidad, con su historia, para consultar cuando se quiera.
 - **Revisión humana.** Una cola, en la sala de máquinas, con los hechos INFERRED que pasaron el umbral. Mientras nadie los revisa, se muestran marcados como pendientes de revisión (D6).
 - **Sala de máquinas.** Por cada corrida y cada hallazgo: qué agente hizo qué, qué refutó el refutador y por qué, contra qué se cotejó, cuánto costó y cuánto tardó. Al lado, la sección "Cómo funciona", que enlaza a esta documentación.
-- **Acceso.** Login por enlace de correo con el token de un solo uso de Spring Security: cuatro usuarios invitados y una cuenta de demostración de solo lectura ([ADR 0003](../adrs/0003-eleccion-del-stack.md)).
+- **Acceso.** Login por enlace de correo con el token de un solo uso de Spring Security: cuatro usuarios invitados y una cuenta de demostración de solo lectura ([ADR 0003](../adrs/0003-eleccion-del-stack.md)). Cómo llega cada invitado a tener cuenta, dónde elige lo que sigue y cómo se entera cada mañana está en el [ADR 0013](../adrs/0013-acceso-perfil-y-parte-diario.md) y en la vista del usuario del tablero de arquitectura, [`docs/tablero-de-arquitectura/usuarios.html`](tablero-de-arquitectura/usuarios.html).
 
 ## Repetir una corrida
 

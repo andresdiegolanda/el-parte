@@ -4,6 +4,15 @@ El sistema de El Parte objeto por objeto, en una sola página: cada agente, serv
 
 Se abre con [`index.html`](index.html) en cualquier navegador, desde un clon del repositorio. No necesita servidor ni conexión.
 
+## Las vistas
+
+Además del tablero completo, hay vistas: una parte del sistema con su propia grilla, sacada del mismo `sistema.json`, así no pueden contradecirse. Cada ficha de una vista dice qué conexiones del objeto quedan afuera y lleva al tablero completo.
+
+| Vista | Archivo | Qué muestra |
+|---|---|---|
+| Todo el sistema | [`docs/tablero-de-arquitectura/index.html`](index.html) | Todos los objetos y todas las flechas. |
+| El usuario | [`docs/tablero-de-arquitectura/usuarios.html`](usuarios.html) | Cómo entra cada persona, dónde queda su perfil y cómo lee su parte cada mañana ([ADR 0013](../../adrs/0013-acceso-perfil-y-parte-diario.md)). |
+
 ## La regla
 
 **Este tablero refleja la arquitectura del sistema con precisión y exactitud en todo momento** ([ADR 0012](../../adrs/0012-tablero-de-arquitectura.md)):
@@ -45,7 +54,8 @@ El botón "Cómo se usa" de la página explica el resto: fichas, menú del botó
 |---|---|---|
 | `sistema.json` | El modelo: franjas, columnas, grupos, nodos, flechas, recorridos e historial. Es la fuente. | Sí |
 | `plantilla.html` | Cómo se ve y cómo se usa la página. | Sí |
-| `index.html` | La página, generada desde los dos de arriba. | No |
+| `index.html` | El tablero completo, generado desde los dos de arriba. | No |
+| `usuarios.html` y las demás vistas | Una página por vista, generada igual. | No |
 | `README.md` | Este archivo. | Sí |
 
 ## Cómo se cambia
@@ -72,6 +82,9 @@ El botón "Cómo se usa" de la página explica el resto: fichas, menú del botó
 | flecha | `papel` | `camino`, el de un hecho por la corrida, o `auxiliar`. |
 | flecha | `etiqueta`, `detalle`, `fuente` | Qué pasa por ahí, en corto y en largo, y de dónde sale. |
 | recorrido | `pasos` | Cada parada: `en` (un id de nodo o de flecha) y `texto`. |
+| vista | `id`, `archivo`, `boton`, `titulo`, `sub` | Su identidad, su página y cómo se nombra. |
+| vista | `franjas`, `columnas`, `grupos`, `posiciones` | Su propia grilla: `posiciones` dice la celda de cada objeto de la vista, que tiene que existir en el modelo. |
+| vista | `recorridos` | Los recorridos que muestra; todas sus paradas tienen que estar en la vista. |
 
 ## Qué controla el verificador, y qué no
 
@@ -82,7 +95,8 @@ Controla, en los dos sentidos:
 - Que cada `emisor.emitir` del código sea una flecha `emite`; cada `@KafkaListener`, una `escucha`; cada `insert`, `update` o `delete` en un texto SQL, una `escribe`; cada tabla nombrada en otro texto SQL, una `lee`; cada dependencia del constructor hacia otro objeto que no es común, una `usa`. Y que cada una de esas flechas construidas esté en el código.
 - Que cada página construida atienda exactamente las rutas que dice.
 - Que lo diseñado cite tarjetas que existen y no están todas hechas: si ya se construyó, pasa a construido.
-- Que `index.html` sea exactamente lo que se genera desde `sistema.json`.
+- Que cada vista ubique objetos que existen, sin dos en una celda, y que sus recorridos quepan en ella.
+- Que `index.html` y cada vista sean exactamente lo que se genera desde `sistema.json`, y que no sobre ninguna página.
 
 No controla, y se revisa a mano en cada cambio: los textos de cada objeto y cada flecha, los recorridos, las flechas `llama` (hacia afuera) y lo diseñado más allá de su tarjeta.
 

@@ -1,0 +1,1926 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>El Parte · tablero de arquitectura</title>
+<!-- Generado por herramientas/generar_tablero_arquitectura.py desde sistema.json y plantilla.html. No se edita a mano: se cambia sistema.json o plantilla.html y se vuelve a generar. -->
+<!--
+  El tablero de arquitectura de El Parte (ADR 0012): el sistema objeto por objeto, con lo construido en trazo
+  lleno y lo diseñado en punteado violeta. Una sola página estática, sin dependencias externas. Los datos son
+  sistema.json, que el generador embebe acá; el verificador compara ese archivo con el código en cada cambio.
+
+  Clic sobre un objeto o una flecha: su ficha. Botón derecho: su menú. Rueda: acercar. Arrastrar: mover.
+  Teclado: flechas para avanzar y retroceder en un recorrido, espacio para reproducir, Esc para cerrar,
+  F para ver todo, R para empezar de nuevo. ?objeto=<id> abre la página centrada en ese objeto, y
+  ?recorrido=<id>&paso=<n> en ese paso de un recorrido.
+-->
+<style>
+  :root {
+    --fondo: #0b1020; --fondo2: #111a33; --fondo3: #182446; --linea: #27334f; --linea2: #3b4a6b;
+    --texto: #e8ecf5; --texto2: #a3aec9; --texto3: #6f7d9f;
+    --agente: #60a5fa; --servicio: #2dd4bf; --topico: #38bdf8; --tabla: #34d399; --pagina: #f472b6;
+    --externo: #fb923c; --infra: #94a3b8; --disenado: #a78bfa; --token: #fde68a; --activo: #fbbf24;
+    --escribe: #34d399; --lee: #4d8f78; --usa: #8ea3c7; --llama: #fb923c; --mensaje: #38bdf8;
+    --mono: ui-monospace, "Cascadia Code", Consolas, "Liberation Mono", monospace;
+    --sans: "Segoe UI", system-ui, -apple-system, Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body { background: var(--fondo); color: var(--texto); font: 14px/1.5 var(--sans); display: grid;
+         grid-template-rows: auto 1fr auto; overflow: hidden; }
+  a { color: #93c5fd; }
+  code, .mono { font-family: var(--mono); font-size: .92em; }
+  header { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 10px 16px;
+           border-bottom: 1px solid var(--linea); background: linear-gradient(180deg, #0f1730, var(--fondo)); }
+  header h1 { margin: 0 8px 0 0; font-size: 18px; font-weight: 650; }
+  header h1 small { display: block; font-size: 12px; font-weight: 400; color: var(--texto2); }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border: 1px solid var(--linea2);
+          border-radius: 999px; color: var(--texto2); font-size: 12px; }
+  .chip i { width: 8px; height: 8px; border-radius: 50%; background: var(--tabla); display: inline-block; }
+  .sep { flex: 1; }
+  .boton { background: var(--fondo2); color: var(--texto); border: 1px solid var(--linea2); border-radius: 7px;
+           padding: 5px 11px; font: inherit; font-size: 13px; cursor: pointer; text-decoration: none; }
+  .boton:hover { border-color: #5b6c93; background: var(--fondo3); }
+  .boton.activa { background: #1d3a6e; border-color: #3b6fc4; }
+  .boton.primario { background: #1e4fbf; border-color: #3b6fe4; }
+  main { display: grid; grid-template-columns: 236px 1fr 400px; min-height: 0; }
+  nav { border-right: 1px solid var(--linea); overflow-y: auto; padding: 12px 12px 20px; }
+  nav h2 { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--texto3); margin: 6px 0 6px; }
+  nav .sub { color: var(--texto3); font-size: 12px; margin-bottom: 8px; }
+  .recorrido { display: block; width: 100%; text-align: left; background: none; border: 1px solid transparent; color: var(--texto);
+               border-radius: 8px; padding: 7px 8px; cursor: pointer; font: inherit; margin-bottom: 2px; }
+  .recorrido:hover { background: var(--fondo2); border-color: var(--linea); }
+  .recorrido.activa { background: #17284d; border-color: #2c4f90; }
+  .recorrido b { font-weight: 600; display: block; }
+  .recorrido span { color: var(--texto3); font-size: 12px; }
+  #buscar { width: 100%; background: var(--fondo2); color: var(--texto); border: 1px solid var(--linea2); border-radius: 7px;
+            padding: 6px 8px; font: inherit; font-size: 13px; }
+  #resultados { margin-top: 6px; }
+  #resultados button { display: block; width: 100%; text-align: left; background: none; border: 0; color: var(--texto2);
+                       padding: 3px 4px; cursor: pointer; font: inherit; font-size: 12.5px; border-radius: 5px; }
+  #resultados button:hover { background: var(--fondo2); color: var(--texto); }
+  #lienzo { position: relative; overflow: hidden; background:
+            radial-gradient(circle at 30% 20%, rgba(59, 130, 246, .06), transparent 50%), var(--fondo); }
+  #escena { width: 100%; height: 100%; display: block; cursor: grab; user-select: none; }
+  #escena.arrastrando { cursor: grabbing; }
+  .franja rect { fill: rgba(148, 163, 184, .035); stroke: var(--linea); stroke-width: 1; rx: 14; }
+  .franja .titulo { fill: var(--texto2); font-size: 12px; font-weight: 650; letter-spacing: .1em; text-transform: uppercase; }
+  .franja .sub { fill: var(--texto3); font-size: 11.5px; }
+  .columna-kafka { fill: rgba(56, 189, 248, .045); }
+  .columna-titulo { fill: var(--texto3); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; text-anchor: middle; }
+  .grupo rect { fill: none; stroke: var(--linea2); stroke-dasharray: 3 4; rx: 10; }
+  .grupo text { fill: var(--texto3); font-size: 11px; font-family: var(--mono); }
+  .nodo { cursor: pointer; }
+  .nodo .caja { fill: #121c38; stroke: var(--linea2); stroke-width: 1.2; rx: 9; }
+  .nodo .acento { rx: 2; }
+  .nodo .titulo { fill: var(--texto); font-size: 13px; font-weight: 600; }
+  .nodo .sub { fill: var(--texto2); font-size: 10.5px; }
+  .nodo .icono { font-size: 13px; text-anchor: middle; }
+  .nodo.topico .titulo { font-family: var(--mono); font-size: 12px; }
+  .nodo.disenado .caja { fill: rgba(167, 139, 250, .05); stroke: var(--disenado); stroke-dasharray: 5 4; }
+  .nodo.disenado .titulo { fill: #d4c8fb; }
+  .nodo .marca { font-size: 8.5px; font-weight: 700; letter-spacing: .08em; }
+  .nodo .marca-fondo { rx: 3; }
+  .nodo:hover .caja, .nodo.foco .caja { stroke: #9fb3df; stroke-width: 1.8; }
+  .nodo.sel .caja { stroke: var(--activo); stroke-width: 2.2; }
+  .nodo.cambio .caja { stroke: #38bdf8; stroke-width: 2.4; filter: url(#brillo); }
+  .nodo .pendiente { display: none; }
+  body.ver-pendientes .nodo .pendiente { display: inline; }
+  .flecha path.trazo { fill: none; stroke-width: 1.3; opacity: .55; }
+  .flecha.camino path.trazo { stroke-width: 2.6; opacity: .9; }
+  .flecha.emite path.trazo, .flecha.escucha path.trazo { stroke: var(--mensaje); }
+  .flecha.escribe path.trazo { stroke: var(--escribe); }
+  .flecha.lee path.trazo { stroke: var(--lee); stroke-dasharray: 2 3; }
+  .flecha.usa path.trazo { stroke: var(--usa); }
+  .flecha.llama path.trazo { stroke: var(--llama); }
+  .flecha.disenado path.trazo { stroke: var(--disenado); stroke-dasharray: 6 5; opacity: .6; }
+  .flecha path.toque { fill: none; stroke: transparent; stroke-width: 12; cursor: pointer; }
+  .flecha .rotulo { display: none; pointer-events: none; }
+  .flecha.camino .rotulo { display: inline; }
+  .flecha.camino.corta .rotulo { display: none; }
+  .flecha .rotulo rect { fill: #0d1530; stroke: var(--linea); rx: 4; }
+  .flecha .rotulo text { fill: var(--texto2); font-size: 10.5px; }
+  .flecha.lee { display: none; }
+  body.ver-lecturas .flecha.lee, .flecha.lee.foco, .flecha.lee.activa, .flecha.lee.recorrida { display: inline; }
+  body.sin-disenado .disenado { display: none; }
+  #escena.enfocado .nodo:not(.foco):not(.sel), #escena.enfocado .flecha:not(.foco) { opacity: .14; }
+  #escena.enfocado .flecha.foco .rotulo { display: inline; }
+  #escena.enfocado .flecha.corta.foco:not(:hover):not(.activa) .rotulo { display: none; }
+  .flecha.foco path.trazo, .flecha:hover path.trazo { opacity: 1; stroke-width: 2.6; }
+  .flecha:hover .rotulo, .flecha.camino.corta:hover .rotulo { display: inline; }
+  .flecha.activa path.trazo { stroke: var(--activo); opacity: 1; stroke-width: 3.2; stroke-dasharray: none; }
+  .flecha.activa .rotulo, .flecha.camino.corta.activa .rotulo { display: inline; }
+  .flecha.recorrida path.trazo { stroke: #c9a227; opacity: .8; }
+  .nodo.activa .caja { stroke: var(--activo); stroke-width: 2.6; }
+  #token { pointer-events: none; }
+  #token .halo { fill: rgba(253, 230, 138, .22); }
+  #token .cuerpo { fill: var(--token); stroke: #b45309; stroke-width: 2; }
+  .oculto { display: none; }
+  .zoom { position: absolute; right: 12px; bottom: 12px; display: flex; gap: 6px; }
+  .ayuda-lienzo { position: absolute; left: 12px; bottom: 12px; color: var(--texto3); font-size: 12px; pointer-events: none;
+                  background: rgba(11, 16, 32, .85); border: 1px solid var(--linea); border-radius: 7px; padding: 4px 9px; }
+  #menu { position: fixed; z-index: 20; min-width: 220px; background: #0f1833; border: 1px solid var(--linea2); border-radius: 9px;
+          box-shadow: 0 12px 32px rgba(0, 0, 0, .45); padding: 6px; }
+  #menu .cabeza { padding: 4px 8px 6px; color: var(--texto2); font-size: 12px; border-bottom: 1px solid var(--linea); margin-bottom: 4px; }
+  #menu button { display: block; width: 100%; text-align: left; background: none; border: 0; color: var(--texto); font: inherit;
+                 font-size: 13px; padding: 6px 8px; border-radius: 6px; cursor: pointer; }
+  #menu button:hover { background: var(--fondo3); }
+  aside { border-left: 1px solid var(--linea); display: grid; grid-template-rows: auto 1fr; min-height: 0; background: #0d142b; }
+  aside .barra { display: flex; gap: 8px; align-items: center; padding: 10px 12px; border-bottom: 1px solid var(--linea); }
+  aside .barra .titulo { flex: 1; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  aside .cuerpo { overflow-y: auto; padding: 12px 16px 24px; }
+  aside h3 { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--texto3); margin: 18px 0 6px; }
+  aside p { margin: 6px 0; }
+  .etiquetas { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 8px; }
+  .etiqueta { font-size: 11.5px; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--linea2); color: var(--texto2); }
+  .etiqueta.construido { color: #86efac; border-color: #2f6b4b; }
+  .etiqueta.disenado { color: #c4b5fd; border-color: #5b4a9a; }
+  .referencia { display: flex; gap: 8px; align-items: center; background: var(--fondo2); border: 1px solid var(--linea2);
+                border-radius: 8px; padding: 6px 8px; margin: 8px 0; }
+  .referencia code { flex: 1; color: var(--token); }
+  a.conexion { text-decoration: none; }
+  .conexion { display: block; width: 100%; text-align: left; background: none; border: 0; color: var(--texto); font: inherit;
+              font-size: 13px; padding: 4px 6px; border-radius: 6px; cursor: pointer; }
+  .conexion:hover { background: var(--fondo2); }
+  .conexion small { color: var(--texto3); }
+  .conexion.disenado { color: #c4b5fd; }
+  ul.lista { margin: 4px 0; padding-left: 18px; }
+  ul.lista li { margin: 2px 0; }
+  .leyenda-fila { display: flex; align-items: center; gap: 10px; margin: 6px 0; }
+  .leyenda-fila svg { flex: 0 0 auto; }
+  footer { display: flex; gap: 10px; align-items: center; padding: 8px 16px; border-top: 1px solid var(--linea); background: #0d142b; min-height: 56px; }
+  footer .controles { display: flex; gap: 6px; }
+  footer .texto { flex: 1; }
+  footer .texto small { display: block; color: var(--texto3); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
+  #vistas { display: flex; gap: 6px; flex-wrap: wrap; }
+  #vistas a.boton.activa { pointer-events: none; }
+  .aviso-regla { border: 1px solid #3b4a6b; background: rgba(56, 189, 248, .06); border-radius: 8px; padding: 8px 10px; margin: 8px 0; }
+</style>
+</head>
+<body>
+<header>
+  <h1 id="titulo">El Parte · tablero de arquitectura<small>el sistema objeto por objeto: lo construido y lo diseñado</small></h1>
+  <span class="chip" id="chip-modelo" title="La fecha del modelo y lo que controla el verificador"><i></i><span></span></span>
+  <span class="sep"></span>
+  <button class="boton" id="btn-lecturas" title="Mostrar u ocultar las flechas de lectura de la base (L)">Lecturas</button>
+  <button class="boton activa" id="btn-disenado" title="Mostrar u ocultar lo diseñado y no construido (D)">Diseñado</button>
+  <button class="boton" id="btn-pendientes" title="Mostrar sobre cada objeto las tarjetas del tablero que lo tocan (P)">Tarjetas</button>
+  <button class="boton" id="btn-cambios" title="Resaltar lo que cambió en el último cambio del tablero (C)">Cambios</button>
+  <button class="boton" id="btn-leyenda" title="Qué significa cada color y cada trazo">Leyenda</button>
+  <button class="boton" id="btn-ayuda" title="Cómo se usa esta página">Cómo se usa</button>
+  <a class="boton" id="lnk-tablero" target="_blank" rel="noopener" title="Lo pendiente, en tarjetas">tablero.md</a>
+</header>
+<main>
+  <nav>
+    <h2>Vistas</h2>
+    <div class="sub">El mismo modelo, entero o por partes.</div>
+    <div id="vistas"></div>
+    <h2 style="margin-top:18px">Recorridos</h2>
+    <div class="sub">Un camino por el sistema, parada por parada. Clic: arranca desde la primera.</div>
+    <div id="lista-recorridos"></div>
+    <h2 style="margin-top:18px">Buscar un objeto</h2>
+    <input id="buscar" type="search" placeholder="nombre o id, por ejemplo refutador" autocomplete="off">
+    <div id="resultados"></div>
+  </nav>
+  <div id="lienzo">
+    <svg id="escena" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="brillo" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <g id="mundo">
+        <g id="franjas"></g><g id="grupos"></g><g id="flechas"></g><g id="nodos"></g>
+        <g id="token" class="oculto"><circle class="halo" r="15"/><circle class="cuerpo" r="7"/></g>
+      </g>
+    </svg>
+    <div class="ayuda-lienzo">Clic: ficha · botón derecho: menú · rueda: acercar · arrastrar: mover</div>
+    <div class="zoom">
+      <button class="boton" id="btn-menos" title="Alejar">−</button>
+      <button class="boton" id="btn-mas" title="Acercar">+</button>
+      <button class="boton" id="btn-ajustar" title="Ver todo (F)">Ver todo</button>
+      <button class="boton activa" id="btn-seguir" title="Encendido, la cámara acompaña cada parada de un recorrido; apagado, la escena queda quieta">Seguir: sí</button>
+    </div>
+  </div>
+  <aside>
+    <div class="barra">
+      <button class="boton" id="btn-atras" title="Volver a lo anterior">←</button>
+      <span class="titulo" id="panel-titulo"></span>
+    </div>
+    <div class="cuerpo" id="panel-cuerpo"></div>
+  </aside>
+</main>
+<footer>
+  <div class="controles">
+    <button class="boton" id="btn-inicio" title="Al principio del recorrido">⏮</button>
+    <button class="boton" id="btn-prev" title="Paso anterior (←)">◀</button>
+    <button class="boton primario" id="btn-play" title="Reproducir o pausar (espacio)">▶ Reproducir</button>
+    <button class="boton" id="btn-next" title="Paso siguiente (→)">▶</button>
+  </div>
+  <div class="texto" id="pie"><small>Sin recorrido</small>Elegí un recorrido a la izquierda, o hacé clic sobre cualquier objeto.</div>
+</footer>
+<div id="menu" class="oculto"></div>
+<script>
+"use strict";
+var S = {
+ "actualizado": "2026-11-14",
+ "repositorio": "https://github.com/andresdiegolanda/el-parte/blob/main/",
+ "tablero": "https://github.com/andresdiegolanda/el-parte/blob/main/tablero.md",
+ "kanban": "https://claude.ai/artifact/4wQ9LjW4H98WnjUWpcFsf3",
+ "titulo": "El Parte · el usuario: acceso, perfil y parte diario",
+ "franjas": [
+  {
+   "id": "persona",
+   "titulo": "Lo que ve la persona",
+   "sub": "sus páginas y su correo",
+   "fila": [
+    0,
+    1
+   ],
+   "columnas": true
+  },
+  {
+   "id": "aplicacion",
+   "titulo": "Lo que hace la aplicación",
+   "sub": "con dos roles: el de cuentas lee correos, el de parte lee hechos",
+   "fila": [
+    3,
+    4
+   ]
+  },
+  {
+   "id": "guarda",
+   "titulo": "Lo que se guarda",
+   "sub": "PostgreSQL 18.7",
+   "fila": [
+    6,
+    7
+   ]
+  }
+ ],
+ "columnas": [
+  {
+   "col": 0,
+   "titulo": "La persona"
+  },
+  {
+   "col": 1,
+   "titulo": "Entrar"
+  },
+  {
+   "col": 2,
+   "titulo": "Su perfil"
+  },
+  {
+   "col": 3,
+   "titulo": "Cada noche"
+  },
+  {
+   "col": 4,
+   "titulo": "El aviso"
+  },
+  {
+   "col": 5,
+   "titulo": "Cada mañana"
+  }
+ ],
+ "grupos": [
+  {
+   "id": "v-cuentas",
+   "titulo": "esquema cuentas: con correos",
+   "col": [
+    0,
+    2
+   ],
+   "fila": [
+    6,
+    7
+   ]
+  },
+  {
+   "id": "v-parte",
+   "titulo": "esquema parte: sin datos personales",
+   "col": [
+    3,
+    5
+   ],
+   "fila": [
+    6,
+    7
+   ]
+  }
+ ],
+ "nodos": [
+  {
+   "id": "afuera/mailpit",
+   "tipo": "infra",
+   "titulo": "Buzón de correo",
+   "sub": "Mailpit en local · SMTP real: T27",
+   "col": 0,
+   "fila": 1,
+   "estado": "construido",
+   "que_es": "Por donde salen los correos. En local es Mailpit, un buzón de prueba que levanta Docker Compose y que captura los correos sin mandarlos; para los invitados de verdad hace falta un servicio de correo real, que se decide con el despliegue (T27).",
+   "para_que": "Llevar el enlace para entrar y el aviso de cada mañana. Hoy nada le escribe.",
+   "docs": [
+    "app/README.md"
+   ]
+  },
+  {
+   "id": "inicio",
+   "tipo": "agente",
+   "titulo": "Inicio de corrida",
+   "sub": "InicioDeCorrida",
+   "col": 3,
+   "fila": 3,
+   "estado": "construido",
+   "que_es": "Arma una corrida normal para una noche, o una repetición de otra, y la anuncia.",
+   "para_que": "Congela todo lo que la corrida necesita (noche, fuentes, entidades seguidas, presupuesto y modelos) para que cada agente use lo mismo y la corrida se pueda repetir.",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/corrida/InicioDeCorrida.java"
+   ],
+   "docs": [
+    "docs/contratos.md",
+    "adrs/0005-presupuesto-por-corrida.md"
+   ]
+  },
+  {
+   "id": "kafka/informes",
+   "tipo": "topico",
+   "titulo": "informes",
+   "sub": "tópico de Kafka",
+   "col": 4,
+   "fila": 4,
+   "estado": "construido",
+   "que_es": "Uno por cliente con suscripciones: los hechos de la noche o sin novedades.",
+   "para_que": "Deja constancia de qué recibió cada cliente; el informe en sí queda en la base.",
+   "docs": [
+    "docs/contratos.md"
+   ],
+   "topico": "informes"
+  },
+  {
+   "id": "armado-de-informes",
+   "tipo": "servicio",
+   "titulo": "Armado de informes",
+   "sub": "ArmadoDeInformes · parte del editor",
+   "col": 3,
+   "fila": 4,
+   "estado": "construido",
+   "que_es": "Al cerrar la corrida arma el informe de cada cliente con suscripciones: los hechos de la noche sobre lo que sigue, o sin novedades.",
+   "para_que": "Es lo que ve cada cliente a la mañana. En una corrida normal lo guarda; en una repetición solo lo emite.",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/editor/ArmadoDeInformes.java"
+   ],
+   "docs": [
+    "docs/contratos.md"
+   ]
+  },
+  {
+   "id": "base/suscripciones",
+   "tipo": "tabla",
+   "titulo": "suscripciones",
+   "sub": "parte.suscripciones",
+   "col": 4,
+   "fila": 6,
+   "estado": "construido",
+   "que_es": "Qué entidades sigue cada cliente. Diseñado: la escribe la página del perfil (T34).",
+   "para_que": "Define qué entidades sigue la corrida y qué va en cada informe.",
+   "docs": [
+    "docs/base-de-afirmaciones.md"
+   ],
+   "tabla": "parte.suscripciones"
+  },
+  {
+   "id": "base/informes",
+   "tipo": "tabla",
+   "titulo": "informes",
+   "sub": "parte.informes",
+   "col": 5,
+   "fila": 6,
+   "estado": "construido",
+   "que_es": "Un informe por cliente, noche y corrida, con o sin novedades.",
+   "para_que": "Lo que muestra la página de la mañana.",
+   "docs": [
+    "docs/base-de-afirmaciones.md"
+   ],
+   "tabla": "parte.informes"
+  },
+  {
+   "id": "base/entidades",
+   "tipo": "tabla",
+   "titulo": "entidades",
+   "sub": "parte.entidades",
+   "col": 3,
+   "fila": 6,
+   "estado": "construido",
+   "que_es": "Organismos y personas jurídicas, con sus identificadores en cada fuente. Diseñado: el perfil muestra como catálogo las que se pueden seguir, las que tienen su identificador en alguna fuente (T34).",
+   "para_que": "El explorador saca de acá el código de comprador de cada entidad seguida.",
+   "docs": [
+    "docs/base-de-afirmaciones.md"
+   ],
+   "tabla": "parte.entidades"
+  },
+  {
+   "id": "base/clientes",
+   "tipo": "tabla",
+   "titulo": "clientes",
+   "sub": "parte.clientes",
+   "col": 3,
+   "fila": 7,
+   "estado": "construido",
+   "que_es": "Cada cliente, con un alias y si es la cuenta de demostración. Sin correos.",
+   "para_que": "A quién se le arma un informe.",
+   "docs": [
+    "docs/base-de-afirmaciones.md"
+   ],
+   "tabla": "parte.clientes"
+  },
+  {
+   "id": "base/usuarios",
+   "tipo": "tabla",
+   "titulo": "usuarios",
+   "sub": "cuentas.usuarios",
+   "col": 0,
+   "fila": 6,
+   "estado": "construido",
+   "que_es": "El correo de cada usuario invitado, con el mismo identificador que su cliente en el esquema parte. Es el único lugar con datos personales, en un esquema aparte (ADR 0008). Diseñado: suma si quiere el aviso diario.",
+   "para_que": "Saber a qué correo mandar el enlace y el aviso, y a qué cliente corresponde quien entra. Hoy nadie la usa (T25).",
+   "docs": [
+    "docs/base-de-afirmaciones.md",
+    "adrs/0013-acceso-perfil-y-parte-diario.md"
+   ],
+   "tabla": "cuentas.usuarios"
+  },
+  {
+   "id": "web/manana",
+   "tipo": "pagina",
+   "titulo": "Página de la mañana",
+   "sub": "GET /manana",
+   "col": 5,
+   "fila": 0,
+   "estado": "construido",
+   "que_es": "El último informe de la cuenta de demostración: cada hecho con su grado, su evidencia, su estado de revisión y el enlace a su traza. Avisa si una fuente falló.",
+   "para_que": "Es lo que El Parte le da a quien sigue una entidad.",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/web/MananaControlador.java",
+    "app/src/main/resources/templates/manana.html"
+   ],
+   "docs": [
+    "docs/base-de-afirmaciones.md"
+   ],
+   "rutas": [
+    "GET /manana"
+   ],
+   "nota": "Diseñado (T25): con sesión, muestra el informe de quien entró; sin sesión, el de la cuenta de demostración.",
+   "tarjetas": [
+    "T25"
+   ]
+  },
+  {
+   "id": "web/login",
+   "tipo": "pagina",
+   "titulo": "Entrar por enlace",
+   "sub": "GET /entrar · POST /ott/generate",
+   "col": 1,
+   "fila": 0,
+   "estado": "disenado",
+   "que_es": "La página para entrar: la persona pone su correo y, si está invitada, le llega un enlace de un solo uso. Al hacer clic entra, y la aplicación la recuerda 30 días. Es el login con token de un solo uso de Spring Security, con los tokens y los recordatorios guardados en el esquema cuentas.",
+   "para_que": "Que cada invitado vea su página y su perfil sin contraseña, y que no tenga que pedir un enlace cada mañana. Ante un correo no invitado responde lo mismo, así no se puede averiguar quién está.",
+   "docs": [
+    "adrs/0013-acceso-perfil-y-parte-diario.md",
+    "adrs/0008-datos-personales.md"
+   ],
+   "tarjetas": [
+    "T25"
+   ]
+  },
+  {
+   "id": "afuera/persona",
+   "tipo": "externo",
+   "titulo": "Usuario invitado",
+   "sub": "su navegador y su correo",
+   "col": 0,
+   "fila": 0,
+   "estado": "disenado",
+   "tarjetas": [
+    "T25"
+   ],
+   "docs": [
+    "adrs/0013-acceso-perfil-y-parte-diario.md"
+   ],
+   "que_es": "Una de las cuatro personas invitadas. Entra con un enlace que le llega por correo, elige qué entidades seguir y cada mañana lee su parte.",
+   "para_que": "Es para quien existe El Parte: el que sigue entidades del Estado y quiere saber cada mañana qué se publicó sobre ellas."
+  },
+  {
+   "id": "invitados",
+   "tipo": "servicio",
+   "titulo": "Alta de invitados",
+   "sub": "lista elparte.invitados",
+   "col": 0,
+   "fila": 3,
+   "estado": "disenado",
+   "tarjetas": [
+    "T25"
+   ],
+   "docs": [
+    "adrs/0013-acceso-perfil-y-parte-diario.md"
+   ],
+   "que_es": "Al arrancar, lee la lista de invitados de la configuración (correo y alias) y crea la cuenta de cada uno que no esté: su correo en el esquema cuentas y su cliente, con el mismo identificador y sin correo, en el esquema parte.",
+   "para_que": "Que nadie se registre solo: en la versión 0 entran cuatro personas invitadas. Sumar a alguien es sumar su correo a la lista."
+  },
+  {
+   "id": "correo",
+   "tipo": "servicio",
+   "titulo": "Correo saliente",
+   "sub": "Spring Boot Mail · SMTP",
+   "col": 1,
+   "fila": 4,
+   "estado": "disenado",
+   "tarjetas": [
+    "T25",
+    "T35"
+   ],
+   "docs": [
+    "adrs/0013-acceso-perfil-y-parte-diario.md"
+   ],
+   "que_es": "Manda correos por SMTP: el enlace para entrar y el aviso de cada mañana.",
+   "para_que": "Un solo lugar que sabe mandar correos, con el servidor que diga la configuración: Mailpit en local, uno real cuando se despliegue."
+  },
+  {
+   "id": "envio-del-parte",
+   "tipo": "servicio",
+   "titulo": "Aviso del parte",
+   "sub": "escucha informes · cada mañana",
+   "col": 4,
+   "fila": 3,
+   "estado": "disenado",
+   "tarjetas": [
+    "T35"
+   ],
+   "docs": [
+    "adrs/0013-acceso-perfil-y-parte-diario.md",
+    "docs/contratos.md"
+   ],
+   "que_es": "Escucha los informes de cada corrida normal y, a cada invitado que lo quiere, le manda un aviso corto: la noche, cuántos hechos hay, cuántos esperan revisión, si la corrida se cortó, y el enlace a su página. No manda el contenido de los hechos: el parte es la página.",
+   "para_que": "Que la persona se entere cada mañana sin tener que acordarse de entrar. Corre con el rol de cuentas: lee correos, nunca hechos."
+  },
+  {
+   "id": "web/perfil",
+   "tipo": "pagina",
+   "titulo": "Mi perfil",
+   "sub": "GET y POST /perfil",
+   "col": 2,
+   "fila": 0,
+   "estado": "disenado",
+   "tarjetas": [
+    "T34"
+   ],
+   "docs": [
+    "adrs/0013-acceso-perfil-y-parte-diario.md"
+   ],
+   "que_es": "La página donde cada invitado ve las entidades que sigue y el catálogo de las que se pueden seguir, sigue o deja de seguir con un botón, y elige si quiere el aviso diario por correo. La cuenta de demostración la ve pero no la cambia.",
+   "para_que": "Que cada persona decida qué le llega. Los cambios valen desde la corrida siguiente, que arma la lista de entidades seguidas al empezar."
+  },
+  {
+   "id": "base/tokens",
+   "tipo": "tabla",
+   "titulo": "one_time_tokens",
+   "sub": "cuentas.one_time_tokens",
+   "col": 1,
+   "fila": 6,
+   "estado": "disenado",
+   "tarjetas": [
+    "T25"
+   ],
+   "tabla": "cuentas.one_time_tokens",
+   "docs": [
+    "adrs/0013-acceso-perfil-y-parte-diario.md"
+   ],
+   "que_es": "Los tokens de un solo uso del login: el token, el correo y cuándo vence. Es la tabla de JdbcOneTimeTokenService de Spring Security, en el esquema cuentas porque guarda correos.",
+   "para_que": "Que un enlace pendiente sobreviva a un reinicio de la aplicación. Vence a los 5 minutos y se usa una vez."
+  },
+  {
+   "id": "base/recuerdos",
+   "tipo": "tabla",
+   "titulo": "persistent_logins",
+   "sub": "cuentas.persistent_logins",
+   "col": 2,
+   "fila": 6,
+   "estado": "disenado",
+   "tarjetas": [
+    "T25"
+   ],
+   "tabla": "cuentas.persistent_logins",
+   "docs": [
+    "adrs/0013-acceso-perfil-y-parte-diario.md"
+   ],
+   "que_es": "Los recordatorios de sesión: el correo, una serie, un token y cuándo se usó. Es la tabla de JdbcTokenRepositoryImpl de Spring Security, en el esquema cuentas.",
+   "para_que": "Que quien entró una vez siga adentro 30 días en ese navegador, así cada mañana abre su página sin pedir otro enlace."
+  },
+  {
+   "id": "base/envios",
+   "tipo": "tabla",
+   "titulo": "envios_del_parte",
+   "sub": "cuentas.envios_del_parte",
+   "col": 0,
+   "fila": 7,
+   "estado": "disenado",
+   "tarjetas": [
+    "T35"
+   ],
+   "tabla": "cuentas.envios_del_parte",
+   "docs": [
+    "adrs/0013-acceso-perfil-y-parte-diario.md"
+   ],
+   "que_es": "Un registro por aviso mandado: el cliente, la corrida y cuándo salió.",
+   "para_que": "Que un aviso no salga dos veces aunque el mensaje de informes llegue dos veces. Hace de registro de lo procesado para el aviso, que no puede escribir en el esquema parte."
+  }
+ ],
+ "flechas": [
+  {
+   "id": "armado-de-informes>kafka/informes",
+   "de": "armado-de-informes",
+   "a": "kafka/informes",
+   "tipo": "emite",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "uno por cliente",
+   "detalle": "Un informe por cliente con suscripciones."
+  },
+  {
+   "id": "armado-de-informes>base/informes",
+   "de": "armado-de-informes",
+   "a": "base/informes",
+   "tipo": "escribe",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "el informe",
+   "detalle": "En una corrida normal guarda el informe de cada cliente."
+  },
+  {
+   "id": "base/suscripciones>inicio",
+   "de": "base/suscripciones",
+   "a": "inicio",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "entidades seguidas",
+   "detalle": "Las entidades con algún suscriptor."
+  },
+  {
+   "id": "base/clientes>armado-de-informes",
+   "de": "base/clientes",
+   "a": "armado-de-informes",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "clientes",
+   "detalle": "A quién se le arma un informe."
+  },
+  {
+   "id": "base/suscripciones>armado-de-informes",
+   "de": "base/suscripciones",
+   "a": "armado-de-informes",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "qué sigue cada uno",
+   "detalle": "Las entidades de cada cliente."
+  },
+  {
+   "id": "base/informes>web/manana",
+   "de": "base/informes",
+   "a": "web/manana",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "el último informe",
+   "detalle": "El último informe de la cuenta de demostración."
+  },
+  {
+   "id": "base/clientes>web/manana",
+   "de": "base/clientes",
+   "a": "web/manana",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "la cuenta",
+   "detalle": "Cuál es la cuenta de demostración."
+  },
+  {
+   "id": "base/suscripciones>web/manana",
+   "de": "base/suscripciones",
+   "a": "web/manana",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "qué sigue",
+   "detalle": "Las entidades que sigue."
+  },
+  {
+   "id": "base/entidades>web/manana",
+   "de": "base/entidades",
+   "a": "web/manana",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "sus nombres",
+   "detalle": "El nombre de cada entidad seguida."
+  },
+  {
+   "id": "invitados>base/usuarios",
+   "de": "invitados",
+   "a": "base/usuarios",
+   "tipo": "escribe",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "crea la cuenta",
+   "detalle": "Inserta el correo de cada invitado nuevo, con un identificador nuevo.",
+   "tarjetas": [
+    "T25"
+   ]
+  },
+  {
+   "id": "invitados>base/clientes",
+   "de": "invitados",
+   "a": "base/clientes",
+   "tipo": "escribe",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "crea el cliente",
+   "detalle": "Inserta el cliente con el mismo identificador y su alias, sin correo.",
+   "tarjetas": [
+    "T25"
+   ]
+  },
+  {
+   "id": "afuera/persona>web/login",
+   "de": "afuera/persona",
+   "a": "web/login",
+   "tipo": "usa",
+   "estado": "disenado",
+   "papel": "camino",
+   "etiqueta": "pone su correo",
+   "detalle": "En /entrar escribe su correo y pide el enlace.",
+   "tarjetas": [
+    "T25"
+   ]
+  },
+  {
+   "id": "base/usuarios>web/login",
+   "de": "base/usuarios",
+   "a": "web/login",
+   "tipo": "lee",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "¿está invitado?",
+   "detalle": "Busca el correo; si está, sigue, y si no, responde lo mismo sin mandar nada. Al entrar, toma de acá el identificador del cliente y lo guarda en la sesión.",
+   "tarjetas": [
+    "T25"
+   ]
+  },
+  {
+   "id": "web/login>base/tokens",
+   "de": "web/login",
+   "a": "base/tokens",
+   "tipo": "escribe",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "token de un solo uso",
+   "detalle": "Spring Security genera el token (POST /ott/generate) y lo guarda, con vencimiento a los 5 minutos.",
+   "tarjetas": [
+    "T25"
+   ],
+   "fuente": "https://docs.spring.io/spring-security/reference/servlet/authentication/onetimetoken.html"
+  },
+  {
+   "id": "web/login>correo",
+   "de": "web/login",
+   "a": "correo",
+   "tipo": "usa",
+   "estado": "disenado",
+   "papel": "camino",
+   "etiqueta": "manda el enlace",
+   "detalle": "Arma el enlace /login/ott?token=… y lo manda al correo de la persona.",
+   "tarjetas": [
+    "T25"
+   ]
+  },
+  {
+   "id": "correo>afuera/mailpit",
+   "de": "correo",
+   "a": "afuera/mailpit",
+   "tipo": "llama",
+   "estado": "disenado",
+   "papel": "camino",
+   "etiqueta": "SMTP",
+   "detalle": "Entrega el correo al servidor de la configuración: Mailpit en local.",
+   "tarjetas": [
+    "T25",
+    "T35"
+   ]
+  },
+  {
+   "id": "afuera/persona>afuera/mailpit",
+   "de": "afuera/persona",
+   "a": "afuera/mailpit",
+   "tipo": "usa",
+   "estado": "disenado",
+   "papel": "camino",
+   "etiqueta": "abre su correo",
+   "detalle": "Lee el enlace para entrar, o el aviso de la mañana, y hace clic.",
+   "tarjetas": [
+    "T25"
+   ]
+  },
+  {
+   "id": "web/login>base/recuerdos",
+   "de": "web/login",
+   "a": "base/recuerdos",
+   "tipo": "escribe",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "la recuerda 30 días",
+   "detalle": "Al validar el token, la deja entrar y guarda un recordatorio de sesión.",
+   "tarjetas": [
+    "T25"
+   ],
+   "fuente": "https://docs.spring.io/spring-security/reference/servlet/authentication/rememberme.html"
+  },
+  {
+   "id": "base/recuerdos>web/login",
+   "de": "base/recuerdos",
+   "a": "web/login",
+   "tipo": "lee",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "¿la recuerda?",
+   "detalle": "En cada visita sin sesión, el recordatorio de la cookie se valida acá y la sesión se rehace sola.",
+   "tarjetas": [
+    "T25"
+   ]
+  },
+  {
+   "id": "afuera/persona>web/perfil",
+   "de": "afuera/persona",
+   "a": "web/perfil",
+   "tipo": "usa",
+   "estado": "disenado",
+   "papel": "camino",
+   "etiqueta": "elige qué seguir",
+   "detalle": "Entra a /perfil.",
+   "tarjetas": [
+    "T34"
+   ]
+  },
+  {
+   "id": "base/entidades>web/perfil",
+   "de": "base/entidades",
+   "a": "web/perfil",
+   "tipo": "lee",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "el catálogo",
+   "detalle": "Las entidades que se pueden seguir: las que tienen su identificador en alguna fuente.",
+   "tarjetas": [
+    "T34"
+   ]
+  },
+  {
+   "id": "base/suscripciones>web/perfil",
+   "de": "base/suscripciones",
+   "a": "web/perfil",
+   "tipo": "lee",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "lo que ya sigue",
+   "detalle": "Las suscripciones del cliente de la sesión.",
+   "tarjetas": [
+    "T34"
+   ]
+  },
+  {
+   "id": "web/perfil>base/suscripciones",
+   "de": "web/perfil",
+   "a": "base/suscripciones",
+   "tipo": "escribe",
+   "estado": "disenado",
+   "papel": "camino",
+   "etiqueta": "sigue o deja de seguir",
+   "detalle": "Inserta o borra la suscripción del cliente de la sesión. Vale desde la corrida siguiente.",
+   "tarjetas": [
+    "T34"
+   ]
+  },
+  {
+   "id": "web/perfil>base/usuarios",
+   "de": "web/perfil",
+   "a": "base/usuarios",
+   "tipo": "escribe",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "aviso diario sí o no",
+   "detalle": "Guarda si quiere el aviso por correo, con el rol de cuentas.",
+   "tarjetas": [
+    "T34"
+   ]
+  },
+  {
+   "id": "kafka/informes>envio-del-parte",
+   "de": "kafka/informes",
+   "a": "envio-del-parte",
+   "tipo": "escucha",
+   "estado": "disenado",
+   "papel": "camino",
+   "etiqueta": "un informe por cliente",
+   "detalle": "Escucha los informes; saltea los de las corridas que no son normales, por el modo que suma el mensaje (ADR 0013).",
+   "tarjetas": [
+    "T35"
+   ]
+  },
+  {
+   "id": "base/usuarios>envio-del-parte",
+   "de": "base/usuarios",
+   "a": "envio-del-parte",
+   "tipo": "lee",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "correo y preferencia",
+   "detalle": "El correo del cliente y si quiere el aviso. La cuenta de demostración no tiene correo: no recibe nada.",
+   "tarjetas": [
+    "T35"
+   ]
+  },
+  {
+   "id": "envio-del-parte>base/envios",
+   "de": "envio-del-parte",
+   "a": "base/envios",
+   "tipo": "escribe",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "anota el envío",
+   "detalle": "Una fila por cliente y corrida, antes de mandar: si ya estaba, no manda.",
+   "tarjetas": [
+    "T35"
+   ]
+  },
+  {
+   "id": "envio-del-parte>correo",
+   "de": "envio-del-parte",
+   "a": "correo",
+   "tipo": "usa",
+   "estado": "disenado",
+   "papel": "camino",
+   "etiqueta": "manda el aviso",
+   "detalle": "El asunto dice la noche y cuántos hechos hay; el cuerpo, cuántos esperan revisión, si la corrida se cortó y el enlace a /manana.",
+   "tarjetas": [
+    "T35"
+   ]
+  },
+  {
+   "id": "afuera/persona>web/manana",
+   "de": "afuera/persona",
+   "a": "web/manana",
+   "tipo": "usa",
+   "estado": "disenado",
+   "papel": "camino",
+   "etiqueta": "lee su parte",
+   "detalle": "Entra a /manana desde el aviso; el recordatorio la deja adentro sin pedir enlace.",
+   "tarjetas": [
+    "T25"
+   ]
+  }
+ ],
+ "recorridos": [
+  {
+   "id": "alta",
+   "titulo": "Un usuario nuevo",
+   "sub": "de la invitación a su perfil",
+   "pasos": [
+    {
+     "en": "invitados",
+     "texto": "El responsable suma el correo de la persona a la lista de invitados de la configuración. Al arrancar, el alta la encuentra."
+    },
+    {
+     "en": "invitados>base/usuarios",
+     "texto": "Guarda su correo en el esquema cuentas, con un identificador nuevo."
+    },
+    {
+     "en": "invitados>base/clientes",
+     "texto": "Crea su cliente con el mismo identificador y un alias, sin correo, en el esquema parte."
+    },
+    {
+     "en": "afuera/persona>web/login",
+     "texto": "La persona entra a El Parte y pone su correo."
+    },
+    {
+     "en": "base/usuarios>web/login",
+     "texto": "Está invitada: sigue. Si no lo estuviera, la respuesta sería la misma y no saldría nada."
+    },
+    {
+     "en": "web/login>base/tokens",
+     "texto": "Spring Security genera un token de un solo uso, que vence a los 5 minutos."
+    },
+    {
+     "en": "web/login>correo",
+     "texto": "Le manda el enlace para entrar."
+    },
+    {
+     "en": "correo>afuera/mailpit",
+     "texto": "El correo sale por SMTP; en local lo captura Mailpit."
+    },
+    {
+     "en": "afuera/persona>afuera/mailpit",
+     "texto": "Abre el correo y hace clic en el enlace."
+    },
+    {
+     "en": "web/login>base/recuerdos",
+     "texto": "Entra, y la aplicación la recuerda 30 días en ese navegador."
+    },
+    {
+     "en": "afuera/persona>web/perfil",
+     "texto": "Va a su perfil."
+    },
+    {
+     "en": "base/entidades>web/perfil",
+     "texto": "Ve el catálogo: las entidades que El Parte puede seguir."
+    },
+    {
+     "en": "web/perfil>base/suscripciones",
+     "texto": "Elige las que quiere seguir. Valen desde la corrida de esta noche."
+    },
+    {
+     "en": "web/perfil>base/usuarios",
+     "texto": "Y elige si quiere el aviso diario por correo."
+    }
+   ]
+  },
+  {
+   "id": "cada-dia",
+   "titulo": "Cada día, su parte",
+   "sub": "de la corrida de la noche a su página",
+   "pasos": [
+    {
+     "en": "base/suscripciones>inicio",
+     "texto": "A la noche, el inicio junta las entidades que sigue alguien: también las que eligió esta persona."
+    },
+    {
+     "en": "armado-de-informes>base/informes",
+     "texto": "Al cerrar la corrida, el armado guarda su informe: los hechos sobre lo que sigue, o sin novedades."
+    },
+    {
+     "en": "armado-de-informes>kafka/informes",
+     "texto": "Y lo anuncia en informes."
+    },
+    {
+     "en": "kafka/informes>envio-del-parte",
+     "texto": "El aviso del parte lo escucha. Si la corrida es una repetición, no hace nada."
+    },
+    {
+     "en": "base/usuarios>envio-del-parte",
+     "texto": "Busca su correo y si quiere el aviso."
+    },
+    {
+     "en": "envio-del-parte>base/envios",
+     "texto": "Anota el envío, así no sale dos veces."
+    },
+    {
+     "en": "envio-del-parte>correo",
+     "texto": "Le manda el aviso: la noche, cuántos hechos hay y el enlace a su página."
+    },
+    {
+     "en": "afuera/persona>afuera/mailpit",
+     "texto": "A la mañana lee el aviso y hace clic."
+    },
+    {
+     "en": "base/recuerdos>web/login",
+     "texto": "El recordatorio sigue vigente: entra sin pedir enlace."
+    },
+    {
+     "en": "afuera/persona>web/manana",
+     "texto": "Llega a su página de la mañana."
+    },
+    {
+     "en": "base/informes>web/manana",
+     "texto": "La página muestra su último informe, con cada hecho, su grado, su evidencia y el aviso si una fuente falló."
+    }
+   ]
+  }
+ ],
+ "historial": [
+  {
+   "fecha": "2026-11-14",
+   "texto": "Primera versión del tablero: la primera rebanada construida (T08) y lo diseñado de la versión 0, verificado contra el código (ADR 0012).",
+   "objetos": [
+    "armado-de-informes",
+    "web/manana"
+   ]
+  },
+  {
+   "fecha": "2026-11-14",
+   "texto": "Diseño del acceso, el perfil y el parte diario de cada usuario (ADR 0013, propuesto): alta de invitados, entrar por enlace con sesión recordada, la página del perfil, el aviso de cada mañana y sus tablas en el esquema cuentas. Suma la vista de usuarios y dos recorridos.",
+   "objetos": [
+    "afuera/persona",
+    "invitados",
+    "web/login",
+    "correo",
+    "web/perfil",
+    "envio-del-parte",
+    "base/tokens",
+    "base/recuerdos",
+    "base/envios",
+    "base/usuarios",
+    "web/manana"
+   ]
+  }
+ ],
+ "fuera": {
+  "inicio": [
+   {
+    "id": "web/sala>inicio",
+    "lado": "entra",
+    "otro": "Sala de máquinas",
+    "etiqueta": "corre una noche o repite una corrida",
+    "estado": "construido"
+   },
+   {
+    "id": "noche-por-reloj>inicio",
+    "lado": "entra",
+    "otro": "Corrida por reloj",
+    "etiqueta": "corre la noche de ayer",
+    "estado": "construido"
+   },
+   {
+    "id": "inicio>kafka/corrida.iniciada",
+    "lado": "sale",
+    "otro": "corrida.iniciada",
+    "etiqueta": "anuncia la corrida",
+    "estado": "construido"
+   },
+   {
+    "id": "inicio>base/corridas",
+    "lado": "sale",
+    "otro": "corridas",
+    "etiqueta": "guarda la corrida",
+    "estado": "construido"
+   },
+   {
+    "id": "inicio>base/libros_de_corrida",
+    "lado": "sale",
+    "otro": "libros_de_corrida",
+    "etiqueta": "abre su libro",
+    "estado": "construido"
+   },
+   {
+    "id": "base/fuentes>inicio",
+    "lado": "entra",
+    "otro": "fuentes",
+    "etiqueta": "fuentes activas",
+    "estado": "construido"
+   },
+   {
+    "id": "base/modelos_de_agente>inicio",
+    "lado": "entra",
+    "otro": "modelos_de_agente",
+    "etiqueta": "modelo vigente",
+    "estado": "construido"
+   },
+   {
+    "id": "medicion-banco>inicio",
+    "lado": "entra",
+    "otro": "Medición contra el banco",
+    "etiqueta": "una corrida por noche del registro",
+    "estado": "disenado"
+   }
+  ],
+  "armado-de-informes": [
+   {
+    "id": "cierre>armado-de-informes",
+    "lado": "entra",
+    "otro": "Cierre de corrida",
+    "etiqueta": "arma los informes",
+    "estado": "construido"
+   },
+   {
+    "id": "armado-de-informes>base/informe_hechos",
+    "lado": "sale",
+    "otro": "informe_hechos",
+    "etiqueta": "sus hechos",
+    "estado": "construido"
+   },
+   {
+    "id": "base/hechos>armado-de-informes",
+    "lado": "entra",
+    "otro": "hechos",
+    "etiqueta": "hechos de la noche",
+    "estado": "construido"
+   },
+   {
+    "id": "base/versiones_de_hecho>armado-de-informes",
+    "lado": "entra",
+    "otro": "versiones_de_hecho",
+    "etiqueta": "versiones de la corrida",
+    "estado": "construido"
+   }
+  ],
+  "base/entidades": [
+   {
+    "id": "editor>base/entidades",
+    "lado": "entra",
+    "otro": "Editor",
+    "etiqueta": "las entidades nuevas",
+    "estado": "construido"
+   },
+   {
+    "id": "base/entidades>explorador-arce",
+    "lado": "sale",
+    "otro": "Explorador de ARCE",
+    "etiqueta": "código de comprador",
+    "estado": "construido"
+   }
+  ],
+  "web/manana": [
+   {
+    "id": "base/informe_hechos>web/manana",
+    "lado": "entra",
+    "otro": "informe_hechos",
+    "etiqueta": "sus hechos",
+    "estado": "construido"
+   },
+   {
+    "id": "base/versiones_de_hecho>web/manana",
+    "lado": "entra",
+    "otro": "versiones_de_hecho",
+    "etiqueta": "afirmación y grado",
+    "estado": "construido"
+   },
+   {
+    "id": "base/hechos>web/manana",
+    "lado": "entra",
+    "otro": "hechos",
+    "etiqueta": "tipo y clave",
+    "estado": "construido"
+   },
+   {
+    "id": "base/evidencias>web/manana",
+    "lado": "entra",
+    "otro": "evidencias",
+    "etiqueta": "la evidencia",
+    "estado": "construido"
+   },
+   {
+    "id": "base/mensajes>web/manana",
+    "lado": "entra",
+    "otro": "mensajes",
+    "etiqueta": "¿falló una fuente?",
+    "estado": "construido"
+   }
+  ]
+ },
+ "vista": {
+  "id": "usuarios",
+  "titulo": "El Parte · el usuario: acceso, perfil y parte diario",
+  "sub": "cómo entra cada persona, dónde queda su perfil y cómo lee su parte cada mañana",
+  "archivo": "usuarios.html"
+ },
+ "vistas": [
+  {
+   "id": "usuarios",
+   "boton": "El usuario",
+   "archivo": "usuarios.html"
+  }
+ ]
+};
+
+// ---------------------------------------------------------------- geometría
+var COLW = 210, ROWH = 74, NW = 184, NH = 50, IZQ = 30, ARR = 96;
+var GAPX = (COLW - NW) / 2, GAPY = (ROWH - NH) / 2;
+var NS = "http://www.w3.org/2000/svg";
+var TIPOS = { agente: "Agente", servicio: "Servicio", topico: "Tópico de Kafka", tabla: "Tabla", pagina: "Página",
+              externo: "De afuera", infra: "Infraestructura", "grupo-de-topicos": "Los tópicos" };
+var ICONOS = { agente: "◆", servicio: "⚙", topico: "≋", tabla: "▦", pagina: "▭", externo: "⬈", infra: "▣", "grupo-de-topicos": "≋" };
+var COLORES = { agente: "var(--agente)", servicio: "var(--servicio)", topico: "var(--topico)", tabla: "var(--tabla)",
+                pagina: "var(--pagina)", externo: "var(--externo)", infra: "var(--infra)", "grupo-de-topicos": "var(--topico)" };
+var VERBOS = { emite: "emite a", escucha: "lo escucha", usa: "usa", lee: "lo lee", escribe: "escribe en", llama: "llama a" };
+var TIPOS_FLECHA = { emite: "Emite un mensaje", escucha: "Escucha un tópico", usa: "Usa otro objeto", lee: "Lee una tabla",
+                     escribe: "Escribe una tabla", llama: "Llama afuera" };
+
+function $(id) { return document.getElementById(id); }
+function el(tag, attrs, padre) {
+  var e = document.createElementNS(NS, tag);
+  for (var k in attrs || {}) { e.setAttribute(k, attrs[k]); }
+  if (padre) { padre.appendChild(e); }
+  return e;
+}
+function esc(t) { return String(t == null ? "" : t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+function colX(c) { return IZQ + c * COLW; }
+function filaY(f) { return ARR + f * ROWH; }
+
+var nodos = {}, flechas = {}, porNodo = {};
+S.nodos.forEach(function (n) {
+  n.x = colX(n.col) + GAPX; n.y = filaY(n.fila) + GAPY; n.w = NW; n.h = NH;
+  n.cx = n.x + NW / 2; n.cy = n.y + NH / 2;
+  nodos[n.id] = n; porNodo[n.id] = [];
+});
+S.flechas.forEach(function (f) { flechas[f.id] = f; porNodo[f.de].push(f); porNodo[f.a].push(f); });
+var ocupado = {};
+S.nodos.forEach(function (n) { ocupado[n.col + ":" + n.fila] = n.id; });
+var maxCol = Math.max.apply(null, S.nodos.map(function (n) { return n.col; }));
+var maxFila = Math.max.apply(null, S.nodos.map(function (n) { return n.fila; }));
+var ANCHO = colX(maxCol + 1) + IZQ, ALTO = filaY(maxFila + 1) + 40;
+
+function hash(t) { var h = 0; for (var i = 0; i < t.length; i++) { h = (h * 31 + t.charCodeAt(i)) | 0; } return Math.abs(h); }
+function carril(f) { return ((hash(f.id) % 5) - 2) * 3; }
+function libreFila(fila, c1, c2) {  // celdas entre dos columnas, sin contar los extremos
+  var n = 0, a = Math.min(c1, c2), b = Math.max(c1, c2);
+  for (var c = a + 1; c < b; c++) { if (ocupado[c + ":" + fila]) { n++; } }
+  return n;
+}
+function libreCol(col, f1, f2) {
+  var n = 0, a = Math.min(f1, f2), b = Math.max(f1, f2);
+  for (var f = a + 1; f < b; f++) { if (ocupado[col + ":" + f]) { n++; } }
+  return n;
+}
+
+// Cada flecha va por los pasillos entre las cajas: sale de un costado, recorre el pasillo y entra por el
+// costado del otro objeto. Primero se eligen los lados; después se reparten los puntos de cada lado.
+function planear(f) {
+  var a = nodos[f.de], b = nodos[f.a], o = carril(f);
+  if (a.col === b.col) {
+    if (libreCol(a.col, a.fila, b.fila) === 0) {
+      return { sale: b.fila > a.fila ? "abajo" : "arriba", entra: b.fila > a.fila ? "arriba" : "abajo", forma: "recta" };
+    }
+    var lado = (libreCol(a.col + 1, a.fila, b.fila) <= libreCol(a.col - 1, a.fila, b.fila)) ? "der" : "izq";
+    return { sale: lado, entra: lado, forma: "u", x: lado === "der" ? colX(a.col + 1) + o : colX(a.col) + o };
+  }
+  var der = b.col > a.col;
+  var sale = der ? "der" : "izq", entra = der ? "izq" : "der";
+  if (a.fila === b.fila && libreFila(a.fila, a.col, b.col) === 0) { return { sale: sale, entra: entra, forma: "recta" }; }
+  var xa = der ? colX(a.col + 1) : colX(a.col), xb = der ? colX(b.col) : colX(b.col + 1);
+  var obstA = libreFila(b.fila, a.col, b.col) + (a.fila === b.fila ? 0 : 0);   // vertical junto al origen, horizontal en la fila del destino
+  var obstB = libreFila(a.fila, a.col, b.col);                                // horizontal en la fila del origen, vertical junto al destino
+  if (obstB === 0) { return { sale: sale, entra: entra, forma: "z", x: xb + o }; }
+  if (obstA === 0) { return { sale: sale, entra: entra, forma: "z", x: xa + o }; }
+  var yPasillo = (b.fila > a.fila ? filaY(b.fila) : filaY(b.fila + 1)) + o;
+  return { sale: sale, entra: entra, forma: "pasillo", xa: xa + o, xb: xb + o, y: yPasillo };
+}
+function puertos() {
+  var lados = {};
+  S.flechas.forEach(function (f) {
+    var p = f.plan = planear(f);
+    [[f.de, p.sale, f.a], [f.a, p.entra, f.de]].forEach(function (x) {
+      var k = x[0] + "|" + x[1];
+      (lados[k] = lados[k] || []).push({ f: f, otro: nodos[x[2]], soy: x[0] === f.de ? "de" : "a" });
+    });
+  });
+  Object.keys(lados).forEach(function (k) {
+    var lista = lados[k], lado = k.split("|")[1], vertical = lado === "der" || lado === "izq";
+    lista.sort(function (u, v) { return vertical ? u.otro.cy - v.otro.cy : u.otro.cx - v.otro.cx; });
+    var n = lista.length, largo = vertical ? NH - 14 : NW - 40;
+    lista.forEach(function (it, i) {
+      var d = n === 1 ? 0 : -largo / 2 + largo * i / (n - 1);
+      it.f["puerto_" + it.soy] = d;
+    });
+  });
+}
+function punto(n, lado, d) {
+  if (lado === "der") { return [n.x + n.w, n.cy + d]; }
+  if (lado === "izq") { return [n.x, n.cy + d]; }
+  if (lado === "arriba") { return [n.cx + d, n.y]; }
+  return [n.cx + d, n.y + n.h];
+}
+function camino(pts) {  // polilínea con esquinas redondeadas
+  var r = 7, d = "M" + pts[0][0] + "," + pts[0][1];
+  for (var i = 1; i < pts.length - 1; i++) {
+    var p0 = pts[i - 1], p1 = pts[i], p2 = pts[i + 1];
+    var l1 = Math.hypot(p1[0] - p0[0], p1[1] - p0[1]), l2 = Math.hypot(p2[0] - p1[0], p2[1] - p1[1]);
+    var rr = Math.min(r, l1 / 2, l2 / 2);
+    if (rr < 0.5) { d += " L" + p1[0] + "," + p1[1]; continue; }
+    var a = [p1[0] - (p1[0] - p0[0]) / l1 * rr, p1[1] - (p1[1] - p0[1]) / l1 * rr];
+    var b = [p1[0] + (p2[0] - p1[0]) / l2 * rr, p1[1] + (p2[1] - p1[1]) / l2 * rr];
+    d += " L" + a[0] + "," + a[1] + " Q" + p1[0] + "," + p1[1] + " " + b[0] + "," + b[1];
+  }
+  var u = pts[pts.length - 1];
+  return d + " L" + u[0] + "," + u[1];
+}
+function trazar(f) {
+  var a = nodos[f.de], b = nodos[f.a], p = f.plan;
+  var s = punto(a, p.sale, f.puerto_de || 0), e = punto(b, p.entra, f.puerto_a || 0), pts;
+  if (p.forma === "recta") {
+    if (p.sale === "der" || p.sale === "izq") { var xm = (s[0] + e[0]) / 2; pts = [s, [xm, s[1]], [xm, e[1]], e]; }
+    else { var ym = (s[1] + e[1]) / 2; pts = [s, [s[0], ym], [e[0], ym], e]; }
+  } else if (p.forma === "u") { pts = [s, [p.x, s[1]], [p.x, e[1]], e]; }
+  else if (p.forma === "z") { pts = [s, [p.x, s[1]], [p.x, e[1]], e]; }
+  else { pts = [s, [p.xa, s[1]], [p.xa, p.y], [p.xb, p.y], [p.xb, e[1]], e]; }
+  // la punta de la flecha
+  var u = pts[pts.length - 1], v = pts[pts.length - 2], ang = Math.atan2(u[1] - v[1], u[0] - v[0]);
+  var punta = [u, [u[0] - 8 * Math.cos(ang - 0.45), u[1] - 8 * Math.sin(ang - 0.45)], [u[0] - 8 * Math.cos(ang + 0.45), u[1] - 8 * Math.sin(ang + 0.45)]];
+  var largo = 0, mejor = 0, medio = [(s[0] + e[0]) / 2, (s[1] + e[1]) / 2];
+  for (var i = 1; i < pts.length; i++) {
+    var l = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
+    if (l > mejor) { mejor = l; medio = [(pts[i][0] + pts[i - 1][0]) / 2, (pts[i][1] + pts[i - 1][1]) / 2]; }
+    largo += l;
+  }
+  var horizontal = false;
+  for (var j = 1; j < pts.length; j++) {
+    var lj = Math.hypot(pts[j][0] - pts[j - 1][0], pts[j][1] - pts[j - 1][1]);
+    if (lj === mejor) { horizontal = Math.abs(pts[j][1] - pts[j - 1][1]) < 1; break; }
+  }
+  return { d: camino(pts), punta: punta, medio: medio, tramo: mejor, horizontal: horizontal };
+}
+
+// ---------------------------------------------------------------- dibujo
+function recortar(t, max) { t = t || ""; return t.length > max ? t.slice(0, max - 1) + "…" : t; }
+function dibujar() {
+  var gF = $("franjas"), gG = $("grupos"), gA = $("flechas"), gN = $("nodos");
+  S.franjas.forEach(function (fr) {
+    var g = el("g", { "class": "franja" }, gF);
+    var y0 = filaY(fr.fila[0]) - (fr.columnas ? 62 : 36), y1 = filaY(fr.fila[1] + 1) + 8;
+    el("rect", { x: 10, y: y0, width: ANCHO - 20, height: y1 - y0 }, g);
+    var t = el("text", { x: 26, y: y0 + 20, "class": "titulo" }, g); t.textContent = fr.titulo;
+    var s = el("text", { x: 26 + fr.titulo.length * 8.6 + 16, y: y0 + 20, "class": "sub" }, g); s.textContent = fr.sub;
+    if (fr.columnas) {
+      S.columnas.forEach(function (c) {
+        if (c.kafka) { el("rect", { x: colX(c.col) + 4, y: y0 + 30, width: COLW - 8, height: y1 - y0 - 38, rx: 10, "class": "columna-kafka" }, g); }
+        var ct = el("text", { x: colX(c.col) + COLW / 2, y: y0 + 46, "class": "columna-titulo" }, g); ct.textContent = c.titulo;
+      });
+    }
+  });
+  S.grupos.forEach(function (gr) {
+    var g = el("g", { "class": "grupo" }, gG);
+    var x0 = colX(gr.col[0]) + 4, x1 = colX(gr.col[1] + 1) - 4, y0 = filaY(gr.fila[0]) - 4, y1 = filaY(gr.fila[1] + 1) + 5;
+    el("rect", { x: x0, y: y0, width: x1 - x0, height: y1 - y0 }, g);
+    var t = el("text", { x: x0 + 8, y: y1 - 4 }, g); t.textContent = gr.titulo;
+  });
+  puertos();
+  S.flechas.forEach(function (f) {
+    var g = el("g", { "class": "flecha " + f.tipo + " " + f.estado + " " + f.papel, "data-id": f.id }, gA);
+    var t = trazar(f); f.trazo = t;
+    var p = el("path", { d: t.d, "class": "trazo" }, g);
+    el("polygon", { points: t.punta.map(function (q) { return q.join(","); }).join(" "), "class": "punta",
+                    fill: f.estado === "disenado" ? "var(--disenado)" : ({ emite: "var(--mensaje)", escucha: "var(--mensaje)", escribe: "var(--escribe)", lee: "var(--lee)", usa: "var(--usa)", llama: "var(--llama)" })[f.tipo] }, g);
+    el("path", { d: t.d, "class": "toque" }, g);
+    var r = el("g", { "class": "rotulo" }, g);
+    var txt = recortar(f.etiqueta, 34), w = txt.length * 5.7 + 12;
+    var cabe = t.horizontal ? t.tramo > w + 18 : t.tramo > 40;
+    if (!cabe) { g.classList.add("corta"); }
+    var ry = cabe ? t.medio[1] : t.medio[1] - 18;
+    el("rect", { x: t.medio[0] - w / 2, y: ry - 9, width: w, height: 17 }, r);
+    var tt = el("text", { x: t.medio[0], y: ry + 3.5, "text-anchor": "middle" }, r); tt.textContent = txt;
+    f.g = g; f.path = p;
+    g.addEventListener("click", function (ev) { ev.stopPropagation(); if (arrastrado()) { return; } abrirFlecha(f.id); });
+    g.addEventListener("contextmenu", function (ev) { ev.preventDefault(); ev.stopPropagation(); menu(ev, f.id); });
+    g.addEventListener("mouseenter", function () { if (!estado.sel) { enfocar(f.id); } });
+    g.addEventListener("mouseleave", function () { if (!estado.sel) { enfocar(null); } });
+  });
+  S.nodos.forEach(function (n) {
+    var g = el("g", { "class": "nodo " + n.tipo + " " + n.estado, "data-id": n.id, transform: "translate(" + n.x + "," + n.y + ")" }, gN);
+    el("rect", { width: NW, height: NH, "class": "caja" }, g);
+    el("rect", { x: 0, y: 8, width: 3.5, height: NH - 16, fill: n.estado === "disenado" ? "var(--disenado)" : COLORES[n.tipo], "class": "acento" }, g);
+    var ic = el("text", { x: 17, y: 21, "class": "icono", fill: n.estado === "disenado" ? "var(--disenado)" : COLORES[n.tipo] }, g); ic.textContent = ICONOS[n.tipo];
+    var t = el("text", { x: 30, y: 21, "class": "titulo" }, g); t.textContent = recortar(n.titulo, n.tipo === "topico" ? 22 : 23);
+    var s = el("text", { x: 30, y: 38, "class": "sub" }, g); s.textContent = recortar(n.sub, 30);
+    var marcas = [];
+    if (n.estado === "disenado") { marcas.push(["DISEÑADO", "var(--disenado)"]); }
+    if (n.comun) { marcas.push(["COMÚN", "var(--texto3)"]); }
+    if (n.apagado) { marcas.push(["APAGADA", "var(--activo)"]); }
+    var mx = NW - 6;
+    marcas.forEach(function (m) {
+      var w = m[0].length * 6 + 8; mx -= w;
+      el("rect", { x: mx, y: -7, width: w, height: 13, fill: "#0b1020", stroke: m[1], "class": "marca-fondo" }, g);
+      var mt = el("text", { x: mx + w / 2, y: 3, "text-anchor": "middle", fill: m[1], "class": "marca" }, g); mt.textContent = m[0];
+      mx -= 4;
+    });
+    if (n.tarjetas && n.tarjetas.length) {
+      var pt = el("text", { x: NW - 8, y: NH - 6, "text-anchor": "end", fill: "var(--activo)", "class": "marca pendiente" }, g);
+      pt.textContent = n.tarjetas.join(" · ");
+    }
+    n.g = g;
+    g.addEventListener("click", function (ev) { ev.stopPropagation(); if (arrastrado()) { return; } abrirNodo(n.id); });
+    g.addEventListener("contextmenu", function (ev) { ev.preventDefault(); ev.stopPropagation(); menu(ev, n.id); });
+    g.addEventListener("mouseenter", function () { if (!estado.sel) { enfocar(n.id); } });
+    g.addEventListener("mouseleave", function () { if (!estado.sel) { enfocar(null); } });
+  });
+}
+
+// ---------------------------------------------------------------- foco y selección
+var estado = { sel: null, recorrido: null, paso: -1, reproduciendo: null, seguir: true };
+function enfocar(id) {
+  var svg = $("escena");
+  document.querySelectorAll(".foco").forEach(function (e) { e.classList.remove("foco"); });
+  if (!id) { svg.classList.remove("enfocado"); return; }
+  svg.classList.add("enfocado");
+  if (nodos[id]) {
+    nodos[id].g.classList.add("foco");
+    porNodo[id].forEach(function (f) { f.g.classList.add("foco"); nodos[f.de].g.classList.add("foco"); nodos[f.a].g.classList.add("foco"); });
+  } else if (flechas[id]) {
+    var f = flechas[id]; f.g.classList.add("foco"); nodos[f.de].g.classList.add("foco"); nodos[f.a].g.classList.add("foco");
+  }
+}
+function seleccionar(id) {
+  document.querySelectorAll(".nodo.sel").forEach(function (e) { e.classList.remove("sel"); });
+  estado.sel = id;
+  if (id && nodos[id]) { nodos[id].g.classList.add("sel"); }
+  enfocar(id);
+  var url = new URL(location.href);
+  if (id) { url.searchParams.set("objeto", id); } else { url.searchParams.delete("objeto"); }
+  if (!estado.recorrido) { url.searchParams.delete("recorrido"); url.searchParams.delete("paso"); }
+  history.replaceState(null, "", url);
+}
+
+// ---------------------------------------------------------------- cámara
+var cam = { x: 0, y: 0, k: 1 };
+function aplicar() { $("mundo").setAttribute("transform", "translate(" + cam.x + "," + cam.y + ") scale(" + cam.k + ")"); }
+function ajustar() {
+  var r = $("lienzo").getBoundingClientRect();
+  cam.k = Math.min(r.width / ANCHO, r.height / ALTO) * 0.98;
+  cam.x = (r.width - ANCHO * cam.k) / 2; cam.y = (r.height - ALTO * cam.k) / 2 + 4;
+  aplicar();
+}
+var vuelo = null;
+function centrarEn(x, y, k, suave) {
+  var r = $("lienzo").getBoundingClientRect();
+  var destino = { k: k || cam.k };
+  destino.x = r.width / 2 - x * destino.k; destino.y = r.height / 2 - y * destino.k;
+  if (vuelo) { cancelAnimationFrame(vuelo); vuelo = null; }
+  if (!suave) { cam.x = destino.x; cam.y = destino.y; cam.k = destino.k; aplicar(); return; }
+  var desde = { x: cam.x, y: cam.y, k: cam.k }, t0 = performance.now(), dur = 550;
+  function paso(t) {
+    var u = Math.min(1, (t - t0) / dur), e = u < .5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
+    cam.x = desde.x + (destino.x - desde.x) * e; cam.y = desde.y + (destino.y - desde.y) * e; cam.k = desde.k + (destino.k - desde.k) * e;
+    aplicar();
+    if (u < 1) { vuelo = requestAnimationFrame(paso); } else { vuelo = null; }
+  }
+  vuelo = requestAnimationFrame(paso);
+}
+function centro(id) {
+  if (nodos[id]) { return [nodos[id].cx, nodos[id].cy]; }
+  var f = flechas[id]; return f.trazo.medio;
+}
+function zoom(factor, px, py) {
+  var r = $("lienzo").getBoundingClientRect();
+  if (px == null) { px = r.width / 2; py = r.height / 2; }
+  var k = Math.max(0.2, Math.min(3, cam.k * factor));
+  cam.x = px - (px - cam.x) * k / cam.k; cam.y = py - (py - cam.y) * k / cam.k; cam.k = k;
+  aplicar();
+}
+var arrastre = null, ultimoArrastre = 0;
+function arrastrado() { return Date.now() - ultimoArrastre < 200; }
+$("escena").addEventListener("mousedown", function (e) {
+  if (e.button !== 0) { return; }
+  arrastre = { x: e.clientX, y: e.clientY, cx: cam.x, cy: cam.y, movio: false };
+});
+window.addEventListener("mousemove", function (e) {
+  if (!arrastre) { return; }
+  var dx = e.clientX - arrastre.x, dy = e.clientY - arrastre.y;
+  if (Math.abs(dx) + Math.abs(dy) > 4) { arrastre.movio = true; $("escena").classList.add("arrastrando"); }
+  if (arrastre.movio) { cam.x = arrastre.cx + dx; cam.y = arrastre.cy + dy; aplicar(); }
+});
+window.addEventListener("mouseup", function () {
+  if (arrastre && arrastre.movio) { ultimoArrastre = Date.now(); }
+  arrastre = null; $("escena").classList.remove("arrastrando");
+});
+$("escena").addEventListener("wheel", function (e) {
+  e.preventDefault();
+  var r = $("lienzo").getBoundingClientRect();
+  zoom(e.deltaY < 0 ? 1.12 : 1 / 1.12, e.clientX - r.left, e.clientY - r.top);
+}, { passive: false });
+$("escena").addEventListener("click", function () { if (arrastrado()) { return; } cerrarMenu(); if (!estado.recorrido) { seleccionar(null); ayuda(); } });
+
+// ---------------------------------------------------------------- panel
+var pila = [];
+function panel(titulo, html, guardar) {
+  if (guardar !== false) { pila.push({ titulo: titulo, html: html }); if (pila.length > 40) { pila.shift(); } }
+  $("panel-titulo").textContent = titulo;
+  $("panel-cuerpo").innerHTML = html;
+  $("panel-cuerpo").scrollTop = 0;
+  $("panel-cuerpo").querySelectorAll("[data-ir]").forEach(function (b) {
+    b.addEventListener("click", function () { ir(b.getAttribute("data-ir")); });
+  });
+  $("panel-cuerpo").querySelectorAll("[data-copiar]").forEach(function (b) {
+    b.addEventListener("click", function () { copiar(b.getAttribute("data-copiar"), b); });
+  });
+}
+$("btn-atras").addEventListener("click", function () {
+  if (pila.length > 1) { pila.pop(); var u = pila[pila.length - 1]; panel(u.titulo, u.html, false); }
+});
+function enlace(ruta) {
+  var limpia = ruta.split("#")[0], ancla = ruta.indexOf("#") >= 0 ? "#" + ruta.split("#")[1] : "";
+  return '<a href="' + esc(S.repositorio + limpia + ancla) + '" target="_blank" rel="noopener"><code>' + esc(limpia.split("/").pop()) + "</code></a>";
+}
+function tarjeta(t) { return '<a href="' + esc(S.tablero) + '" target="_blank" rel="noopener" title="Abrir tablero.md">' + esc(t) + "</a>"; }
+function referencia(id) {
+  var ref = "arquitectura: " + id;
+  return '<div class="referencia"><code>' + esc(ref) + '</code><button class="boton" data-copiar="' + esc(ref) + '">Copiar</button></div>' +
+         '<p style="color:var(--texto3);font-size:12px;margin-top:0">Para pedir un cambio sobre este objeto, citá esta referencia. Todo cambio del sistema se refleja acá en el mismo momento (ADR 0012).</p>';
+}
+function etiquetaEstado(e) { return '<span class="etiqueta ' + e + '">' + (e === "disenado" ? "diseñado, sin construir" : "construido") + "</span>"; }
+function abrirNodo(id, sinCentrar) {
+  var n = nodos[id]; if (!n) { return; }
+  seleccionar(id);
+  var h = '<div class="etiquetas"><span class="etiqueta">' + TIPOS[n.tipo] + "</span>" + etiquetaEstado(n.estado) +
+          (n.comun ? '<span class="etiqueta">común: lo usan muchos, sin flecha</span>' : "") + "</div>";
+  h += referencia(id);
+  h += "<h3>Qué es</h3><p>" + esc(n.que_es) + "</p><h3>Para qué sirve</h3><p>" + esc(n.para_que) + "</p>";
+  if (n.nota) { h += "<p><b>Nota:</b> " + esc(n.nota) + "</p>"; }
+  if (n.topico) { h += "<h3>Tópico</h3><p><code>" + esc(n.topico) + "</code></p>"; }
+  if (n.tabla) { h += "<h3>Tabla</h3><p><code>" + esc(n.tabla) + "</code></p>"; }
+  if (n.rutas) { h += "<h3>Rutas</h3><ul class='lista'>" + n.rutas.map(function (r) { return "<li><code>" + esc(r) + "</code></li>"; }).join("") + "</ul>"; }
+  var entra = porNodo[id].filter(function (f) { return f.a === id; }), sale = porNodo[id].filter(function (f) { return f.de === id; });
+  function lista(fs, otro) {
+    return fs.map(function (f) {
+      var o = nodos[f[otro]];
+      return '<button class="conexion ' + f.estado + '" data-ir="' + esc(f.id) + '">' + esc(o.titulo) + " <small>· " + esc(f.etiqueta) +
+             (f.estado === "disenado" ? " · diseñada" : "") + "</small></button>";
+    }).join("");
+  }
+  if (entra.length) { h += "<h3>Le llega de</h3>" + lista(entra, "de"); }
+  if (sale.length) { h += "<h3>Va hacia</h3>" + lista(sale, "a"); }
+  if (S.fuera && S.fuera[id]) {
+    h += "<h3>Fuera de esta vista</h3>" + S.fuera[id].map(function (c) {
+      return '<a class="conexion ' + c.estado + '" href="index.html?objeto=' + encodeURIComponent(c.id) + '">' + (c.lado === "sale" ? "→ " : "← ") +
+             esc(c.otro) + " <small>· " + esc(c.etiqueta) + (c.estado === "disenado" ? " · diseñada" : "") + " · en el tablero completo</small></a>";
+    }).join("");
+  }
+  if (n.codigo) { h += "<h3>Código</h3><ul class='lista'>" + n.codigo.map(function (c) { return "<li>" + enlace(c) + "</li>"; }).join("") + "</ul>"; }
+  if (n.docs) { h += "<h3>Documentos</h3><ul class='lista'>" + n.docs.map(function (c) { return "<li>" + enlace(c) + "</li>"; }).join("") + "</ul>"; }
+  if (n.tarjetas) { h += "<h3>Tarjetas del tablero</h3><p>" + n.tarjetas.map(tarjeta).join(", ") + "</p>"; }
+  panel(n.titulo, h);
+  if (!sinCentrar) { asegurarVisible(id); }
+}
+function abrirFlecha(id, sinCentrar) {
+  var f = flechas[id]; if (!f) { return; }
+  seleccionar(id);
+  var a = nodos[f.de], b = nodos[f.a];
+  var h = '<div class="etiquetas"><span class="etiqueta">' + TIPOS_FLECHA[f.tipo] + "</span>" + etiquetaEstado(f.estado) +
+          '<span class="etiqueta">' + (f.papel === "camino" ? "camino principal" : "auxiliar") + "</span></div>";
+  h += referencia(id);
+  h += '<h3>De dónde a dónde</h3><button class="conexion" data-ir="' + esc(a.id) + '">' + esc(a.titulo) + "</button>" +
+       '<p style="margin:2px 8px;color:var(--texto3)">' + esc(VERBOS[f.tipo]) + " ↓</p>" +
+       '<button class="conexion" data-ir="' + esc(b.id) + '">' + esc(b.titulo) + "</button>";
+  h += "<h3>Qué pasa</h3><p><b>" + esc(f.etiqueta) + ".</b> " + esc(f.detalle) + "</p>";
+  if (f.fuente) { h += "<h3>Fuente</h3><p>" + enlace(f.fuente) + "</p>"; }
+  if (f.tarjetas) { h += "<h3>Tarjetas del tablero</h3><p>" + f.tarjetas.map(tarjeta).join(", ") + "</p>"; }
+  panel(a.titulo + " → " + b.titulo, h);
+  if (!sinCentrar) { asegurarVisible(id); }
+}
+function ir(id) {
+  if (nodos[id]) { abrirNodo(id); } else if (flechas[id]) { abrirFlecha(id); }
+  else if (S.vista) { location.href = "index.html?objeto=" + encodeURIComponent(id); }
+}
+function asegurarVisible(id) {
+  var c = centro(id), r = $("lienzo").getBoundingClientRect();
+  var x = c[0] * cam.k + cam.x, y = c[1] * cam.k + cam.y;
+  if (x < 60 || y < 60 || x > r.width - 60 || y > r.height - 60) { centrarEn(c[0], c[1], Math.max(cam.k, 0.75)); }
+}
+function copiar(texto, boton) {
+  function listo() { if (boton) { var t = boton.textContent; boton.textContent = "Copiado"; setTimeout(function () { boton.textContent = t; }, 1200); } }
+  if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(texto).then(listo, listo); }
+  else { var a = document.createElement("textarea"); a.value = texto; document.body.appendChild(a); a.select(); try { document.execCommand("copy"); } catch (e) { } a.remove(); listo(); }
+}
+
+// ---------------------------------------------------------------- menú del botón derecho
+function menu(ev, id) {
+  var m = $("menu"), n = nodos[id], f = flechas[id];
+  var titulo = n ? n.titulo : nodos[f.de].titulo + " → " + nodos[f.a].titulo;
+  var items = [["Qué es y para qué sirve", function () { ir(id); }],
+               ["Copiar la referencia", function () { copiar("arquitectura: " + id); }],
+               ["Centrar acá", function () { var c = centro(id); centrarEn(c[0], c[1], Math.max(cam.k, 1)); }]];
+  if (n) {
+    items.push(["Ver solo sus conexiones", function () { abrirNodo(id, true); }]);
+    if (n.codigo) { items.push(["Abrir su código", function () { window.open(S.repositorio + n.codigo[0], "_blank", "noopener"); }]); }
+    if (n.docs) { items.push(["Abrir su documento", function () { window.open(S.repositorio + n.docs[0].split("#")[0], "_blank", "noopener"); }]); }
+  } else {
+    items.push(["Ir al origen", function () { abrirNodo(f.de); }], ["Ir al destino", function () { abrirNodo(f.a); }]);
+  }
+  m.innerHTML = '<div class="cabeza">' + esc(titulo) + '<br><code style="color:var(--texto3)">' + esc(id) + "</code></div>";
+  items.forEach(function (it) {
+    var b = document.createElement("button"); b.textContent = it[0];
+    b.addEventListener("click", function () { cerrarMenu(); it[1](); });
+    m.appendChild(b);
+  });
+  m.classList.remove("oculto");
+  var w = m.offsetWidth, h = m.offsetHeight;
+  m.style.left = Math.min(ev.clientX, innerWidth - w - 8) + "px";
+  m.style.top = Math.min(ev.clientY, innerHeight - h - 8) + "px";
+}
+function cerrarMenu() { $("menu").classList.add("oculto"); }
+window.addEventListener("click", cerrarMenu);
+
+// ---------------------------------------------------------------- recorridos
+function listaRecorridos() {
+  var cont = $("lista-recorridos");
+  S.recorridos.forEach(function (r) {
+    var b = document.createElement("button"); b.className = "recorrido"; b.setAttribute("data-r", r.id);
+    b.innerHTML = "<b>" + esc(r.titulo) + "</b><span>" + esc(r.sub) + " · " + r.pasos.length + " paradas</span>";
+    b.addEventListener("click", function () { empezar(r.id, 0); });
+    cont.appendChild(b);
+  });
+}
+function empezar(rid, paso) {
+  parar();
+  estado.recorrido = S.recorridos.filter(function (r) { return r.id === rid; })[0] || null;
+  document.querySelectorAll(".recorrido").forEach(function (b) { b.classList.toggle("activa", estado.recorrido && b.getAttribute("data-r") === rid); });
+  limpiarRecorrido();
+  if (!estado.recorrido) { return; }
+  estado.paso = -1;
+  irAPaso(Math.max(0, Math.min(paso || 0, estado.recorrido.pasos.length - 1)), true);
+}
+function limpiarRecorrido() {
+  document.querySelectorAll(".activa.nodo, .flecha.activa, .recorrida").forEach(function (e) { e.classList.remove("activa", "recorrida"); });
+}
+function irAPaso(i, saltar) {
+  var r = estado.recorrido; if (!r || i < 0 || i >= r.pasos.length) { return; }
+  var anterior = estado.paso;
+  estado.paso = i;
+  limpiarRecorrido();
+  r.pasos.slice(0, i).forEach(function (p) { var o = nodos[p.en] || flechas[p.en]; o.g.classList.add("recorrida"); });
+  var p = r.pasos[i], o = nodos[p.en] || flechas[p.en];
+  o.g.classList.add("activa");
+  $("pie").innerHTML = "<small>" + esc(r.titulo) + " · parada " + (i + 1) + " de " + r.pasos.length + "</small>" + esc(p.texto);
+  if (nodos[p.en]) { abrirNodo(p.en, true); } else { abrirFlecha(p.en, true); }
+  document.querySelectorAll(".nodo.sel").forEach(function (e) { e.classList.remove("sel"); });
+  $("escena").classList.remove("enfocado");
+  mover(o, !saltar && i === anterior + 1);
+  var url = new URL(location.href);
+  url.searchParams.set("recorrido", r.id); url.searchParams.set("paso", i + 1); url.searchParams.delete("objeto");
+  history.replaceState(null, "", url);
+}
+var tokenPos = null, animacion = null;
+function mover(o, animar) {
+  var tk = $("token"); tk.classList.remove("oculto");
+  if (animacion) { cancelAnimationFrame(animacion); animacion = null; }
+  var destino = o.trazo ? o.trazo.medio : [o.cx, o.cy];
+  function poner(x, y) { tk.setAttribute("transform", "translate(" + x + "," + y + ")"); tokenPos = [x, y]; }
+  if (estado.seguir) { var c = centro(o.id); centrarEn(c[0], c[1], Math.max(cam.k, 0.9), true); } else { asegurarVisible(o.id); }
+  if (!animar || !tokenPos) {
+    if (o.path) { var L = o.path.getTotalLength(), q = o.path.getPointAtLength(L); poner(q.x, q.y); } else { poner(destino[0], destino[1]); }
+    return;
+  }
+  var t0 = performance.now(), dur = 900, desde = tokenPos.slice();
+  function paso(t) {
+    var u = Math.min(1, (t - t0) / dur);
+    if (o.path) { var L = o.path.getTotalLength(), q = o.path.getPointAtLength(L * u); poner(q.x, q.y); }
+    else { poner(desde[0] + (destino[0] - desde[0]) * u, desde[1] + (destino[1] - desde[1]) * u); }
+    if (u < 1) { animacion = requestAnimationFrame(paso); }
+  }
+  animacion = requestAnimationFrame(paso);
+}
+function siguiente() { if (estado.recorrido) { irAPaso(estado.paso + 1); } }
+function anterior() { if (estado.recorrido) { irAPaso(estado.paso - 1, true); } }
+function reproducir() {
+  if (estado.reproduciendo) { parar(); return; }
+  if (!estado.recorrido) { empezar(S.recorridos[0].id, 0); }
+  $("btn-play").textContent = "⏸ Pausa";
+  estado.reproduciendo = setInterval(function () {
+    if (estado.paso >= estado.recorrido.pasos.length - 1) { parar(); return; }
+    siguiente();
+  }, 3800);
+}
+function parar() { if (estado.reproduciendo) { clearInterval(estado.reproduciendo); } estado.reproduciendo = null; $("btn-play").textContent = "▶ Reproducir"; }
+function salirDelRecorrido() {
+  parar(); estado.recorrido = null; estado.paso = -1; limpiarRecorrido();
+  $("token").classList.add("oculto"); tokenPos = null;
+  document.querySelectorAll(".recorrido").forEach(function (b) { b.classList.remove("activa"); });
+  $("pie").innerHTML = "<small>Sin recorrido</small>Elegí un recorrido a la izquierda, o hacé clic sobre cualquier objeto.";
+}
+$("btn-play").addEventListener("click", reproducir);
+$("btn-next").addEventListener("click", siguiente);
+$("btn-prev").addEventListener("click", anterior);
+$("btn-inicio").addEventListener("click", function () { if (estado.recorrido) { irAPaso(0, true); } });
+
+// ---------------------------------------------------------------- búsqueda
+$("buscar").addEventListener("input", function () {
+  var q = this.value.trim().toLowerCase(), cont = $("resultados");
+  cont.innerHTML = "";
+  if (q.length < 2) { return; }
+  S.nodos.filter(function (n) { return (n.id + " " + n.titulo + " " + (n.sub || "")).toLowerCase().indexOf(q) >= 0; }).slice(0, 14).forEach(function (n) {
+    var b = document.createElement("button"); b.innerHTML = esc(n.titulo) + ' <span class="mono" style="color:var(--texto3)">' + esc(n.id) + "</span>";
+    b.addEventListener("click", function () { salirDelRecorrido(); abrirNodo(n.id); var c = centro(n.id); centrarEn(c[0], c[1], Math.max(cam.k, 0.9)); });
+    cont.appendChild(b);
+  });
+});
+
+// ---------------------------------------------------------------- vistas del encabezado
+function alternar(clase, boton) { var on = document.body.classList.toggle(clase); $(boton).classList.toggle("activa", clase === "sin-disenado" ? !on : on); }
+$("btn-lecturas").addEventListener("click", function () { alternar("ver-lecturas", "btn-lecturas"); });
+$("btn-disenado").addEventListener("click", function () { alternar("sin-disenado", "btn-disenado"); });
+$("btn-pendientes").addEventListener("click", function () { alternar("ver-pendientes", "btn-pendientes"); });
+$("btn-cambios").addEventListener("click", function () {
+  var on = !$("btn-cambios").classList.contains("activa");
+  $("btn-cambios").classList.toggle("activa", on);
+  document.querySelectorAll(".nodo.cambio").forEach(function (e) { e.classList.remove("cambio"); });
+  if (!on) { return; }
+  var u = S.historial[S.historial.length - 1];
+  u.objetos.forEach(function (id) { var o = nodos[id] || flechas[id]; if (o) { o.g.classList.add("cambio"); } });
+  panel("Cambios del tablero", S.historial.slice().reverse().map(function (h, i) {
+    return "<h3>" + esc(h.fecha) + (i === 0 ? " · el último, resaltado" : "") + "</h3><p>" + esc(h.texto) + "</p><p>" +
+           h.objetos.map(function (id) { var o = nodos[id] || flechas[id]; return '<button class="conexion" data-ir="' + esc(id) + '" style="display:inline;width:auto">' + esc(o ? (o.titulo || id) : id) + "</button>"; }).join(" ") + "</p>";
+  }).join(""));
+});
+$("btn-leyenda").addEventListener("click", leyenda);
+$("btn-ayuda").addEventListener("click", ayuda);
+$("btn-mas").addEventListener("click", function () { zoom(1.2); });
+$("btn-menos").addEventListener("click", function () { zoom(1 / 1.2); });
+$("btn-ajustar").addEventListener("click", ajustar);
+$("btn-seguir").addEventListener("click", function () {
+  estado.seguir = !estado.seguir; this.classList.toggle("activa", estado.seguir); this.textContent = "Seguir: " + (estado.seguir ? "sí" : "no");
+});
+$("lnk-tablero").href = S.tablero;
+
+function muestraFlecha(clase, color, guiones, grosor) {
+  return '<svg width="54" height="14"><line x1="2" y1="7" x2="44" y2="7" stroke="' + color + '" stroke-width="' + grosor + '"' +
+         (guiones ? ' stroke-dasharray="' + guiones + '"' : "") + '/><polygon points="52,7 43,3 43,11" fill="' + color + '"/></svg>';
+}
+function muestraNodo(tipo, disenado) {
+  var c = disenado ? "#a78bfa" : getComputedStyle(document.documentElement).getPropertyValue("--" + (tipo === "grupo-de-topicos" ? "topico" : tipo)).trim();
+  return '<svg width="54" height="22"><rect x="1" y="1" width="52" height="20" rx="5" fill="#121c38" stroke="' + (disenado ? c : "#3b4a6b") + '"' +
+         (disenado ? ' stroke-dasharray="4 3"' : "") + '/><rect x="1" y="5" width="3" height="12" fill="' + c + '"/><text x="16" y="15" fill="' + c + '" font-size="11">' + ICONOS[tipo] + "</text></svg>";
+}
+function leyenda() {
+  var h = "<h3>Objetos</h3>";
+  ["agente", "servicio", "topico", "tabla", "pagina", "externo", "infra"].forEach(function (t) {
+    h += '<div class="leyenda-fila">' + muestraNodo(t) + "<span>" + TIPOS[t] + "</span></div>";
+  });
+  h += '<div class="leyenda-fila">' + muestraNodo("agente", true) + "<span>Diseñado: escrito en un ADR o un contrato, con su tarjeta, pero sin construir.</span></div>";
+  h += "<p>Las marcas sobre la caja: <b>DISEÑADO</b>; <b>COMÚN</b>, lo usan muchos y no se le dibujan las flechas de uso; <b>APAGADA</b>, existe pero viene apagada. Un objeto construido puede tener una parte diseñada: lo dice su nota.</p>";
+  h += "<h3>Flechas</h3>";
+  h += '<div class="leyenda-fila">' + muestraFlecha("", "#38bdf8", "", 2.6) + "<span>Un mensaje por Kafka: emite a un tópico, o lo escucha.</span></div>";
+  h += '<div class="leyenda-fila">' + muestraFlecha("", "#34d399", "", 1.3) + "<span>Escribe una tabla.</span></div>";
+  h += '<div class="leyenda-fila">' + muestraFlecha("", "#4d8f78", "2 3", 1.3) + "<span>Lee una tabla. Ocultas hasta que se elige un objeto, o con Lecturas.</span></div>";
+  h += '<div class="leyenda-fila">' + muestraFlecha("", "#8ea3c7", "", 1.3) + "<span>Usa otro objeto de la aplicación.</span></div>";
+  h += '<div class="leyenda-fila">' + muestraFlecha("", "#fb923c", "", 1.3) + "<span>Llama afuera: una API o un servicio.</span></div>";
+  h += '<div class="leyenda-fila">' + muestraFlecha("", "#a78bfa", "6 5", 1.3) + "<span>Diseñada, sin construir.</span></div>";
+  h += "<p>El grosor dice el papel: grueso, el camino de un hecho por la corrida; fino, lo auxiliar. Las flechas finas muestran su rótulo al pasar el mouse.</p>";
+  panel("Leyenda", h);
+}
+function contar() {
+  var c = { construido: 0, disenado: 0 }; S.nodos.forEach(function (n) { if (n.tipo !== "grupo-de-topicos") { c[n.estado]++; } });
+  var f = { construido: 0, disenado: 0 }; S.flechas.forEach(function (x) { f[x.estado]++; });
+  return { n: c, f: f };
+}
+function ayuda() {
+  var c = contar();
+  var h = '<div class="aviso-regla"><b>Este tablero es el sistema.</b> Refleja la arquitectura de El Parte con precisión en todo momento: cada cambio del sistema se hace acá en el mismo momento, y los pedidos se hacen citando sus objetos (<a href="' + esc(S.repositorio) + 'adrs/0012-tablero-de-arquitectura.md" target="_blank" rel="noopener">ADR 0012</a>). El verificador compara este tablero con el código en cada cambio.</div>';
+  if (S.vista) {
+    h += '<div class="aviso-regla"><b>Esta es una vista:</b> ' + esc(S.vista.sub) + '. Muestra una parte del sistema con su propia grilla, sacada del mismo modelo que el <a href="index.html">tablero completo</a>; cada ficha dice qué conexiones quedan fuera de la vista.</div>';
+  }
+  h += "<p>" + (S.vista ? "Esta vista tiene" : "Hoy tiene") + " <b>" + c.n.construido + "</b> objetos construidos y <b>" + c.n.disenado + "</b> diseñados, unidos por <b>" + c.f.construido + "</b> flechas construidas y <b>" + c.f.disenado + "</b> diseñadas. Modelo del " + esc(S.actualizado) + ".</p>";
+  h += "<h3>Cómo se usa</h3><ul class='lista'>" +
+       "<li><b>Clic</b> sobre un objeto o una flecha: su ficha, con qué es, para qué sirve, sus conexiones, su código y su referencia.</li>" +
+       "<li><b>Botón derecho</b>: el menú del objeto (copiar la referencia, centrar, abrir el código).</li>" +
+       "<li><b>Pasar el mouse</b> sobre un objeto deja a la vista solo lo que se conecta con él.</li>" +
+       "<li><b>Recorridos</b>, a la izquierda: un camino por el sistema parada por parada. Teclas ← y →, espacio para reproducir, Esc para salir.</li>" +
+       "<li><b>Lecturas</b> muestra todas las lecturas de la base; <b>Diseñado</b> oculta o muestra lo que falta construir; <b>Tarjetas</b> pone sobre cada objeto las tarjetas que lo tocan; <b>Cambios</b> resalta lo último que cambió.</li>" +
+       "<li><b>Rueda</b> para acercar, <b>arrastrar</b> para mover, <b>F</b> para ver todo, <b>R</b> para empezar de nuevo.</li>" +
+       "<li>La dirección de la página lleva el objeto o la parada elegidos: se puede compartir.</li></ul>";
+  h += "<h3>Qué controla el verificador</h3><ul class='lista'>" +
+       "<li>Cada clase de la aplicación y cada plantilla web está en un objeto.</li>" +
+       "<li>Los tópicos y las tablas construidos son los del código y de la primera migración.</li>" +
+       "<li>Quién emite y quién escucha cada tópico, quién escribe y quién lee cada tabla, qué usa cada objeto y qué rutas atiende cada página: igual en el tablero y en el código, en los dos sentidos.</li>" +
+       "<li>Lo diseñado cita una tarjeta que existe y no está hecha.</li>" +
+       "<li>Esta página es exactamente lo que se genera desde sistema.json.</li></ul>" +
+       "<p>Lo que no puede controlar (los textos, los recorridos y las llamadas afuera) se revisa a mano en cada cambio.</p>";
+  panel("Cómo se usa", h);
+}
+
+// ---------------------------------------------------------------- teclado y arranque
+window.addEventListener("keydown", function (e) {
+  if (e.target && (e.target.tagName === "INPUT" || e.target.tagName === "SELECT")) { return; }
+  if (e.key === "ArrowRight") { siguiente(); e.preventDefault(); }
+  else if (e.key === "ArrowLeft") { anterior(); e.preventDefault(); }
+  else if (e.key === " ") { reproducir(); e.preventDefault(); }
+  else if (e.key === "Escape") { cerrarMenu(); salirDelRecorrido(); seleccionar(null); ayuda(); }
+  else if (e.key === "f" || e.key === "F") { ajustar(); }
+  else if (e.key === "r" || e.key === "R") { location.href = location.pathname; }
+  else if (e.key === "l" || e.key === "L") { $("btn-lecturas").click(); }
+  else if (e.key === "d" || e.key === "D") { $("btn-disenado").click(); }
+  else if (e.key === "p" || e.key === "P") { $("btn-pendientes").click(); }
+  else if (e.key === "c" || e.key === "C") { $("btn-cambios").click(); }
+});
+window.addEventListener("resize", function () { if (!estado.sel && !estado.recorrido) { ajustar(); } });
+
+document.querySelector("#chip-modelo span").textContent = "modelo del " + S.actualizado + " · verificado contra el código";
+(function () {
+  var t = $("titulo");
+  t.innerHTML = esc(S.titulo) + "<small>" + esc(S.vista ? S.vista.sub : "el sistema objeto por objeto: lo construido y lo diseñado") + "</small>";
+  document.title = S.titulo;
+  var cont = $("vistas"), lista = [{ boton: "Todo el sistema", archivo: "index.html" }].concat(S.vistas || []);
+  lista.forEach(function (v) {
+    var a = document.createElement("a"); a.className = "boton"; a.href = v.archivo; a.textContent = v.boton;
+    if (v.archivo === (S.vista ? S.vista.archivo : "index.html")) { a.classList.add("activa"); }
+    cont.appendChild(a);
+  });
+})();
+dibujar();
+listaRecorridos();
+ajustar();
+ayuda();
+(function () {
+  var q = new URLSearchParams(location.search);
+  if (q.get("recorrido")) { empezar(q.get("recorrido"), (parseInt(q.get("paso"), 10) || 1) - 1); return; }
+  var id = q.get("objeto");
+  if (id && (nodos[id] || flechas[id])) { ir(id); var c = centro(id); centrarEn(c[0], c[1], 1); }
+})();
+</script>
+</body>
+</html>

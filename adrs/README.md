@@ -18,3 +18,4 @@ Cada decisión significativa del proyecto es un ADR, un registro de decisión de
 | [0010](0010-impo-como-quinta-fuente.md) | IMPO entra como quinta fuente de la versión 0 | aceptado | 2026-11-14 |
 | [0011](0011-grabacion-y-repeticion-de-corridas.md) | Las corridas se graban en la base y se repiten desde ahí; reemplaza las respuestas grabadas del 0003 | aceptado | 2026-11-14 |
 | [0012](0012-tablero-de-arquitectura.md) | El tablero de arquitectura refleja el sistema y es la referencia de los pedidos | aceptado | 2026-11-14 |
+| [0013](0013-acceso-perfil-y-parte-diario.md) | Cómo entra cada usuario, dónde queda su perfil y cómo lee su parte cada mañana | aceptado | 2026-11-14 |
