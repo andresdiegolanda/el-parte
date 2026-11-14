@@ -10,8 +10,8 @@ flowchart LR
     BID[(BID)] --> E2[Explorador BID]
     BM[(Banco Mundial)] --> E3[Explorador Banco Mundial]
     PR[(Normativa de<br/>Presidencia)] --> E4[Explorador Presidencia]
-    E1 & E2 & E3 & E4 --> AR[Archivista]
-    IMPO[(IMPO)] -. espera aclaración .-> X[Afuera por ahora]
+    IMPO[(Diario Oficial<br/>IMPO)] --> E5[Explorador IMPO]
+    E1 & E2 & E3 & E4 & E5 --> AR[Archivista]
     BPS[(BPS)] -. prohíbe robots .-> X
     CAF[(CAF)] -. sin acceso útil .-> X
 ```
@@ -22,7 +22,7 @@ flowchart LR
 | [BID](bid.md) | API de datos abiertos (CKAN) | CC BY 4.0 | Sí, por aprobación y por aviso | Consultores individuales | Entra |
 | [Banco Mundial](banco-mundial.md) | API v3, sin documentar | CC BY 4.0 | Sí, por aprobación | Jefes de equipo, contactos | Entra, como secundaria |
 | [Presidencia](presidencia.md) | HTML y PDF | Términos que admiten aplicaciones, sin licencia | Normativa sí; noticias no | Sí | Entra solo la normativa, a ritmo bajo |
-| [Diario Oficial (IMPO)](impo.md) | JSON por norma y PDF diario | Contradictorio | Sí, por edición | Muchas | Afuera hasta que IMPO aclare (T18) |
+| [Diario Oficial (IMPO)](impo.md) | JSON por norma y PDF diario | Contradictorio; se toma la licencia de datos abiertos (ADR 0010) | Sí, por edición | Muchas | Entra solo el JSON de las normas, sin avisos (ADR 0010) |
 | [BPS](bps.md) | HTML y PDF | **Prohíbe la consulta automática** | Por mes | Sí | Afuera |
 | [CAF](caf.md) | Sitio bloqueado; IATI cada pocos meses | ODC-BY (IATI) | No | No | Afuera |
 

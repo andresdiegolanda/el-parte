@@ -16,7 +16,7 @@ gantt
     section Fin de semana 3
     Medición contra el banco de pruebas :f3, 2026-11-21, 2d
     section Fin de semana 4
-    Las cuatro fuentes y los usuarios :f4, 2026-11-28, 2d
+    Las cinco fuentes y los usuarios :f4, 2026-11-28, 2d
 ```
 
 ## Fin de semana 1: documentación primero (7 y 8 de noviembre)
@@ -46,11 +46,11 @@ La medición es parte de la versión 0, no un después.
 - **Cómo se comprueba:** las métricas quedan versionadas con la huella del registro usado (ADR 0007); la corrida cortada no deja ningún hecho a medio verificar.
 - **Lo que hace falta del responsable:** revisar la cola de revisión humana y la medición, y decidir si el tope de 0,50 USD se mantiene.
 
-## Fin de semana 4: las cuatro fuentes y los usuarios (28 y 29 de noviembre)
+## Fin de semana 4: las cinco fuentes y los usuarios (28 y 29 de noviembre)
 
-- **Se hace:** los exploradores del BID, el Banco Mundial y la normativa de Presidencia, con sus descartes de datos personales (T24); el login por enlace de correo, los cuatro usuarios invitados y la cuenta de demostración (T25); la sección "Cómo funciona" y las páginas "cómo se hizo" que falten (T26); el ADR de despliegue (T27).
-- **Se muestra:** la versión 0 completa, levantada en local: cuatro fuentes, cuatro usuarios, la demo, la sala de máquinas y su documentación enlazada.
-- **Cómo se comprueba:** una corrida con las cuatro fuentes termina dentro del presupuesto; cada componente tiene su página "cómo se hizo"; el verificador pasa.
+- **Se hace:** los exploradores del BID, el Banco Mundial y la normativa de Presidencia, con sus descartes de datos personales (T24); el de IMPO, solo para el JSON de las normas (T30, ADR 0010); el login por enlace de correo, los cuatro usuarios invitados y la cuenta de demostración (T25); la sección "Cómo funciona" y las páginas "cómo se hizo" que falten (T26); el ADR de despliegue (T27).
+- **Se muestra:** la versión 0 completa, levantada en local: cinco fuentes, cuatro usuarios, la demo, la sala de máquinas y su documentación enlazada.
+- **Cómo se comprueba:** una corrida con las cinco fuentes termina dentro del presupuesto; cada componente tiene su página "cómo se hizo"; el verificador pasa.
 - **Lo que hace falta del responsable:** los correos de los cuatro invitados (fuera del repositorio, ADR 0008) y la decisión de despliegue.
 
 ## Si el tiempo no alcanza

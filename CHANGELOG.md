@@ -4,6 +4,9 @@ Cada entrada dice qué cambió, dónde, y enlaza al documento que tiene el porqu
 
 ## 2026-11-14
 
+- IMPO entra como quinta fuente de la versión 0, tomando como permiso su licencia de datos abiertos: solo el JSON de las normas, sin avisos y con las personas tapadas. El ADR 0006 queda reemplazado en lo que decía de IMPO; se actualizan la página de la fuente, el resumen de fuentes, la lámina, el plan y lo que alcanza El Parte del banco de pruebas. T18 se cierra sin enviar el pedido y la tarjeta nueva T30 suma el explorador. Por qué: [ADR 0010](adrs/0010-impo-como-quinta-fuente.md).
+- T11 hecha: el registro del banco de pruebas está en `banco-de-pruebas/privado/`, fuera del repositorio. `arranque/proyecto.md` describe lo que trae (78 noches, 19 hallazgos, de dónde sale cada uno) y qué alcanza El Parte con sus fuentes; D1 queda vigente. T12 pasa a Para empezar. Por qué: [arranque/proyecto.md](arranque/proyecto.md).
+- T20 deja de depender de T08: la medición corre apenas la rebanada funciona de punta a punta, y T08 tilda con ella su etapa de medición. Antes ninguna de las dos podía cerrar. Por qué: [tablero.md](tablero.md).
 - T14 hecha: la clave del proveedor existe, en su propio espacio de trabajo con tope de gasto, y vive fuera del repositorio. T08, la primera rebanada, pasa a Para empezar. Por qué: [tablero.md](tablero.md).
 - Sincronización con el kanban: se anotan conflictos en el registro de las tarjetas. Por qué: [tablero.md](tablero.md).
 - ADRs [0006](adrs/0006-fuentes-de-la-version-0.md) y [0009](adrs/0009-kanban-editable-sincronizado.md) aceptados: todos los ADRs quedan aceptados y T19 pasa a Hecho. T14 suma dónde vive la clave del proveedor (un `.env` fuera del repositorio, en la máquina que corre las noches reales) y los pasos para crearla. Por qué: [adrs/README.md](adrs/README.md).

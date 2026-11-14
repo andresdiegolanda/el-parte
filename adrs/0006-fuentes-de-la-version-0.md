@@ -1,6 +1,6 @@
 # 0006. Fuentes de la versión 0 y de la primera rebanada
 
-- Estado: aceptado
+- Estado: aceptado; lo que decide sobre IMPO lo reemplaza el [ADR 0010](0010-impo-como-quinta-fuente.md)
 - Fecha: 2026-11-07
 
 ## Contexto

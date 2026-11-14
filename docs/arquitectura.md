@@ -4,7 +4,7 @@ Cómo está armado El Parte en la versión 0: qué piezas tiene, cómo se pasan 
 
 ## La lámina
 
-![Arquitectura de la versión 0: cuatro fuentes públicas alimentan a los exploradores; los agentes se pasan el trabajo por Kafka; el observador guarda todo en PostgreSQL; la web muestra la página de la mañana, el expediente y la sala de máquinas.](laminas/arquitectura.svg)
+![Arquitectura de la versión 0: cinco fuentes públicas alimentan a los exploradores; los agentes se pasan el trabajo por Kafka; el observador guarda todo en PostgreSQL; la web muestra la página de la mañana, el expediente y la sala de máquinas.](laminas/arquitectura.svg)
 
 La lámina se genera con `python3 herramientas/generar_laminas.py` desde [laminas/arquitectura.json](laminas/arquitectura.json), y no se edita a mano (regla 5). El verificador falla si el SVG no coincide con su fuente.
 

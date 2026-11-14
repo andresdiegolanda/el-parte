@@ -7,10 +7,10 @@ Cada decisión dice qué se decidió, por qué, qué cuesta y qué la haría cam
 ## D1. Qué trae el banco de pruebas y cómo se repite una noche
 
 - **Decisión.** La medición repite cada noche del registro pidiéndole a cada fuente lo que publicó en esa fecha. Si una fuente no deja consultar por fecha, la noche se marca "no repetible para esa fuente". Los hallazgos del registro que vienen de lugares que El Parte no lee (prensa, buscadores web) se cuentan aparte, como "fuera de alcance".
-- **Por qué.** La bitácora de muestra (corrida del 2026-11-06) trae las búsquedas y un resumen de sus resultados, pero no el contenido crudo de lo leído. [INFERRED: una sola noche de muestra; el análisis está en [proyecto.md](proyecto.md)]
+- **Por qué.** El registro completo es un documento acumulado y condensado: no trae el contenido crudo de lo leído ni bitácoras por noche. [PROVEN: lectura del registro, 2026-11-14; el análisis está en [proyecto.md](proyecto.md)]
 - **Costo.** No todas las noches se van a poder repetir para todas las fuentes, y la comparación nunca va a ser exacta.
 - **Qué la haría cambiar.** Que el registro completo traiga el contenido crudo de cada noche.
-- **Estado.** Provisoria. Falta el registro completo (tablero, T11).
+- **Estado.** Vigente: el registro completo (tablero, T11) la confirma.
 
 ## D2. El registro del banco de pruebas no entra al repositorio
 

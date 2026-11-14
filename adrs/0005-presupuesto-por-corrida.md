@@ -68,7 +68,7 @@ Una estimación con tamaños razonables de prompt (todos los números de este p�
 - Un candidato que llega al refutador y al analista en Sonnet (unos 7.000 tokens de entrada y 1.400 de salida entre los dos) cuesta unos 0,028 USD.
 - Con 0,50 USD alcanza para unos 17 candidatos completos por noche, más todo el trabajo de los exploradores.
 
-Para un organismo, alcanza: en la noche de muestra del banco de pruebas casi no hubo novedades. Con las cuatro fuentes de la versión 0 ([ADR 0006](0006-fuentes-de-la-version-0.md)), puede quedar corto. La medición contra el banco de pruebas (T12) dice si hay que subir el tope o bajar el costo, por ejemplo con la caché de prompts, que en Sonnet 5.5 cobra las lecturas a la vigésima parte del precio de entrada. [PROVEN para la caché: https://docs.claude.com/en/docs/about-claude/pricing.md, 2026-11-07]
+Para un organismo, alcanza: en la noche de muestra del banco de pruebas casi no hubo novedades. Con las cinco fuentes de la versión 0 ([ADR 0006](0006-fuentes-de-la-version-0.md) y [ADR 0010](0010-impo-como-quinta-fuente.md)), puede quedar corto. La medición contra el banco de pruebas (T12) dice si hay que subir el tope o bajar el costo, por ejemplo con la caché de prompts, que en Sonnet 5.5 cobra las lecturas a la vigésima parte del precio de entrada. [PROVEN para la caché: https://docs.claude.com/en/docs/about-claude/pricing.md, 2026-11-07]
 
 ## Razones
 

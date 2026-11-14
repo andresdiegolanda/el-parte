@@ -1,6 +1,6 @@
 # Diario Oficial (IMPO)
 
-Verificada el 2026-11-07 (tarjeta T10). **Veredicto: queda afuera de la versión 0 hasta que IMPO aclare por escrito el permiso de reutilización** ([ADR 0006](../../adrs/0006-fuentes-de-la-version-0.md); tablero, T18).
+Verificada el 2026-11-07 (tarjeta T10). **Veredicto: entra en la versión 0, solo el JSON de las normas, sin avisos y con las personas tapadas** ([ADR 0010](../../adrs/0010-impo-como-quinta-fuente.md)). Hasta el 2026-11-14 quedaba afuera, a la espera de una aclaración de IMPO ([ADR 0006](../../adrs/0006-fuentes-de-la-version-0.md); tablero, T18).
 
 ## Qué publica
 
@@ -17,7 +17,7 @@ Verificada el 2026-11-07 (tarjeta T10). **Veredicto: queda afuera de la versión
 
 - **A favor:** la página de datos abiertos ofrece el JSON para que lo use libremente cualquier persona, con la Licencia de Datos Abiertos de Uruguay. [PROVEN: https://www.impo.com.uy/datos-abiertos/, 2026-11-07]
 - **En contra:** las condiciones generales de uso del banco de datos prohíben su copia, reproducción o cesión a terceros, y el pie del sitio dice "Todos los derechos reservados". [PROVEN: https://www.impo.com.uy/politica-de-privacidad-y-seguridad/, 2026-11-07]
-- No queda claro cuál de las dos manda para el JSON. [INFERRED] Hasta que IMPO lo aclare por escrito, El Parte no la usa.
+- No queda claro cuál de las dos manda para el JSON. [INFERRED] El Parte toma como permiso la licencia de datos abiertos, solo para el JSON de las normas ([ADR 0010](../../adrs/0010-impo-como-quinta-fuente.md)).
 - El robots.txt pide 10 segundos entre pedidos y prohíbe la búsqueda y avisos puntuales, pero no las normas ni los índices diarios. [PROVEN: https://www.impo.com.uy/robots.txt, 2026-11-07]
 
 ## Consulta por fecha

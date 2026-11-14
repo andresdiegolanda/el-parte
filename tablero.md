@@ -3,7 +3,7 @@
 Todo pendiente de El Parte vive acá, con dueño (regla 8). Este archivo es lo que manda. El kanban publicado es editable y se sincroniza con este archivo cada vez que una sesión de desarrollo lee o escribe el repositorio, o cuando se le pide; su copia sin conexión, [`kanban/index.html`](kanban/index.html), se genera desde acá con `python3 herramientas/generar_kanban.py` y no se edita a mano ([ADR 0009](adrs/0009-kanban-editable-sincronizado.md)).
 
 - Actualizado: 2026-11-14
-- Nota: Todos los ADRs están aceptados (T19). La primera rebanada (T08) está para empezar; medirla contra el banco de pruebas espera el registro (T11).
+- Nota: Todos los ADRs están aceptados, e IMPO entra como quinta fuente (ADR 0010). La primera rebanada (T08) está para empezar; medirla contra el banco de pruebas espera el formato y la muestra (T12).
 - Calendario: 2026-11-07, 2026-11-14, 2026-11-21, 2026-11-28
 - Repositorio: https://github.com/andresdiegolanda/el-parte
 
@@ -82,6 +82,29 @@ Los campos van pegados al título, sin línea en blanco. Los que no aplican se o
 
 ## Para empezar
 
+### T12 · Escribir el formato, la muestra sintética y las métricas del banco de pruebas
+- Tipo: Documento
+- Dueño: desarrollo
+- Depende de: T11
+
+Lo que sí se versiona del banco de pruebas (D2), en `banco-de-pruebas/`.
+
+Etapas:
+- [ ] Borrador
+- [ ] Grados y fuentes
+- [ ] Diagramas
+- [ ] Releído y verificado
+
+Lista:
+- [ ] Formato del registro
+- [ ] Muestra sintética
+- [ ] Forma de las métricas
+- [ ] Cómo se cuentan los descartes del registro que El Parte sí publicaría
+
+Registro:
+- 2026-11-07: Creada.
+- 2026-11-14: Pasa a Para empezar: T11 está hecha. Suma cómo contar los descartes, porque El Parte no filtra por tema.
+
 ### T08 · Construir la primera rebanada de punta a punta
 - Tipo: Componente
 - Dueño: desarrollo
@@ -111,59 +134,19 @@ Registro:
 - 2026-11-07: Creada.
 - 2026-11-07: La fuente es ARCE (ADR 0006).
 - 2026-11-14: Pasa a Para empezar: T14 está hecha.
-
-### T18 · Pedir a IMPO que aclare si su JSON de normas se puede reutilizar
-- Tipo: Gestión
-- Dueño: Andrés
-- Detalle: [docs/fuentes/impo.md](docs/fuentes/impo.md)
-
-Su página de datos abiertos ofrece el JSON con licencia abierta, pero sus condiciones de uso prohíben copiar. Con una aclaración por escrito a favor, IMPO entra como quinta fuente (ADR 0006).
-
-Registro:
-- 2026-11-07: Creada.
-
-### T11 · Entregar el registro completo del banco de pruebas
-- Tipo: Gestión
-- Dueño: Andrés
-- Detalle: [arranque/proyecto.md](arranque/proyecto.md)
-
-El seguimiento acumulado y las bitácoras por corrida van en `banco-de-pruebas/privado/`, que no se versiona (D2). Hay que confirmar cuántas noches cubre: la muestra sugiere unas cincuenta desde el 2026-09-17 y la definición del proyecto habla de unas setenta.
-
-Registro:
-- 2026-11-07: Creada.
+- 2026-11-14: La etapa "Medido contra el banco" se tilda con la medición de T20.
 
 ## Esperando
 
 ## Pendiente
 
-### T12 · Escribir el formato, la muestra sintética y las métricas del banco de pruebas
-- Tipo: Documento
-- Dueño: desarrollo
-- Depende de: T11
-
-Lo que sí se versiona del banco de pruebas (D2), en `banco-de-pruebas/`.
-
-Etapas:
-- [ ] Borrador
-- [ ] Grados y fuentes
-- [ ] Diagramas
-- [ ] Releído y verificado
-
-Lista:
-- [ ] Formato del registro
-- [ ] Muestra sintética
-- [ ] Forma de las métricas
-
-Registro:
-- 2026-11-07: Creada.
-
 ### T20 · Medir la primera rebanada contra el banco de pruebas
 - Tipo: Verificación
 - Dueño: desarrollo
-- Depende de: T08, T12
+- Depende de: T12
 - Detalle: [docs/plan.md](docs/plan.md)
 
-La medición es parte de la versión 0. Corre la rebanada sobre cada noche del registro y compara lo encontrado con lo que encontró la vigilancia anterior (D1).
+La medición es parte de la versión 0. Corre la rebanada sobre cada noche del registro y compara lo encontrado con lo que encontró la vigilancia anterior (D1). No espera a que T08 cierre: alcanza con que la rebanada corra de punta a punta, y con esta medición T08 tilda su etapa "Medido contra el banco".
 
 Lista:
 - [ ] Correr la rebanada sobre cada noche del registro
@@ -173,6 +156,7 @@ Lista:
 
 Registro:
 - 2026-11-07: Creada con el plan (T07).
+- 2026-11-14: Deja de depender de T08, que no podía cerrar sin esta medición.
 
 ### T21 · Completar el analista
 - Tipo: Componente
@@ -332,7 +316,54 @@ Lista:
 Registro:
 - 2026-11-14: Creada al aceptar el ADR 0003.
 
+### T30 · Sumar el explorador de IMPO
+- Tipo: Componente
+- Dueño: desarrollo
+- Depende de: T08
+- Detalle: [adrs/0010-impo-como-quinta-fuente.md](adrs/0010-impo-como-quinta-fuente.md), [docs/fuentes/impo.md](docs/fuentes/impo.md)
+
+La quinta fuente de la versión 0: solo el JSON de las normas del Diario Oficial, sin avisos y con las personas tapadas.
+
+Etapas:
+- [ ] Contrato
+- [ ] Código
+- [ ] Pruebas
+- [ ] Medido contra el banco
+- [ ] Página cómo se hizo
+
+Lista:
+- [ ] Índice de cada edición: números de las normas del día
+- [ ] JSON de cada norma, en ISO-8859-1
+- [ ] Firmantes descartados y nombres de personas tapados en el texto
+- [ ] Diez segundos entre pedidos, sin búsqueda ni avisos
+- [ ] Probar la cadena con leyes y resoluciones, no solo con decretos
+
+Registro:
+- 2026-11-14: Creada con el ADR 0010.
+
 ## Hecho
+
+### T18 · Pedir a IMPO que aclare si su JSON de normas se puede reutilizar
+- Tipo: Gestión
+- Dueño: Andrés
+- Detalle: [docs/fuentes/impo.md](docs/fuentes/impo.md)
+
+Su página de datos abiertos ofrece el JSON con licencia abierta, pero sus condiciones de uso prohíben copiar. Con una aclaración por escrito a favor, IMPO entra como quinta fuente (ADR 0006).
+
+Registro:
+- 2026-11-07: Creada.
+- 2026-11-14: No se envía el pedido: IMPO entra tomando como permiso su licencia de datos abiertos, solo para el JSON de las normas (ADR 0010). Pasa a Hecho.
+
+### T11 · Entregar el registro completo del banco de pruebas
+- Tipo: Gestión
+- Dueño: Andrés
+- Detalle: [arranque/proyecto.md](arranque/proyecto.md)
+
+El seguimiento acumulado y las bitácoras por corrida van en `banco-de-pruebas/privado/`, que no se versiona (D2). Hay que confirmar cuántas noches cubre: la muestra sugiere unas cincuenta desde el 2026-09-17 y la definición del proyecto habla de unas setenta.
+
+Registro:
+- 2026-11-07: Creada.
+- 2026-11-14: Entregado en `banco-de-pruebas/privado/`: 78 noches, del 2026-08-29 al 2026-11-14, en un documento acumulado y condensado (13 noches con detalle propio), más un índice, 84 hallazgos y descartes, y 52 consultas. No hay bitácoras por noche ni costos. Huella del zip entregado: sha256:9025e5720ba90ed78dc35c22105590c16c16d61e09c6de73171633f28c05fad5. Pasa a Hecho.
 
 ### T14 · Dejar la clave del proveedor de modelos fuera del repositorio
 - Tipo: Gestión

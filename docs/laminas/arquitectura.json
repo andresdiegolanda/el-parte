@@ -7,10 +7,11 @@
     {"id": "app", "texto": "Aplicación El Parte · Spring Boot 4.1 · Java 25 · Spring AI 2.0", "x": 255, "y": 60, "ancho": 665, "alto": 330}
   ],
   "cajas": [
-    {"id": "arce", "texto": ["Compras estatales", "ARCE · OCDS"], "x": 35, "y": 95, "ancho": 165, "alto": 55, "tipo": "fuente"},
-    {"id": "bid", "texto": ["BID", "datos abiertos"], "x": 35, "y": 170, "ancho": 165, "alto": 55, "tipo": "fuente"},
-    {"id": "bm", "texto": ["Banco Mundial", "API v3"], "x": 35, "y": 245, "ancho": 165, "alto": 55, "tipo": "fuente"},
-    {"id": "pres", "texto": ["Presidencia", "normativa"], "x": 35, "y": 320, "ancho": 165, "alto": 55, "tipo": "fuente"},
+    {"id": "arce", "texto": ["Compras estatales", "ARCE · OCDS"], "x": 35, "y": 90, "ancho": 165, "alto": 50, "tipo": "fuente"},
+    {"id": "bid", "texto": ["BID", "datos abiertos"], "x": 35, "y": 150, "ancho": 165, "alto": 50, "tipo": "fuente"},
+    {"id": "bm", "texto": ["Banco Mundial", "API v3"], "x": 35, "y": 210, "ancho": 165, "alto": 50, "tipo": "fuente"},
+    {"id": "pres", "texto": ["Presidencia", "normativa"], "x": 35, "y": 270, "ancho": 165, "alto": 50, "tipo": "fuente"},
+    {"id": "impo", "texto": ["Diario Oficial", "IMPO · normas en JSON"], "x": 35, "y": 330, "ancho": 165, "alto": 50, "tipo": "fuente"},
 
     {"id": "exp", "texto": ["Exploradores", "uno por fuente"], "x": 275, "y": 110, "ancho": 110, "alto": 60, "tipo": "agente"},
     {"id": "arc", "texto": ["Archivista", "coteja"], "x": 405, "y": 110, "ancho": 110, "alto": 60, "tipo": "agente"},
@@ -30,10 +31,11 @@
     {"id": "mail", "texto": ["Mailpit", "correos del login"], "x": 950, "y": 430, "ancho": 220, "alto": 60, "tipo": "externo"}
   ],
   "flechas": [
-    {"desde": "arce", "hasta": "exp", "via": [[235, 122.5], [235, 140]]},
-    {"desde": "bid", "hasta": "exp", "via": [[235, 197.5], [235, 140]]},
-    {"desde": "bm", "hasta": "exp", "via": [[235, 272.5], [235, 140]]},
-    {"desde": "pres", "hasta": "exp", "via": [[235, 347.5], [235, 140]]},
+    {"desde": "arce", "hasta": "exp", "via": [[235, 115], [235, 140]]},
+    {"desde": "bid", "hasta": "exp", "via": [[235, 175], [235, 140]]},
+    {"desde": "bm", "hasta": "exp", "via": [[235, 235], [235, 140]]},
+    {"desde": "pres", "hasta": "exp", "via": [[235, 295], [235, 140]]},
+    {"desde": "impo", "hasta": "exp", "via": [[235, 355], [235, 140]]},
 
     {"desde": "exp", "hasta": "arc", "texto": "candidatos", "texto_xy": [395, 102]},
     {"desde": "arc", "hasta": "ref", "texto": "cotejados", "texto_xy": [525, 102]},

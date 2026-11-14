@@ -68,16 +68,18 @@ Existe un registro de una vigilancia anterior de un organismo, el Banco de Previ
 
 El registro no se versiona, porque es material de otro proyecto (regla 11). Se lee desde una ruta configurable; en el repositorio van su formato, las métricas y una muestra sintética. Ver [decisiones-iniciales.md](decisiones-iniciales.md) (D1 y D2).
 
-### Lo que ya enseña una noche de muestra
+### Lo que trae el registro
 
-Se analizó la bitácora de una noche (la corrida del 2026-11-06), que no está en el repositorio. Todo lo de esta sección es INFERRED a partir de esa única noche, y se confirma o se corrige cuando llegue el registro completo (tablero, T11).
+El registro completo llegó el 2026-11-14 y está en `banco-de-pruebas/privado/`, fuera del repositorio. Lo que sigue lo describe sin copiar su contenido. [PROVEN: lectura del registro, 2026-11-14]
 
-- **Qué trae.** Un documento de seguimiento acumulado (lo ya conocido con su fecha de reconfirmación, los hallazgos por día y el detalle de lo revisado en cada corrida) y una bitácora por corrida con las búsquedas hechas y un resumen de sus resultados, las páginas leídas (URL, qué se buscaba, resultado o falla), la actualización del seguimiento, el informe final y las herramientas usadas.
-- **Qué no trae.** El contenido crudo de lo que se leyó. Para repetir una noche, los exploradores tienen que pedirle a cada fuente lo que publicó en esa fecha. Si una fuente no deja consultar por fecha, esa noche no se puede repetir para esa fuente, y la medición lo dice en lugar de esconderlo.
-- **De dónde salían los hallazgos.** La vigilancia anterior buscaba con un buscador web y también leía prensa. El Parte lee fuentes oficiales y no copia prensa, así que algunos hallazgos del registro pueden venir de lugares que El Parte no lee. La medición los cuenta aparte, como "fuera de alcance", y no como hallazgos perdidos.
-- **Cuántas noches.** La muestra indica un seguimiento que arranca el 2026-09-17, unas cincuenta noches hasta el 2026-11-06. La definición del proyecto habla de unas setenta. Se confirma con el registro completo.
+- **Qué trae.** Un solo documento de seguimiento acumulado, que cada corrida reescribía entero y condensaba, y tres archivos extraídos de él para este proyecto: un índice por noche, una lista de 84 hallazgos y descartes, y 52 consultas a páginas puntuales.
+- **Cuántas noches.** 78, del 2026-08-29 al 2026-11-14. Solo 13 tienen detalle propio; las otras 65 quedaron resumidas en 6 tramos, sin detalle noche por noche.
+- **Qué no trae.** Bitácoras por noche, el contenido crudo de lo leído, el texto de las búsquedas web, ni el costo o la duración de las corridas, salvo la duración de la última. Para repetir una noche, los exploradores le piden a cada fuente lo que publicó en esa fecha (D1). Si una fuente no deja consultar por fecha, esa noche no se puede repetir para esa fuente, y la medición lo dice en lugar de esconderlo.
+- **De dónde salen los hallazgos.** Son 19: 17 nuevos y 2 actualizaciones. De esos, 12 salen del sitio del BPS, 4 de la prensa, 2 de IMPO y 1 del BID, leído en un sitio espejo. De ARCE no sale ninguno: lo que la vigilancia vio ahí lo descartó por no tener que ver con el tema que seguía.
+- **Qué alcanza El Parte.** Con las fuentes de la versión 0 ([ADR 0006](../adrs/0006-fuentes-de-la-version-0.md) y [ADR 0010](../adrs/0010-impo-como-quinta-fuente.md)), están a su alcance 3: el del BID y los 2 de IMPO. Los del sitio del BPS y los de la prensa se cuentan aparte, como "fuera de alcance", y no como hallazgos perdidos. La primera rebanada, que lee solo ARCE, no puede encontrar ninguno. [INFERRED: de la lista de hallazgos y de las fuentes de la versión 0]
+- **Los descartes.** La vigilancia anterior seguía un tema puntual y descartaba lo demás. El Parte no filtra por tema: publica los hechos de las entidades que alguien sigue. Varios descartes del registro, como compras del BPS publicadas en ARCE, para El Parte son hechos publicables, así que no cuentan como falsos positivos sin más. Cómo se cuentan lo define T12.
 
-Y las fallas que muestra esa noche, cada una con la pieza de El Parte que la atiende:
+Y las fallas que mostró la noche de muestra del 2026-11-06, cada una con la pieza de El Parte que la atiende. [INFERRED: de esa sola noche]
 
 | Lo que pasó en la muestra | Qué pieza lo atiende |
 |---|---|
