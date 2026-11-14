@@ -62,4 +62,5 @@ flowchart TD
 |---|---|---|
 | `banco-de-pruebas/` | Formato del registro, muestra sintética y métricas de cada medición. El registro real va en `banco-de-pruebas/privado/`, que no se versiona. | T12 |
 | `docs/como-se-hizo/` | Una página por componente. | T08 en adelante |
-| `app/` | El código: una aplicación Spring Boot con un paquete por agente ([ADR 0003](../adrs/0003-eleccion-del-stack.md)). | T08 |
+| `app/` | El código: una aplicación Spring Boot con un paquete por agente ([ADR 0003](../adrs/0003-eleccion-del-stack.md)). Cómo se levanta, en [app/README.md](../app/README.md). | T08 |
+| `compose.yaml` | Levanta en local la aplicación, PostgreSQL, Kafka y el buzón de correo de prueba. | T08 |

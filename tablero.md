@@ -80,6 +80,40 @@ Los campos van pegados al título, sin línea en blanco. Los que no aplican se o
 
 ## En curso
 
+### T08 · Construir la primera rebanada de punta a punta
+- Tipo: Componente
+- Dueño: desarrollo
+- Depende de: T02 a T07, T10, T14
+- Detalle: [arranque/proyecto.md](arranque/proyecto.md), [docs/fuentes/compras-estatales.md](docs/fuentes/compras-estatales.md)
+
+Chica y completa le gana a grande y a medias: una fuente, del explorador a la página de la mañana, con la sala de máquinas de esa corrida.
+
+Etapas:
+- [ ] Contrato
+- [ ] Código
+- [ ] Pruebas
+- [ ] Medido contra el banco
+- [ ] Página cómo se hizo
+
+Lista:
+- [x] Esqueleto: la aplicación, su imagen y Docker Compose
+- [ ] Explorador de ARCE, filtrando por el BPS como comprador antes de llamar al modelo
+- [ ] Zona horaria y publicaciones atrasadas de ARCE
+- [ ] Migraciones de la base a partir de docs/base-de-afirmaciones.md, con el reparto de permisos por esquema
+- [ ] Archivista
+- [ ] Refutador
+- [ ] Editor
+- [ ] Página de la mañana
+- [ ] Sala de máquinas de la corrida
+
+Registro:
+- 2026-11-07: Creada.
+- 2026-11-07: La fuente es ARCE (ADR 0006).
+- 2026-11-14: Pasa a Para empezar: T14 está hecha.
+- 2026-11-14: La etapa "Medido contra el banco" se tilda con la medición de T20.
+- 2026-11-14: Pasa a En curso: empieza por el esqueleto, la aplicación y Docker Compose.
+- 2026-11-14: Esqueleto hecho: la aplicación arranca en Docker Compose con PostgreSQL, Kafka y Mailpit, y su estado muestra la base y Kafka sanos. Ver app/README.md.
+
 ## Para empezar
 
 ### T12 · Escribir el formato, la muestra sintética y las métricas del banco de pruebas
@@ -104,37 +138,6 @@ Lista:
 Registro:
 - 2026-11-07: Creada.
 - 2026-11-14: Pasa a Para empezar: T11 está hecha. Suma cómo contar los descartes, porque El Parte no filtra por tema.
-
-### T08 · Construir la primera rebanada de punta a punta
-- Tipo: Componente
-- Dueño: desarrollo
-- Depende de: T02 a T07, T10, T14
-- Detalle: [arranque/proyecto.md](arranque/proyecto.md), [docs/fuentes/compras-estatales.md](docs/fuentes/compras-estatales.md)
-
-Chica y completa le gana a grande y a medias: una fuente, del explorador a la página de la mañana, con la sala de máquinas de esa corrida.
-
-Etapas:
-- [ ] Contrato
-- [ ] Código
-- [ ] Pruebas
-- [ ] Medido contra el banco
-- [ ] Página cómo se hizo
-
-Lista:
-- [ ] Explorador de ARCE, filtrando por el BPS como comprador antes de llamar al modelo
-- [ ] Zona horaria y publicaciones atrasadas de ARCE
-- [ ] Migraciones de la base a partir de docs/base-de-afirmaciones.md, con el reparto de permisos por esquema
-- [ ] Archivista
-- [ ] Refutador
-- [ ] Editor
-- [ ] Página de la mañana
-- [ ] Sala de máquinas de la corrida
-
-Registro:
-- 2026-11-07: Creada.
-- 2026-11-07: La fuente es ARCE (ADR 0006).
-- 2026-11-14: Pasa a Para empezar: T14 está hecha.
-- 2026-11-14: La etapa "Medido contra el banco" se tilda con la medición de T20.
 
 ## Esperando
 

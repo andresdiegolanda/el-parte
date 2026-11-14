@@ -329,6 +329,116 @@
  },
  "tarjetas": [
   {
+   "id": "T08",
+   "titulo": "Construir la primera rebanada de punta a punta",
+   "columna": "en-curso",
+   "orden": 1,
+   "tipo": "componente",
+   "dueno": "desarrollo",
+   "dependeDe": "T02 a T07, T10, T14",
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "arranque/proyecto.md",
+     "ruta": "arranque/proyecto.md"
+    },
+    {
+     "texto": "docs/fuentes/compras-estatales.md",
+     "ruta": "docs/fuentes/compras-estatales.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Contrato",
+     "hecho": false
+    },
+    {
+     "texto": "Código",
+     "hecho": false
+    },
+    {
+     "texto": "Pruebas",
+     "hecho": false
+    },
+    {
+     "texto": "Medido contra el banco",
+     "hecho": false
+    },
+    {
+     "texto": "Página cómo se hizo",
+     "hecho": false
+    }
+   ],
+   "lista": [
+    {
+     "texto": "Esqueleto: la aplicación, su imagen y Docker Compose",
+     "hecho": true
+    },
+    {
+     "texto": "Explorador de ARCE, filtrando por el BPS como comprador antes de llamar al modelo",
+     "hecho": false
+    },
+    {
+     "texto": "Zona horaria y publicaciones atrasadas de ARCE",
+     "hecho": false
+    },
+    {
+     "texto": "Migraciones de la base a partir de docs/base-de-afirmaciones.md, con el reparto de permisos por esquema",
+     "hecho": false
+    },
+    {
+     "texto": "Archivista",
+     "hecho": false
+    },
+    {
+     "texto": "Refutador",
+     "hecho": false
+    },
+    {
+     "texto": "Editor",
+     "hecho": false
+    },
+    {
+     "texto": "Página de la mañana",
+     "hecho": false
+    },
+    {
+     "texto": "Sala de máquinas de la corrida",
+     "hecho": false
+    }
+   ],
+   "notas": [
+    "Chica y completa le gana a grande y a medias: una fuente, del explorador a la página de la mañana, con la sala de máquinas de esa corrida."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    },
+    {
+     "fecha": "2026-11-07",
+     "texto": "La fuente es ARCE (ADR 0006)."
+    },
+    {
+     "fecha": "2026-11-14",
+     "texto": "Pasa a Para empezar: T14 está hecha."
+    },
+    {
+     "fecha": "2026-11-14",
+     "texto": "La etapa \"Medido contra el banco\" se tilda con la medición de T20."
+    },
+    {
+     "fecha": "2026-11-14",
+     "texto": "Pasa a En curso: empieza por el esqueleto, la aplicación y Docker Compose."
+    },
+    {
+     "fecha": "2026-11-14",
+     "texto": "Esqueleto hecho: la aplicación arranca en Docker Compose con PostgreSQL, Kafka y Mailpit, y su estado muestra la base y Kafka sanos. Ver app/README.md."
+    }
+   ]
+  },
+  {
    "id": "T12",
    "titulo": "Escribir el formato, la muestra sintética y las métricas del banco de pruebas",
    "columna": "para-empezar",
@@ -386,104 +496,6 @@
     {
      "fecha": "2026-11-14",
      "texto": "Pasa a Para empezar: T11 está hecha. Suma cómo contar los descartes, porque El Parte no filtra por tema."
-    }
-   ]
-  },
-  {
-   "id": "T08",
-   "titulo": "Construir la primera rebanada de punta a punta",
-   "columna": "para-empezar",
-   "orden": 2,
-   "tipo": "componente",
-   "dueno": "desarrollo",
-   "dependeDe": "T02 a T07, T10, T14",
-   "esperaA": "",
-   "fecha": "",
-   "detalle": [
-    {
-     "texto": "arranque/proyecto.md",
-     "ruta": "arranque/proyecto.md"
-    },
-    {
-     "texto": "docs/fuentes/compras-estatales.md",
-     "ruta": "docs/fuentes/compras-estatales.md"
-    }
-   ],
-   "etapas": [
-    {
-     "texto": "Contrato",
-     "hecho": false
-    },
-    {
-     "texto": "Código",
-     "hecho": false
-    },
-    {
-     "texto": "Pruebas",
-     "hecho": false
-    },
-    {
-     "texto": "Medido contra el banco",
-     "hecho": false
-    },
-    {
-     "texto": "Página cómo se hizo",
-     "hecho": false
-    }
-   ],
-   "lista": [
-    {
-     "texto": "Explorador de ARCE, filtrando por el BPS como comprador antes de llamar al modelo",
-     "hecho": false
-    },
-    {
-     "texto": "Zona horaria y publicaciones atrasadas de ARCE",
-     "hecho": false
-    },
-    {
-     "texto": "Migraciones de la base a partir de docs/base-de-afirmaciones.md, con el reparto de permisos por esquema",
-     "hecho": false
-    },
-    {
-     "texto": "Archivista",
-     "hecho": false
-    },
-    {
-     "texto": "Refutador",
-     "hecho": false
-    },
-    {
-     "texto": "Editor",
-     "hecho": false
-    },
-    {
-     "texto": "Página de la mañana",
-     "hecho": false
-    },
-    {
-     "texto": "Sala de máquinas de la corrida",
-     "hecho": false
-    }
-   ],
-   "notas": [
-    "Chica y completa le gana a grande y a medias: una fuente, del explorador a la página de la mañana, con la sala de máquinas de esa corrida."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-07",
-     "texto": "Creada."
-    },
-    {
-     "fecha": "2026-11-07",
-     "texto": "La fuente es ARCE (ADR 0006)."
-    },
-    {
-     "fecha": "2026-11-14",
-     "texto": "Pasa a Para empezar: T14 está hecha."
-    },
-    {
-     "fecha": "2026-11-14",
-     "texto": "La etapa \"Medido contra el banco\" se tilda con la medición de T20."
     }
    ]
   },

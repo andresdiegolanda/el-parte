@@ -9,5 +9,8 @@ banco-de-pruebas/privado/
 # Archivos de trabajo que no se versionan
 tmp/
 
+# Lo que compila Maven
+app/target/
+
 # Caché de Python
 __pycache__/

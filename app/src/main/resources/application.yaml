@@ -1,0 +1,35 @@
+# Configuración de El Parte. Los valores de conexión vienen de compose.yaml;
+# los de esta página son los de una ejecución local sin Docker.
+spring:
+  application:
+    name: el-parte
+
+  datasource:
+    url: ${BASE_URL:jdbc:postgresql://localhost:5432/elparte}
+    username: ${BASE_USUARIO:elparte}
+    password: ${BASE_CLAVE:elparte}
+
+  kafka:
+    bootstrap-servers: ${KAFKA_SERVIDORES:localhost:9092}
+
+  ai:
+    anthropic:
+      # La clave sale del .env de la máquina que corre las noches reales (T14).
+      # Sin clave, la aplicación arranca igual; solo fallan las llamadas al modelo.
+      api-key: ${ANTHROPIC_API_KEY:sin-clave}
+      chat:
+        # Valor inicial; cada agente usa el de su corrida (ADR 0003).
+        model: claude-haiku-5-5
+
+management:
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    # El cliente de Kafka escribe su configuración entera cada vez que se crea;
+    # el indicador de salud crea uno en cada consulta.
+    org.apache.kafka.clients.admin.AdminClientConfig: warn
+    org.apache.kafka.common.utils.AppInfoParser: warn
+    org.apache.kafka.common.metrics.Metrics: warn
