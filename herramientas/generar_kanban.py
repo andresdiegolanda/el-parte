@@ -28,9 +28,6 @@ MARCA_AVISO = "<!--GENERADO-->"
 AVISO = ("<!-- Generado por herramientas/generar_kanban.py desde tablero.md. "
          "No se edita a mano: se edita tablero.md y se vuelve a generar. -->")
 
-ENLACE_MD = re.compile(r"\[([^\]]+)\]\(([^)\s]+)\)")
-
-
 def url_del_repo(repositorio, ruta):
     """Convierte una ruta relativa a la raiz en un enlace al repositorio."""
     if re.match(r"^[a-zA-Z][a-zA-Z0-9+.-]*:", ruta):
@@ -43,39 +40,20 @@ def url_del_repo(repositorio, ruta):
     return url + ("#" + ancla if ancla else "")
 
 
-def enlaces_absolutos(texto, repositorio):
-    return ENLACE_MD.sub(lambda m: f"[{m.group(1)}]({url_del_repo(repositorio, m.group(2))})", texto)
+CAMPOS_TARJETA = ("titulo", "columna", "orden", "tipo", "dueno", "dependeDe", "esperaA", "fecha",
+                  "detalle", "etapas", "lista", "notas", "registro")
 
 
 def datos_para_la_pagina(datos):
+    """Los datos con la misma forma que la base del kanban publicado (adrs/0009).
+
+    Los enlaces quedan relativos al repositorio: la página los completa.
+    """
     repo = datos["meta"]["repositorio"]
-    tarjetas = []
-    for t in datos["tarjetas"]:
-        tarjetas.append({
-            "id": t["id"],
-            "titulo": t["titulo"],
-            "columna": t["columna"],
-            "orden": t["orden"],
-            "tipo": t["tipo"],
-            "dueno": t["dueno"],
-            "dependeDe": t["dependeDe"],
-            "dependencias": t["dependencias"],
-            "esperaA": t["esperaA"],
-            "fecha": t["fecha"],
-            "detalle": [{"texto": d["texto"], "url": url_del_repo(repo, d["ruta"])} for d in t["detalle"]],
-            "etapas": t["etapas"],
-            "lista": [{"texto": enlaces_absolutos(i["texto"], repo), "hecho": i["hecho"]} for i in t["lista"]],
-            "notas": [enlaces_absolutos(n, repo) for n in t["notas"]],
-            "registro": [{"fecha": r["fecha"], "texto": enlaces_absolutos(r["texto"], repo)} for r in t["registro"]],
-        })
-    return {
-        "meta": dict(datos["meta"], nota=enlaces_absolutos(datos["meta"]["nota"], repo),
-                     tablero=url_del_repo(repo, "tablero.md")),
-        "columnas": datos["columnas"],
-        "tipos": datos["tipos"],
-        "duenos": datos["duenos"],
-        "tarjetas": tarjetas,
-    }
+    tarjetas = [dict({"id": t["id"]}, **{c: t[c] for c in CAMPOS_TARJETA}) for t in datos["tarjetas"]]
+    meta = dict(datos["meta"], tablero=url_del_repo(repo, "tablero.md"),
+                columnas=datos["columnas"], tipos=datos["tipos"], duenos=datos["duenos"])
+    return {"meta": meta, "tarjetas": tarjetas}
 
 
 def generar():

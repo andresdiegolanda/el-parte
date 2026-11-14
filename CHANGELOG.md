@@ -2,6 +2,10 @@
 
 Cada entrada dice qué cambió, dónde, y enlaza al documento que tiene el porqué. Las más nuevas van arriba.
 
+## 2026-11-14
+
+- El kanban publicado se puede editar y se sincroniza con `tablero.md` (T28): plantilla editable con las reglas del tablero, `herramientas/sincronizar_tablero.py`, formato canónico de `tablero.md` exigido por el verificador y pruebas en `herramientas/pruebas/`. La sincronización hace commit y push de los archivos del tablero sin esperar pedido. El ADR 0001 queda reemplazado por el 0009, que pasa a T19. Por qué: [ADR 0009](adrs/0009-kanban-editable-sincronizado.md).
+
 ## 2026-11-07
 
 - T07 hecha: se agrega `docs/plan.md` con los cuatro fines de semana, qué se muestra y cómo se comprueba cada uno. El tablero suma las tarjetas T20 a T27 del plan y el tipo de tarjeta Web; la plantilla del kanban le da su color. Por qué: [docs/plan.md](docs/plan.md).

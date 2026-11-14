@@ -283,3 +283,78 @@ def validar(datos):
 
 def ids(datos):
     return {t["id"] for t in datos["tarjetas"]}
+
+
+# ---------------------------------------------------------------- escritura
+
+def intro_y_columnas(ruta):
+    """Devuelve (intro, columnas_en_el_archivo).
+
+    intro es el texto anterior al primer encabezado de columna, tal cual.
+    columnas_en_el_archivo es el orden en que aparecen las columnas en tablero.md.
+    """
+    texto = Path(ruta).read_text(encoding="utf-8")
+    lineas = texto.splitlines(keepends=True)
+    datos, _ = leer(ruta)
+    nombres = {c["nombre"] for c in datos["columnas"]}
+    corte = None
+    orden = []
+    en_codigo = False
+    for i, linea in enumerate(lineas):
+        if linea.lstrip().startswith("```"):
+            en_codigo = not en_codigo
+        if en_codigo or not linea.startswith("## "):
+            continue
+        nombre = linea[3:].strip()
+        if nombre in nombres:
+            if corte is None:
+                corte = i
+            orden.append(clave(nombre))
+    intro = "".join(lineas[:corte]) if corte is not None else texto
+    return intro, orden
+
+
+def bloque(tarjeta, tipos):
+    """El bloque Markdown canónico de una tarjeta, terminado en salto de línea."""
+    t = tarjeta
+    lineas = [f"### {t['id']} · {t['titulo']}",
+              f"- Tipo: {tipos[t['tipo']]['nombre']}",
+              f"- Dueño: {t['dueno']}"]
+    if t.get("dependeDe"):
+        lineas.append(f"- Depende de: {t['dependeDe']}")
+    if t.get("esperaA"):
+        lineas.append(f"- Espera a: {t['esperaA']}")
+    if t.get("fecha"):
+        lineas.append(f"- Fecha: {t['fecha']}")
+    if t.get("detalle"):
+        lineas.append("- Detalle: " + ", ".join(f"[{d['texto']}]({d['ruta']})" for d in t["detalle"]))
+    lineas.append("")
+    for nota in t.get("notas", []):
+        lineas += [nota, ""]
+    for titulo, campo in (("Etapas:", "etapas"), ("Lista:", "lista")):
+        if t.get(campo):
+            lineas.append(titulo)
+            lineas += [f"- [{'x' if i['hecho'] else ' '}] {i['texto']}" for i in t[campo]]
+            lineas.append("")
+    lineas.append("Registro:")
+    lineas += [f"- {r['fecha']}: {r['texto']}" for r in t.get("registro", [])]
+    return "\n".join(lineas) + "\n"
+
+
+def huella(tarjeta, tipos):
+    """Huella del contenido de una tarjeta: cambia si cambia cualquier cosa de su bloque o su columna."""
+    import hashlib
+    contenido = tarjeta["columna"] + "\n" + bloque(tarjeta, tipos)
+    return "sha256:" + hashlib.sha256(contenido.encode("utf-8")).hexdigest()[:24]
+
+
+def serializar(intro, orden_columnas, columnas, tipos, tarjetas):
+    """Arma el texto completo de tablero.md."""
+    nombre = {c["id"]: c["nombre"] for c in columnas}
+    partes = [intro]
+    for col in orden_columnas:
+        partes.append(f"## {nombre[col]}\n\n")
+        de_la_columna = sorted((t for t in tarjetas if t["columna"] == col), key=lambda t: t["orden"])
+        for t in de_la_columna:
+            partes.append(bloque(t, tipos) + "\n")
+    return "".join(partes).rstrip("\n") + "\n"

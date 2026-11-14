@@ -1,9 +1,9 @@
 # Tablero
 
-Todo pendiente de El Parte vive acá, con dueño (regla 8). Este archivo es la única fuente del kanban: [`kanban/index.html`](kanban/index.html) se genera desde acá con `python3 herramientas/generar_kanban.py` y no se edita a mano ([ADR 0001](adrs/0001-tablero-fuente-unica-kanban-generado.md)).
+Todo pendiente de El Parte vive acá, con dueño (regla 8). Este archivo es lo que manda. El kanban publicado es editable y se sincroniza con este archivo cada vez que una sesión de desarrollo lee o escribe el repositorio, o cuando se le pide; su copia sin conexión, [`kanban/index.html`](kanban/index.html), se genera desde acá con `python3 herramientas/generar_kanban.py` y no se edita a mano ([ADR 0009](adrs/0009-kanban-editable-sincronizado.md)).
 
-- Actualizado: 2026-11-07
-- Nota: Documentación del primer fin de semana completa (T02, T03, T04, T07; T05 y T06 escritas). Ocho ADRs esperan revisión (T19), y la primera rebanada (T08) espera eso, la clave (T14) y el registro del banco (T11).
+- Actualizado: 2026-11-14
+- Nota: El kanban publicado ahora se puede editar, y cada sesión lo sincroniza con este archivo (T28, ADR 0009). La primera rebanada (T08) sigue esperando la revisión de los ADRs (T19), la clave (T14) y el registro del banco (T11).
 - Calendario: 2026-11-07, 2026-11-14, 2026-11-21, 2026-11-28
 - Repositorio: https://github.com/andresdiegolanda/el-parte
 
@@ -11,7 +11,7 @@ Todo pendiente de El Parte vive acá, con dueño (regla 8). Este archivo es la �
 
 Cada `##` con nombre de columna agrupa tarjetas, y cada `###` adentro es una tarjeta. Mover una tarjeta es mover su bloque a otra columna. Dentro de una columna, el orden es la prioridad: la primera de "Para empezar" es la próxima. En este archivo las columnas van en el orden en que conviene leerlas (lo que se está haciendo primero); el kanban las muestra en el orden de la tabla de columnas.
 
-Después de cada cambio se vuelve a generar el kanban y se corre el verificador, que controla el formato y estas reglas:
+Después de cada cambio se vuelve a generar el kanban y se corre el verificador, que controla el formato canónico de las tarjetas y estas reglas, las mismas que aplica el kanban al editarlo:
 
 - Una tarjeta en "Para empezar" o "En curso" tiene todas sus dependencias en "Hecho".
 - Una tarjeta en "Pendiente" tiene al menos una dependencia que no está hecha. Si no, va en "Para empezar".
@@ -87,10 +87,9 @@ Los campos van pegados al título, sin línea en blanco. Los que no aplican se o
 - Dueño: Andrés
 - Detalle: [adrs/README.md](adrs/README.md)
 
-Los ADRs 0001 a 0008 están propuestos. Cada uno se acepta, se corrige o se rechaza; al aceptarlo, su estado pasa a "aceptado" en el archivo y en el índice.
+Los ADRs 0002 a 0009 están propuestos; el 0001 quedó reemplazado por el 0009. Cada uno se acepta, se corrige o se rechaza; al aceptarlo, su estado pasa a "aceptado" en el archivo y en el índice.
 
 Lista:
-- [ ] 0001: tablero como fuente única y kanban generado
 - [ ] 0002: orquestación por mensajes
 - [ ] 0003: elección del stack
 - [ ] 0004: grados de evidencia
@@ -98,6 +97,7 @@ Lista:
 - [ ] 0006: fuentes de la versión 0
 - [ ] 0007: registro del banco de pruebas fuera del repositorio
 - [ ] 0008: datos personales
+- [ ] 0009: kanban editable, sincronizado con el tablero
 
 Registro:
 - 2026-11-07: Creada.
@@ -389,6 +389,21 @@ Registro:
 - 2026-11-07: Creada con el plan (T07).
 
 ## Hecho
+
+### T28 · Hacer editable el kanban y sincronizarlo con el tablero
+- Tipo: Herramienta
+- Dueño: desarrollo
+- Detalle: [adrs/0009-kanban-editable-sincronizado.md](adrs/0009-kanban-editable-sincronizado.md), [herramientas/sincronizar_tablero.py](herramientas/sincronizar_tablero.py), [kanban/plantilla.html](kanban/plantilla.html)
+
+El kanban publicado se puede editar con las mismas reglas del tablero, y las sesiones de desarrollo lo sincronizan con este archivo. La prueba del kanban corre en Chrome con una base simulada; la de la sincronización, en una copia del repositorio.
+
+Etapas:
+- [x] Escrita
+- [x] Probada
+- [x] Documentada
+
+Registro:
+- 2026-11-14: Creada y hecha.
 
 ### T07 · Escribir docs/plan.md
 - Tipo: Documento

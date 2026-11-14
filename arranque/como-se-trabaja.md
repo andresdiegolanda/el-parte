@@ -6,7 +6,8 @@ Las doce reglas están en el [README](../README.md). Acá está cómo se cumplen
 
 ```mermaid
 flowchart TD
-    A[Leer arranque/] --> B[Pasar la primera tarjeta de Para empezar<br/>a En curso]
+    A[Leer arranque/] --> S[Sincronizar el kanban<br/>con el tablero]
+    S --> B[Pasar la primera tarjeta de Para empezar<br/>a En curso]
     B --> C{¿Toca un producto,<br/>una API o una fuente?}
     C -- Sí --> D[Verificar en la documentación oficial<br/>y anotar URL y fecha]
     C -- No --> E
@@ -14,7 +15,7 @@ flowchart TD
     E --> F[Releer lo escrito y comprobar el cambio]
     F --> H[CHANGELOG, tablero y ADR si hubo decisión]
     H --> I[Regenerar el kanban y actualizar<br/>el estado en arranque/README.md]
-    I --> G[Correr herramientas/verificar_docs.py]
+    I --> G[Correr herramientas/verificar_docs.py<br/>y sincronizar el kanban]
     G -- Falla --> E
     G -- Pasa --> J{¿Se pidió commit?}
     J -- Sí --> K[Commit y push]
@@ -25,8 +26,9 @@ flowchart TD
 
 1. Traer la última versión del repositorio.
 2. Leer la carpeta `arranque/` en el orden de su [README](README.md).
-3. Elegir la tarjeta en el [tablero](../tablero.md): la primera de "Para empezar", salvo que haya un motivo para otra. Si lo que hay que hacer no está en el tablero, primero se agrega la tarjeta, con dueño.
-4. Mover su bloque a "En curso" y anotarlo en su registro.
+3. Sincronizar el kanban con el tablero, si la sesión tiene acceso a su base (ver "Sincronizar el kanban"): así entran los cambios que se hicieron en el kanban desde la última sesión.
+4. Elegir la tarjeta en el [tablero](../tablero.md): la primera de "Para empezar", salvo que haya un motivo para otra. Si lo que hay que hacer no está en el tablero, primero se agrega la tarjeta, con dueño.
+5. Mover su bloque a "En curso" y anotarlo en su registro.
 
 ## Mientras se trabaja
 
@@ -108,11 +110,32 @@ Sin datos personales en la base ni en la demo. Solo fuentes públicas y datos si
 
 ### El tablero y el kanban (regla 8)
 
-[`tablero.md`](../tablero.md) es la única fuente de lo pendiente ([ADR 0001](../adrs/0001-tablero-fuente-unica-kanban-generado.md)). Cada pendiente es una tarjeta: un bloque `###` debajo de la columna en la que está. El propio tablero explica el formato, los tipos con sus etapas y las reglas de cada columna.
+[`tablero.md`](../tablero.md) es lo que manda sobre lo pendiente ([ADR 0009](../adrs/0009-kanban-editable-sincronizado.md)). Cada pendiente es una tarjeta: un bloque `###` debajo de la columna en la que está. El propio tablero explica el formato, los tipos con sus etapas y las reglas de cada columna.
 
 - Mover una tarjeta es mover su bloque a otra columna y sumar una línea a su registro.
-- Después de tocar el tablero se regenera el kanban con `python3 herramientas/generar_kanban.py`. `kanban/index.html` no se edita a mano: lo que se cambia a mano es `kanban/plantilla.html` (el diseño) o `tablero.md` (el contenido).
-- Si hay una copia publicada del kanban, se vuelve a publicar desde `kanban/index.html`.
+- `tablero.md` tiene que estar en formato canónico: leerlo y volver a escribirlo con `herramientas/tablero_md.py` da el mismo archivo. El verificador lo controla.
+- Después de tocar el tablero se regenera la copia del kanban con `python3 herramientas/generar_kanban.py`. `kanban/index.html` no se edita a mano: lo que se cambia a mano es `kanban/plantilla.html` (el diseño) o `tablero.md` (el contenido).
+- El kanban publicado es editable. Sus cambios viven en la base de la página hasta que una sesión los sincroniza.
+
+### Sincronizar el kanban
+
+La página publicada es <https://claude.ai/artifact/4wQ9LjW4H98WnjUWpcFsf3> (artifact `1fe3d7a9-985e-45cb-a223-38f55b086226`). La sincronización la hace una sesión que tenga las herramientas de la base de artifacts (`db_list`, `db_get`, `db_write`). Se sincroniza al empezar una sesión, cada vez que la sesión escribe `tablero.md` y cuando se pide.
+
+```mermaid
+flowchart TD
+    A[Volcar la base del kanban<br/>a tmp/kanban-volcado.json] --> B[python3 herramientas/sincronizar_tablero.py<br/>tmp/kanban-volcado.json]
+    B -- sale con 2: tablero.md cambió --> C[Commit y push solo del tablero,<br/>sin esperar pedido]
+    C --> A
+    B -- sale con 0 --> D[Escribir en la base las operaciones<br/>de tmp/kanban-operaciones.json]
+    D --> E[Volver a publicar la página<br/>si cambió la plantilla]
+```
+
+1. **Volcar la base.** Con `db_list` sobre la colección `tarjetas` y `db_get` sobre `meta/tablero`, se arma `tmp/kanban-volcado.json` con la forma `{"tarjetas": [{"id", "version", "data"}], "meta": {"version"} o null}`. De las tarjetas marcadas con `editadaEnKanban` se copia `data` completo; de las demás alcanza con `editadaEnKanban`, `huellaRepo` y `huellaContenido`, así el volcado es corto.
+2. **Correr el script.** Aplica a `tablero.md` los cambios del kanban, salvo los que chocan con el repositorio (gana el repositorio y se anota en el registro de la tarjeta) o rompen sus reglas (quedan en el kanban con el motivo). Si `tablero.md` cambió, regenera la copia, suma una línea al CHANGELOG y sale con código 2.
+3. **Commit y push del tablero.** Si salió con 2, se hace commit y push de `tablero.md`, `kanban/index.html` y `CHANGELOG.md`, sin esperar pedido: es la única excepción a la regla de los commits ([ADR 0009](../adrs/0009-kanban-editable-sincronizado.md)). Después se vuelve al paso 1.
+4. **Escribir en la base.** Cuando el script sale con 0, `tmp/kanban-operaciones.json` tiene las llamadas a `db_write`, de a 40 operaciones: solo las tarjetas que cambiaron y el documento `meta/tablero`. Se mandan de a una, esperando 2 segundos entre llamadas. Si una llamada se rechaza por versión, alguien editó el kanban mientras tanto: se vuelve al paso 1.
+
+Las pruebas de estas piezas están en `herramientas/pruebas/`: `prueba_sincronizacion.py` corre la sincronización en una copia del repositorio, y `prueba_kanban.mjs` maneja la página en Chrome con una base simulada (necesita Puppeteer, que viene con mermaid-cli).
 
 ### Nada se borra (regla 9)
 
@@ -140,7 +163,7 @@ Para dibujar los diagramas usa mermaid-cli (el programa `mmdc`), que busca en la
 
 ### Commits
 
-No se hacen commits ni push sin un pedido explícito del responsable del proyecto. Los mensajes van en español: una primera línea corta con qué cambió y, si hace falta, un cuerpo que enlace al documento con el porqué.
+No se hacen commits ni push sin un pedido explícito del responsable del proyecto. La única excepción es la sincronización del kanban, que hace commit y push de los archivos del tablero sola (ver "Sincronizar el kanban"). Los mensajes van en español: una primera línea corta con qué cambió y, si hace falta, un cuerpo que enlace al documento con el porqué.
 
 ## Entorno de trabajo
 

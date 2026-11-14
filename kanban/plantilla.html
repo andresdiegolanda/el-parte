@@ -161,6 +161,33 @@
     .column[data-col="en-curso"] { order: 1; } .column[data-col="para-empezar"] { order: 2; } .column[data-col="esperando"] { order: 3; }
     .column[data-col="pendiente"] { order: 4; } .column[data-col="hecho"] { order: 5; }
   }
+
+  /* edición en vivo */
+  .chip.sync { color: var(--wait); background: var(--wait-soft); border-color: transparent; }
+  .chip.bad { color: var(--late); background: var(--late-soft); border-color: transparent; white-space: normal; }
+  .syncline { margin: 0 0 12px; font-size: 13px; color: var(--muted); max-width: 110ch; }
+  .syncline b { color: var(--ink); font-weight: 500; }
+  .column.over { outline: 2px dashed var(--accent); outline-offset: -2px; }
+  .card.dragging { opacity: .45; }
+  .add { border: 1px dashed var(--line); background: transparent; border-radius: 8px; padding: 6px 8px; color: var(--muted); text-align: left; width: 100%; }
+  .add:hover { color: var(--ink); border-color: var(--muted); }
+  .addform { display: flex; flex-direction: column; gap: 6px; }
+  .addform .acts { display: flex; gap: 6px; }
+  input, select, textarea { font: inherit; color: var(--ink); }
+  .addform input, .addform select, .fields input, .fields select, .inline input, textarea {
+    background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 5px 8px; width: 100%; min-width: 0; }
+  textarea { min-height: 110px; resize: vertical; line-height: 1.5; }
+  .fields label { display: flex; flex-direction: column; gap: 3px; font-size: 11.5px; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+  .fields label > * { text-transform: none; letter-spacing: normal; font-size: 14px; }
+  .ticks label { display: flex; gap: 9px; align-items: flex-start; cursor: pointer; }
+  .ticks input[type="checkbox"] { margin-top: 3px; accent-color: var(--ok); width: 15px; height: 15px; flex: none; }
+  .ticks input:checked + span { color: var(--muted); text-decoration: line-through; }
+  .inline { display: flex; gap: 6px; margin-top: 6px; }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+  .hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 8px 14px; border-radius: 8px; font-size: 13px; z-index: 30; opacity: 0; transition: opacity .2s; pointer-events: none; max-width: min(640px, 92vw); text-align: center; }
+  .toast.on { opacity: 1; }
+  @media (prefers-reduced-motion: reduce) { .toast { transition: none; } }
 </style>
 </head>
 <body>
@@ -179,43 +206,49 @@
 
   <section class="strip" id="strip" aria-label="Estado de un vistazo"></section>
   <p class="lastnote" id="lastnote" hidden></p>
+  <p class="syncline" id="syncline" hidden></p>
 
   <main class="board" id="board"></main>
 
   <footer id="pie">
     <div><b>Cómo se lee.</b> Cada columna dice arriba qué quiere decir. Abrí una tarjeta para ver sus etapas, su lista, sus notas y su registro. El enlace a una tarjeta termina en su número, por ejemplo <code>#T09</code>.</div>
-    <div><b>De dónde sale.</b> Esta página es una vista de solo lectura de <code>tablero.md</code>, generada con <code>herramientas/generar_kanban.py</code>. Para mover una tarjeta se mueve su bloque en <code>tablero.md</code> y se vuelve a generar la página. El verificador del repositorio falla si la página y el tablero no coinciden.</div>
-    <div><b>Sin conexión.</b> <code>kanban/index.html</code> es un solo archivo: se abre en cualquier navegador, sin servidor.</div>
+    <div><b>Cómo se edita.</b> En la página publicada, arrastrá una tarjeta a otra columna o abrila para cambiarla. Las reglas del tablero se aplican al momento: por ejemplo, nada pasa a Hecho con etapas sin tildar. Los cambios quedan en la base de la página y una sesión de desarrollo los pasa a <code>tablero.md</code> cuando lee o escribe el repositorio, o cuando se le pide.</div>
+    <div><b>Sin conexión.</b> <code>kanban/index.html</code> es una copia de solo lectura de <code>tablero.md</code>, en un solo archivo: se abre en cualquier navegador.</div>
   </footer>
 </div>
 
 <div class="overlay" id="overlay" hidden>
   <div class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="p-title"></div>
 </div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script type="application/json" id="datos">__DATOS__</script>
 <script>
 (function () {
   "use strict";
 
-  var D = JSON.parse(document.getElementById("datos").textContent);
+  var COPIA = JSON.parse(document.getElementById("datos").textContent);
   var MESES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
   var COLOR_COL = { "pendiente": "var(--muted)", "para-empezar": "var(--accent)", "en-curso": "var(--adr)", "esperando": "var(--wait)", "hecho": "var(--ok)" };
   var VACIA = { "en-curso": "Nada en curso. La primera de Para empezar es la próxima." };
+  var PROHIBIDOS = new RegExp("[" + String.fromCharCode(0x2013, 0x2014, 0x2015) + "]");
+  var RESERVADAS = ["Etapas:", "Lista:", "Registro:"];
 
   var $ = function (id) { return document.getElementById(id); };
-  var porId = {};
-  D.tarjetas.forEach(function (t) { porId[t.id] = t; });
-  var filtro = "todo";
-  var abierta = null;
-  try { var f0 = localStorage.getItem("elparte-filtro"); if (f0 && D.duenos.some(function (d) { return d.nombre === f0; })) { filtro = f0; } } catch (e) { /* sin almacenamiento */ }
+  var meta = COPIA.meta;
+  var tarjetas = {};
+  COPIA.tarjetas.forEach(function (t) { tarjetas[t.id] = t; });
+  var modo = "copia";            // copia | vivo
+  var db = null, puedeEscribir = false, colas = {};
+  var filtro = "todo", abierta = null, arrastrando = null;
+  try { var f0 = localStorage.getItem("elparte-filtro"); if (f0) { filtro = f0; } } catch (e) { /* sin almacenamiento */ }
 
   // ---------- ayudas
   function hoy() { var d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
   function sumarDias(iso, n) { var d = new Date(iso + "T12:00:00"); d.setDate(d.getDate() + n); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
   function fecha(iso) {
-    if (!iso || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) { return iso || ""; }
-    var p = iso.split("-"); var s = (+p[2]) + " " + MESES[+p[1] - 1];
+    if (!iso || !/^\d{4}-\d{2}-\d{2}/.test(iso)) { return iso || ""; }
+    var p = iso.slice(0, 10).split("-"); var s = (+p[2]) + " " + MESES[+p[1] - 1];
     return p[0] === hoy().slice(0, 4) ? s : s + " " + p[0];
   }
   function el(tag, attrs, kids) {
@@ -224,52 +257,176 @@
       var v = attrs[k];
       if (v === null || v === undefined || v === false) { return; }
       if (k === "text") { e.textContent = v; } else if (k === "cls") { e.className = v; }
+      else if (k === "value") { e.value = v; }
       else if (k.slice(0, 2) === "on") { e.addEventListener(k.slice(2), v); } else { e.setAttribute(k, v === true ? "" : v); }
     }); }
     (kids || []).forEach(function (c) { if (c !== null && c !== undefined) { e.appendChild(typeof c === "string" ? document.createTextNode(c) : c); } });
     return e;
   }
-  // texto con `código` y [enlaces](https://...), sin HTML
+  function toast(msg) { var t = $("toast"); t.textContent = msg; t.classList.add("on"); clearTimeout(toast.h); toast.h = setTimeout(function () { t.classList.remove("on"); }, 3200); }
+  function urlDe(ruta) {
+    if (/^https?:\/\//.test(ruta)) { return ruta; }
+    return (meta.repositorio || "") + "/blob/main/" + ruta.replace(/^(\.\/)+/, "").replace(/^\/+/, "");
+  }
+  // texto con `código` y [enlaces](ruta), sin HTML
   function enLinea(texto) {
     var frag = document.createDocumentFragment();
     var re = /`([^`]+)`|\[([^\]]+)\]\(([^)\s]+)\)/g, ultimo = 0, m;
     while ((m = re.exec(texto)) !== null) {
       if (m.index > ultimo) { frag.appendChild(document.createTextNode(texto.slice(ultimo, m.index))); }
       if (m[1] !== undefined) { frag.appendChild(el("code", { text: m[1] })); }
-      else if (/^https?:\/\//.test(m[3])) { frag.appendChild(el("a", { href: m[3], target: "_blank", rel: "noopener noreferrer", text: m[2] })); }
-      else { frag.appendChild(document.createTextNode(m[2])); }
+      else { frag.appendChild(el("a", { href: urlDe(m[3]), target: "_blank", rel: "noopener noreferrer", text: m[2] })); }
       ultimo = re.lastIndex;
     }
     if (ultimo < texto.length) { frag.appendChild(document.createTextNode(texto.slice(ultimo))); }
     return frag;
   }
   function mayuscula(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
-  function tipoDe(t) { return D.tipos[t.tipo] || { nombre: t.tipo, etapas: [] }; }
-  function nombreCol(id) { for (var i = 0; i < D.columnas.length; i++) { if (D.columnas[i].id === id) { return D.columnas[i].nombre; } } return id; }
+  function tipoDe(t) { return meta.tipos[t.tipo] || { nombre: t.tipo, etapas: [] }; }
+  function nombreCol(id) { for (var i = 0; i < meta.columnas.length; i++) { if (meta.columnas[i].id === id) { return meta.columnas[i].nombre; } } return id; }
+  function todas() { return Object.keys(tarjetas).map(function (k) { return tarjetas[k]; }); }
   function visible(t) { return filtro === "todo" || t.dueno === filtro; }
-  function lista() { return D.tarjetas.filter(visible); }
-  function enCol(c) { return lista().filter(function (t) { return t.columna === c; }).sort(function (a, b) { return a.orden - b.orden; }); }
+  function enCol(c) { return todas().filter(function (t) { return visible(t) && t.columna === c; }).sort(function (a, b) { return (a.orden || 0) - (b.orden || 0) || String(a.id).localeCompare(String(b.id)); }); }
   function vencida(t) { return t.fecha && t.columna !== "hecho" && t.fecha < hoy(); }
-  function faltan(t) { return t.dependencias.filter(function (d) { return !porId[d] || porId[d].columna !== "hecho"; }); }
-  function etapasHechas(t) { return t.etapas.filter(function (e) { return e.hecho; }).length; }
+  function copiar(o) { return JSON.parse(JSON.stringify(o)); }
 
-  // ---------- encabezado, franja y nota
-  function renderEncabezado() {
-    var abiertas = D.tarjetas.filter(function (t) { return t.columna !== "hecho"; });
-    var partes = D.duenos.map(function (d) {
-      var n = abiertas.filter(function (t) { return t.dueno === d.nombre; }).length;
-      return n + " de " + d.nombre;
+  // ---------- reglas del tablero (las mismas que herramientas/tablero_md.py)
+  function expandir(texto) {
+    var ids = [], m, re = /\b(T\d{2}) a (T\d{2})\b/g;
+    while ((m = re.exec(texto || "")) !== null) { for (var n = +m[1].slice(1); n <= +m[2].slice(1); n++) { ids.push("T" + String(n).padStart(2, "0")); } }
+    ((texto || "").replace(re, "").match(/\bT\d{2}\b/g) || []).forEach(function (i) { ids.push(i); });
+    return ids.filter(function (v, i) { return ids.indexOf(v) === i; });
+  }
+  function faltan(t, ajustes) {
+    return expandir(t.dependeDe).filter(function (d) {
+      var col = ajustes && ajustes[d] ? ajustes[d] : (tarjetas[d] ? tarjetas[d].columna : null);
+      return col !== "hecho";
     });
+  }
+  function motivoColumna(t, col, ajustes) {
+    if (col === "para-empezar" || col === "en-curso") {
+      var f = faltan(t, ajustes);
+      if (f.length) { return "No puede pasar a " + nombreCol(col) + ": antes tiene que estar hecha " + f.join(", ") + "."; }
+    }
+    if (col === "pendiente" && !faltan(t, ajustes).length) { return "Una tarjeta en Pendiente espera otra tarjeta abierta. Esta no espera ninguna: va en Para empezar."; }
+    if (col === "esperando" && !(t.esperaA || "").trim()) { return "Completá \"Espera a\" antes de pasarla a Esperando."; }
+    if (col === "hecho") {
+      var abiertas = (t.etapas || []).concat(t.lista || []).filter(function (i) { return !i.hecho; });
+      if (abiertas.length) { return "Para pasar a Hecho, tildá antes: " + abiertas.map(function (i) { return i.texto; }).join("; ") + "."; }
+    }
+    return null;
+  }
+  function problemaDeTexto(textos) {
+    for (var i = 0; i < textos.length; i++) {
+      if (PROHIBIDOS.test(textos[i] || "")) { return "El proyecto no usa guiones largos: cambialos por dos puntos, coma o paréntesis."; }
+    }
+    return null;
+  }
+
+  // ---------- escritura en la base
+  function encolar(id, fn) {
+    var previa = colas[id] || Promise.resolve();
+    var sig = previa.catch(function () {}).then(fn);
+    colas[id] = sig;
+    return sig;
+  }
+  function registrar(t, texto) {
+    var r = (t.registro || []).slice();
+    r.push({ fecha: hoy(), texto: texto + " (kanban)" });
+    return r;
+  }
+  function guardar(id, cambios) {
+    if (!db || !puedeEscribir) { toast("Esta vista es de solo lectura"); return Promise.resolve(false); }
+    var cuerpo = Object.assign({}, cambios, { editadaEnKanban: true, editadaEn: new Date().toISOString(), rechazoSincronizacion: "" });
+    return encolar(id, function () { return db.doc("tarjetas/" + id).update(cuerpo); })
+      .then(function () { var s = document.querySelector(".saved"); if (s) { s.textContent = "Guardado"; } return true; })
+      .catch(function (e) { alFallar(e); return false; });
+  }
+  function alFallar(e) {
+    if (e && (e.code === "permission_denied" || e.code === "not_granted")) { puedeEscribir = false; render(); toast("No se guardó: esta vista no puede cambiar el tablero"); }
+    else { toast("No se guardó. Probá de nuevo en un momento"); }
+  }
+  // Cambia una tarjeta respetando las reglas; devuelve false si no se pudo.
+  function cambiar(id, cambios, nota) {
+    var t = tarjetas[id]; if (!t) { return false; }
+    var nueva = Object.assign(copiar(t), cambios);
+    var textos = [nueva.titulo, nueva.esperaA, nueva.dependeDe].concat(nueva.notas || [], (nueva.lista || []).map(function (i) { return i.texto; }));
+    var prob = problemaDeTexto(textos);
+    if (prob) { toast(prob); return false; }
+    if (!(nueva.titulo || "").trim()) { toast("La tarjeta necesita un título."); return false; }
+    var desconocidas = expandir(nueva.dependeDe).filter(function (d) { return !tarjetas[d] || d === id; });
+    if (desconocidas.length) { toast("No existe o no puede depender de: " + desconocidas.join(", ") + "."); return false; }
+    var motivo = motivoColumna(nueva, nueva.columna);
+    if (motivo) { toast(motivo); return false; }
+    // Si sale de Hecho, nada en Para empezar o En curso puede seguir dependiendo de ella.
+    if (t.columna === "hecho" && nueva.columna !== "hecho") {
+      var rotas = todas().filter(function (o) { return (o.columna === "para-empezar" || o.columna === "en-curso") && expandir(o.dependeDe).indexOf(id) >= 0; });
+      if (rotas.length) { toast("No puede salir de Hecho: " + rotas.map(function (o) { return o.id; }).join(", ") + " depende de ella y ya está empezada."); return false; }
+    }
+    if (nota) { cambios.registro = registrar(t, nota); }
+    tarjetas[id] = Object.assign(nueva, { registro: cambios.registro || nueva.registro, editadaEnKanban: true });
+    guardar(id, cambios);
+    // Si pasó a Hecho, las que solo esperaban por ella pasan a Para empezar.
+    if (t.columna !== "hecho" && nueva.columna === "hecho") {
+      todas().forEach(function (o) {
+        if (o.columna === "pendiente" && expandir(o.dependeDe).indexOf(id) >= 0 && !faltan(o).length) {
+          var orden = enColTodas("para-empezar").length + 1;
+          var c = { columna: "para-empezar", orden: orden, registro: registrar(o, "Pasa a Para empezar: " + id + " está hecha") };
+          tarjetas[o.id] = Object.assign(copiar(o), c, { editadaEnKanban: true });
+          guardar(o.id, c);
+        }
+      });
+    }
+    render();
+    return true;
+  }
+  function enColTodas(c) { return todas().filter(function (t) { return t.columna === c; }); }
+  function mover(id, col, antesDe) {
+    var t = tarjetas[id]; if (!t) { return; }
+    var items = enColTodas(col).filter(function (x) { return x.id !== id; }).sort(function (a, b) { return a.orden - b.orden; });
+    var orden;
+    if (antesDe && antesDe !== id) {
+      var i = items.findIndex(function (x) { return x.id === antesDe; });
+      if (i < 0) { antesDe = null; }
+      else { var despues = items[i], antes = items[i - 1]; orden = antes ? (antes.orden + despues.orden) / 2 : despues.orden - 1; }
+    }
+    if (!antesDe || antesDe === id) { orden = items.length ? items[items.length - 1].orden + 1 : 1; }
+    var cambioDeColumna = t.columna !== col;
+    if (cambiar(id, { columna: col, orden: orden }, cambioDeColumna ? "Pasa a " + nombreCol(col) : null) && cambioDeColumna) {
+      toast("Pasó a " + nombreCol(col));
+    }
+  }
+  function crear(titulo, tipo, dueno) {
+    var prob = problemaDeTexto([titulo]);
+    if (prob) { toast(prob); return; }
+    var id = "N-" + Date.now().toString(36);
+    var t = {
+      titulo: titulo, columna: "para-empezar", orden: enColTodas("para-empezar").length + 1, tipo: tipo, dueno: dueno,
+      dependeDe: "", esperaA: "", fecha: "", detalle: [], notas: [], lista: [],
+      etapas: (meta.tipos[tipo].etapas || []).map(function (e) { return { texto: e, hecho: false }; }),
+      registro: [{ fecha: hoy(), texto: "Creada (kanban)" }],
+      huellaRepo: null, editadaEnKanban: true, editadaEn: new Date().toISOString()
+    };
+    tarjetas[id] = Object.assign({ id: id }, t);
+    render();
+    encolar(id, function () { return db.doc("tarjetas/" + id).set(t); })
+      .then(function () { toast("Tarjeta sumada. Recibe su número en la próxima sincronización."); })
+      .catch(alFallar);
+  }
+
+  // ---------- encabezado, franja y notas
+  function renderEncabezado() {
+    var abiertas = todas().filter(function (t) { return t.columna !== "hecho"; });
+    var partes = meta.duenos.map(function (d) { return abiertas.filter(function (t) { return t.dueno === d.nombre; }).length + " de " + d.nombre; });
     var txt = abiertas.length + (abiertas.length === 1 ? " tarjeta abierta" : " tarjetas abiertas");
     if (partes.length) { txt += ": " + partes.slice(0, -1).join(", ") + (partes.length > 1 ? " y " : "") + partes[partes.length - 1]; }
     $("count").textContent = txt + ".";
-    var rw = $("rw");
-    rw.href = D.meta.tablero;
-    rw.textContent = "Copia de tablero.md del " + fecha(D.meta.actualizado) + " · solo lectura";
+    var rw = $("rw"); rw.href = meta.tablero;
+    rw.textContent = modo === "copia" ? "Copia de tablero.md del " + fecha(meta.actualizado) + " · solo lectura"
+      : (puedeEscribir ? "En vivo · podés editar" : "En vivo · solo lectura");
   }
-
   function finDeSemana() {
-    var cal = D.meta.calendario || [], t = hoy();
+    var cal = meta.calendario || [], t = hoy();
     if (!cal.length) { return null; }
     for (var i = 0; i < cal.length; i++) {
       if (t >= cal[i] && t <= sumarDias(cal[i], 1)) { return "El " + (i + 1) + " de " + cal.length + ", hoy"; }
@@ -277,38 +434,44 @@
     }
     return "Terminaron los " + cal.length;
   }
-
   function stat(clase, k, v) { return el("div", { cls: "stat" + (clase ? " " + clase : "") }, [el("span", { cls: "k", text: k }), el("span", { cls: "v", text: v })]); }
-
   function renderFranja() {
     var s = $("strip"); s.textContent = "";
-    var todas = lista(); if (!todas.length) { return; }
+    var vis = todas().filter(visible); if (!vis.length) { return; }
     var curso = enCol("en-curso"), listas = enCol("para-empezar"), esperando = enCol("esperando"), hechas = enCol("hecho");
     var prox = curso[0] || listas[0];
     if (prox) { s.appendChild(stat("next", curso[0] ? "En curso" : "Lo próximo", prox.id + " · " + prox.titulo)); }
-    var fds = finDeSemana();
-    if (fds) { s.appendChild(stat("", "Fin de semana", fds)); }
+    var fds = finDeSemana(); if (fds) { s.appendChild(stat("", "Fin de semana", fds)); }
     var por = {};
     esperando.forEach(function (t) { var w = t.esperaA || "alguien"; por[w] = (por[w] || 0) + 1; });
-    var wtxt = Object.keys(por).map(function (k) { return k + (por[k] > 1 ? " (" + por[k] + ")" : ""); }).join(" · ");
-    s.appendChild(stat("", "Esperando", wtxt || "nada"));
-    var tarde = todas.filter(vencida);
+    s.appendChild(stat("", "Esperando", Object.keys(por).map(function (k) { return k + (por[k] > 1 ? " (" + por[k] + ")" : ""); }).join(" · ") || "nada"));
+    var tarde = vis.filter(vencida);
     s.appendChild(stat(tarde.length ? "late" : "", "Fecha pasada", tarde.length ? tarde.map(function (t) { return t.id; }).join(" · ") : "ninguna"));
-    s.appendChild(stat("", "Hecho", hechas.length + " de " + todas.length + " tarjetas"));
+    s.appendChild(stat("", "Hecho", hechas.length + " de " + vis.length + " tarjetas"));
   }
-
-  function renderNota() {
+  function renderNotas() {
     var n = $("lastnote");
-    if (!D.meta.nota) { n.hidden = true; return; }
-    n.textContent = "";
-    n.appendChild(el("b", { text: "Última actualización, " + fecha(D.meta.actualizado) + ": " }));
-    n.appendChild(enLinea(D.meta.nota));
-    n.hidden = false;
+    if (meta.nota) {
+      n.textContent = "";
+      n.appendChild(el("b", { text: "Última actualización del repositorio, " + fecha(meta.actualizado) + ": " }));
+      n.appendChild(enLinea(meta.nota));
+      n.hidden = false;
+    } else { n.hidden = true; }
+    var s = $("syncline");
+    if (modo !== "vivo") { s.hidden = true; return; }
+    var sinSubir = todas().filter(function (t) { return t.editadaEnKanban; }).length;
+    var rechazadas = todas().filter(function (t) { return t.rechazoSincronizacion; }).length;
+    s.textContent = "";
+    s.appendChild(el("b", { text: meta.sincronizadoEn ? "Sincronizado con el repositorio el " + fecha(meta.sincronizadoEn) + " a las " + meta.sincronizadoEn.slice(11, 16) + " UTC (commit " + (meta.commitGithub || "?") + "). " : "Todavía no se sincronizó con el repositorio. " }));
+    s.appendChild(document.createTextNode(
+      (sinSubir ? sinSubir + (sinSubir === 1 ? " tarjeta tiene cambios" : " tarjetas tienen cambios") + " del kanban que pasan a tablero.md en la próxima sincronización. " : "Sin cambios del kanban pendientes. ") +
+      (rechazadas ? rechazadas + (rechazadas === 1 ? " tarjeta fue rechazada" : " tarjetas fueron rechazadas") + " en la última sincronización: abrila para ver por qué. " : "") +
+      "Para sincronizar ahora, pedíselo a una sesión de desarrollo."));
+    s.hidden = false;
   }
-
   function renderFiltros() {
     var seg = $("filtros"); seg.textContent = "";
-    [{ id: "todo", txt: "Todo" }].concat(D.duenos.map(function (d) { return { id: d.nombre, txt: mayuscula(d.nombre) }; })).forEach(function (o) {
+    [{ id: "todo", txt: "Todo" }].concat(meta.duenos.map(function (d) { return { id: d.nombre, txt: mayuscula(d.nombre) }; })).forEach(function (o) {
       seg.appendChild(el("button", { type: "button", "aria-pressed": filtro === o.id ? "true" : "false", text: o.txt, onclick: function () {
         filtro = o.id;
         try { localStorage.setItem("elparte-filtro", o.id); } catch (e) { /* sin almacenamiento */ }
@@ -322,104 +485,219 @@
     var tipo = tipoDe(t);
     var kids = [
       el("div", { cls: "row" }, [
-        el("span", { cls: "chip id", text: t.id }),
+        el("span", { cls: "chip id", text: /^T\d{2}$/.test(t.id) ? t.id : "nueva" }),
         el("span", { cls: "chip k-" + t.tipo, text: tipo.nombre }),
         t.columna === "esperando" && t.esperaA ? el("span", { cls: "chip wait", text: "espera: " + t.esperaA }) : null,
-        t.fecha ? el("span", { cls: "chip " + (t.columna === "hecho" ? "ok" : (vencida(t) ? "late" : "")), text: (vencida(t) ? "era para el " : "para el ") + fecha(t.fecha) }) : null
+        t.fecha ? el("span", { cls: "chip " + (t.columna === "hecho" ? "ok" : (vencida(t) ? "late" : "")), text: (vencida(t) ? "era para el " : "para el ") + fecha(t.fecha) }) : null,
+        modo === "vivo" && t.editadaEnKanban ? el("span", { cls: "chip sync", text: "sin sincronizar" }) : null,
+        modo === "vivo" && t.rechazoSincronizacion ? el("span", { cls: "chip bad", text: "rechazada" }) : null
       ]),
       el("div", { cls: "title", text: t.titulo })
     ];
-    if (t.etapas.length) {
+    var et = t.etapas || [];
+    if (et.length) {
       var bar = el("div", { cls: "bar", "aria-hidden": "true" });
-      t.etapas.forEach(function (e) { bar.appendChild(el("i", { cls: e.hecho ? "on" : "" })); });
+      et.forEach(function (e) { bar.appendChild(el("i", { cls: e.hecho ? "on" : "" })); });
       kids.push(bar);
-      var sigue = null; for (var i = 0; i < t.etapas.length; i++) { if (!t.etapas[i].hecho) { sigue = t.etapas[i].texto; break; } }
-      kids.push(el("div", { cls: "who", text: etapasHechas(t) + "/" + t.etapas.length + (sigue ? " · sigue: " + sigue : " · todas las etapas hechas") }));
+      var sigue = null; for (var i = 0; i < et.length; i++) { if (!et[i].hecho) { sigue = et[i].texto; break; } }
+      kids.push(el("div", { cls: "who", text: et.filter(function (e) { return e.hecho; }).length + "/" + et.length + (sigue ? " · sigue: " + sigue : " · todas las etapas hechas") }));
     }
-    if (t.lista.length) { kids.push(el("div", { cls: "who", text: "Lista " + t.lista.filter(function (x) { return x.hecho; }).length + "/" + t.lista.length })); }
+    if ((t.lista || []).length) { kids.push(el("div", { cls: "who", text: "Lista " + t.lista.filter(function (x) { return x.hecho; }).length + "/" + t.lista.length })); }
     var f = faltan(t);
     kids.push(el("div", { cls: "needs" }, ["Quién: " + t.dueno, f.length ? " · " : null, f.length ? el("span", { cls: "falta", text: "falta " + f.join(", ") }) : null]));
-    return el("article", { cls: "card", tabindex: "0", role: "button", "data-id": t.id, "aria-label": t.id + ", " + t.titulo + ", " + nombreCol(t.columna),
+    var c = el("article", { cls: "card", tabindex: "0", role: "button", "data-id": t.id, draggable: modo === "vivo" && puedeEscribir ? "true" : null,
+      "aria-label": t.id + ", " + t.titulo + ", " + nombreCol(t.columna),
       onclick: function () { abrir(t.id); },
       onkeydown: function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); abrir(t.id); } } }, kids);
+    c.addEventListener("dragstart", function (e) { arrastrando = t.id; c.classList.add("dragging"); try { e.dataTransfer.setData("text/plain", t.id); e.dataTransfer.effectAllowed = "move"; } catch (x) { /* navegadores viejos */ } });
+    c.addEventListener("dragend", function () { arrastrando = null; c.classList.remove("dragging"); document.querySelectorAll(".column.over").forEach(function (x) { x.classList.remove("over"); }); });
+    return c;
   }
-
+  function controlSumar() {
+    var cont = el("div", {});
+    var boton = el("button", { cls: "add", type: "button", text: "+ Sumar una tarjeta" });
+    boton.addEventListener("click", function () {
+      cont.textContent = "";
+      var titulo = el("input", { type: "text", id: "nueva-titulo", placeholder: "Título, con verbo", "aria-label": "Título de la tarjeta nueva" });
+      var tipo = el("select", { id: "nueva-tipo", "aria-label": "Tipo" });
+      Object.keys(meta.tipos).forEach(function (k) { tipo.appendChild(el("option", { value: k, text: meta.tipos[k].nombre })); });
+      var dueno = el("select", { id: "nueva-dueno", "aria-label": "Dueño" });
+      meta.duenos.forEach(function (d) { dueno.appendChild(el("option", { value: d.nombre, text: d.nombre })); });
+      var listo = function () { render(); };
+      var sumar = function () { var v = titulo.value.trim(); if (!v) { titulo.focus(); return; } crear(v, tipo.value, dueno.value); };
+      titulo.addEventListener("keydown", function (e) { if (e.key === "Enter") { sumar(); } else if (e.key === "Escape") { listo(); } });
+      cont.appendChild(el("div", { cls: "addform" }, [titulo, tipo, dueno, el("div", { cls: "acts" }, [
+        el("button", { cls: "btn primary", type: "button", text: "Sumar", onclick: sumar }),
+        el("button", { cls: "btn", type: "button", text: "Cancelar", onclick: listo })])]));
+      titulo.focus();
+    });
+    cont.appendChild(boton);
+    return cont;
+  }
   function render() {
+    var activo = document.activeElement;
+    if (activo && activo.id === "nueva-titulo" && activo.value) { renderEncabezado(); renderFranja(); renderNotas(); return; }
     var board = $("board"); board.textContent = "";
-    D.columnas.forEach(function (col) {
+    meta.columnas.forEach(function (col) {
       var items = enCol(col.id);
       var cuerpo = el("div", { cls: "cards" });
       if (!items.length) { cuerpo.appendChild(el("div", { cls: "empty", text: VACIA[col.id] || "Nada acá." })); }
       items.forEach(function (t) { cuerpo.appendChild(cara(t)); });
-      board.appendChild(el("section", { cls: "column", "data-col": col.id, "aria-label": col.nombre }, [
+      var sec = el("section", { cls: "column", "data-col": col.id, "aria-label": col.nombre }, [
         el("div", { cls: "colhead" }, [el("span", { cls: "dot", style: "background:" + (COLOR_COL[col.id] || "var(--muted)") }), el("h2", { text: col.nombre }), el("span", { cls: "n", text: String(items.length) })]),
         col.pista ? el("div", { cls: "colhint", text: col.pista }) : null,
-        cuerpo
-      ]));
+        cuerpo,
+        modo === "vivo" && puedeEscribir && col.id === "para-empezar" ? controlSumar() : null
+      ]);
+      sec.addEventListener("dragover", function (e) { if (!arrastrando) { return; } e.preventDefault(); sec.classList.add("over"); });
+      sec.addEventListener("dragleave", function (e) { if (!sec.contains(e.relatedTarget)) { sec.classList.remove("over"); } });
+      sec.addEventListener("drop", function (e) {
+        e.preventDefault(); sec.classList.remove("over");
+        var id = arrastrando; if (!id || !tarjetas[id]) { return; }
+        var destino = e.target.closest && e.target.closest(".card");
+        mover(id, col.id, destino ? destino.getAttribute("data-id") : null);
+      });
+      board.appendChild(sec);
     });
-    renderEncabezado(); renderFranja(); renderNota();
+    renderEncabezado(); renderFranja(); renderNotas();
+    if (abierta) { if (tarjetas[abierta]) { refrescarPanel(); } else { cerrar(true); } }
   }
-
   function renderPie() {
-    var ciclos = Object.keys(D.tipos).filter(function (k) { return D.tipos[k].etapas.length; }).map(function (k) {
-      return el("div", {}, [el("b", { text: "Etapas de cada " + (D.tipos[k].nombre === D.tipos[k].nombre.toUpperCase() ? D.tipos[k].nombre : D.tipos[k].nombre.toLowerCase()) + ":" }), " " + D.tipos[k].etapas.join(", ") + "."]);
+    Object.keys(meta.tipos).filter(function (k) { return meta.tipos[k].etapas.length; }).forEach(function (k) {
+      var n = meta.tipos[k].nombre;
+      $("pie").appendChild(el("div", {}, [el("b", { text: "Etapas de cada " + (n === n.toUpperCase() ? n : n.toLowerCase()) + ":" }), " " + meta.tipos[k].etapas.join(", ") + "."]));
     });
-    ciclos.forEach(function (c) { $("pie").appendChild(c); });
   }
 
   // ---------- panel de detalle
   function seccion(titulo, contenido) { return el("div", { cls: "sec" }, [el("h3", { text: titulo }), contenido]); }
-  function casillas(items) {
+  function casillas(t, campo, editable) {
     var ul = el("ul", { cls: "ticks" });
-    items.forEach(function (i) { var span = el("span"); span.appendChild(enLinea(i.texto)); ul.appendChild(el("li", { cls: i.hecho ? "on" : "" }, [el("span", { cls: "box" + (i.hecho ? " on" : ""), "aria-label": i.hecho ? "hecho" : "sin hacer", role: "img" }), span])); });
+    (t[campo] || []).forEach(function (item, i) {
+      var span = el("span"); span.appendChild(enLinea(item.texto));
+      if (!editable) {
+        ul.appendChild(el("li", { cls: item.hecho ? "on" : "" }, [el("span", { cls: "box" + (item.hecho ? " on" : ""), role: "img", "aria-label": item.hecho ? "hecho" : "sin hacer" }), span]));
+        return;
+      }
+      var cb = el("input", { type: "checkbox", id: "p-" + campo + "-" + i });
+      cb.checked = !!item.hecho;
+      cb.addEventListener("change", function () {
+        var nuevos = copiar(t[campo]); nuevos[i].hecho = cb.checked;
+        var c = {}; c[campo] = nuevos;
+        if (!cambiar(t.id, c, (cb.checked ? "Hecho: " : "Reabierto: ") + item.texto)) { cb.checked = !cb.checked; }
+      });
+      ul.appendChild(el("li", {}, [el("label", { "for": "p-" + campo + "-" + i }, [cb, span])]));
+    });
     return ul;
   }
   function campo(k, v) { return el("div", {}, [el("dt", { text: k }), el("dd", {}, Array.isArray(v) ? v : [v])]); }
-
   function abrir(id, sinHash) {
-    var t = porId[id]; if (!t) { return; }
-    abrir.ultima = id;
-    abierta = id;
-    var p = $("panel"); p.textContent = "";
+    if (!tarjetas[id]) { return; }
+    abrir.ultima = id; abierta = id;
+    construirPanel();
+    $("overlay").hidden = false;
+    var titulo = $("p-title"); if (titulo) { titulo.focus(); }
+    if (!sinHash && location.hash !== "#" + id) { try { location.hash = id; } catch (e) { /* sin hash */ } }
+  }
+  function refrescarPanel() {
+    var p = $("panel"), a = document.activeElement;
+    if (p.contains(a) && /INPUT|TEXTAREA|SELECT/.test(a.tagName) && a.type !== "checkbox") { return; }
+    construirPanel();
+  }
+  function construirPanel() {
+    var t = tarjetas[abierta], p = $("panel"); if (!t) { return; }
+    var ed = modo === "vivo" && puedeEscribir;
     var tipo = tipoDe(t);
-    var cerrarBtn = el("button", { cls: "btn", type: "button", text: "Cerrar", "aria-label": "Cerrar la tarjeta", onclick: function () { cerrar(); } });
+    p.textContent = "";
+    var tituloEl;
+    if (ed) {
+      tituloEl = el("input", { id: "p-title", type: "text", value: t.titulo, "aria-label": "Título de la tarjeta", style: "font-size:18px;font-weight:600" });
+      tituloEl.addEventListener("change", function () { var v = tituloEl.value.trim(); if (v !== t.titulo && !cambiar(t.id, { titulo: v }, null)) { tituloEl.value = t.titulo; } });
+    } else { tituloEl = el("h2", { id: "p-title", tabindex: "-1", text: t.titulo }); }
     p.appendChild(el("div", { cls: "phead" }, [el("div", { cls: "grow" }, [
-      el("div", { cls: "row", style: "display:flex;gap:6px;flex-wrap:wrap" }, [el("span", { cls: "chip id", text: t.id }), el("span", { cls: "chip k-" + t.tipo, text: tipo.nombre }), el("span", { cls: "chip", text: nombreCol(t.columna) })]),
-      el("h2", { id: "p-title", tabindex: "-1", text: t.titulo })]), cerrarBtn]));
+      el("div", { cls: "row", style: "display:flex;gap:6px;flex-wrap:wrap" }, [
+        el("span", { cls: "chip id", text: /^T\d{2}$/.test(t.id) ? t.id : "nueva" }), el("span", { cls: "chip k-" + t.tipo, text: tipo.nombre }),
+        el("span", { cls: "chip", text: nombreCol(t.columna) }),
+        modo === "vivo" && t.editadaEnKanban ? el("span", { cls: "chip sync", text: "sin sincronizar" }) : null]),
+      tituloEl]), el("button", { cls: "btn", type: "button", text: "Cerrar", "aria-label": "Cerrar la tarjeta", onclick: function () { cerrar(); } })]));
 
-    var campos = [campo("Columna", nombreCol(t.columna)), campo("Dueño", t.dueno)];
-    if (t.esperaA) { campos.push(campo("Espera a", t.esperaA)); }
-    if (t.fecha) { campos.push(campo("Fecha", fecha(t.fecha))); }
-    if (t.dependencias.length) {
-      campos.push(campo("Depende de", t.dependencias.map(function (d) {
-        var hecha = porId[d] && porId[d].columna === "hecho";
-        return el("button", { type: "button", cls: "chip depbtn " + (hecha ? "ok" : "wait"), title: porId[d] ? porId[d].titulo : d, text: d + (hecha ? " hecha" : ""), onclick: function () { abrir(d); } });
-      })));
+    if (t.rechazoSincronizacion) { p.appendChild(el("div", { cls: "chip bad", text: "La última sincronización no aplicó este cambio: " + t.rechazoSincronizacion })); }
+
+    if (ed) {
+      var colSel = el("select", { id: "p-col" });
+      meta.columnas.forEach(function (c) { var o = el("option", { value: c.id, text: c.nombre }); if (c.id === t.columna) { o.selected = true; } colSel.appendChild(o); });
+      colSel.addEventListener("change", function () { var v = colSel.value; colSel.value = t.columna; mover(t.id, v, null); });
+      var duenoSel = el("select", { id: "p-dueno" });
+      meta.duenos.forEach(function (d) { var o = el("option", { value: d.nombre, text: d.nombre }); if (d.nombre === t.dueno) { o.selected = true; } duenoSel.appendChild(o); });
+      duenoSel.addEventListener("change", function () { if (!cambiar(t.id, { dueno: duenoSel.value }, "Dueño: " + duenoSel.value)) { duenoSel.value = t.dueno; } });
+      var texto = function (clave, etiqueta, tipoInput, ayuda) {
+        var inp = el("input", { id: "p-" + clave, type: tipoInput || "text", value: t[clave] || "" });
+        inp.addEventListener("change", function () { var v = inp.value.trim(); if (v === (t[clave] || "")) { return; } var c = {}; c[clave] = v; if (!cambiar(t.id, c, null)) { inp.value = t[clave] || ""; } });
+        return el("label", { "for": "p-" + clave }, [etiqueta, inp, ayuda ? el("span", { cls: "hint", text: ayuda }) : null]);
+      };
+      p.appendChild(el("div", { cls: "fields" }, [
+        el("label", { "for": "p-col" }, ["Columna", colSel]),
+        el("label", { "for": "p-dueno" }, ["Dueño", duenoSel]),
+        texto("dependeDe", "Depende de", "text", "Por ejemplo: T02, T05 a T07"),
+        texto("esperaA", "Espera a"),
+        texto("fecha", "Fecha", "date")
+      ]));
+    } else {
+      var campos = [campo("Columna", nombreCol(t.columna)), campo("Dueño", t.dueno)];
+      if (t.esperaA) { campos.push(campo("Espera a", t.esperaA)); }
+      if (t.fecha) { campos.push(campo("Fecha", fecha(t.fecha))); }
+      p.appendChild(el("dl", { cls: "fields" }, campos));
     }
-    p.appendChild(el("dl", { cls: "fields" }, campos));
-
-    if (t.etapas.length) { p.appendChild(seccion("Etapas", casillas(t.etapas))); }
-    if (t.lista.length) { p.appendChild(seccion("Lista", casillas(t.lista))); }
-    if (t.notas.length) {
+    var deps = expandir(t.dependeDe);
+    if (deps.length) {
+      p.appendChild(seccion("Depende de", el("div", { cls: "row", style: "display:flex;gap:6px;flex-wrap:wrap" }, deps.map(function (d) {
+        var hecha = tarjetas[d] && tarjetas[d].columna === "hecho";
+        return el("button", { type: "button", cls: "chip depbtn " + (hecha ? "ok" : "wait"), title: tarjetas[d] ? tarjetas[d].titulo : d, text: d + (hecha ? " hecha" : ""), onclick: function () { abrir(d); } });
+      }))));
+    }
+    if ((t.etapas || []).length) { p.appendChild(seccion("Etapas", casillas(t, "etapas", ed))); }
+    var lista = seccion("Lista", (t.lista || []).length ? casillas(t, "lista", ed) : el("div", { cls: "who", text: "Sin ítems." }));
+    if (ed) {
+      var nuevoItem = el("input", { type: "text", id: "p-lista-nuevo", placeholder: "Sumar un ítem", "aria-label": "Ítem nuevo de la lista" });
+      var sumarItem = function () { var v = nuevoItem.value.trim(); if (!v) { return; } var l = copiar(t.lista || []); l.push({ texto: v, hecho: false }); if (cambiar(t.id, { lista: l }, null)) { nuevoItem.value = ""; } };
+      nuevoItem.addEventListener("keydown", function (e) { if (e.key === "Enter") { sumarItem(); } });
+      lista.appendChild(el("div", { cls: "inline" }, [nuevoItem, el("button", { cls: "btn", type: "button", text: "Sumar", onclick: sumarItem })]));
+    }
+    p.appendChild(lista);
+    if (ed) {
+      var area = el("textarea", { id: "p-notas", "aria-label": "Notas" });
+      area.value = (t.notas || []).join("\n\n");
+      area.addEventListener("change", function () {
+        var parrafos = area.value.split(/\n\s*\n/).map(function (x) { return x.split(/\s+/).join(" ").trim(); }).filter(Boolean);
+        var mal = parrafos.filter(function (x) { return RESERVADAS.indexOf(x) >= 0 || x.charAt(0) === "#"; });
+        if (mal.length) { toast("Un párrafo de las notas no puede ser \"Etapas:\", \"Lista:\", \"Registro:\" ni empezar con #."); return; }
+        if (JSON.stringify(parrafos) !== JSON.stringify(t.notas || [])) { if (!cambiar(t.id, { notas: parrafos }, null)) { area.value = (t.notas || []).join("\n\n"); } }
+      });
+      p.appendChild(seccion("Notas", el("div", {}, [area, el("div", { cls: "hint", text: "Un párrafo por bloque, separados por una línea en blanco." })])));
+    } else if ((t.notas || []).length) {
       var notas = el("div", { cls: "notes" });
       t.notas.forEach(function (n) { var par = el("p"); par.appendChild(enLinea(n)); notas.appendChild(par); });
       p.appendChild(seccion("Notas", notas));
     }
-    if (t.detalle.length) {
+    if ((t.detalle || []).length) {
       var refs = el("ul", { cls: "refs" });
-      t.detalle.forEach(function (d) { refs.appendChild(el("li", {}, [el("a", { href: d.url, target: "_blank", rel: "noopener noreferrer", text: d.texto })])); });
+      t.detalle.forEach(function (d) { refs.appendChild(el("li", {}, [el("a", { href: urlDe(d.ruta), target: "_blank", rel: "noopener noreferrer", text: d.texto })])); });
       p.appendChild(seccion("Dónde está el detalle", refs));
     }
     var log = el("ul", { cls: "log" });
-    t.registro.slice().reverse().forEach(function (r) { var tx = el("span"); tx.appendChild(enLinea(r.texto)); log.appendChild(el("li", {}, [el("span", { cls: "d", text: fecha(r.fecha) }), tx])); });
-    p.appendChild(seccion("Registro", log));
-    p.appendChild(el("div", { cls: "pfoot" }, ["Esta tarjeta es el bloque ", el("code", { text: "### " + t.id }), " de ", el("a", { href: D.meta.tablero, target: "_blank", rel: "noopener noreferrer", text: "tablero.md" }), ". Para cambiarla se edita ese bloque y se vuelve a generar la página."]));
-
-    $("overlay").hidden = false;
-    $("p-title").focus();
-    if (!sinHash && location.hash !== "#" + id) { try { location.hash = id; } catch (e) { /* sin hash */ } }
+    (t.registro || []).slice().reverse().forEach(function (r) { var tx = el("span"); tx.appendChild(enLinea(r.texto)); log.appendChild(el("li", {}, [el("span", { cls: "d", text: fecha(r.fecha) }), tx])); });
+    var registro = seccion("Registro", log);
+    if (ed) {
+      var nuevaEntrada = el("input", { type: "text", id: "p-registro-nuevo", placeholder: "¿Qué pasó?", "aria-label": "Anotación nueva" });
+      var anotar = function () { var v = nuevaEntrada.value.trim(); if (!v) { return; } if (cambiar(t.id, {}, v)) { nuevaEntrada.value = ""; } };
+      nuevaEntrada.addEventListener("keydown", function (e) { if (e.key === "Enter") { anotar(); } });
+      registro.appendChild(el("div", { cls: "inline" }, [nuevaEntrada, el("button", { cls: "btn", type: "button", text: "Anotar", onclick: anotar })]));
+    }
+    p.appendChild(registro);
+    p.appendChild(el("div", { cls: "pfoot" }, ed
+      ? [el("span", { cls: "saved", "aria-live": "polite" }), " Los cambios pasan a ", el("a", { href: meta.tablero, target: "_blank", rel: "noopener noreferrer", text: "tablero.md" }), " en la próxima sincronización."]
+      : ["Esta tarjeta es el bloque ", el("code", { text: "### " + t.id }), " de ", el("a", { href: meta.tablero, target: "_blank", rel: "noopener noreferrer", text: "tablero.md" }), "."]));
   }
-
   function cerrar(sinHash) {
     abierta = null;
     $("overlay").hidden = true;
@@ -427,21 +705,39 @@
     if (!sinHash && location.hash) { try { history.replaceState(null, "", location.pathname + location.search); } catch (e) { /* sin historial */ } }
     var c = document.querySelector('.card[data-id="' + (abrir.ultima || "") + '"]'); if (c) { c.focus(); }
   }
-
   function seguirHash() {
-    var m = /^#(T\d{2})$/.exec(location.hash);
-    if (m && porId[m[1]]) { if (abierta !== m[1]) { abrir(m[1], true); } }
+    var m = /^#([A-Za-z0-9-]+)$/.exec(location.hash);
+    if (m && tarjetas[m[1]]) { if (abierta !== m[1]) { abrir(m[1], true); } }
     else if (abierta) { cerrar(true); }
   }
-
   $("overlay").addEventListener("click", function (e) { if (e.target === $("overlay")) { cerrar(); } });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && abierta) { cerrar(); } });
   window.addEventListener("hashchange", seguirHash);
 
-  renderFiltros();
-  render();
-  renderPie();
-  seguirHash();
+  // ---------- arranque: primero la copia, después la base si está
+  renderFiltros(); render(); renderPie(); seguirHash();
+  (async function enVivo() {
+    if (!window.claude || typeof window.claude.use !== "function") { return; }
+    var base = null;
+    try { base = await window.claude.use("db"); } catch (e) { base = null; }
+    if (!base) { return; }
+    var usuario = null, puede = null;
+    try { usuario = await window.claude.use("user"); } catch (e) { usuario = null; }
+    try { puede = usuario ? await usuario.can("data.write") : null; } catch (e) { puede = null; }
+    db = base;
+    var reloj = setTimeout(function () { toast("La base del kanban no respondió: se muestra la copia del repositorio."); }, 10000);
+    db.doc("meta/tablero").onSnapshot(function (d) {
+      if (d.exists) { var m = d.data(); if (m && m.columnas && m.tipos && m.duenos) { meta = m; } renderFiltros(); render(); }
+    }, function () {});
+    db.collection("tarjetas").onSnapshot(function (snap) {
+      clearTimeout(reloj);
+      var sig = {};
+      snap.docs.forEach(function (d) { if (d.exists) { sig[d.id] = Object.assign({ id: d.id }, d.data()); } });
+      if (!Object.keys(sig).length) { $("rw").textContent = "En vivo, sin datos todavía: se muestra la copia"; return; }
+      tarjetas = sig; modo = "vivo"; puedeEscribir = puede !== false;
+      render();
+    }, function () { clearTimeout(reloj); toast("El kanban dejó de actualizarse. Recargá la página."); });
+  })();
 })();
 </script>
 </body>

@@ -5,8 +5,9 @@ Controla, sobre todo el repositorio:
 
 1. Que ningun archivo de texto tenga guiones largos (regla 7).
 2. Que los enlaces relativos de los Markdown apunten a archivos que existen.
-3. Que tablero.md respete su formato y sus reglas (regla 8): ver
-   herramientas/tablero_md.py.
+3. Que tablero.md respete su formato y sus reglas (regla 8), y que esté en
+   formato canónico: leerlo y volver a escribirlo da el mismo archivo, que es
+   lo que necesita la sincronización con el kanban. Ver herramientas/tablero_md.py.
 4. Que kanban/index.html sea exactamente lo que genera tablero.md
    (adrs/0001-tablero-fuente-unica-kanban-generado.md).
 5. Que cada lámina SVG de docs/laminas/ sea exactamente lo que genera su
@@ -123,6 +124,11 @@ def verificar_tablero(errores):
     datos, de_formato = tablero_md.leer(tablero)
     errores.extend(de_formato)
     errores.extend(tablero_md.validar(datos))
+    if not de_formato:
+        intro, orden = tablero_md.intro_y_columnas(tablero)
+        canonico = tablero_md.serializar(intro, orden, datos["columnas"], datos["tipos"], datos["tarjetas"])
+        if canonico != tablero.read_text(encoding="utf-8"):
+            errores.append("tablero.md: no tiene el formato canónico de las tarjetas (ver herramientas/tablero_md.py, función bloque)")
     return tablero_md.ids(datos)
 
 

@@ -8,7 +8,7 @@ flowchart TD
     R --> AR[arranque/<br/>lo que lee una sesión nueva]
     R --> DO[docs/<br/>documentación técnica]
     R --> AD[adrs/<br/>decisiones]
-    R --> KA[kanban/<br/>vista generada del tablero]
+    R --> KA[kanban/<br/>copia del tablero y plantilla del kanban editable]
     R --> HE[herramientas/<br/>verificadores y generadores]
     R --> BP[banco-de-pruebas/<br/>formato, muestra y métricas]
     R --> OB[obsoletos/<br/>lo que sobra]
@@ -33,14 +33,17 @@ flowchart TD
 | [`arranque/mapa.md`](mapa.md) | Este archivo. |
 | [`arranque/glosario.md`](glosario.md) | Los términos técnicos. |
 | [`adrs/README.md`](../adrs/README.md) | Índice de los ADRs. |
-| [`adrs/0001-tablero-fuente-unica-kanban-generado.md`](../adrs/0001-tablero-fuente-unica-kanban-generado.md) | Por qué el tablero es la fuente y el kanban se genera. |
+| [`adrs/0001-tablero-fuente-unica-kanban-generado.md`](../adrs/0001-tablero-fuente-unica-kanban-generado.md) | Kanban generado de solo lectura; reemplazado por el 0009. |
+| [`adrs/0009-kanban-editable-sincronizado.md`](../adrs/0009-kanban-editable-sincronizado.md) | Kanban editable, sincronizado con el tablero por las sesiones. |
 | [`adrs/0002-orquestacion-por-mensajes.md`](../adrs/0002-orquestacion-por-mensajes.md) a [`0005`](../adrs/0005-presupuesto-por-corrida.md) | Orquestación por mensajes, stack, grados de evidencia y presupuesto por corrida (T05). |
 | [`adrs/0006-fuentes-de-la-version-0.md`](../adrs/0006-fuentes-de-la-version-0.md) | Qué fuentes entran en la versión 0 y cuál usa la primera rebanada (T10). |
 | [`adrs/0007-registro-del-banco-fuera-del-repositorio.md`](../adrs/0007-registro-del-banco-fuera-del-repositorio.md) y [`0008`](../adrs/0008-datos-personales.md) | Registro del banco de pruebas fuera del repositorio y datos personales (T06). |
 | [`kanban/plantilla.html`](../kanban/plantilla.html) | Diseño del kanban. Se edita a mano. |
-| [`kanban/index.html`](../kanban/index.html) | El kanban, generado desde el tablero. No se edita a mano. |
+| [`kanban/index.html`](../kanban/index.html) | Copia sin conexión del kanban, generada desde el tablero. Publicada con su base, es el kanban editable. No se edita a mano. |
 | [`herramientas/tablero_md.py`](../herramientas/tablero_md.py) | Lee y valida `tablero.md`. Lo usan el generador y el verificador. |
 | [`herramientas/generar_kanban.py`](../herramientas/generar_kanban.py) | Genera `kanban/index.html` desde `tablero.md`. |
+| [`herramientas/sincronizar_tablero.py`](../herramientas/sincronizar_tablero.py) | Sincroniza la base del kanban publicado con `tablero.md` (ADR 0009). |
+| [`herramientas/pruebas/`](../herramientas/pruebas/prueba_sincronizacion.py) | Pruebas de la sincronización y del kanban editable. |
 | [`herramientas/generar_laminas.py`](../herramientas/generar_laminas.py) | Genera cada lámina SVG desde su fuente JSON. |
 | [`herramientas/verificar_docs.py`](../herramientas/verificar_docs.py) | Verificador: guiones largos, enlaces relativos, reglas del tablero, kanban y láminas al día, y referencias a tarjetas y decisiones. |
 | [`docs/arquitectura.md`](../docs/arquitectura.md) | La arquitectura de la versión 0: lámina, agentes, una noche paso a paso, fallas y despliegue (T02). |

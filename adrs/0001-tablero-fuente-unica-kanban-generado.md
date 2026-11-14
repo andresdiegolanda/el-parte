@@ -1,6 +1,6 @@
 # 0001. El tablero en Markdown es la fuente única y el kanban se genera desde él
 
-- Estado: propuesto
+- Estado: reemplazado por [0009](0009-kanban-editable-sincronizado.md)
 - Fecha: 2026-11-07
 
 ## Contexto
