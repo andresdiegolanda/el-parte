@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabeza('Sala de máquinas')}"></head>
+<body>
+<header th:replace="~{fragmentos :: menu}"></header>
+<main>
+    <h1>Sala de máquinas</h1>
+    <p class="sub">Cada corrida, con sus mensajes, su costo y cómo terminó.</p>
+
+    <div class="tarjeta">
+        <form class="fila" method="post" action="/corridas">
+            <input type="hidden" name="modo" value="normal">
+            <label>Correr la noche del <input type="date" name="fecha" th:value="${ayer}"></label>
+            <button type="submit">Correr</button>
+        </form>
+        <form class="fila" method="post" action="/corridas">
+            <input type="hidden" name="modo" value="reproduccion">
+            <label>Repetir sin red ni costo la corrida
+                <select name="original">
+                    <option th:each="c : ${corridas}" th:if="${c.modo == 'normal' and c.estado != 'en_curso'}"
+                            th:value="${c.id}" th:text="${c.id}"></option>
+                </select></label>
+            <button type="submit">Repetir</button>
+        </form>
+    </div>
+
+    <p th:if="${corridas.isEmpty()}" class="vacio">Todavía no hay corridas.</p>
+    <table th:if="${!corridas.isEmpty()}">
+        <tr><th>Corrida</th><th>Modo</th><th>Noche</th><th>Estado</th><th>Empezó</th><th>Terminó</th><th>Mensajes</th><th>Costo (USD)</th></tr>
+        <tr th:each="c : ${corridas}">
+            <td><a th:href="@{/corridas/{id}(id=${c.id})}" th:text="${c.id}"></a></td>
+            <td th:text="${c.modo}"></td>
+            <td th:text="${c.fecha}"></td>
+            <td th:text="${c.estado} + (${c.limite} != null ? ' (' + ${c.limite} + ')' : '')"></td>
+            <td th:text="${c.iniciada}"></td>
+            <td th:text="${c.terminada}"></td>
+            <td th:text="${c.mensajes}"></td>
+            <td th:text="${#numbers.formatDecimal(c.costo, 1, 4, 'POINT')}"></td>
+        </tr>
+    </table>
+</main>
+</body>
+</html>

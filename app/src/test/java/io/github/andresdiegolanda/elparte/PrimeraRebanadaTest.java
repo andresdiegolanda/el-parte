@@ -1,0 +1,199 @@
+package io.github.andresdiegolanda.elparte;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.core.simple.JdbcClient;
+
+import io.github.andresdiegolanda.elparte.corrida.ComparacionDeCorridas;
+import io.github.andresdiegolanda.elparte.fuentes.arce.ArceDePrueba;
+import io.github.andresdiegolanda.elparte.corrida.InicioDeCorrida;
+import io.github.andresdiegolanda.elparte.mensajes.Contenidos.CandidatoCotejado;
+import io.github.andresdiegolanda.elparte.mensajes.Contenidos.CandidatoGraduado;
+import io.github.andresdiegolanda.elparte.mensajes.Contenidos.CorridaTerminada;
+import io.github.andresdiegolanda.elparte.mensajes.Contenidos.ExploracionTerminada;
+import io.github.andresdiegolanda.elparte.mensajes.Contenidos.UsoModelo;
+import io.github.andresdiegolanda.elparte.mensajes.RegistroDeMensajes;
+import io.github.andresdiegolanda.elparte.mensajes.Sobre;
+import io.github.andresdiegolanda.elparte.mensajes.Tipos;
+
+/**
+ * La primera rebanada de punta a punta, con el ARCE y el modelo de mentira (docs/plan.md, fin de
+ * semana 2): una noche normal, su repetición sin red ni costo, y la misma noche corrida otra vez.
+ */
+class PrimeraRebanadaTest extends ConServicios {
+
+    @Autowired
+    InicioDeCorrida inicio;
+    @Autowired
+    RegistroDeMensajes registro;
+    @Autowired
+    ComparacionDeCorridas comparacion;
+    @Autowired
+    ModeloDePrueba modelo;
+    @Autowired
+    JdbcClient jdbc;
+    @Value("${local.server.port}")
+    int puerto;
+
+    private final HttpClient web = HttpClient.newHttpClient();
+
+    @Test
+    void unaNocheSuRepeticionYLaMismaNocheOtraVez() throws Exception {
+        // 1. Una noche normal.
+        String original = inicio.iniciarNormal(LocalDate.parse(ArceDePrueba.NOCHE));
+        assertThat(esperarFin(original)).isEqualTo("completa");
+
+        ExploracionTerminada exploracion = unico(original, Tipos.EXPLORACION_TERMINADA, ExploracionTerminada.class);
+        assertThat(exploracion).isEqualTo(new ExploracionTerminada("arce", 5, 3, 1));
+        assertThat(registro.deCorridaYTipo(original, Tipos.FUENTE_FALLIDA)).hasSize(1)
+                .first().satisfies(s -> assertThat(s.contenido().path("url").asString()).endsWith("/release/llamado-1200006"));
+
+        Map<String, String> grados = registro.deCorridaYTipo(original, Tipos.CANDIDATOS_GRADUADOS).stream()
+                .map(s -> registro.contenido(s, CandidatoGraduado.class))
+                .collect(Collectors.toMap(CandidatoGraduado::claveDeHecho, CandidatoGraduado::grado));
+        assertThat(grados).containsOnly(
+                Map.entry("arce:ocds-yfs5dr-1200001:llamado", "PROVEN"),
+                Map.entry("arce:ocds-yfs5dr-1200002:adjudicacion", "PROVEN"),
+                Map.entry("arce:ocds-yfs5dr-1200004:aclaracion", "INFERRED"));
+
+        List<UsoModelo> usos = usos(original);
+        assertThat(usos).hasSize(3).allSatisfy(uso -> {
+            assertThat(uso.agenteQueLlama()).isEqualTo("refutador");
+            assertThat(uso.modelo()).isEqualTo("claude-sonnet-5-5");
+            assertThat(uso.resultado()).isEqualTo("hecha");
+        });
+        assertThat(modelo.modelosPedidos()).containsOnly("claude-sonnet-5-5");
+        CorridaTerminada terminada = unico(original, Tipos.CORRIDA_TERMINADA, CorridaTerminada.class);
+        assertThat(terminada.costoUsd()).isEqualByComparingTo(new BigDecimal("0.012"));
+        assertThat(terminada.conteos()).containsEntry("candidatos", 3).containsEntry("nuevos", 3)
+                .containsEntry("PROVEN", 2).containsEntry("INFERRED", 1).containsEntry("sinProcesar", 1);
+
+        // Lo que quedó en la base: tres hechos, la aclaración a revisar y fuera de la noche leída.
+        assertThat(contar("select count(*) from parte.hechos")).isEqualTo(3);
+        assertThat(contar("select count(*) from parte.versiones_de_hecho")).isEqualTo(3);
+        assertThat(jdbc.sql("""
+                select v.estado_revision || ' ' || v.fecha_confirmada from parte.versiones_de_hecho v
+                join parte.hechos h on h.id = v.hecho_id where h.tipo_de_hecho = 'aclaracion'
+                """).query(String.class).single()).isEqualTo("pendiente false");
+        assertThat(contar("select count(*) from parte.entidades where id = 'persona_juridica:uy-rut-210000000019'")).isEqualTo(1);
+        assertThat(contar("select count(*) from parte.entidades where id like '%110000000012%'")).isZero();
+        assertThat(jdbc.sql("""
+                select count(*) from parte.informes i join parte.informe_hechos ih on ih.informe_id = i.id
+                where i.corrida_id = :c and not i.sin_novedades
+                """).param("c", original).query(Long.class).single()).isEqualTo(3);
+
+        // Ningún dato personal llegó a los mensajes, a las grabaciones ni a la base (ADR 0008).
+        for (String tabla : List.of("parte.mensajes", "parte.grabaciones")) {
+            assertThat(contar("select count(*) from " + tabla + " t where t.contenido::text ~ 'Fulana|Mengano|ejemplo\\.invalid|110000000012'"))
+                    .as(tabla).isZero();
+        }
+        assertThat(contar("""
+                select count(*) from parte.versiones_de_hecho v join parte.evidencias e on e.version_id = v.id
+                where v.afirmacion ~ 'Fulana|Mengano' or e.fragmento ~ 'Fulana|Mengano'
+                """)).isZero();
+
+        // 2. La misma corrida repetida: sin red, sin modelo, mensajes idénticos, y la base no cambia.
+        int pedidosAArce = ARCE.pedidos();
+        int llamadasAlModelo = modelo.llamadas();
+        String repeticion = inicio.iniciarReproduccion(original);
+        assertThat(esperarFin(repeticion)).isEqualTo("completa");
+
+        ComparacionDeCorridas.Resultado resultado = esperar(() -> comparacion.comparar(original, repeticion),
+                ComparacionDeCorridas.Resultado::iguales);
+        assertThat(resultado.iguales()).as("diferencias: %s / %s", resultado.soloEnOriginal(), resultado.soloEnRepeticion())
+                .isTrue();
+        assertThat(ARCE.pedidos()).isEqualTo(pedidosAArce);
+        assertThat(modelo.llamadas()).isEqualTo(llamadasAlModelo);
+        assertThat(usos(repeticion)).hasSize(3).allSatisfy(uso -> assertThat(uso.resultado()).isEqualTo("reproducida"));
+        assertThat(contar("select count(*) from parte.versiones_de_hecho")).isEqualTo(3);
+        assertThat(contar("select count(*) from parte.informes")).isEqualTo(1);
+
+        // 3. Las páginas.
+        String manana = pagina("/manana");
+        assertThat(manana).contains("Banco de Previsión Social publicó el llamado Compra Directa 900/2026",
+                "PROVEN", "INFERRED", "pendiente de revisión", "ARCE lo publicó con atraso",
+                "https://www.comprasestatales.gub.uy/ocds/release/llamado-1200001",
+                "lectura de la fuente falló", "puede faltar algo");
+        assertThat(manana).doesNotContain("Fulana");
+        assertThat(pagina("/corridas")).contains(original, repeticion);
+        assertThat(pagina("/corridas/" + original)).contains("k-arce-0001", "k-arce-0003", "fuente.fallida", "refutador");
+        assertThat(pagina("/corridas/" + repeticion)).contains("Los mensajes son idénticos");
+
+        // 4. La misma noche otra vez: el archivista ya conoce los tres hechos, y no se llama al modelo.
+        String otraVez = inicio.iniciarNormal(LocalDate.parse(ArceDePrueba.NOCHE));
+        assertThat(otraVez).isNotEqualTo(original);
+        assertThat(esperarFin(otraVez)).isEqualTo("completa");
+        assertThat(registro.deCorridaYTipo(otraVez, Tipos.CANDIDATOS_COTEJADOS)).hasSize(3)
+                .allSatisfy(s -> assertThat(registro.contenido(s, CandidatoCotejado.class).estado()).isEqualTo("conocido"));
+        assertThat(modelo.llamadas()).isEqualTo(llamadasAlModelo);
+        assertThat(contar("select count(*) from parte.versiones_de_hecho")).isEqualTo(3);
+        assertThat(jdbc.sql("select sin_novedades from parte.informes where corrida_id = :c").param("c", otraVez)
+                .query(Boolean.class).single()).isTrue();
+    }
+
+    private String esperarFin(String corridaId) {
+        return esperar(() -> jdbc.sql("select estado from parte.corridas where id = :id").param("id", corridaId)
+                .query(String.class).single(), estado -> !"en_curso".equals(estado));
+    }
+
+    private static <T> T esperar(Supplier<T> valor, java.util.function.Predicate<T> listo) {
+        Instant limite = Instant.now().plus(Duration.ofSeconds(120));
+        T actual = valor.get();
+        while (!listo.test(actual) && Instant.now().isBefore(limite)) {
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+            actual = valor.get();
+        }
+        return actual;
+    }
+
+    private <T> T unico(String corridaId, String tipo, Class<T> clase) {
+        List<Sobre> sobres = registro.deCorridaYTipo(corridaId, tipo);
+        assertThat(sobres).as(tipo).hasSize(1);
+        return registro.contenido(sobres.getFirst(), clase);
+    }
+
+    private List<UsoModelo> usos(String corridaId) {
+        return registro.deCorridaYTipo(corridaId, Tipos.USO_MODELO).stream()
+                .map(s -> registro.contenido(s, UsoModelo.class)).toList();
+    }
+
+    private long contar(String sql) {
+        return jdbc.sql(sql).query(Long.class).single();
+    }
+
+    private String pagina(String ruta) throws IOException, InterruptedException {
+        HttpResponse<String> respuesta = web.send(
+                HttpRequest.newBuilder(URI.create("http://127.0.0.1:" + puerto + ruta)).build(),
+                HttpResponse.BodyHandlers.ofString());
+        assertThat(respuesta.statusCode()).as(ruta).isEqualTo(200);
+        // Una copia para mirarla en un navegador: target/paginas/.
+        Path copia = Path.of("target", "paginas", ruta.substring(1).replace('/', '_') + ".html");
+        Files.createDirectories(copia.getParent());
+        Files.writeString(copia, respuesta.body());
+        return respuesta.body();
+    }
+}

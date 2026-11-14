@@ -19,6 +19,9 @@ Controla, sobre todo el repositorio:
    (el programa mmdc), que se busca en la variable de entorno MMDC o en el PATH.
    Si no está, avisa y no falla, salvo que EXIGIR_MERMAID=1. Los diagramas que
    ya pasaron se guardan por su hash en tmp/mermaid-verificados.txt.
+9. Que la primera migración de la base (app/.../db/migration/V1__base.sql) sea,
+   aparte de su encabezado de comentarios, el primer bloque SQL de
+   docs/base-de-afirmaciones.md: el documento manda.
 
 Uso:  python3 herramientas/verificar_docs.py
 Sale con codigo 0 si todo esta bien y 1 si encuentra algun problema.
@@ -152,6 +155,27 @@ def verificar_laminas(errores):
             errores.append(f"{svg.relative_to(RAIZ)}: lámina sin fuente JSON (las láminas no se dibujan a mano)")
 
 
+DOC_DE_LA_BASE = Path("docs/base-de-afirmaciones.md")
+PRIMERA_MIGRACION = Path("app/src/main/resources/db/migration/V1__base.sql")
+BLOQUE_SQL = re.compile(r"^```sql\n(.*?)^```", re.S | re.M)
+
+
+def verificar_migracion(errores):
+    migracion = RAIZ / PRIMERA_MIGRACION
+    if not migracion.exists():
+        return
+    bloques = BLOQUE_SQL.findall(leer_texto(RAIZ / DOC_DE_LA_BASE))
+    if not bloques:
+        errores.append(f"{DOC_DE_LA_BASE}: no tiene el bloque SQL de las tablas")
+        return
+    lineas = leer_texto(migracion).splitlines()
+    while lineas and (lineas[0].startswith("--") or not lineas[0].strip()):
+        lineas.pop(0)
+    if "\n".join(lineas).strip() != bloques[0].strip():
+        errores.append(f"{PRIMERA_MIGRACION}: no coincide con el primer bloque SQL de {DOC_DE_LA_BASE}; "
+                       "se cambia el documento y se vuelve a copiar el bloque")
+
+
 def bloques_mermaid(texto):
     """Devuelve (linea, contenido) de cada bloque ```mermaid del texto."""
     bloques, actual, inicio = [], None, 0
@@ -234,6 +258,7 @@ def main():
     verificar_laminas(errores)
     verificar_mermaid(markdowns, errores, avisos)
     verificar_referencias(markdowns, ids, decisiones_definidas(), errores)
+    verificar_migracion(errores)
 
     for aviso in avisos:
         print(f"Aviso: {aviso}")

@@ -1,6 +1,6 @@
 # 0003. Elección del stack
 
-- Estado: aceptado
+- Estado: aceptado; la sección "Respuestas grabadas del modelo" la reemplaza el [ADR 0011](0011-grabacion-y-repeticion-de-corridas.md)
 - Fecha: 2026-11-07
 
 ## Contexto

@@ -2,6 +2,7 @@ package io.github.andresdiegolanda.elparte;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * El Parte: agentes orquestados que leen fuentes públicas del Estado uruguayo
@@ -11,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * su consumidor de Kafka; la frontera entre ellos es el tópico (ADR 0002).
  */
 @SpringBootApplication
+@EnableScheduling
 public class ElParteAplicacion {
 
     public static void main(String[] args) {

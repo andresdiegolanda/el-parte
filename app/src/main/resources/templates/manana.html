@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabeza('Página de la mañana')}"></head>
+<body>
+<header th:replace="~{fragmentos :: menu}"></header>
+<main>
+    <h1>Página de la mañana</h1>
+    <p class="sub">Cuenta de demostración. Sigue a: <span th:text="${#strings.listJoin(seguidas, ', ')}">Banco de Previsión Social</span>.</p>
+
+    <div th:if="${informe == null}" class="tarjeta vacio">
+        Todavía no corrió ninguna noche. Se corre desde la <a href="/corridas">sala de máquinas</a>.
+    </div>
+
+    <th:block th:if="${informe != null}">
+        <p>Noche del <strong th:text="${informe.fecha}">2026-11-12</strong>,
+            corrida <a th:href="@{/corridas/{id}(id=${informe.corridaId})}" th:text="${informe.corridaId}">c-...</a>.
+            <span th:if="${informe.corridaCortada}" class="marca">La corrida se cortó antes de terminar: puede faltar algo.</span></p>
+
+        <div th:if="${fallas > 0}" class="tarjeta marca">
+            Esta noche no se pudo leer todo: <span th:text="${fallas}">1</span>
+            <span th:text="${fallas == 1} ? 'lectura de la fuente falló' : 'lecturas de la fuente fallaron'"></span>, así que puede faltar algo.
+            El detalle está en la <a th:href="@{/corridas/{id}(id=${informe.corridaId})}">sala de máquinas</a>.
+        </div>
+
+        <div th:if="${informe.sinNovedades and fallas == 0}" class="tarjeta">No hubo nada nuevo.</div>
+        <div th:if="${informe.sinNovedades and fallas > 0}" class="tarjeta vacio">No se encontró nada nuevo en lo que sí se pudo leer.</div>
+
+        <div th:each="h : ${hechos}" class="tarjeta">
+            <div>
+                <span class="grado" th:classappend="${h.grado}" th:text="${h.grado}">PROVEN</span>
+                <span class="sub" th:text="${h.tipo} + ' · versión ' + ${h.version}">adjudicacion · versión 1</span>
+                <span th:if="${h.estadoRevision == 'pendiente'}" class="marca">pendiente de revisión</span>
+            </div>
+            <p th:text="${h.afirmacion}">La afirmación.</p>
+            <p th:if="${h.razonamiento != null}" class="sub">Se deduce de: <span th:text="${h.razonamiento}"></span></p>
+            <p class="sub">Publicado el <span th:text="${#strings.replace(#strings.substring(h.fechaPublicacion, 0, 16), 'T', ' ')}"></span>
+                (hora de Uruguay<th:block th:if="${!h.fechaConfirmada}">; no es de la noche leída: ARCE lo publicó con atraso</th:block>).
+                <a th:href="@{/corridas/{id}(id=${informe.corridaId})} + '#' + ${h.mensajeCandidato}">Ver su traza en la sala de máquinas</a>.</p>
+            <div th:each="e : ${h.evidencias}" class="evidencia">
+                <span th:text="${e.fragmento}"></span>
+                · <a th:href="${e.url}" th:text="'fuente'">fuente</a>
+            </div>
+        </div>
+    </th:block>
+</main>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="cabeza(titulo)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${titulo} + ' · El Parte'">El Parte</title>
+    <style>
+        :root { --tinta: #1d2330; --suave: #5b6476; --linea: #dde1e8; --fondo: #f7f8fa; --azul: #1a5fb4;
+                --verde: #1f7a46; --ambar: #9a6700; --rojo: #a32424; }
+        body { font-family: system-ui, sans-serif; color: var(--tinta); background: #fff; margin: 0; line-height: 1.5; }
+        header { border-bottom: 1px solid var(--linea); padding: 0.75rem 1.5rem; display: flex; gap: 1.5rem; align-items: baseline; }
+        header strong { font-size: 1.15rem; }
+        header a { color: var(--suave); text-decoration: none; }
+        header a:hover { color: var(--azul); }
+        main { max-width: 64rem; margin: 0 auto; padding: 1.5rem; }
+        h1 { font-size: 1.5rem; margin: 0 0 0.25rem; }
+        .sub { color: var(--suave); margin-top: 0; }
+        a { color: var(--azul); }
+        table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+        th, td { text-align: left; padding: 0.4rem 0.5rem; border-bottom: 1px solid var(--linea); vertical-align: top; }
+        th { color: var(--suave); font-weight: 600; }
+        .tarjeta { border: 1px solid var(--linea); border-radius: 8px; padding: 1rem 1.25rem; margin: 0 0 1rem; background: #fff; }
+        .grado { display: inline-block; font-size: 0.75rem; font-weight: 700; padding: 0.1rem 0.45rem; border-radius: 4px; letter-spacing: 0.02em; }
+        .PROVEN { background: #e3f4ea; color: var(--verde); }
+        .INFERRED { background: #fdf1d8; color: var(--ambar); }
+        .NOT_MENTIONED { background: #f8e3e3; color: var(--rojo); }
+        .marca { font-size: 0.8rem; color: var(--ambar); font-weight: 600; }
+        .evidencia { font-family: ui-monospace, monospace; font-size: 0.8rem; color: var(--suave); background: var(--fondo); padding: 0.4rem 0.6rem; border-radius: 4px; word-break: break-word; }
+        details { margin: 0.25rem 0; }
+        summary { cursor: pointer; }
+        pre { background: var(--fondo); padding: 0.6rem; border-radius: 4px; font-size: 0.78rem; overflow-x: auto; }
+        .vacio { color: var(--suave); font-style: italic; }
+        form.fila { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; margin: 0.5rem 0; }
+        input, select, button { font: inherit; padding: 0.3rem 0.5rem; }
+        .ok { color: var(--verde); font-weight: 600; }
+        .mal { color: var(--rojo); font-weight: 600; }
+    </style>
+</head>
+<body>
+<header th:fragment="menu">
+    <strong>El Parte</strong>
+    <a href="/manana">Página de la mañana</a>
+    <a href="/corridas">Sala de máquinas</a>
+    <a href="/actuator/health">Estado</a>
+</header>
+</body>
+</html>

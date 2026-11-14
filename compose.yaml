@@ -10,7 +10,7 @@ services:
     environment:
       POSTGRES_DB: elparte
       POSTGRES_USER: elparte
-      POSTGRES_PASSWORD: ${BASE_CLAVE:-elparte}
+      POSTGRES_PASSWORD: ${BASE_DUENO_CLAVE:-elparte}
     ports:
       - "5432:5432"
     volumes:
@@ -61,12 +61,19 @@ services:
 
   aplicacion:
     build: ./app
+    # Las migraciones corren con el dueño de la base, y la aplicación con el rol de los agentes,
+    # que no ve el esquema de las cuentas. Las claves de los roles se fijan la primera vez que
+    # arranca la base; cambiarlas después no cambia las de los roles ya creados.
     environment:
       BASE_URL: jdbc:postgresql://base:5432/elparte
-      BASE_USUARIO: elparte
-      BASE_CLAVE: ${BASE_CLAVE:-elparte}
+      BASE_DUENO_USUARIO: elparte
+      BASE_DUENO_CLAVE: ${BASE_DUENO_CLAVE:-elparte}
+      BASE_USUARIO: elparte_agentes
+      BASE_CLAVE: ${BASE_CLAVE:-agentes-local}
+      BASE_CLAVE_CUENTAS: ${BASE_CLAVE_CUENTAS:-cuentas-local}
       KAFKA_SERVIDORES: kafka:19092
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-sin-clave}
+      ELPARTE_CORRIDA_CRON: ${ELPARTE_CORRIDA_CRON:--}
     ports:
       - "8080:8080"
     depends_on:

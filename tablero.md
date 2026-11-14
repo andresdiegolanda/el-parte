@@ -3,7 +3,7 @@
 Todo pendiente de El Parte vive acá, con dueño (regla 8). Este archivo es lo que manda. El kanban publicado es editable y se sincroniza con este archivo cada vez que una sesión de desarrollo lee o escribe el repositorio, o cuando se le pide; su copia sin conexión, [`kanban/index.html`](kanban/index.html), se genera desde acá con `python3 herramientas/generar_kanban.py` y no se edita a mano ([ADR 0009](adrs/0009-kanban-editable-sincronizado.md)).
 
 - Actualizado: 2026-11-14
-- Nota: Todos los ADRs están aceptados, e IMPO entra como quinta fuente (ADR 0010). La primera rebanada (T08) está para empezar; medirla contra el banco de pruebas espera el formato y la muestra (T12).
+- Nota: La primera rebanada (T08) anda de punta a punta y espera su medición contra el banco (T20), que a su vez espera el formato y la muestra del banco de pruebas (T12). El ADR 0011, sobre cómo se graban y se repiten las corridas, está aceptado (T31).
 - Calendario: 2026-11-07, 2026-11-14, 2026-11-21, 2026-11-28
 - Repositorio: https://github.com/andresdiegolanda/el-parte
 
@@ -80,40 +80,6 @@ Los campos van pegados al título, sin línea en blanco. Los que no aplican se o
 
 ## En curso
 
-### T08 · Construir la primera rebanada de punta a punta
-- Tipo: Componente
-- Dueño: desarrollo
-- Depende de: T02 a T07, T10, T14
-- Detalle: [arranque/proyecto.md](arranque/proyecto.md), [docs/fuentes/compras-estatales.md](docs/fuentes/compras-estatales.md)
-
-Chica y completa le gana a grande y a medias: una fuente, del explorador a la página de la mañana, con la sala de máquinas de esa corrida.
-
-Etapas:
-- [ ] Contrato
-- [ ] Código
-- [ ] Pruebas
-- [ ] Medido contra el banco
-- [ ] Página cómo se hizo
-
-Lista:
-- [x] Esqueleto: la aplicación, su imagen y Docker Compose
-- [ ] Explorador de ARCE, filtrando por el BPS como comprador antes de llamar al modelo
-- [ ] Zona horaria y publicaciones atrasadas de ARCE
-- [ ] Migraciones de la base a partir de docs/base-de-afirmaciones.md, con el reparto de permisos por esquema
-- [ ] Archivista
-- [ ] Refutador
-- [ ] Editor
-- [ ] Página de la mañana
-- [ ] Sala de máquinas de la corrida
-
-Registro:
-- 2026-11-07: Creada.
-- 2026-11-07: La fuente es ARCE (ADR 0006).
-- 2026-11-14: Pasa a Para empezar: T14 está hecha.
-- 2026-11-14: La etapa "Medido contra el banco" se tilda con la medición de T20.
-- 2026-11-14: Pasa a En curso: empieza por el esqueleto, la aplicación y Docker Compose.
-- 2026-11-14: Esqueleto hecho: la aplicación arranca en Docker Compose con PostgreSQL, Kafka y Mailpit, y su estado muestra la base y Kafka sanos. Ver app/README.md.
-
 ## Para empezar
 
 ### T12 · Escribir el formato, la muestra sintética y las métricas del banco de pruebas
@@ -140,6 +106,42 @@ Registro:
 - 2026-11-14: Pasa a Para empezar: T11 está hecha. Suma cómo contar los descartes, porque El Parte no filtra por tema.
 
 ## Esperando
+
+### T08 · Construir la primera rebanada de punta a punta
+- Tipo: Componente
+- Dueño: desarrollo
+- Depende de: T02 a T07, T10, T14
+- Espera a: la medición contra el banco de pruebas (T20), que tilda la etapa que falta
+- Detalle: [docs/como-se-hizo/primera-rebanada.md](docs/como-se-hizo/primera-rebanada.md), [app/README.md](app/README.md), [docs/fuentes/compras-estatales.md](docs/fuentes/compras-estatales.md)
+
+Chica y completa le gana a grande y a medias: una fuente, del explorador a la página de la mañana, con la sala de máquinas de esa corrida.
+
+Etapas:
+- [x] Contrato
+- [x] Código
+- [x] Pruebas
+- [ ] Medido contra el banco
+- [x] Página cómo se hizo
+
+Lista:
+- [x] Esqueleto: la aplicación, su imagen y Docker Compose
+- [x] Explorador de ARCE, filtrando por el BPS como comprador antes de llamar al modelo
+- [x] Zona horaria y publicaciones atrasadas de ARCE
+- [x] Migraciones de la base a partir de docs/base-de-afirmaciones.md, con el reparto de permisos por esquema
+- [x] Archivista
+- [x] Refutador
+- [x] Editor
+- [x] Página de la mañana
+- [x] Sala de máquinas de la corrida
+
+Registro:
+- 2026-11-07: Creada.
+- 2026-11-07: La fuente es ARCE (ADR 0006).
+- 2026-11-14: Pasa a Para empezar: T14 está hecha.
+- 2026-11-14: La etapa "Medido contra el banco" se tilda con la medición de T20.
+- 2026-11-14: Pasa a En curso: empieza por el esqueleto, la aplicación y Docker Compose.
+- 2026-11-14: Esqueleto hecho: la aplicación arranca en Docker Compose con PostgreSQL, Kafka y Mailpit, y su estado muestra la base y Kafka sanos. Ver app/README.md.
+- 2026-11-14: La rebanada anda de punta a punta: una noche de ARCE llega a la página de la mañana, con su traza en la sala de máquinas, y se repite sin red ni costo con los mismos mensajes. Diecisiete pruebas contra contenedores y una corrida en Docker Compose. Pasa a Esperando: falta medirla contra el banco (T20). La grabación de las corridas queda en un ADR propuesto, el 0011 (T31).
 
 ## Pendiente
 
@@ -345,6 +347,20 @@ Registro:
 - 2026-11-14: Creada con el ADR 0010.
 
 ## Hecho
+
+### T31 · Aceptar o corregir el ADR 0011
+- Tipo: Gestión
+- Dueño: Andrés
+- Detalle: [adrs/0011-grabacion-y-repeticion-de-corridas.md](adrs/0011-grabacion-y-repeticion-de-corridas.md)
+
+La primera rebanada graba en la base todo lo que una corrida lee de afuera, fuentes y modelo, y la repite desde ahí. Reemplaza la sección "Respuestas grabadas del modelo" del ADR 0003. Al aceptarlo, su estado pasa a "aceptado" en el archivo y en el índice, y el 0003 suma que esa sección quedó reemplazada.
+
+Lista:
+- [x] 0011: grabación y repetición de corridas
+
+Registro:
+- 2026-11-14: Creada con la primera rebanada (T08).
+- 2026-11-14: Aceptado el 0011, sin cambios. Pasa a Hecho.
 
 ### T18 · Pedir a IMPO que aclare si su JSON de normas se puede reutilizar
 - Tipo: Gestión

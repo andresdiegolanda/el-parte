@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabeza(${corrida.id})}"></head>
+<body>
+<header th:replace="~{fragmentos :: menu}"></header>
+<main>
+    <h1 th:text="${corrida.id}">c-2026-11-12-normal</h1>
+    <p class="sub">
+        Noche del <span th:text="${corrida.fecha}"></span> · modo <span th:text="${corrida.modo}"></span> ·
+        <strong th:text="${corrida.estado}"></strong><span th:if="${corrida.limite != null}" th:text="' por ' + ${corrida.limite}"></span> ·
+        empezó <span th:text="${corrida.iniciada}"></span><span th:if="${corrida.terminada != null}">, terminó <span th:text="${corrida.terminada}"></span></span>
+        (hora de Uruguay) · <span th:text="${corrida.mensajes}"></span> mensajes.
+        <span th:if="${corrida.estado == 'en_curso'}">Recargá la página para ver cómo avanza.</span>
+    </p>
+
+    <div th:if="${comparacion != null}" class="tarjeta">
+        <strong>Comparación con la corrida original.</strong>
+        <span th:if="${comparacion.iguales()}" class="ok">Los mensajes son idénticos</span>
+        <span th:if="${!comparacion.iguales()}" class="mal">Los mensajes no son idénticos</span>
+        (<span th:text="${comparacion.mensajesOriginal()}"></span> en la original, <span th:text="${comparacion.mensajesRepeticion()}"></span> en esta;
+        se comparan tipo, agente y contenido, sin identificadores, horas ni costos).
+        <details th:if="${!comparacion.iguales()}"><summary>Diferencias</summary>
+            <p>Solo en la original:</p><pre th:each="m : ${comparacion.soloEnOriginal()}" th:text="${m}"></pre>
+            <p>Solo en esta:</p><pre th:each="m : ${comparacion.soloEnRepeticion()}" th:text="${m}"></pre>
+        </details>
+    </div>
+
+    <div class="tarjeta">
+        <strong>Costo: <span th:text="${#numbers.formatDecimal(costoTotal, 1, 4, 'POINT')}"></span> USD</strong>
+        <span th:if="${costoPorAgente.isEmpty()}" class="vacio"> · sin llamadas al modelo</span>
+        <table th:if="${!costoPorAgente.isEmpty()}">
+            <tr><th>Agente</th><th>Llamadas</th><th>Costo (USD)</th></tr>
+            <tr th:each="a : ${costoPorAgente}">
+                <td th:text="${a.key}"></td>
+                <td th:text="${llamadasPorAgente.get(a.key)}"></td>
+                <td th:text="${#numbers.formatDecimal(a.value, 1, 4, 'POINT')}"></td>
+            </tr>
+        </table>
+        <p th:if="${iniciada != null}" class="sub">Modelos de esta corrida:
+            <span th:each="m, i : ${iniciada.modelos()}" th:text="${m.key} + ': ' + ${m.value} + (${i.last} ? '' : ', ')"></span>.</p>
+    </div>
+
+    <h2>Candidatos (<span th:text="${cadenas.size()}"></span>)</h2>
+    <p th:if="${cadenas.isEmpty()}" class="vacio">Ningún candidato todavía.</p>
+    <div th:each="c : ${cadenas}" class="tarjeta" th:id="${c.mensajeId()}">
+        <div><strong th:text="${c.candidatoId()}">k-arce-0001</strong> · <span th:text="${c.desenlace()}"></span></div>
+        <p th:text="${c.resumen()}"></p>
+        <details th:each="p : ${c.pasos()}" th:id="${p.mensajeId()}">
+            <summary><span th:text="${p.tipo()}"></span> · <span th:text="${p.agente()}"></span> · <span class="sub" th:text="${p.mensajeId()}"></span></summary>
+            <pre th:text="${p.contenido()}"></pre>
+        </details>
+    </div>
+
+    <h2>Lo demás de la corrida</h2>
+    <details th:each="p : ${otros}" th:id="${p.mensajeId()}">
+        <summary><span th:text="${p.tipo()}"></span> · <span th:text="${p.agente()}"></span> · <span class="sub" th:text="${p.emitidoEn()}"></span></summary>
+        <pre th:text="${p.contenido()}"></pre>
+    </details>
+</main>
+</body>
+</html>

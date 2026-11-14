@@ -4,10 +4,10 @@ El modelo de datos de El Parte en PostgreSQL 18 ([ADR 0003](../adrs/0003-eleccio
 
 ## Dos esquemas separados
 
-- **`parte`**: hechos, entidades, corridas, mensajes, suscripciones e informes, y los modelos y precios vigentes. Es la base de afirmaciones. No tiene ningún dato personal.
+- **`parte`**: hechos, entidades, corridas, mensajes, grabaciones, suscripciones e informes, y los modelos y precios vigentes. Es la base de afirmaciones. No tiene ningún dato personal.
 - **`cuentas`**: los correos de los usuarios y los tokens del login. Solo lo usa el módulo de login ([ADR 0008](../adrs/0008-datos-personales.md)).
 
-La aplicación se conecta con dos roles de base distintos: el de los agentes y la web no tiene permiso sobre `cuentas`, y el del login no tiene permiso sobre `parte`. [ASSUMED: el reparto de permisos por esquema se prueba al escribir las migraciones de la primera rebanada (T08)]
+La aplicación se conecta con dos roles de base distintos: el de los agentes y la web (`elparte_agentes`) no tiene permiso sobre `cuentas`, y el del login (`elparte_cuentas`) no tiene permiso sobre `parte`. Ninguno de los dos puede cambiar el esquema: las migraciones corren con el dueño de la base, que es quien crea los dos roles con las claves que le pasa la configuración. [PROVEN: prueba `PermisosDeLaBaseTest` contra `postgres:18.7`, 2026-11-14] Los agentes, el observador y la web corren con `elparte_agentes`, en las pruebas y en Docker Compose. [PROVEN: `PrimeraRebanadaTest` y una corrida en Docker Compose, 2026-11-14]
 
 ## Diagrama
 
@@ -27,6 +27,7 @@ erDiagram
     ENTIDADES ||--o{ SUSCRIPCIONES : "es seguida"
     CLIENTES ||--o{ INFORMES : recibe
     INFORMES ||--o{ INFORME_HECHOS : incluye
+    CORRIDAS ||--o{ GRABACIONES : graba
     VERSIONES_DE_HECHO ||--o{ INFORME_HECHOS : "aparece en"
     CLIENTES ||--o| USUARIOS : "cuentas: su correo"
 
@@ -66,7 +67,7 @@ erDiagram
 
 ## Las tablas
 
-El DDL de abajo es el modelo de la versión 0. Las migraciones de la primera rebanada (T08) parten de acá. Se probó entero contra PostgreSQL 18.6 el 2026-11-07, en un contenedor de la imagen oficial `postgres:18`: crea las tablas sin errores, la consulta de la página de la mañana corre, y una versión INFERRED sin razonamiento es rechazada por la base. [PROVEN: ejecución del bloque SQL y de una inserción de prueba, 2026-11-07] Las dos tablas de modelos y precios se sumaron el 2026-11-14 y se probaron igual: con ellas son 18, y la consulta del modelo vigente de cada agente corre. [PROVEN: ejecución del bloque SQL completo contra `postgres:18`, 2026-11-14]
+El DDL de abajo es el modelo de la versión 0. Las migraciones de la primera rebanada (T08) parten de acá. Se probó entero contra PostgreSQL 18.6 el 2026-11-07, en un contenedor de la imagen oficial `postgres:18`: crea las tablas sin errores, la consulta de la página de la mañana corre, y una versión INFERRED sin razonamiento es rechazada por la base. [PROVEN: ejecución del bloque SQL y de una inserción de prueba, 2026-11-07] Las dos tablas de modelos y precios se sumaron el 2026-11-14 y se probaron igual: con ellas son 18, y la consulta del modelo vigente de cada agente corre. [PROVEN: ejecución del bloque SQL completo contra `postgres:18`, 2026-11-14] La tabla de grabaciones se sumó con la primera rebanada, el mismo día: son 19. Desde entonces este bloque es la primera migración de la aplicación, [`app/src/main/resources/db/migration/V1__base.sql`](../app/src/main/resources/db/migration/V1__base.sql), que Flyway aplica sin errores contra `postgres:18.7`. [PROVEN: pruebas de la aplicación, 2026-11-14] El documento manda: el verificador falla si la migración no es igual a este bloque. Las otras dos migraciones crean los roles y cargan los datos iniciales (la fuente, el organismo del banco de pruebas, la cuenta de demostración, los modelos y los precios).
 
 ```sql
 create schema parte;
@@ -157,6 +158,17 @@ create table parte.mensajes_procesados (
     mensaje_id    text not null,
     procesado_en  timestamptz not null default now(),
     primary key (consumidor, mensaje_id)
+);
+
+-- Lo que se leyó de las fuentes y lo que respondió el modelo en cada corrida, ya enmascarado,
+-- para repetirla sin red ni costo (modo reproducción, docs/contratos.md).
+create table parte.grabaciones (
+    corrida_id   text not null references parte.corridas (id),
+    clave        text not null,                      -- qué se pidió, por ejemplo 'arce:publicacion:<id>'
+    tipo         text not null check (tipo in ('fuente', 'modelo')),
+    contenido    jsonb not null,
+    grabada_en   timestamptz not null default now(),
+    primary key (corrida_id, clave)
 );
 
 -- Hechos: la identidad. Su contenido está en las versiones.
@@ -260,13 +272,14 @@ Algunas decisiones que se ven en el DDL:
 - **Un INFERRED sin razonamiento no entra.** Lo impide una restricción de la tabla, no solo el código.
 - **La traza es parte de cada versión.** Cada versión apunta a los cuatro mensajes que la produjeron: candidato, cotejo, graduación y análisis. Desde ahí, siguiendo `causa_id`, se llega a la corrida.
 - **Los modelos y los precios no se pisan.** Un cambio es una fila nueva con su `desde`, así cada corrida se explica con los modelos y precios que regían. El modelo vigente de cada agente sale de `select distinct on (agente) agente, modelo from parte.modelos_de_agente order by agente, desde desc`. Que no se elija un modelo sin precio lo controlan la pantalla del responsable y el advisor de presupuesto, no la base.
+- **Las grabaciones guardan lo leído ya enmascarado.** Son la entrada de cada corrida, para repetirla sin red ni costo ([ADR 0011](../adrs/0011-grabacion-y-repeticion-de-corridas.md)). Pasan por el mismo enmascarado que los mensajes, así que tampoco tienen datos personales.
 - **`cuentas.usuarios` no tiene clave foránea hacia `parte.clientes`.** Los dos esquemas comparten el identificador, pero ninguno depende del otro, así se pueden separar en bases distintas si hace falta.
 
 ## Cómo salen las vistas
 
 | Vista | De dónde sale |
 |---|---|
-| Página de la mañana | Las versiones de hecho de la última corrida sobre entidades a las que el cliente está suscripto, con su grado, su evidencia y su estado de revisión. Si no hay ninguna, el informe tiene `sin_novedades`. |
+| Página de la mañana | Las versiones de hecho de la última corrida sobre entidades a las que el cliente está suscripto, con su grado, su evidencia y su estado de revisión. Si no hay ninguna, el informe tiene `sin_novedades`. Si una fuente falló esa noche, la página lo avisa: una fuente que no respondió no es lo mismo que una noche sin novedades. |
 | Expediente | Todas las versiones de todos los hechos de una entidad, en orden, con su historia. |
 | Revisión humana | Las versiones con `estado_revision = 'pendiente'`. Al revisarlas se crea una fila en `revisiones` y se actualiza el estado. |
 | Sala de máquinas | Los mensajes de una corrida, encadenados por `causa_id`, más su libro de gasto. El costo por agente sale de los mensajes `uso.modelo`. |

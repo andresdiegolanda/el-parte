@@ -24,6 +24,7 @@ Los términos que usa el proyecto, en orden alfabético. Si un documento usa un 
 | Corrida | Una ejecución completa de la noche: todos los exploradores, el cotejo, la refutación, el análisis y la edición. |
 | Datos abiertos | Datos que un organismo publica para que cualquiera los use, con una licencia que lo permite. |
 | Editor | Agente que aplica las reglas de redacción, arma el informe de cada cliente y manda a revisión humana lo dudoso. |
+| Enmascarar | Tapar un dato personal con `[persona]` antes de que salga del explorador, o descartar el campo entero (ADR 0008). Ver [docs/fuentes/compras-estatales.md](../docs/fuentes/compras-estatales.md) para cómo se decide en ARCE. |
 | Entidad | Aquello a lo que un cliente se suscribe: un organismo, una empresa (persona jurídica), un programa o una licitación. |
 | Etapa | En el tablero, cada paso del ciclo fijo de un tipo de tarjeta (por ejemplo, las de un componente: contrato, código, pruebas, medición y página "cómo se hizo"). |
 | Expediente | Todo lo que la base sabe de una entidad, para consultar cuando se quiera. |
@@ -31,6 +32,7 @@ Los términos que usa el proyecto, en orden alfabético. Si un documento usa un 
 | Falso positivo | Algo que el sistema presentó como hallazgo y no lo era: material viejo, un hecho repetido, una deducción presentada como hecho. |
 | Flujo de trabajo | Sistema de agentes en el que el código fija el camino y los modelos se llaman en pasos predefinidos. Una noche de El Parte es un flujo de trabajo. |
 | Fuera de alcance | Hallazgo del banco de pruebas que vino de un lugar que El Parte no lee (prensa, buscadores). Se cuenta aparte en la medición. |
+| Grabación | Lo que una corrida leyó de afuera, de una fuente o del modelo, guardado ya enmascarado en `parte.grabaciones` para poder repetirla (ADR 0011). |
 | Grado (de un documento) | Lo que lleva cada afirmación técnica de los documentos del proyecto: PROVEN con fuente, INFERRED o ASSUMED. Ver [como-se-trabaja.md](como-se-trabaja.md). |
 | Grado (de un hecho) | Lo que pone el refutador a cada hecho: PROVEN (la fuente lo dice), INFERRED (se deduce de lo que dice la fuente) o NOT_MENTIONED (las fuentes no lo mencionan). |
 | Huella | Resumen corto (hash) de un contenido. Si el contenido cambia, la huella cambia. La sincronización del kanban la usa para saber si una tarjeta cambió en GitHub. |
@@ -46,9 +48,10 @@ Los términos que usa el proyecto, en orden alfabético. Si un documento usa un 
 | Mailpit | Servidor de correo de prueba: captura los correos que manda la aplicación y los muestra en una página web. |
 | Mermaid | Lenguaje de texto para escribir diagramas dentro de un Markdown. GitHub los dibuja al mostrar el archivo. |
 | Micrometer | Biblioteca de métricas de Spring. Spring AI la usa para contar llamadas al modelo y tokens. |
+| Migración | Un archivo SQL que lleva la base de una versión a la siguiente. Los aplica Flyway, en orden, al arrancar la aplicación; cada uno corre una sola vez. |
 | Modelo de lenguaje | El sistema de inteligencia artificial que lee y escribe texto y que usan los agentes por dentro. |
 | NOT_MENTIONED | Grado de un hecho: las fuentes no respaldan lo que afirma el candidato. No se publica; queda en la sala de máquinas con lo que se buscó. |
-| Observador | Agente que mide precisión por fuente, costo y duración por corrida y por agente, y fuentes bloqueadas. |
+| Observador | Agente que copia cada mensaje de cada tópico al registro de mensajes de la base, que es de donde salen la sala de máquinas y las mediciones: precisión por fuente, costo y duración por corrida y por agente, y fuentes bloqueadas. |
 | OCDS | Estándar abierto de datos de contrataciones públicas (*Open Contracting Data Standard*). Es el formato en que publica ARCE. |
 | Orquestación | La forma en que los agentes se reparten el trabajo y se pasan los resultados, con reglas fijas. |
 | Página de la mañana | Lo que ve cada cliente al día siguiente: lo nuevo sobre sus suscripciones desde ayer, con la fuente de cada hecho, o un aviso claro de que no hubo nada. |
@@ -57,6 +60,7 @@ Los términos que usa el proyecto, en orden alfabético. Si un documento usa un 
 | PROVEN | Grado: verificado. En un hecho, la fuente lo dice. En un documento, hay URL oficial o comprobación descrita, con fecha. |
 | Rebanada de punta a punta | Una versión chica pero completa del sistema, que atraviesa todas las capas: de la fuente a la página de la mañana. |
 | Refutador | Agente que intenta tirar abajo cada candidato y le pone un grado. |
+| Reproducción | El modo de una corrida que repite otra leyendo solo sus grabaciones: sin red, sin costo y con los mismos mensajes. Ver [docs/contratos.md](../docs/contratos.md), "Repetir una corrida". |
 | Revisión humana | Cola de hechos dudosos que revisa una persona. Mientras no se revisan, se muestran marcados. |
 | robots.txt | Archivo que un sitio publica para decir qué partes no quiere que lean los programas automáticos. Se respeta. |
 | Sala de máquinas | La parte de la aplicación que muestra, por cada corrida y cada hallazgo, qué agente hizo qué, qué se refutó y por qué, contra qué se cotejó, cuánto costó y cuánto tardó. |
@@ -68,5 +72,6 @@ Los términos que usa el proyecto, en orden alfabético. Si un documento usa un 
 | SVG | Formato de imagen vectorial escrito en texto. Se usa para las láminas. |
 | Tablero | Archivo `tablero.md` con todo lo pendiente, en tarjetas. Es la única fuente del kanban. |
 | Tarjeta | Un pendiente del tablero: un bloque `###` de `tablero.md` con tipo, dueño, notas, etapas, lista y registro. |
+| Testcontainers | Biblioteca que levanta contenedores de Docker desde una prueba, para probar contra un PostgreSQL o un Kafka de verdad y no contra imitaciones. |
 | Token | Unidad en la que un modelo de lenguaje mide el texto que lee y escribe. Los proveedores cobran por millón de tokens. |
 | Tópico | Canal con nombre de un sistema de mensajería. Un agente publica mensajes en un tópico y otros los leen. Guardar los mensajes permite repetir una corrida y armar la sala de máquinas. |

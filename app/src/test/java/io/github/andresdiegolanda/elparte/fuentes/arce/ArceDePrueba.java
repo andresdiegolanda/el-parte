@@ -1,0 +1,168 @@
+package io.github.andresdiegolanda.elparte.fuentes.arce;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpServer;
+
+/**
+ * Un ARCE de mentira para las pruebas: sirve un feed y unas publicaciones inventadas con la forma de
+ * las de verdad (docs/fuentes/compras-estatales.md), y cuenta cuántas veces le piden algo.
+ *
+ * <p>Todo es sintético. Los nombres de persona son "Fulana de Tal" y "Mengano de Tal", y los RUT no
+ * existen. La noche de las pruebas es el 12 de noviembre de 2026:
+ *
+ * <ul>
+ * <li>{@code llamado-1200001}: un llamado del BPS, publicado esa noche.</li>
+ * <li>{@code adjudicacion-1200002}: una adjudicación del BPS a una sociedad y a una persona.</li>
+ * <li>{@code llamado-1200003}: un llamado de otro organismo, que el explorador descarta.</li>
+ * <li>{@code aclaracion_1200004}: una aclaración del BPS publicada el día anterior, en el margen.</li>
+ * <li>{@code llamado-1200005}: publicado dos días antes, fuera de la ventana: nunca se pide.</li>
+ * <li>{@code llamado-1200006}: el servidor falla al pedirla.</li>
+ * </ul>
+ */
+public class ArceDePrueba implements AutoCloseable {
+
+    public static final String NOCHE = "2026-11-12";
+
+    private static final DateTimeFormatter FECHA_DEL_FEED =
+            DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss", Locale.ENGLISH);
+
+    private static final String BPS = """
+            {"id": "28-1", "name": "Banco de Previsión Social"}""";
+
+    private static final String PARTE_BPS = """
+            {"id": "28-1", "name": "Banco de Previsión Social", "roles": ["buyer", "procuringEntity"],
+             "contactPoint": {"name": "Mengano de Tal", "email": "mengano@ejemplo.invalid", "telephone": "0000 0000"}}""";
+
+    private final Map<String, String> publicaciones = new LinkedHashMap<>();
+    private final AtomicInteger pedidos = new AtomicInteger();
+    private HttpServer servidor;
+
+    public ArceDePrueba() {
+        publicaciones.put("llamado-1200001", """
+                {"releases": [{
+                  "id": "llamado-1200001", "ocid": "ocds-yfs5dr-1200001", "date": "2026-11-12T10:15:00Z",
+                  "tag": ["tender"], "buyer": %s, "parties": [%s],
+                  "tender": {"id": "1200001", "title": "Compra Directa 900/2026",
+                    "description": "Adquisición de papel para impresoras", "status": "active",
+                    "items": [{"id": "1", "description": "Papel A4, resma de 500 hojas"}],
+                    "tenderPeriod": {"endDate": "2026-11-19T14:00:00Z"},
+                    "contactPoint": {"name": "Mengano de Tal", "email": "mengano@ejemplo.invalid"}}
+                }]}""".formatted(BPS, PARTE_BPS));
+        publicaciones.put("adjudicacion-1200002", """
+                {"releases": [{
+                  "id": "adjudicacion-1200002", "ocid": "ocds-yfs5dr-1200002", "date": "2026-11-12T15:40:00Z",
+                  "tag": ["award"], "buyer": %s,
+                  "parties": [%s,
+                    {"id": "R210000000019", "name": "Distribuidora Ejemplo S.A.", "roles": ["supplier"],
+                     "identifier": {"scheme": "UY-RUT", "id": "210000000019"}},
+                    {"id": "R110000000012", "name": "Fulana de Tal", "roles": ["supplier"],
+                     "identifier": {"scheme": "UY-RUT", "id": "110000000012"},
+                     "contactPoint": {"name": "Fulana de Tal", "email": "fulana@ejemplo.invalid"}}],
+                  "awards": [{"id": "1200002-1", "status": "active",
+                    "suppliers": [{"id": "R210000000019", "name": "Distribuidora Ejemplo S.A."},
+                                  {"id": "R110000000012", "name": "Fulana de Tal"}],
+                    "items": [{"id": "1", "description": "Tóner negro"}],
+                    "value": {"amount": 125000, "currency": "UYU"}}]
+                }]}""".formatted(BPS, PARTE_BPS));
+        publicaciones.put("llamado-1200003", """
+                {"releases": [{
+                  "id": "llamado-1200003", "ocid": "ocds-yfs5dr-1200003", "date": "2026-11-12T11:00:00Z",
+                  "tag": ["tender"], "buyer": {"id": "99-1", "name": "Organismo Inventado"},
+                  "tender": {"id": "1200003", "title": "Licitación Abreviada 1/2026", "items": []}
+                }]}""");
+        publicaciones.put("aclaracion_1200004", """
+                {"releases": [{
+                  "id": "aclaracion_1200004", "ocid": "ocds-yfs5dr-1200004", "date": "2026-11-11T09:30:00Z",
+                  "tag": ["tenderAmendment"], "buyer": %s, "parties": [%s],
+                  "tender": {"id": "1200004",
+                    "documents": [{"id": "1", "description": "Se aclara el lugar de entrega de la mercadería"}]}
+                }]}""".formatted(BPS, PARTE_BPS));
+        publicaciones.put("llamado-1200005", """
+                {"releases": [{"id": "llamado-1200005", "ocid": "ocds-yfs5dr-1200005", "date": "2026-11-10T08:00:00Z",
+                  "tag": ["tender"], "buyer": %s, "tender": {"id": "1200005", "title": "Fuera de la ventana"}}]}"""
+                .formatted(BPS));
+    }
+
+    public ArceDePrueba arrancar() {
+        try {
+            servidor = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+        servidor.createContext("/ocds/", this::atender);
+        servidor.start();
+        return this;
+    }
+
+    public String urlBase() {
+        return "http://127.0.0.1:" + servidor.getAddress().getPort() + "/ocds";
+    }
+
+    /** Cuántos pedidos recibió desde que arrancó. */
+    public int pedidos() {
+        return pedidos.get();
+    }
+
+    private void atender(HttpExchange intercambio) throws IOException {
+        pedidos.incrementAndGet();
+        String ruta = intercambio.getRequestURI().getPath();
+        if (ruta.equals("/ocds/rss/2026/11")) {
+            responder(intercambio, 200, "application/rss+xml", feed());
+        } else if (ruta.equals("/ocds/release/llamado-1200006")) {
+            responder(intercambio, 500, "text/plain", "Error interno");
+        } else if (ruta.equals("/ocds/release/roto")) {
+            responder(intercambio, 200, "text/html", "<html>Mantenimiento</html>");
+        } else if (ruta.startsWith("/ocds/release/") && publicaciones.containsKey(ruta.substring(14))) {
+            responder(intercambio, 200, "application/json", publicaciones.get(ruta.substring(14)));
+        } else {
+            responder(intercambio, 404, "text/plain", "No existe");
+        }
+    }
+
+    private static String feed() {
+        StringBuilder rss = new StringBuilder("""
+                <?xml version="1.0" encoding="UTF-8"?>
+                <rss version="2.0"><channel><title>Compras estatales (prueba)</title>
+                """);
+        item(rss, "llamado-1200005", LocalDateTime.of(2026, 11, 10, 8, 0), "llamado");
+        item(rss, "aclaracion_1200004", LocalDateTime.of(2026, 11, 11, 9, 30), "aclaracion");
+        item(rss, "llamado-1200001", LocalDateTime.of(2026, 11, 12, 10, 15), "llamado");
+        item(rss, "llamado-1200003", LocalDateTime.of(2026, 11, 12, 11, 0), "llamado");
+        item(rss, "llamado-1200006", LocalDateTime.of(2026, 11, 12, 12, 0), "llamado");
+        item(rss, "adjudicacion-1200002", LocalDateTime.of(2026, 11, 12, 15, 40), "adjudicacion");
+        return rss.append("</channel></rss>\n").toString();
+    }
+
+    private static void item(StringBuilder rss, String id, LocalDateTime publicada, String categoria) {
+        rss.append("<item><title>").append(id).append("</title><guid>").append(id).append("</guid><pubDate>")
+                .append(FECHA_DEL_FEED.format(publicada)).append("</pubDate><category>").append(categoria)
+                .append("</category></item>\n");
+    }
+
+    private static void responder(HttpExchange intercambio, int estado, String tipo, String cuerpo) throws IOException {
+        byte[] bytes = cuerpo.getBytes(StandardCharsets.UTF_8);
+        intercambio.getResponseHeaders().add("Content-Type", tipo + "; charset=utf-8");
+        intercambio.sendResponseHeaders(estado, bytes.length);
+        try (OutputStream salida = intercambio.getResponseBody()) {
+            salida.write(bytes);
+        }
+    }
+
+    @Override
+    public void close() {
+        if (servidor != null) {
+            servidor.stop(0);
+        }
+    }
+}

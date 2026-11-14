@@ -126,7 +126,7 @@ flowchart LR
     E -- No --> G[Algo cambió: código,<br/>contrato o respuesta]
 ```
 
-- **Para probar:** se inyectan los mensajes de entrada guardados y el modelo de reproducción devuelve las respuestas grabadas ([ADR 0003](../adrs/0003-eleccion-del-stack.md)). Una corrida repetida tiene que producir los mismos mensajes.
+- **Para probar:** se inyectan los mensajes de entrada guardados y el modelo de reproducción devuelve las respuestas grabadas ([ADR 0003](../adrs/0003-eleccion-del-stack.md)). Una corrida repetida tiene que producir los mismos mensajes. La primera rebanada lo resolvió grabando en la base todo lo que la corrida lee de afuera, fuentes y modelo, incluidas las fallas, y repitiendo desde ahí ([ADR 0011](../adrs/0011-grabacion-y-repeticion-de-corridas.md); detalle en los [contratos](contratos.md), "Repetir una corrida").
 - **Para medir contra el banco de pruebas:** los exploradores piden a cada fuente lo publicado en la fecha de cada noche, y lo que encuentra El Parte se compara con lo que encontró la vigilancia anterior (D1). La forma de las métricas va en T12.
 
 ## Cuando algo falla

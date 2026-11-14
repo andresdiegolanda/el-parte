@@ -4,13 +4,31 @@ spring:
   application:
     name: el-parte
 
+  # La aplicación se conecta con el rol de los agentes, que no ve el esquema `cuentas`;
+  # las migraciones corren con el dueño de la base (docs/base-de-afirmaciones.md).
   datasource:
     url: ${BASE_URL:jdbc:postgresql://localhost:5432/elparte}
-    username: ${BASE_USUARIO:elparte}
-    password: ${BASE_CLAVE:elparte}
+    username: ${BASE_USUARIO:elparte_agentes}
+    password: ${BASE_CLAVE:agentes-local}
+
+  flyway:
+    user: ${BASE_DUENO_USUARIO:elparte}
+    password: ${BASE_DUENO_CLAVE:elparte}
+    placeholders:
+      rol_agentes: ${BASE_USUARIO:elparte_agentes}
+      clave_agentes: ${BASE_CLAVE:agentes-local}
+      rol_cuentas: elparte_cuentas
+      clave_cuentas: ${BASE_CLAVE_CUENTAS:cuentas-local}
 
   kafka:
     bootstrap-servers: ${KAFKA_SERVIDORES:localhost:9092}
+    consumer:
+      auto-offset-reset: earliest
+      # Cada mensaje puede llevar una llamada al modelo: se piden pocos por vez, y la exploración de
+      # una noche puede tardar minutos sin que Kafka saque al consumidor del grupo.
+      max-poll-records: 5
+      properties:
+        max.poll.interval.ms: 3600000
 
   ai:
     anthropic:
@@ -18,8 +36,23 @@ spring:
       # Sin clave, la aplicación arranca igual; solo fallan las llamadas al modelo.
       api-key: ${ANTHROPIC_API_KEY:sin-clave}
       chat:
-        # Valor inicial; cada agente usa el de su corrida (ADR 0003).
+        # Valor por omisión; cada agente usa el de su corrida (ADR 0003).
         model: claude-haiku-5-5
+
+elparte:
+  arce:
+    url-base: ${ARCE_URL_BASE:https://www.comprasestatales.gub.uy/ocds}
+    # Además de la noche objetivo, se lee el día anterior, por lo que ARCE publica con atraso.
+    dias-de-margen: 1
+    concurrencia: 4
+  corrida:
+    costo-maximo-usd: 0.50
+    pasos-maximos: 200
+    minutos-maximos: 45
+    # Tope de candidatos por corrida, hasta que llegue el presupuesto que corta (T22).
+    maximo-candidatos: 60
+    # Corrida por reloj, en hora de Uruguay: "-" la apaga; "0 0 6 * * *" corre todos los días a las 6.
+    cron: "-"
 
 management:
   endpoint:
@@ -31,5 +64,7 @@ logging:
     # El cliente de Kafka escribe su configuración entera cada vez que se crea;
     # el indicador de salud crea uno en cada consulta.
     org.apache.kafka.clients.admin.AdminClientConfig: warn
+    org.apache.kafka.clients.consumer.ConsumerConfig: warn
+    org.apache.kafka.clients.producer.ProducerConfig: warn
     org.apache.kafka.common.utils.AppInfoParser: warn
     org.apache.kafka.common.metrics.Metrics: warn
