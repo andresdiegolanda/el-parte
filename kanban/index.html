@@ -225,7 +225,7 @@
 <script type="application/json" id="datos">{
  "meta": {
   "actualizado": "2026-11-14",
-  "nota": "La primera rebanada (T08) anda de punta a punta y espera su medición contra el banco (T20), que a su vez espera el formato y la muestra del banco de pruebas (T12). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.",
+  "nota": "La primera rebanada (T08) anda de punta a punta y espera su medición contra el banco (T20), que ya se puede hacer: el formato, la muestra y las métricas del banco de pruebas están en banco-de-pruebas/ (T12). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.",
   "calendario": [
    "2026-11-07",
    "2026-11-14",
@@ -329,63 +329,71 @@
  },
  "tarjetas": [
   {
-   "id": "T12",
-   "titulo": "Escribir el formato, la muestra sintética y las métricas del banco de pruebas",
+   "id": "T20",
+   "titulo": "Medir la primera rebanada contra el banco de pruebas",
    "columna": "para-empezar",
    "orden": 1,
-   "tipo": "documento",
+   "tipo": "verificacion",
    "dueno": "desarrollo",
-   "dependeDe": "T11",
+   "dependeDe": "T12",
    "esperaA": "",
    "fecha": "",
-   "detalle": [],
-   "etapas": [
+   "detalle": [
     {
-     "texto": "Borrador",
-     "hecho": false
+     "texto": "banco-de-pruebas/metricas.md",
+     "ruta": "banco-de-pruebas/metricas.md"
     },
     {
-     "texto": "Grados y fuentes",
-     "hecho": false
+     "texto": "banco-de-pruebas/formato.md",
+     "ruta": "banco-de-pruebas/formato.md"
     },
     {
-     "texto": "Diagramas",
-     "hecho": false
-    },
-    {
-     "texto": "Releído y verificado",
-     "hecho": false
+     "texto": "docs/plan.md",
+     "ruta": "docs/plan.md"
     }
    ],
+   "etapas": [],
    "lista": [
     {
-     "texto": "Formato del registro",
+     "texto": "Correr la rebanada sobre cada noche del registro",
      "hecho": false
     },
     {
-     "texto": "Muestra sintética",
+     "texto": "Que las corridas en modo banco dejen la salida de El Parte con la forma de banco-de-pruebas/formato.md",
      "hecho": false
     },
     {
-     "texto": "Forma de las métricas",
+     "texto": "Revisar el registro: la fuente y la etiqueta de cada entrada, y después las correspondencias y los extras",
      "hecho": false
     },
     {
-     "texto": "Cómo se cuentan los descartes del registro que El Parte sí publicaría",
+     "texto": "Contar con las reglas de banco-de-pruebas/metricas.md; con la muestra tiene que dar banco-de-pruebas/muestra/medicion-esperada.json",
+     "hecho": false
+    },
+    {
+     "texto": "Costo y duración por noche",
+     "hecho": false
+    },
+    {
+     "texto": "Versionar las métricas con la huella del registro usado (ADR 0007)",
      "hecho": false
     }
    ],
    "notas": [
-    "Lo que sí se versiona del banco de pruebas (D2), en `banco-de-pruebas/`."
+    "La medición es parte de la versión 0. Corre la rebanada sobre cada noche del registro y compara lo encontrado con lo que encontró la vigilancia anterior (D1). No espera a que T08 cierre: alcanza con que la rebanada corra de punta a punta, y con esta medición T08 tilda su etapa \"Medido contra el banco\"."
    ],
    "registro": [
     {
      "fecha": "2026-11-07",
-     "texto": "Creada."
+     "texto": "Creada con el plan (T07)."
     },
     {
      "fecha": "2026-11-14",
-     "texto": "Pasa a Para empezar: T11 está hecha. Suma cómo contar los descartes, porque El Parte no filtra por tema."
+     "texto": "Deja de depender de T08, que no podía cerrar sin esta medición."
+    },
+    {
+     "fecha": "2026-11-14",
+     "texto": "Pasa a Para empezar: T12 está hecha. Suma la salida de las corridas y la revisión del registro, que pide el formato."
     }
    ]
   },
@@ -508,59 +516,10 @@
    ]
   },
   {
-   "id": "T20",
-   "titulo": "Medir la primera rebanada contra el banco de pruebas",
-   "columna": "pendiente",
-   "orden": 1,
-   "tipo": "verificacion",
-   "dueno": "desarrollo",
-   "dependeDe": "T12",
-   "esperaA": "",
-   "fecha": "",
-   "detalle": [
-    {
-     "texto": "docs/plan.md",
-     "ruta": "docs/plan.md"
-    }
-   ],
-   "etapas": [],
-   "lista": [
-    {
-     "texto": "Correr la rebanada sobre cada noche del registro",
-     "hecho": false
-    },
-    {
-     "texto": "Contar encontrados, no encontrados, fuera de alcance y falsos positivos",
-     "hecho": false
-    },
-    {
-     "texto": "Costo y duración por noche",
-     "hecho": false
-    },
-    {
-     "texto": "Versionar las métricas con la huella del registro usado (ADR 0007)",
-     "hecho": false
-    }
-   ],
-   "notas": [
-    "La medición es parte de la versión 0. Corre la rebanada sobre cada noche del registro y compara lo encontrado con lo que encontró la vigilancia anterior (D1). No espera a que T08 cierre: alcanza con que la rebanada corra de punta a punta, y con esta medición T08 tilda su etapa \"Medido contra el banco\"."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-07",
-     "texto": "Creada con el plan (T07)."
-    },
-    {
-     "fecha": "2026-11-14",
-     "texto": "Deja de depender de T08, que no podía cerrar sin esta medición."
-    }
-   ]
-  },
-  {
    "id": "T21",
    "titulo": "Completar el analista",
    "columna": "pendiente",
-   "orden": 2,
+   "orden": 1,
    "tipo": "componente",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -609,7 +568,7 @@
    "id": "T22",
    "titulo": "Implementar el presupuesto que corta",
    "columna": "pendiente",
-   "orden": 3,
+   "orden": 2,
    "tipo": "componente",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -675,7 +634,7 @@
    "id": "T23",
    "titulo": "Armar la cola de revisión humana",
    "columna": "pendiente",
-   "orden": 4,
+   "orden": 3,
    "tipo": "web",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -720,7 +679,7 @@
    "id": "T24",
    "titulo": "Sumar los exploradores del BID, el Banco Mundial y Presidencia",
    "columna": "pendiente",
-   "orden": 5,
+   "orden": 4,
    "tipo": "componente",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -786,7 +745,7 @@
    "id": "T25",
    "titulo": "Armar el login por enlace, los cuatro usuarios y la cuenta de demostración",
    "columna": "pendiente",
-   "orden": 6,
+   "orden": 5,
    "tipo": "web",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -872,7 +831,7 @@
    "id": "T34",
    "titulo": "Armar la página del perfil",
    "columna": "pendiente",
-   "orden": 7,
+   "orden": 6,
    "tipo": "web",
    "dueno": "desarrollo",
    "dependeDe": "T25",
@@ -938,7 +897,7 @@
    "id": "T35",
    "titulo": "Mandar el aviso diario del parte",
    "columna": "pendiente",
-   "orden": 8,
+   "orden": 7,
    "tipo": "componente",
    "dueno": "desarrollo",
    "dependeDe": "T25",
@@ -1012,7 +971,7 @@
    "id": "T26",
    "titulo": "Escribir la sección \"Cómo funciona\" y las páginas \"cómo se hizo\"",
    "columna": "pendiente",
-   "orden": 9,
+   "orden": 8,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -1057,7 +1016,7 @@
    "id": "T27",
    "titulo": "Escribir el ADR de despliegue",
    "columna": "pendiente",
-   "orden": 10,
+   "orden": 9,
    "tipo": "adr",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -1067,6 +1026,14 @@
     {
      "texto": "arranque/decisiones-iniciales.md",
      "ruta": "arranque/decisiones-iniciales.md"
+    },
+    {
+     "texto": "compose.yaml",
+     "ruta": "compose.yaml"
+    },
+    {
+     "texto": "app/README.md",
+     "ruta": "app/README.md"
     }
    ],
    "etapas": [
@@ -1087,14 +1054,43 @@
      "hecho": false
     }
    ],
-   "lista": [],
+   "lista": [
+    {
+     "texto": "Una máquina siempre prendida, para la corrida de cada noche (`ELPARTE_CORRIDA_CRON`) y las páginas de cada mañana",
+     "hecho": false
+    },
+    {
+     "texto": "Un dominio público con HTTPS, al que apuntan el enlace para entrar y el aviso diario",
+     "hecho": false
+    },
+    {
+     "texto": "Un servicio de correo real en lugar de Mailpit, con la configuración de envío que pida en el dominio, verificada en su documentación",
+     "hecho": false
+    },
+    {
+     "texto": "La base y Kafka en almacenamiento persistente, y copias de seguridad de la base",
+     "hecho": false
+    },
+    {
+     "texto": "Las claves del modelo y de la base en el servidor, fuera del repositorio",
+     "hecho": false
+    },
+    {
+     "texto": "El tamaño de la máquina, con el costo y la duración por noche medidos en T20",
+     "hecho": false
+    }
+   ],
    "notas": [
-    "Dónde se publica el servicio para los usuarios invitados, con qué dominio y con qué servicio de correo (D9)."
+    "Dónde se publica el servicio para los usuarios invitados, con qué dominio y con qué servicio de correo (D9). Hoy todo corre en una máquina con Docker (`compose.yaml`); el ADR resuelve lo que falta para que los invitados lo usen cada mañana."
    ],
    "registro": [
     {
      "fecha": "2026-11-07",
      "texto": "Creada con el plan (T07)."
+    },
+    {
+     "fecha": "2026-11-14",
+     "texto": "Suma la lista de lo que el despliegue tiene que resolver."
     }
    ]
   },
@@ -1102,7 +1098,7 @@
    "id": "T33",
    "titulo": "Armar el expediente de cada entidad",
    "columna": "pendiente",
-   "orden": 11,
+   "orden": 10,
    "tipo": "web",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -1151,7 +1147,7 @@
    "id": "T29",
    "titulo": "Cambiar el modelo de cada agente sin reiniciar la aplicación",
    "columna": "pendiente",
-   "orden": 12,
+   "orden": 11,
    "tipo": "web",
    "dueno": "desarrollo",
    "dependeDe": "T22, T25",
@@ -1229,7 +1225,7 @@
    "id": "T30",
    "titulo": "Sumar el explorador de IMPO",
    "columna": "pendiente",
-   "orden": 13,
+   "orden": 12,
    "tipo": "componente",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -1300,10 +1296,92 @@
    ]
   },
   {
+   "id": "T12",
+   "titulo": "Escribir el formato, la muestra sintética y las métricas del banco de pruebas",
+   "columna": "hecho",
+   "orden": 1,
+   "tipo": "documento",
+   "dueno": "desarrollo",
+   "dependeDe": "T11",
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "banco-de-pruebas/README.md",
+     "ruta": "banco-de-pruebas/README.md"
+    },
+    {
+     "texto": "banco-de-pruebas/formato.md",
+     "ruta": "banco-de-pruebas/formato.md"
+    },
+    {
+     "texto": "banco-de-pruebas/metricas.md",
+     "ruta": "banco-de-pruebas/metricas.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Borrador",
+     "hecho": true
+    },
+    {
+     "texto": "Grados y fuentes",
+     "hecho": true
+    },
+    {
+     "texto": "Diagramas",
+     "hecho": true
+    },
+    {
+     "texto": "Releído y verificado",
+     "hecho": true
+    }
+   ],
+   "lista": [
+    {
+     "texto": "Formato del registro",
+     "hecho": true
+    },
+    {
+     "texto": "Muestra sintética",
+     "hecho": true
+    },
+    {
+     "texto": "Forma de las métricas",
+     "hecho": true
+    },
+    {
+     "texto": "Cómo se cuentan los descartes del registro que El Parte sí publicaría",
+     "hecho": true
+    }
+   ],
+   "notas": [
+    "Lo que sí se versiona del banco de pruebas (D2), en `banco-de-pruebas/`."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada."
+    },
+    {
+     "fecha": "2026-11-14",
+     "texto": "Pasa a Para empezar: T11 está hecha. Suma cómo contar los descartes, porque El Parte no filtra por tema."
+    },
+    {
+     "fecha": "2026-11-14",
+     "texto": "Pasa a En curso."
+    },
+    {
+     "fecha": "2026-11-14",
+     "texto": "Hecha. El formato del registro, de su revisión y de la salida de El Parte, con el control `herramientas/banco_de_pruebas.py`: el registro real lo cumple, con un aviso por una contradicción propia. La muestra sintética tiene un caso de cada resultado y su medición esperada, que controla el verificador. Las métricas cuentan cobertura, precisión, costo y duración; los descartes llevan una etiqueta de la revisión y no son falsos positivos por sí solos. T20 pasa a Para empezar."
+    }
+   ]
+  },
+  {
    "id": "T36",
    "titulo": "Aceptar o corregir el ADR 0013",
    "columna": "hecho",
-   "orden": 1,
+   "orden": 2,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1344,7 +1422,7 @@
    "id": "T32",
    "titulo": "Armar el tablero de arquitectura",
    "columna": "hecho",
-   "orden": 2,
+   "orden": 3,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1418,7 +1496,7 @@
    "id": "T31",
    "titulo": "Aceptar o corregir el ADR 0011",
    "columna": "hecho",
-   "orden": 3,
+   "orden": 4,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1455,7 +1533,7 @@
    "id": "T18",
    "titulo": "Pedir a IMPO que aclare si su JSON de normas se puede reutilizar",
    "columna": "hecho",
-   "orden": 4,
+   "orden": 5,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1487,7 +1565,7 @@
    "id": "T11",
    "titulo": "Entregar el registro completo del banco de pruebas",
    "columna": "hecho",
-   "orden": 5,
+   "orden": 6,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1519,7 +1597,7 @@
    "id": "T14",
    "titulo": "Dejar la clave del proveedor de modelos fuera del repositorio",
    "columna": "hecho",
-   "orden": 6,
+   "orden": 7,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "T05",
@@ -1572,7 +1650,7 @@
    "id": "T19",
    "titulo": "Aceptar o corregir los ADRs propuestos",
    "columna": "hecho",
-   "orden": 7,
+   "orden": 8,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1649,7 +1727,7 @@
    "id": "T05",
    "titulo": "Escribir los primeros ADRs",
    "columna": "hecho",
-   "orden": 8,
+   "orden": 9,
    "tipo": "adr",
    "dueno": "desarrollo",
    "dependeDe": "T09",
@@ -1751,7 +1829,7 @@
    "id": "T06",
    "titulo": "Escribir los ADRs de las decisiones D2 y D3",
    "columna": "hecho",
-   "orden": 9,
+   "orden": 10,
    "tipo": "adr",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1817,7 +1895,7 @@
    "id": "T28",
    "titulo": "Hacer editable el kanban y sincronizarlo con el tablero",
    "columna": "hecho",
-   "orden": 10,
+   "orden": 11,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1874,7 +1952,7 @@
    "id": "T07",
    "titulo": "Escribir docs/plan.md",
    "columna": "hecho",
-   "orden": 11,
+   "orden": 12,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T02",
@@ -1936,7 +2014,7 @@
    "id": "T04",
    "titulo": "Escribir docs/base-de-afirmaciones.md",
    "columna": "hecho",
-   "orden": 12,
+   "orden": 13,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T03",
@@ -2006,7 +2084,7 @@
    "id": "T03",
    "titulo": "Escribir docs/contratos.md",
    "columna": "hecho",
-   "orden": 13,
+   "orden": 14,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T02",
@@ -2076,7 +2154,7 @@
    "id": "T15",
    "titulo": "Comprobar en el verificador que los diagramas Mermaid se dibujan",
    "columna": "hecho",
-   "orden": 14,
+   "orden": 15,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -2121,7 +2199,7 @@
    "id": "T02",
    "titulo": "Escribir docs/arquitectura.md",
    "columna": "hecho",
-   "orden": 15,
+   "orden": 16,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T09",
@@ -2207,7 +2285,7 @@
    "id": "T10",
    "titulo": "Verificar las fuentes candidatas",
    "columna": "hecho",
-   "orden": 16,
+   "orden": 17,
    "tipo": "verificacion",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -2280,7 +2358,7 @@
    "id": "T09",
    "titulo": "Verificar Spring AI y sus patrones de orquestación",
    "columna": "hecho",
-   "orden": 17,
+   "orden": 18,
    "tipo": "verificacion",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -2333,7 +2411,7 @@
    "id": "T13",
    "titulo": "Elegir la licencia del repositorio",
    "columna": "hecho",
-   "orden": 18,
+   "orden": 19,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -2369,7 +2447,7 @@
    "id": "T17",
    "titulo": "Dar acceso de escritura al repositorio a las sesiones en la nube",
    "columna": "hecho",
-   "orden": 19,
+   "orden": 20,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -2396,7 +2474,7 @@
    "id": "T16",
    "titulo": "Armar el kanban generado desde el tablero",
    "columna": "hecho",
-   "orden": 20,
+   "orden": 21,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -2445,7 +2523,7 @@
    "id": "T01",
    "titulo": "Armar la base documental",
    "columna": "hecho",
-   "orden": 21,
+   "orden": 22,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "",

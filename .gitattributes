@@ -1,0 +1,4 @@
+# La muestra sintética del banco de pruebas se compara por su huella, que depende
+# de cada byte: se guarda con saltos de línea LF en cualquier sistema.
+# Ver banco-de-pruebas/formato.md, "La huella".
+banco-de-pruebas/muestra/** text eol=lf

@@ -146,7 +146,7 @@
   .conexion small { color: var(--texto3); }
   .conexion.disenado { color: #c4b5fd; }
   ul.lista { margin: 4px 0; padding-left: 18px; }
-  ul.lista li { margin: 2px 0; }
+  ul.lista li { margin: 2px 0; overflow-wrap: anywhere; }
   .leyenda-fila { display: flex; align-items: center; gap: 10px; margin: 6px 0; }
   .leyenda-fila svg { flex: 0 0 auto; }
   footer { display: flex; gap: 10px; align-items: center; padding: 8px 16px; border-top: 1px solid var(--linea); background: #0d142b; min-height: 56px; }
@@ -234,7 +234,7 @@ var S = {
    "sub": "de izquierda a derecha: del inicio al informe",
    "fila": [
     0,
-    6
+    7
    ],
    "columnas": true
   },
@@ -243,8 +243,8 @@ var S = {
    "titulo": "Servicios de la aplicación",
    "sub": "lo que usan los agentes",
    "fila": [
-    8,
-    10
+    9,
+    11
    ]
   },
   {
@@ -252,8 +252,8 @@ var S = {
    "titulo": "Base de afirmaciones",
    "sub": "PostgreSQL 18.7",
    "fila": [
-    12,
-    14
+    13,
+    15
    ]
   },
   {
@@ -261,8 +261,8 @@ var S = {
    "titulo": "Páginas",
    "sub": "lo que ve quien entra",
    "fila": [
-    16,
-    16
+    17,
+    17
    ]
   }
  ],
@@ -330,8 +330,8 @@ var S = {
     11
    ],
    "fila": [
-    12,
-    14
+    13,
+    15
    ]
   },
   {
@@ -342,8 +342,8 @@ var S = {
     13
    ],
    "fila": [
-    12,
-    13
+    13,
+    14
    ]
   }
  ],
@@ -438,12 +438,32 @@ var S = {
    "col": 0,
    "fila": 6,
    "estado": "disenado",
-   "que_es": "El registro de la vigilancia anterior: 78 noches con lo que se encontró cada una. Vive en banco-de-pruebas/privado/, que no se versiona (ADR 0007).",
+   "que_es": "El registro de la vigilancia anterior: 84 entradas de 78 noches, con lo que encontró, lo que ya conocía y lo que descartó. Vive en banco-de-pruebas/privado/, que no se versiona (ADR 0007), y su forma está en banco-de-pruebas/formato.md.",
    "para_que": "Es contra lo que se mide la rebanada: qué encontró El Parte y qué había encontrado la vigilancia.",
    "docs": [
+    "banco-de-pruebas/formato.md",
     "adrs/0007-registro-del-banco-fuera-del-repositorio.md"
    ],
    "tarjetas": [
+    "T20"
+   ]
+  },
+  {
+   "id": "afuera/revision-banco",
+   "tipo": "externo",
+   "titulo": "Revisión del banco",
+   "sub": "privada, la escriben personas",
+   "col": 0,
+   "fila": 7,
+   "estado": "disenado",
+   "que_es": "Lo que deciden las personas que leen el registro: qué fuente de El Parte publica cada entrada, qué etiqueta lleva cada descarte, qué hecho corresponde a qué entrada y si cada hecho que no corresponde a nada está bien. Vive en banco-de-pruebas/privado/revision/, junto al registro.",
+   "para_que": "Sin ella la medición no puede decir qué estaba al alcance de El Parte ni si lo que publicó es un acierto o un error: lo deja sin revisar o sin juzgar.",
+   "docs": [
+    "banco-de-pruebas/formato.md",
+    "banco-de-pruebas/metricas.md"
+   ],
+   "tarjetas": [
+    "T12",
     "T20"
    ]
   },
@@ -453,7 +473,7 @@ var S = {
    "titulo": "API de Anthropic",
    "sub": "Claude Haiku y Sonnet",
    "col": 6,
-   "fila": 10,
+   "fila": 11,
    "estado": "construido",
    "que_es": "El proveedor de modelos. La clave vive solo en el .env de la máquina que corre las noches reales (T14).",
    "para_que": "Responde las preguntas de los agentes que usan el modelo. Hoy solo el refutador.",
@@ -467,7 +487,7 @@ var S = {
    "titulo": "Buzón de correo",
    "sub": "Mailpit en local · SMTP real: T27",
    "col": 12,
-   "fila": 9,
+   "fila": 10,
    "estado": "construido",
    "que_es": "Por donde salen los correos. En local es Mailpit, un buzón de prueba que levanta Docker Compose y que captura los correos sin mandarlos; para los invitados de verdad hace falta un servicio de correo real, que se decide con el despliegue (T27).",
    "para_que": "Llevar el enlace para entrar y el aviso de cada mañana. Hoy nada le escribe.",
@@ -520,9 +540,11 @@ var S = {
    "col": 1,
    "fila": 6,
    "estado": "disenado",
-   "que_es": "Corre la rebanada sobre cada noche del registro del banco de pruebas y compara lo encontrado con lo que encontró la vigilancia anterior.",
-   "para_que": "Dice cuánto acierta El Parte: encontrados, no encontrados, fuera de alcance y falsos positivos, con costo y duración por noche.",
+   "que_es": "Corre la rebanada sobre cada noche del registro del banco de pruebas, en modo banco, y cuenta lo encontrado contra lo que encontró la vigilancia anterior, con la revisión que hicieron las personas. Escribe cada medición en banco-de-pruebas/mediciones/, con huellas y conteos y sin texto del registro.",
+   "para_que": "Dice cuánto acierta El Parte: la cobertura de los hallazgos y de los descartes publicables, la precisión de lo publicado y de lo que va a revisión, y el costo y la duración por noche.",
    "docs": [
+    "banco-de-pruebas/metricas.md",
+    "banco-de-pruebas/formato.md",
     "docs/plan.md"
    ],
    "tarjetas": [
@@ -789,7 +811,7 @@ var S = {
    "titulo": "uso.modelo",
    "sub": "tópico de Kafka",
    "col": 7,
-   "fila": 9,
+   "fila": 10,
    "estado": "construido",
    "que_es": "Una por llamada al modelo: modelo, tokens, costo y resultado (hecha, error o reproducida).",
    "para_que": "Es de donde sale el costo por agente de la sala de máquinas, y la base del presupuesto que corta (T22).",
@@ -804,7 +826,7 @@ var S = {
    "titulo": "Los 12 tópicos",
    "sub": "todos, uno por tipo de mensaje",
    "col": 9,
-   "fila": 8,
+   "fila": 9,
    "estado": "construido",
    "que_es": "No es un objeto del sistema: está en el tablero para dibujar una sola flecha en vez de doce. Representa los doce tópicos de Kafka, cada uno con una partición y sin vencimiento.",
    "para_que": "Muestra que el observador escucha todo.",
@@ -926,7 +948,7 @@ var S = {
    "titulo": "La aplicación",
    "sub": "Spring Boot 4.1 · Java 25",
    "col": 0,
-   "fila": 9,
+   "fila": 10,
    "estado": "construido",
    "que_es": "El proceso donde corren todos los agentes, el observador y la web: arranque, tópicos, reintentos de los consumidores, salud de Kafka y el marco común de las páginas.",
    "para_que": "Un solo proceso hace la versión 0 fácil de levantar (ADR 0003).",
@@ -948,7 +970,7 @@ var S = {
    "titulo": "Emisor y sobres",
    "sub": "Emisor · Sobre · Tipos · Contenidos · Huellas",
    "col": 1,
-   "fila": 9,
+   "fila": 10,
    "estado": "construido",
    "que_es": "Arma el sobre de cada mensaje con su identificador determinista y lo manda a su tópico, con la corrida como clave.",
    "para_que": "Que procesar dos veces lo mismo produzca los mismos mensajes. Lo usan todos los que emiten: sus flechas son las de 'emite'.",
@@ -970,7 +992,7 @@ var S = {
    "titulo": "Grabaciones",
    "sub": "Grabaciones",
    "col": 2,
-   "fila": 9,
+   "fila": 10,
    "estado": "construido",
    "que_es": "Graba todo lo que una corrida lee de afuera, ya enmascarado, y lo devuelve tal como quedó guardado. En una repetición lee solo de ahí.",
    "para_que": "Repetir cualquier corrida sin red ni costo, con los mismos mensajes (ADR 0011).",
@@ -987,7 +1009,7 @@ var S = {
    "titulo": "Registro de lo procesado",
    "sub": "Procesados",
    "col": 4,
-   "fila": 9,
+   "fila": 10,
    "estado": "construido",
    "que_es": "Anota qué mensaje procesó cada agente, en la misma transacción que sus efectos.",
    "para_que": "Que un mensaje entregado dos veces no cambie nada (idempotencia).",
@@ -1005,7 +1027,7 @@ var S = {
    "titulo": "Presupuesto que corta",
    "sub": "advisor · libro de la corrida",
    "col": 5,
-   "fila": 9,
+   "fila": 10,
    "estado": "disenado",
    "que_es": "Reservará el peor caso antes de cada llamada al modelo y cortará la corrida si no alcanza, por costo o por pasos.",
    "para_que": "Que ninguna noche gaste más que su tope (ADR 0005). Hoy el tope de 60 candidatos y el del espacio de trabajo hacen de red.",
@@ -1022,7 +1044,7 @@ var S = {
    "titulo": "Servicio del modelo",
    "sub": "Modelo · Spring AI",
    "col": 6,
-   "fila": 9,
+   "fila": 10,
    "estado": "construido",
    "que_es": "Por acá pasan todas las llamadas al modelo: usa el modelo que la corrida fijó para el agente, pide la respuesta con forma de record, la graba y emite uso.modelo con su costo.",
    "para_que": "Un solo lugar para elegir el modelo, grabar, repetir y contar. Si el modelo no responde, la falla también se graba.",
@@ -1040,7 +1062,7 @@ var S = {
    "titulo": "Observador",
    "sub": "Observador",
    "col": 9,
-   "fila": 9,
+   "fila": 10,
    "estado": "construido",
    "que_es": "Escucha los doce tópicos y copia cada mensaje a la base.",
    "para_que": "El registro de mensajes es la historia de cada corrida: de ahí salen la sala de máquinas, el cierre y la espera de las causas (ADR 0002).",
@@ -1057,7 +1079,7 @@ var S = {
    "titulo": "Registro de mensajes",
    "sub": "RegistroDeMensajes",
    "col": 10,
-   "fila": 9,
+   "fila": 10,
    "estado": "construido",
    "que_es": "Busca mensajes en la copia del observador, y espera hasta 30 segundos el que todavía no llegó.",
    "para_que": "Entre tópicos no hay orden: un agente puede recibir algo antes que su causa, y la espera acá.",
@@ -1075,7 +1097,7 @@ var S = {
    "titulo": "Comparación de corridas",
    "sub": "ComparacionDeCorridas",
    "col": 11,
-   "fila": 9,
+   "fila": 10,
    "estado": "construido",
    "que_es": "Compara los mensajes de una corrida con los de su repetición: tipo, agente y contenido, sin identificadores, horas ni costos.",
    "para_que": "Es la prueba de que una repetición dio lo mismo.",
@@ -1092,7 +1114,7 @@ var S = {
    "titulo": "Corrida por reloj",
    "sub": "NochePorReloj · apagada",
    "col": 0,
-   "fila": 10,
+   "fila": 11,
    "estado": "construido",
    "que_es": "Corre la noche de ayer a la hora que diga elparte.corrida.cron, en hora de Uruguay. Viene apagada.",
    "para_que": "Que las noches corran solas cuando se decida dónde vive la aplicación (T27).",
@@ -1111,7 +1133,7 @@ var S = {
    "titulo": "Contexto de la corrida",
    "sub": "Corridas",
    "col": 1,
-   "fila": 10,
+   "fila": 11,
    "estado": "construido",
    "que_es": "Devuelve lo que congeló corrida.iniciada para una corrida, y su estado.",
    "para_que": "Que cada agente use la noche, los modelos y el modo de su corrida, y sepa si es una repetición.",
@@ -1129,7 +1151,7 @@ var S = {
    "titulo": "fuentes",
    "sub": "parte.fuentes",
    "col": 0,
-   "fila": 12,
+   "fila": 13,
    "estado": "construido",
    "que_es": "Una fila por fuente, con su licencia y cuándo se verificó.",
    "para_que": "El inicio arma la lista de fuentes de cada corrida desde acá.",
@@ -1144,7 +1166,7 @@ var S = {
    "titulo": "corridas",
    "sub": "parte.corridas",
    "col": 1,
-   "fila": 12,
+   "fila": 13,
    "estado": "construido",
    "que_es": "Una fila por corrida: modo, noche, estado, límite alcanzado y cuándo empezó y terminó.",
    "para_que": "Es la lista de la sala de máquinas, y la referencia del archivista para comparar contra corridas anteriores.",
@@ -1159,7 +1181,7 @@ var S = {
    "titulo": "grabaciones",
    "sub": "parte.grabaciones",
    "col": 2,
-   "fila": 12,
+   "fila": 13,
    "estado": "construido",
    "que_es": "Lo que cada corrida leyó de afuera, por clave, ya enmascarado.",
    "para_que": "Repetir corridas (ADR 0011).",
@@ -1174,7 +1196,7 @@ var S = {
    "titulo": "mensajes_procesados",
    "sub": "parte.mensajes_procesados",
    "col": 4,
-   "fila": 12,
+   "fila": 13,
    "estado": "construido",
    "que_es": "Qué mensaje procesó cada agente.",
    "para_que": "Idempotencia, y la cuenta del cierre de lo que procesó el editor.",
@@ -1189,7 +1211,7 @@ var S = {
    "titulo": "precios_de_modelo",
    "sub": "parte.precios_de_modelo",
    "col": 6,
-   "fila": 12,
+   "fila": 13,
    "estado": "construido",
    "que_es": "El precio de cada modelo por millón de tokens, con su fuente y desde cuándo rige.",
    "para_que": "El costo de cada llamada sale de acá.",
@@ -1204,7 +1226,7 @@ var S = {
    "titulo": "suscripciones",
    "sub": "parte.suscripciones",
    "col": 8,
-   "fila": 12,
+   "fila": 13,
    "estado": "construido",
    "que_es": "Qué entidades sigue cada cliente. Diseñado: la escribe la página del perfil (T34).",
    "para_que": "Define qué entidades sigue la corrida y qué va en cada informe.",
@@ -1219,7 +1241,7 @@ var S = {
    "titulo": "mensajes",
    "sub": "parte.mensajes",
    "col": 9,
-   "fila": 12,
+   "fila": 13,
    "estado": "construido",
    "que_es": "La copia de cada mensaje de cada corrida.",
    "para_que": "La sala de máquinas, el cierre y la espera de causas leen de acá.",
@@ -1234,7 +1256,7 @@ var S = {
    "titulo": "hechos",
    "sub": "parte.hechos",
    "col": 10,
-   "fila": 12,
+   "fila": 13,
    "estado": "construido",
    "que_es": "La identidad de cada hecho: su clave, su fuente y su tipo.",
    "para_que": "Es la base de afirmaciones; el contenido está en las versiones.",
@@ -1249,7 +1271,7 @@ var S = {
    "titulo": "informes",
    "sub": "parte.informes",
    "col": 11,
-   "fila": 12,
+   "fila": 13,
    "estado": "construido",
    "que_es": "Un informe por cliente, noche y corrida, con o sin novedades.",
    "para_que": "Lo que muestra la página de la mañana.",
@@ -1264,7 +1286,7 @@ var S = {
    "titulo": "libros_de_corrida",
    "sub": "parte.libros_de_corrida",
    "col": 1,
-   "fila": 13,
+   "fila": 14,
    "estado": "construido",
    "que_es": "El libro de gasto de cada corrida.",
    "para_que": "Lo crea el inicio; lo va a llevar el presupuesto que corta (T22).",
@@ -1279,7 +1301,7 @@ var S = {
    "titulo": "entidades",
    "sub": "parte.entidades",
    "col": 2,
-   "fila": 13,
+   "fila": 14,
    "estado": "construido",
    "que_es": "Organismos y personas jurídicas, con sus identificadores en cada fuente. Diseñado: el perfil muestra como catálogo las que se pueden seguir, las que tienen su identificador en alguna fuente (T34).",
    "para_que": "El explorador saca de acá el código de comprador de cada entidad seguida.",
@@ -1294,7 +1316,7 @@ var S = {
    "titulo": "modelos_de_agente",
    "sub": "parte.modelos_de_agente",
    "col": 6,
-   "fila": 13,
+   "fila": 14,
    "estado": "construido",
    "que_es": "Qué modelo usa cada agente y desde cuándo.",
    "para_que": "El inicio congela el vigente en cada corrida (ADR 0003).",
@@ -1309,7 +1331,7 @@ var S = {
    "titulo": "clientes",
    "sub": "parte.clientes",
    "col": 8,
-   "fila": 13,
+   "fila": 14,
    "estado": "construido",
    "que_es": "Cada cliente, con un alias y si es la cuenta de demostración. Sin correos.",
    "para_que": "A quién se le arma un informe.",
@@ -1324,7 +1346,7 @@ var S = {
    "titulo": "hecho_entidades",
    "sub": "parte.hecho_entidades",
    "col": 9,
-   "fila": 13,
+   "fila": 14,
    "estado": "construido",
    "que_es": "Qué entidades menciona cada hecho y con qué rol.",
    "para_que": "El expediente de una entidad y los informes por suscripción.",
@@ -1339,7 +1361,7 @@ var S = {
    "titulo": "versiones_de_hecho",
    "sub": "parte.versiones_de_hecho",
    "col": 10,
-   "fila": 13,
+   "fila": 14,
    "estado": "construido",
    "que_es": "Cada versión de un hecho: afirmación, grado, razonamiento, estado de revisión y la traza de los mensajes que la produjeron.",
    "para_que": "Una actualización es una versión nueva; la historia queda.",
@@ -1354,7 +1376,7 @@ var S = {
    "titulo": "informe_hechos",
    "sub": "parte.informe_hechos",
    "col": 11,
-   "fila": 13,
+   "fila": 14,
    "estado": "construido",
    "que_es": "Qué versiones incluye cada informe.",
    "para_que": "La página de la mañana lista estos hechos.",
@@ -1369,7 +1391,7 @@ var S = {
    "titulo": "evidencias",
    "sub": "parte.evidencias",
    "col": 10,
-   "fila": 14,
+   "fila": 15,
    "estado": "construido",
    "que_es": "Los fragmentos de la fuente que respaldan cada versión, con su URL y la huella del contenido.",
    "para_que": "Sin evidencia no hay hecho; el archivista compara las huellas.",
@@ -1384,7 +1406,7 @@ var S = {
    "titulo": "revisiones",
    "sub": "parte.revisiones",
    "col": 11,
-   "fila": 14,
+   "fila": 15,
    "estado": "construido",
    "que_es": "Cada revisión humana de una versión.",
    "para_que": "La va a escribir la cola de revisión (T23). Hoy nadie la escribe.",
@@ -1399,7 +1421,7 @@ var S = {
    "titulo": "usuarios",
    "sub": "cuentas.usuarios",
    "col": 12,
-   "fila": 12,
+   "fila": 13,
    "estado": "construido",
    "que_es": "El correo de cada usuario invitado, con el mismo identificador que su cliente en el esquema parte. Es el único lugar con datos personales, en un esquema aparte (ADR 0008). Diseñado: suma si quiere el aviso diario.",
    "para_que": "Saber a qué correo mandar el enlace y el aviso, y a qué cliente corresponde quien entra. Hoy nadie la usa (T25).",
@@ -1415,7 +1437,7 @@ var S = {
    "titulo": "Inicio",
    "sub": "GET /",
    "col": 1,
-   "fila": 16,
+   "fila": 17,
    "estado": "construido",
    "que_es": "La portada: qué es El Parte y los enlaces a las otras páginas.",
    "para_que": "La entrada de quien llega.",
@@ -1433,7 +1455,7 @@ var S = {
    "titulo": "Sala de máquinas",
    "sub": "GET y POST /corridas · GET /corridas/{id}",
    "col": 3,
-   "fila": 16,
+   "fila": 17,
    "estado": "construido",
    "que_es": "La lista de corridas, el botón para correr una noche o repetir una corrida, y la página de cada corrida: la cadena de mensajes de cada candidato, el costo por agente y la comparación con la original.",
    "para_que": "Ver qué hizo cada agente y por qué, y cuánto costó (ADR 0002).",
@@ -1457,7 +1479,7 @@ var S = {
    "titulo": "Página de la mañana",
    "sub": "GET /manana",
    "col": 11,
-   "fila": 16,
+   "fila": 17,
    "estado": "construido",
    "que_es": "El último informe de la cuenta de demostración: cada hecho con su grado, su evidencia, su estado de revisión y el enlace a su traza. Avisa si una fuente falló.",
    "para_que": "Es lo que El Parte le da a quien sigue una entidad.",
@@ -1482,7 +1504,7 @@ var S = {
    "titulo": "Cómo funciona",
    "sub": "",
    "col": 0,
-   "fila": 16,
+   "fila": 17,
    "estado": "disenado",
    "que_es": "La sección de la aplicación que enlaza a esta documentación y a las páginas 'cómo se hizo'.",
    "para_que": "Que se entienda el sistema sin salir de la aplicación.",
@@ -1499,7 +1521,7 @@ var S = {
    "titulo": "Cola de revisión",
    "sub": "",
    "col": 5,
-   "fila": 16,
+   "fila": 17,
    "estado": "disenado",
    "que_es": "La cola de hechos INFERRED pendientes de revisión, en la sala de máquinas.",
    "para_que": "Que una persona confirme o corrija lo que el refutador dedujo (D6).",
@@ -1516,7 +1538,7 @@ var S = {
    "titulo": "Pantalla del responsable",
    "sub": "",
    "col": 6,
-   "fila": 16,
+   "fila": 17,
    "estado": "disenado",
    "que_es": "La pantalla donde el responsable cambia el modelo de cada agente y los precios, sin reiniciar.",
    "para_que": "Calibrar contra el banco de pruebas cambiando modelos de una corrida a otra (ADR 0003).",
@@ -1533,7 +1555,7 @@ var S = {
    "titulo": "Expediente",
    "sub": "",
    "col": 9,
-   "fila": 16,
+   "fila": 17,
    "estado": "disenado",
    "que_es": "Todo lo que la base sabe de una entidad: cada hecho y cada versión, en orden.",
    "para_que": "Consultar una entidad cuando se quiera, no solo lo de anoche.",
@@ -1550,7 +1572,7 @@ var S = {
    "titulo": "Entrar por enlace",
    "sub": "GET /entrar · POST /ott/generate",
    "col": 12,
-   "fila": 16,
+   "fila": 17,
    "estado": "disenado",
    "que_es": "La página para entrar: la persona pone su correo y, si está invitada, le llega un enlace de un solo uso. Al hacer clic entra, y la aplicación la recuerda 30 días. Es el login con token de un solo uso de Spring Security, con los tokens y los recordatorios guardados en el esquema cuentas.",
    "para_que": "Que cada invitado vea su página y su perfil sin contraseña, y que no tenga que pedir un enlace cada mañana. Ante un correo no invitado responde lo mismo, así no se puede averiguar quién está.",
@@ -1568,7 +1590,7 @@ var S = {
    "titulo": "Usuario invitado",
    "sub": "su navegador y su correo",
    "col": 13,
-   "fila": 16,
+   "fila": 17,
    "estado": "disenado",
    "tarjetas": [
     "T25"
@@ -1585,7 +1607,7 @@ var S = {
    "titulo": "Alta de invitados",
    "sub": "lista elparte.invitados",
    "col": 12,
-   "fila": 10,
+   "fila": 11,
    "estado": "disenado",
    "tarjetas": [
     "T25"
@@ -1602,7 +1624,7 @@ var S = {
    "titulo": "Correo saliente",
    "sub": "Spring Boot Mail · SMTP",
    "col": 13,
-   "fila": 9,
+   "fila": 10,
    "estado": "disenado",
    "tarjetas": [
     "T25",
@@ -1620,7 +1642,7 @@ var S = {
    "titulo": "Aviso del parte",
    "sub": "escucha informes · cada mañana",
    "col": 13,
-   "fila": 10,
+   "fila": 11,
    "estado": "disenado",
    "tarjetas": [
     "T35"
@@ -1638,7 +1660,7 @@ var S = {
    "titulo": "Mi perfil",
    "sub": "GET y POST /perfil",
    "col": 10,
-   "fila": 16,
+   "fila": 17,
    "estado": "disenado",
    "tarjetas": [
     "T34"
@@ -1655,7 +1677,7 @@ var S = {
    "titulo": "one_time_tokens",
    "sub": "cuentas.one_time_tokens",
    "col": 12,
-   "fila": 13,
+   "fila": 14,
    "estado": "disenado",
    "tarjetas": [
     "T25"
@@ -1673,7 +1695,7 @@ var S = {
    "titulo": "persistent_logins",
    "sub": "cuentas.persistent_logins",
    "col": 13,
-   "fila": 13,
+   "fila": 14,
    "estado": "disenado",
    "tarjetas": [
     "T25"
@@ -1691,7 +1713,7 @@ var S = {
    "titulo": "envios_del_parte",
    "sub": "cuentas.envios_del_parte",
    "col": 13,
-   "fila": 12,
+   "fila": 13,
    "estado": "disenado",
    "tarjetas": [
     "T35"
@@ -2754,7 +2776,7 @@ var S = {
    "estado": "disenado",
    "papel": "auxiliar",
    "etiqueta": "lee lo que encontró la vigilancia",
-   "detalle": "Leerá el registro para comparar noche por noche.",
+   "detalle": "Leerá el registro para contar, entrada por entrada, qué encontró El Parte de lo que encontró y descartó la vigilancia.",
    "tarjetas": [
     "T12",
     "T20"
@@ -3099,6 +3121,20 @@ var S = {
    "detalle": "Entra a /manana desde el aviso; el recordatorio la deja adentro sin pedir enlace.",
    "tarjetas": [
     "T25"
+   ]
+  },
+  {
+   "id": "medicion-banco>afuera/revision-banco",
+   "de": "medicion-banco",
+   "a": "afuera/revision-banco",
+   "tipo": "llama",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "lee la revisión",
+   "detalle": "Leerá la revisión: la fuente y la etiqueta de cada entrada, las correspondencias y los extras.",
+   "tarjetas": [
+    "T12",
+    "T20"
    ]
   }
  ],
@@ -3499,7 +3535,11 @@ var S = {
    "pasos": [
     {
      "en": "medicion-banco",
-     "texto": "La medición contra el banco de pruebas (T20), después del formato y la muestra del banco (T12)."
+     "texto": "La medición contra el banco de pruebas (T20), con el formato, la revisión y las métricas de banco-de-pruebas/ (T12)."
+    },
+    {
+     "en": "afuera/revision-banco",
+     "texto": "La revisión del registro, que hacen personas leyéndolo (T20)."
     },
     {
      "en": "analista>modelo",
@@ -3583,6 +3623,15 @@ var S = {
     "base/envios",
     "base/usuarios",
     "web/manana"
+   ]
+  },
+  {
+   "fecha": "2026-11-14",
+   "texto": "El formato del banco de pruebas, su muestra sintética y sus métricas (T12): la medición lee también la revisión que hacen las personas, y escribe cada medición en banco-de-pruebas/mediciones/.",
+   "objetos": [
+    "afuera/registro-banco",
+    "afuera/revision-banco",
+    "medicion-banco"
    ]
   }
  ],
@@ -4075,7 +4124,7 @@ $("btn-atras").addEventListener("click", function () {
 });
 function enlace(ruta) {
   var limpia = ruta.split("#")[0], ancla = ruta.indexOf("#") >= 0 ? "#" + ruta.split("#")[1] : "";
-  return '<a href="' + esc(S.repositorio + limpia + ancla) + '" target="_blank" rel="noopener"><code>' + esc(limpia.split("/").pop()) + "</code></a>";
+  return '<a href="' + esc(S.repositorio + limpia + ancla) + '" target="_blank" rel="noopener"><code>' + esc(limpia) + "</code></a>";
 }
 function tarjeta(t) { return '<a href="' + esc(S.tablero) + '" target="_blank" rel="noopener" title="Abrir tablero.md">' + esc(t) + "</a>"; }
 function referencia(id) {

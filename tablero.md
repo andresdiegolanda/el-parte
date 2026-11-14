@@ -3,7 +3,7 @@
 Todo pendiente de El Parte vive acá, con dueño (regla 8). Este archivo es lo que manda. El kanban publicado es editable y se sincroniza con este archivo cada vez que una sesión de desarrollo lee o escribe el repositorio, o cuando se le pide; su copia sin conexión, [`kanban/index.html`](kanban/index.html), se genera desde acá con `python3 herramientas/generar_kanban.py` y no se edita a mano ([ADR 0009](adrs/0009-kanban-editable-sincronizado.md)).
 
 - Actualizado: 2026-11-14
-- Nota: La primera rebanada (T08) anda de punta a punta y espera su medición contra el banco (T20), que a su vez espera el formato y la muestra del banco de pruebas (T12). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.
+- Nota: La primera rebanada (T08) anda de punta a punta y espera su medición contra el banco (T20), que ya se puede hacer: el formato, la muestra y las métricas del banco de pruebas están en banco-de-pruebas/ (T12). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.
 - Calendario: 2026-11-07, 2026-11-14, 2026-11-21, 2026-11-28
 - Repositorio: https://github.com/andresdiegolanda/el-parte
 
@@ -82,28 +82,26 @@ Los campos van pegados al título, sin línea en blanco. Los que no aplican se o
 
 ## Para empezar
 
-### T12 · Escribir el formato, la muestra sintética y las métricas del banco de pruebas
-- Tipo: Documento
+### T20 · Medir la primera rebanada contra el banco de pruebas
+- Tipo: Verificación
 - Dueño: desarrollo
-- Depende de: T11
+- Depende de: T12
+- Detalle: [banco-de-pruebas/metricas.md](banco-de-pruebas/metricas.md), [banco-de-pruebas/formato.md](banco-de-pruebas/formato.md), [docs/plan.md](docs/plan.md)
 
-Lo que sí se versiona del banco de pruebas (D2), en `banco-de-pruebas/`.
-
-Etapas:
-- [ ] Borrador
-- [ ] Grados y fuentes
-- [ ] Diagramas
-- [ ] Releído y verificado
+La medición es parte de la versión 0. Corre la rebanada sobre cada noche del registro y compara lo encontrado con lo que encontró la vigilancia anterior (D1). No espera a que T08 cierre: alcanza con que la rebanada corra de punta a punta, y con esta medición T08 tilda su etapa "Medido contra el banco".
 
 Lista:
-- [ ] Formato del registro
-- [ ] Muestra sintética
-- [ ] Forma de las métricas
-- [ ] Cómo se cuentan los descartes del registro que El Parte sí publicaría
+- [ ] Correr la rebanada sobre cada noche del registro
+- [ ] Que las corridas en modo banco dejen la salida de El Parte con la forma de banco-de-pruebas/formato.md
+- [ ] Revisar el registro: la fuente y la etiqueta de cada entrada, y después las correspondencias y los extras
+- [ ] Contar con las reglas de banco-de-pruebas/metricas.md; con la muestra tiene que dar banco-de-pruebas/muestra/medicion-esperada.json
+- [ ] Costo y duración por noche
+- [ ] Versionar las métricas con la huella del registro usado (ADR 0007)
 
 Registro:
-- 2026-11-07: Creada.
-- 2026-11-14: Pasa a Para empezar: T11 está hecha. Suma cómo contar los descartes, porque El Parte no filtra por tema.
+- 2026-11-07: Creada con el plan (T07).
+- 2026-11-14: Deja de depender de T08, que no podía cerrar sin esta medición.
+- 2026-11-14: Pasa a Para empezar: T12 está hecha. Suma la salida de las corridas y la revisión del registro, que pide el formato.
 
 ## Esperando
 
@@ -144,24 +142,6 @@ Registro:
 - 2026-11-14: La rebanada anda de punta a punta: una noche de ARCE llega a la página de la mañana, con su traza en la sala de máquinas, y se repite sin red ni costo con los mismos mensajes. Diecisiete pruebas contra contenedores y una corrida en Docker Compose. Pasa a Esperando: falta medirla contra el banco (T20). La grabación de las corridas queda en un ADR propuesto, el 0011 (T31).
 
 ## Pendiente
-
-### T20 · Medir la primera rebanada contra el banco de pruebas
-- Tipo: Verificación
-- Dueño: desarrollo
-- Depende de: T12
-- Detalle: [docs/plan.md](docs/plan.md)
-
-La medición es parte de la versión 0. Corre la rebanada sobre cada noche del registro y compara lo encontrado con lo que encontró la vigilancia anterior (D1). No espera a que T08 cierre: alcanza con que la rebanada corra de punta a punta, y con esta medición T08 tilda su etapa "Medido contra el banco".
-
-Lista:
-- [ ] Correr la rebanada sobre cada noche del registro
-- [ ] Contar encontrados, no encontrados, fuera de alcance y falsos positivos
-- [ ] Costo y duración por noche
-- [ ] Versionar las métricas con la huella del registro usado (ADR 0007)
-
-Registro:
-- 2026-11-07: Creada con el plan (T07).
-- 2026-11-14: Deja de depender de T08, que no podía cerrar sin esta medición.
 
 ### T21 · Completar el analista
 - Tipo: Componente
@@ -342,9 +322,9 @@ Registro:
 - Tipo: ADR
 - Dueño: desarrollo
 - Depende de: T08
-- Detalle: [arranque/decisiones-iniciales.md](arranque/decisiones-iniciales.md)
+- Detalle: [arranque/decisiones-iniciales.md](arranque/decisiones-iniciales.md), [compose.yaml](compose.yaml), [app/README.md](app/README.md)
 
-Dónde se publica el servicio para los usuarios invitados, con qué dominio y con qué servicio de correo (D9).
+Dónde se publica el servicio para los usuarios invitados, con qué dominio y con qué servicio de correo (D9). Hoy todo corre en una máquina con Docker (`compose.yaml`); el ADR resuelve lo que falta para que los invitados lo usen cada mañana.
 
 Etapas:
 - [ ] Contexto y alternativas
@@ -352,8 +332,17 @@ Etapas:
 - [ ] Escrito
 - [ ] Aceptado
 
+Lista:
+- [ ] Una máquina siempre prendida, para la corrida de cada noche (`ELPARTE_CORRIDA_CRON`) y las páginas de cada mañana
+- [ ] Un dominio público con HTTPS, al que apuntan el enlace para entrar y el aviso diario
+- [ ] Un servicio de correo real en lugar de Mailpit, con la configuración de envío que pida en el dominio, verificada en su documentación
+- [ ] La base y Kafka en almacenamiento persistente, y copias de seguridad de la base
+- [ ] Las claves del modelo y de la base en el servidor, fuera del repositorio
+- [ ] El tamaño de la máquina, con el costo y la duración por noche medidos en T20
+
 Registro:
 - 2026-11-07: Creada con el plan (T07).
+- 2026-11-14: Suma la lista de lo que el despliegue tiene que resolver.
 
 ### T33 · Armar el expediente de cada entidad
 - Tipo: Web
@@ -423,6 +412,32 @@ Registro:
 - 2026-11-14: Creada con el ADR 0010.
 
 ## Hecho
+
+### T12 · Escribir el formato, la muestra sintética y las métricas del banco de pruebas
+- Tipo: Documento
+- Dueño: desarrollo
+- Depende de: T11
+- Detalle: [banco-de-pruebas/README.md](banco-de-pruebas/README.md), [banco-de-pruebas/formato.md](banco-de-pruebas/formato.md), [banco-de-pruebas/metricas.md](banco-de-pruebas/metricas.md)
+
+Lo que sí se versiona del banco de pruebas (D2), en `banco-de-pruebas/`.
+
+Etapas:
+- [x] Borrador
+- [x] Grados y fuentes
+- [x] Diagramas
+- [x] Releído y verificado
+
+Lista:
+- [x] Formato del registro
+- [x] Muestra sintética
+- [x] Forma de las métricas
+- [x] Cómo se cuentan los descartes del registro que El Parte sí publicaría
+
+Registro:
+- 2026-11-07: Creada.
+- 2026-11-14: Pasa a Para empezar: T11 está hecha. Suma cómo contar los descartes, porque El Parte no filtra por tema.
+- 2026-11-14: Pasa a En curso.
+- 2026-11-14: Hecha. El formato del registro, de su revisión y de la salida de El Parte, con el control `herramientas/banco_de_pruebas.py`: el registro real lo cumple, con un aviso por una contradicción propia. La muestra sintética tiene un caso de cada resultado y su medición esperada, que controla el verificador. Las métricas cuentan cobertura, precisión, costo y duración; los descartes llevan una etiqueta de la revisión y no son falsos positivos por sí solos. T20 pasa a Para empezar.
 
 ### T36 · Aceptar o corregir el ADR 0013
 - Tipo: Gestión

@@ -146,7 +146,7 @@
   .conexion small { color: var(--texto3); }
   .conexion.disenado { color: #c4b5fd; }
   ul.lista { margin: 4px 0; padding-left: 18px; }
-  ul.lista li { margin: 2px 0; }
+  ul.lista li { margin: 2px 0; overflow-wrap: anywhere; }
   .leyenda-fila { display: flex; align-items: center; gap: 10px; margin: 6px 0; }
   .leyenda-fila svg { flex: 0 0 auto; }
   footer { display: flex; gap: 10px; align-items: center; padding: 8px 16px; border-top: 1px solid var(--linea); background: #0d142b; min-height: 56px; }
@@ -537,7 +537,7 @@ $("btn-atras").addEventListener("click", function () {
 });
 function enlace(ruta) {
   var limpia = ruta.split("#")[0], ancla = ruta.indexOf("#") >= 0 ? "#" + ruta.split("#")[1] : "";
-  return '<a href="' + esc(S.repositorio + limpia + ancla) + '" target="_blank" rel="noopener"><code>' + esc(limpia.split("/").pop()) + "</code></a>";
+  return '<a href="' + esc(S.repositorio + limpia + ancla) + '" target="_blank" rel="noopener"><code>' + esc(limpia) + "</code></a>";
 }
 function tarjeta(t) { return '<a href="' + esc(S.tablero) + '" target="_blank" rel="noopener" title="Abrir tablero.md">' + esc(t) + "</a>"; }
 function referencia(id) {

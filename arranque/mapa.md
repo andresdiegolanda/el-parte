@@ -47,9 +47,10 @@ flowchart TD
 | [`herramientas/tablero_md.py`](../herramientas/tablero_md.py) | Lee y valida `tablero.md`. Lo usan el generador y el verificador. |
 | [`herramientas/generar_kanban.py`](../herramientas/generar_kanban.py) | Genera `kanban/index.html` desde `tablero.md`. |
 | [`herramientas/sincronizar_tablero.py`](../herramientas/sincronizar_tablero.py) | Sincroniza la base del kanban publicado con `tablero.md` (ADR 0009). |
-| [`herramientas/pruebas/`](../herramientas/pruebas/prueba_sincronizacion.py) | Pruebas de la sincronización, del kanban editable y del tablero de arquitectura. |
+| [`herramientas/pruebas/`](../herramientas/pruebas/prueba_sincronizacion.py) | Pruebas de la sincronización, del kanban editable, del tablero de arquitectura y del banco de pruebas. |
 | [`herramientas/generar_laminas.py`](../herramientas/generar_laminas.py) | Genera cada lámina SVG desde su fuente JSON. |
-| [`herramientas/verificar_docs.py`](../herramientas/verificar_docs.py) | Verificador: guiones largos, enlaces relativos, reglas del tablero, kanban y láminas al día, referencias a tarjetas y decisiones, y la primera migración igual al DDL del documento de la base. |
+| [`herramientas/banco_de_pruebas.py`](../herramientas/banco_de_pruebas.py) | Valida un registro del banco de pruebas y su revisión, y cuenta una medición (T12). |
+| [`herramientas/verificar_docs.py`](../herramientas/verificar_docs.py) | Verificador: guiones largos, enlaces relativos, reglas del tablero, kanban y láminas al día, referencias a tarjetas y decisiones, la primera migración igual al DDL del documento de la base, el tablero de arquitectura igual al código y la muestra del banco de pruebas. |
 | [`docs/README.md`](../docs/README.md) | Qué hay en `docs/` y cuál manda. |
 | [`docs/tablero-de-arquitectura/`](../docs/tablero-de-arquitectura/README.md) | El sistema objeto por objeto: `sistema.json` (la fuente), `plantilla.html` y las páginas generadas, `index.html` (todo el sistema) y `usuarios.html` (la vista del usuario). Refleja la arquitectura en todo momento (ADR 0012, T32). |
 | [`docs/arquitectura.md`](../docs/arquitectura.md) | La arquitectura de la versión 0: lámina, agentes, una noche paso a paso, fallas y despliegue (T02). |
@@ -67,10 +68,15 @@ flowchart TD
 | [`compose.yaml`](../compose.yaml) | Levanta en local la aplicación, PostgreSQL, Kafka y el buzón de correo de prueba. |
 | [`obsoletos/README.md`](../obsoletos/README.md) | Índice de lo que se movió a obsoletos. |
 | [`.gitignore`](../.gitignore) | Lo que no se versiona: el registro real del banco de pruebas y los secretos. |
+| [`.gitattributes`](../.gitattributes) | La muestra del banco de pruebas, siempre con saltos de línea LF, porque se compara por su huella. |
+| [`banco-de-pruebas/README.md`](../banco-de-pruebas/README.md) | Qué hay del banco de pruebas en el repositorio y cómo se controla un registro. |
+| [`banco-de-pruebas/formato.md`](../banco-de-pruebas/formato.md) | La forma del registro, de su revisión y de la salida de El Parte, y la huella de cada registro (T12). |
+| [`banco-de-pruebas/metricas.md`](../banco-de-pruebas/metricas.md) | Cómo se mide El Parte contra el registro: resultados, descartes, cuentas y la forma de una medición (T12). |
+| `banco-de-pruebas/muestra/` | Un registro inventado con su revisión, una salida de El Parte inventada y la medición que tienen que dar (T12). |
 
 ## Lo que va a haber
 
 | Ruta | Qué va a tener | Tarea |
 |---|---|---|
-| `banco-de-pruebas/` | Formato del registro, muestra sintética y métricas de cada medición. El registro real va en `banco-de-pruebas/privado/`, que no se versiona. | T12 |
+| `banco-de-pruebas/mediciones/` | Una medición por archivo, con huellas y conteos y sin texto del registro. El registro real está en `banco-de-pruebas/privado/`, que no se versiona. | T20 |
 | `docs/como-se-hizo/` | Las páginas de los componentes que faltan. | T21 en adelante, T26 |

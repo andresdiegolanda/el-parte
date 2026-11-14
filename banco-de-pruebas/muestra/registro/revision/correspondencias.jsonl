@@ -1,0 +1,7 @@
+{"registro": "2026-01-06-1", "hecho": "arce:ocds-ejemplo-0001:adjudicacion"}
+{"registro": "2026-01-06-2", "hecho": "impo:ejemplo-decreto-1-2026:norma"}
+{"registro": "2026-01-06-3", "hecho": "arce:ocds-ejemplo-0003:llamado"}
+{"registro": "2026-01-06-4", "hecho": "arce:ocds-ejemplo-0005:adjudicacion", "juicio": "contenido-equivocado"}
+{"registro": "2026-01-08-2", "hecho": "arce:ocds-ejemplo-0002:aclaracion"}
+{"registro": "2026-01-12-4", "hecho": "arce:ocds-ejemplo-0004:llamado"}
+{"registro": "2026-01-12-5", "hecho": "impo:ejemplo-resolucion-7-2025:norma"}

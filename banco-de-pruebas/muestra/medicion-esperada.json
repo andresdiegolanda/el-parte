@@ -1,0 +1,317 @@
+{
+ "registro": {
+  "huella": "sha256:bafd504eaa2983c4e7a501af51d442d5cdd00b793a796d0d52820fb347d93b7a",
+  "primeraNoche": "2026-01-05",
+  "ultimaNoche": "2026-01-12",
+  "entradas": 16
+ },
+ "revision": {
+  "huella": "sha256:8de62b9ec2a84abc1a307a99b62ec41958be3787552b8eafe663676f5f13da15",
+  "sinRevisar": 0
+ },
+ "elParte": {
+  "commit": "0000000",
+  "entidad": "organismo:ejemplo",
+  "fuentes": [
+   "arce",
+   "impo"
+  ],
+  "modelos": {
+   "refutador": "modelo-de-ejemplo"
+  }
+ },
+ "noches": {
+  "medidas": 8,
+  "completas": 7,
+  "cortadas": 1,
+  "fallidas": 0,
+  "conFuentesNoRepetibles": 1,
+  "costoUsd": 0.84,
+  "costoUsdPorNoche": 0.105,
+  "duracionSegundosPorNoche": 287.5
+ },
+ "hallazgos": {
+  "total": 9,
+  "encontrados": {
+   "publicados": 1,
+   "aRevision": 1
+  },
+  "vistosYDescartados": 1,
+  "noEncontrados": 1,
+  "noRepetibles": 1,
+  "fueraDeLasNochesMedidas": 1,
+  "fueraDeEstaMedicion": 1,
+  "fueraDeElParte": 2,
+  "sinRevisar": 0,
+  "cobertura": 0.5,
+  "diasDeAdelanto": 0.5
+ },
+ "publicables": {
+  "total": 3,
+  "encontrados": {
+   "publicados": 2,
+   "aRevision": 0
+  },
+  "vistosYDescartados": 0,
+  "noEncontrados": 1,
+  "noRepetibles": 0,
+  "fueraDeLasNochesMedidas": 0,
+  "fueraDeEstaMedicion": 0,
+  "fueraDeElParte": 0,
+  "sinRevisar": 0,
+  "cobertura": 0.6667,
+  "diasDeAdelanto": 0.0
+ },
+ "hechos": {
+  "PROVEN": {
+   "total": 5,
+   "verdaderos": 3,
+   "falsos": {
+    "otraEntidad": 1,
+    "noNuevo": 0,
+    "contenidoEquivocado": 1
+   },
+   "sinJuzgar": 0,
+   "precision": 0.6
+  },
+  "INFERRED": {
+   "total": 4,
+   "verdaderos": 1,
+   "falsos": {
+    "otraEntidad": 1,
+    "noNuevo": 1,
+    "contenidoEquivocado": 0
+   },
+   "sinJuzgar": 1,
+   "precision": 0.3333
+  },
+  "todos": {
+   "total": 9,
+   "verdaderos": 4,
+   "falsos": {
+    "otraEntidad": 2,
+    "noNuevo": 1,
+    "contenidoEquivocado": 1
+   },
+   "sinJuzgar": 1,
+   "precision": 0.5
+  },
+  "descartadosPorElParte": 2
+ },
+ "detalle": {
+  "hallazgos": [
+   {
+    "id": "2026-01-06-1",
+    "clasificacion": "nuevo",
+    "resultado": "encontrado-publicado",
+    "hechos": [
+     "arce:ocds-ejemplo-0001:adjudicacion"
+    ],
+    "diasDeAdelanto": 1
+   },
+   {
+    "id": "2026-01-06-2",
+    "clasificacion": "nuevo",
+    "resultado": "encontrado-a-revision",
+    "hechos": [
+     "impo:ejemplo-decreto-1-2026:norma"
+    ],
+    "diasDeAdelanto": 0
+   },
+   {
+    "id": "2026-01-08-1",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-01-08-2",
+    "clasificacion": "actualizacion",
+    "resultado": "visto-y-descartado",
+    "hechos": [
+     "arce:ocds-ejemplo-0002:aclaracion"
+    ]
+   },
+   {
+    "id": "2026-01-08-3",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-las-noches-medidas"
+   },
+   {
+    "id": "2026-01-10-1",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-01-12-1",
+    "clasificacion": "nuevo",
+    "resultado": "no-encontrado"
+   },
+   {
+    "id": "2026-01-12-2",
+    "clasificacion": "nuevo",
+    "resultado": "no-repetible"
+   },
+   {
+    "id": "2026-01-12-3",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-esta-medicion"
+   }
+  ],
+  "publicables": [
+   {
+    "id": "2026-01-06-3",
+    "clasificacion": "descartado",
+    "resultado": "encontrado-publicado",
+    "hechos": [
+     "arce:ocds-ejemplo-0003:llamado"
+    ],
+    "diasDeAdelanto": 0
+   },
+   {
+    "id": "2026-01-06-4",
+    "clasificacion": "ya_conocido",
+    "resultado": "encontrado-publicado",
+    "hechos": [
+     "arce:ocds-ejemplo-0005:adjudicacion"
+    ],
+    "diasDeAdelanto": 0
+   },
+   {
+    "id": "2026-01-08-4",
+    "clasificacion": "descartado",
+    "resultado": "no-encontrado"
+   }
+  ],
+  "hechos": [
+   {
+    "clave": "arce:ocds-ejemplo-0001:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-01-05",
+    "resultado": "coincide-con-hallazgo",
+    "coincideCon": "2026-01-06-1"
+   },
+   {
+    "clave": "arce:ocds-ejemplo-0003:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-01-06",
+    "resultado": "coincide-con-publicable",
+    "coincideCon": "2026-01-06-3"
+   },
+   {
+    "clave": "arce:ocds-ejemplo-0004:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-01-11",
+    "resultado": "falso-positivo-otra-entidad",
+    "coincideCon": "2026-01-12-4"
+   },
+   {
+    "clave": "arce:ocds-ejemplo-0005:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-01-06",
+    "resultado": "falso-positivo-contenido",
+    "coincideCon": "2026-01-06-4"
+   },
+   {
+    "clave": "arce:ocds-ejemplo-0006:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-01-07",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-ejemplo-0007:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-01-09",
+    "resultado": "falso-positivo-otra-entidad"
+   },
+   {
+    "clave": "arce:ocds-ejemplo-0008:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-01-10",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "impo:ejemplo-decreto-1-2026:norma",
+    "grado": "INFERRED",
+    "noche": "2026-01-06",
+    "resultado": "coincide-con-hallazgo",
+    "coincideCon": "2026-01-06-2"
+   },
+   {
+    "clave": "impo:ejemplo-resolucion-7-2025:norma",
+    "grado": "INFERRED",
+    "noche": "2026-01-12",
+    "resultado": "falso-positivo-no-nuevo",
+    "coincideCon": "2026-01-12-5"
+   }
+  ],
+  "noches": [
+   {
+    "noche": "2026-01-05",
+    "estado": "completa",
+    "costoUsd": 0.1,
+    "duracionSegundos": 300,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-01-06",
+    "estado": "completa",
+    "costoUsd": 0.12,
+    "duracionSegundos": 320,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-01-07",
+    "estado": "completa",
+    "costoUsd": 0.08,
+    "duracionSegundos": 280,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-01-08",
+    "estado": "completa",
+    "costoUsd": 0.15,
+    "duracionSegundos": 350,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-01-09",
+    "estado": "completa",
+    "costoUsd": 0.11,
+    "duracionSegundos": 310,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-01-10",
+    "estado": "completa",
+    "costoUsd": 0.09,
+    "duracionSegundos": 290,
+    "lecturasFallidas": 1,
+    "noRepetibles": [
+     "impo"
+    ]
+   },
+   {
+    "noche": "2026-01-11",
+    "estado": "cortada",
+    "costoUsd": 0.05,
+    "duracionSegundos": 120,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-01-12",
+    "estado": "completa",
+    "costoUsd": 0.14,
+    "duracionSegundos": 330,
+    "lecturasFallidas": 0,
+    "noRepetibles": [],
+    "duracionDeLaVigilancia": 900
+   }
+  ]
+ }
+}

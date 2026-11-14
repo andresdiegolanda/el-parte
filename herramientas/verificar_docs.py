@@ -27,6 +27,10 @@ Controla, sobre todo el repositorio:
     escucha, escribe, lee y usa qué, las rutas de cada página, lo diseñado con
     tarjetas vivas, y index.html igual a lo que genera sistema.json. El detalle
     está en herramientas/tablero_arquitectura.py.
+11. Que la muestra sintética del banco de pruebas (banco-de-pruebas/muestra/)
+    cumpla el formato de banco-de-pruebas/formato.md sin avisos, y que contada
+    dé banco-de-pruebas/muestra/medicion-esperada.json. El detalle está en
+    herramientas/banco_de_pruebas.py.
 
 Uso:  python3 herramientas/verificar_docs.py
 Sale con codigo 0 si todo esta bien y 1 si encuentra algun problema.
@@ -44,6 +48,7 @@ import tempfile
 from pathlib import Path
 from urllib.parse import unquote
 
+import banco_de_pruebas
 import generar_kanban
 import generar_laminas
 import tablero_arquitectura
@@ -266,6 +271,7 @@ def main():
     verificar_referencias(markdowns, ids, decisiones_definidas(), errores)
     verificar_migracion(errores)
     errores.extend(tablero_arquitectura.verificar())
+    errores.extend(banco_de_pruebas.verificar_muestra())
 
     for aviso in avisos:
         print(f"Aviso: {aviso}")

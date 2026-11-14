@@ -66,7 +66,7 @@ No entra: audio, pagos, WhatsApp, planificador dinámico de fuentes, más de un 
 
 Existe un registro de una vigilancia anterior de un organismo, el Banco de Previsión Social (BPS), hecha todas las noches con un solo agente, con los hallazgos reales y los descartes anotados. Es el banco de pruebas de la versión 0: el sistema orquestado tiene que correr sobre esas noches y medirse contra ese registro (hallazgos encontrados, falsos positivos, costo). La medición es parte de la versión 0, no algo para después.
 
-El registro no se versiona, porque es material de otro proyecto (regla 11). Se lee desde una ruta configurable; en el repositorio van su formato, las métricas y una muestra sintética. Ver [decisiones-iniciales.md](decisiones-iniciales.md) (D1 y D2).
+El registro no se versiona, porque es material de otro proyecto (regla 11). Se lee desde una ruta configurable; en el repositorio van su formato, las métricas y una muestra sintética, en [`banco-de-pruebas/`](../banco-de-pruebas/README.md). Ver [decisiones-iniciales.md](decisiones-iniciales.md) (D1 y D2).
 
 ### Lo que trae el registro
 
@@ -77,7 +77,7 @@ El registro completo llegó el 2026-11-14 y está en `banco-de-pruebas/privado/`
 - **Qué no trae.** Bitácoras por noche, el contenido crudo de lo leído, el texto de las búsquedas web, ni el costo o la duración de las corridas, salvo la duración de la última. Para repetir una noche, los exploradores le piden a cada fuente lo que publicó en esa fecha (D1). Si una fuente no deja consultar por fecha, esa noche no se puede repetir para esa fuente, y la medición lo dice en lugar de esconderlo.
 - **De dónde salen los hallazgos.** Son 19: 17 nuevos y 2 actualizaciones. De esos, 12 salen del sitio del BPS, 4 de la prensa, 2 de IMPO y 1 del BID, leído en un sitio espejo. De ARCE no sale ninguno: lo que la vigilancia vio ahí lo descartó por no tener que ver con el tema que seguía.
 - **Qué alcanza El Parte.** Con las fuentes de la versión 0 ([ADR 0006](../adrs/0006-fuentes-de-la-version-0.md) y [ADR 0010](../adrs/0010-impo-como-quinta-fuente.md)), están a su alcance 3: el del BID y los 2 de IMPO. Los del sitio del BPS y los de la prensa se cuentan aparte, como "fuera de alcance", y no como hallazgos perdidos. La primera rebanada, que lee solo ARCE, no puede encontrar ninguno. [INFERRED: de la lista de hallazgos y de las fuentes de la versión 0]
-- **Los descartes.** La vigilancia anterior seguía un tema puntual y descartaba lo demás. El Parte no filtra por tema: publica los hechos de las entidades que alguien sigue. Varios descartes del registro, como compras del BPS publicadas en ARCE, para El Parte son hechos publicables, así que no cuentan como falsos positivos sin más. Cómo se cuentan lo define T12.
+- **Los descartes.** La vigilancia anterior seguía un tema puntual y descartaba lo demás. El Parte no filtra por tema: publica los hechos de las entidades que alguien sigue. Varios descartes del registro, como compras del BPS publicadas en ARCE, para El Parte son hechos publicables, así que no cuentan como falsos positivos sin más. Cómo se cuentan está en [`banco-de-pruebas/metricas.md`](../banco-de-pruebas/metricas.md): la revisión etiqueta cada descarte, y solo los que no son de la entidad o no son nuevos cuentan como falsos positivos si El Parte los publica.
 
 Y las fallas que mostró la noche de muestra del 2026-11-06, cada una con la pieza de El Parte que la atiende. [INFERRED: de esa sola noche]
 

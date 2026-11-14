@@ -1,0 +1,29 @@
+{
+ "commit": "0000000",
+ "entidad": "organismo:ejemplo",
+ "fuentes": ["arce", "impo"],
+ "modelos": {"refutador": "modelo-de-ejemplo"},
+ "corridas": [
+  {"noche": "2026-01-05", "corrida": "00000000-0000-0000-0000-000000000005", "estado": "completa", "noRepetibles": [], "costoUsd": 0.10, "duracionSegundos": 300, "lecturasFallidas": 0},
+  {"noche": "2026-01-06", "corrida": "00000000-0000-0000-0000-000000000006", "estado": "completa", "noRepetibles": [], "costoUsd": 0.12, "duracionSegundos": 320, "lecturasFallidas": 0},
+  {"noche": "2026-01-07", "corrida": "00000000-0000-0000-0000-000000000007", "estado": "completa", "noRepetibles": [], "costoUsd": 0.08, "duracionSegundos": 280, "lecturasFallidas": 0},
+  {"noche": "2026-01-08", "corrida": "00000000-0000-0000-0000-000000000008", "estado": "completa", "noRepetibles": [], "costoUsd": 0.15, "duracionSegundos": 350, "lecturasFallidas": 0},
+  {"noche": "2026-01-09", "corrida": "00000000-0000-0000-0000-000000000009", "estado": "completa", "noRepetibles": [], "costoUsd": 0.11, "duracionSegundos": 310, "lecturasFallidas": 0},
+  {"noche": "2026-01-10", "corrida": "00000000-0000-0000-0000-000000000010", "estado": "completa", "noRepetibles": ["impo"], "costoUsd": 0.09, "duracionSegundos": 290, "lecturasFallidas": 1},
+  {"noche": "2026-01-11", "corrida": "00000000-0000-0000-0000-000000000011", "estado": "cortada", "noRepetibles": [], "costoUsd": 0.05, "duracionSegundos": 120, "lecturasFallidas": 0},
+  {"noche": "2026-01-12", "corrida": "00000000-0000-0000-0000-000000000012", "estado": "completa", "noRepetibles": [], "costoUsd": 0.14, "duracionSegundos": 330, "lecturasFallidas": 0}
+ ],
+ "hechos": [
+  {"clave": "arce:ocds-ejemplo-0001:adjudicacion", "noche": "2026-01-05", "grado": "PROVEN"},
+  {"clave": "impo:ejemplo-decreto-1-2026:norma", "noche": "2026-01-06", "grado": "INFERRED"},
+  {"clave": "arce:ocds-ejemplo-0003:llamado", "noche": "2026-01-06", "grado": "PROVEN"},
+  {"clave": "arce:ocds-ejemplo-0005:adjudicacion", "noche": "2026-01-06", "grado": "PROVEN"},
+  {"clave": "arce:ocds-ejemplo-0002:aclaracion", "noche": "2026-01-07", "grado": "NOT_MENTIONED"},
+  {"clave": "arce:ocds-ejemplo-0006:adjudicacion", "noche": "2026-01-07", "grado": "PROVEN"},
+  {"clave": "arce:ocds-ejemplo-0007:llamado", "noche": "2026-01-09", "grado": "INFERRED"},
+  {"clave": "arce:ocds-ejemplo-0008:llamado", "noche": "2026-01-10", "grado": "INFERRED"},
+  {"clave": "arce:ocds-ejemplo-0004:llamado", "noche": "2026-01-11", "grado": "PROVEN"},
+  {"clave": "arce:ocds-ejemplo-0009:llamado", "noche": "2026-01-11", "grado": "NOT_MENTIONED"},
+  {"clave": "impo:ejemplo-resolucion-7-2025:norma", "noche": "2026-01-12", "grado": "INFERRED"}
+ ]
+}

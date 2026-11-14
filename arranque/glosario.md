@@ -19,6 +19,7 @@ Los términos que usa el proyecto, en orden alfabético. Si un documento usa un 
 | ChatClient | En Spring AI, la API de uso diario para hablar con un modelo. Por dentro usa un ChatModel. |
 | ChatModel | En Spring AI, la interfaz común a todos los proveedores de modelos. Cambiar de proveedor pide cambios mínimos de código. |
 | Clave de hecho | La identidad de un hecho: dice cuándo dos candidatos son el mismo. Se arma con la fuente, su identificador estable y el tipo de hecho ([docs/contratos.md](../docs/contratos.md)). |
+| Cobertura | En la medición contra el banco de pruebas, cuánto encontró El Parte de lo que estaba a su alcance: encontrados sobre encontrados, vistos y descartados y no encontrados ([banco-de-pruebas/metricas.md](../banco-de-pruebas/metricas.md)). |
 | Columna | En el tablero, el estado de una tarjeta: Pendiente, Para empezar, En curso, Esperando o Hecho. |
 | Contenedor | Paquete que lleva un programa con todo lo que necesita para correr, igual en cualquier máquina. |
 | Corrida | Una ejecución completa de la noche: todos los exploradores, el cotejo, la refutación, el análisis y la edición. |
@@ -31,11 +32,11 @@ Los términos que usa el proyecto, en orden alfabético. Si un documento usa un 
 | Explorador | Agente que lee una fuente y devuelve candidatos. Hay uno por fuente. |
 | Falso positivo | Algo que el sistema presentó como hallazgo y no lo era: material viejo, un hecho repetido, una deducción presentada como hecho. |
 | Flujo de trabajo | Sistema de agentes en el que el código fija el camino y los modelos se llaman en pasos predefinidos. Una noche de El Parte es un flujo de trabajo. |
-| Fuera de alcance | Hallazgo del banco de pruebas que vino de un lugar que El Parte no lee (prensa, buscadores). Se cuenta aparte en la medición. |
+| Fuera de alcance | Hallazgo del banco de pruebas que ninguna fuente de El Parte publica, como la prensa o el sitio del BPS ("fuera de El Parte"), o que publica una fuente que esa medición no leyó ("fuera de esta medición"). Se cuenta aparte y no baja la cobertura ([banco-de-pruebas/metricas.md](../banco-de-pruebas/metricas.md)). |
 | Grabación | Lo que una corrida leyó de afuera, de una fuente o del modelo, guardado ya enmascarado en `parte.grabaciones` para poder repetirla (ADR 0011). |
 | Grado (de un documento) | Lo que lleva cada afirmación técnica de los documentos del proyecto: PROVEN con fuente, INFERRED o ASSUMED. Ver [como-se-trabaja.md](como-se-trabaja.md). |
 | Grado (de un hecho) | Lo que pone el refutador a cada hecho: PROVEN (la fuente lo dice), INFERRED (se deduce de lo que dice la fuente) o NOT_MENTIONED (las fuentes no lo mencionan). |
-| Huella | Resumen corto (hash) de un contenido. Si el contenido cambia, la huella cambia. La sincronización del kanban la usa para saber si una tarjeta cambió en GitHub. |
+| Huella | Resumen corto (hash) de un contenido. Si el contenido cambia, la huella cambia. La sincronización del kanban la usa para saber si una tarjeta cambió en GitHub, y cada medición guarda la del registro del banco de pruebas con que se hizo, sin publicarlo. |
 | IATI | Estándar internacional para publicar datos de proyectos de cooperación (*International Aid Transparency Initiative*). |
 | Idempotencia | Propiedad de una operación que, repetida, deja todo igual que si se hubiera hecho una sola vez. Acá: procesar dos veces el mismo mensaje no crea dos hechos. |
 | Identidad de un hecho | La regla que dice cuándo dos candidatos son el mismo hecho. Se define en `docs/contratos.md`. |
@@ -56,12 +57,15 @@ Los términos que usa el proyecto, en orden alfabético. Si un documento usa un 
 | Orquestación | La forma en que los agentes se reparten el trabajo y se pasan los resultados, con reglas fijas. |
 | Página de la mañana | Lo que ve cada cliente al día siguiente: lo nuevo sobre sus suscripciones desde ayer, con la fuente de cada hecho, o un aviso claro de que no hubo nada. |
 | PostgreSQL | Base de datos relacional de código abierto. Candidata para la base de afirmaciones. |
+| Precisión | En la medición contra el banco de pruebas, cuánto de lo que El Parte publicó o mandó a revisión está bien: verdaderos sobre verdaderos y falsos positivos, por grado ([banco-de-pruebas/metricas.md](../banco-de-pruebas/metricas.md)). |
 | Presupuesto por corrida | Límite de pasos, tiempo y costo de una corrida. Cuando se pasa, la corrida se corta y lo dice. |
 | PROVEN | Grado: verificado. En un hecho, la fuente lo dice. En un documento, hay URL oficial o comprobación descrita, con fecha. |
+| Publicable | Descarte del banco de pruebas que es un hecho real y nuevo de la entidad, y que la vigilancia anterior descartó porque no era de su tema. El Parte tendría que publicarlo, y se mide como un hallazgo. |
 | Rebanada de punta a punta | Una versión chica pero completa del sistema, que atraviesa todas las capas: de la fuente a la página de la mañana. |
 | Recorrido | En el tablero de arquitectura, un camino por el sistema parada por parada, por ejemplo una noche normal o una corrida repetida. |
 | Refutador | Agente que intenta tirar abajo cada candidato y le pone un grado. |
 | Reproducción | El modo de una corrida que repite otra leyendo solo sus grabaciones: sin red, sin costo y con los mismos mensajes. Ver [docs/contratos.md](../docs/contratos.md), "Repetir una corrida". |
+| Revisión del banco | Lo que deciden las personas que leen el registro del banco de pruebas: qué fuente de El Parte publica cada entrada, qué etiqueta lleva cada descarte y qué hecho corresponde a qué entrada. Vive junto al registro y no se versiona ([banco-de-pruebas/formato.md](../banco-de-pruebas/formato.md)). |
 | Revisión humana | Cola de hechos dudosos que revisa una persona. Mientras no se revisan, se muestran marcados. |
 | robots.txt | Archivo que un sitio publica para decir qué partes no quiere que lean los programas automáticos. Se respeta. |
 | Sala de máquinas | La parte de la aplicación que muestra, por cada corrida y cada hallazgo, qué agente hizo qué, qué se refutó y por qué, contra qué se cotejó, cuánto costó y cuánto tardó. |

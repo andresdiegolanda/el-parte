@@ -299,5 +299,5 @@ order by v.grado, h.tipo_de_hecho;
 
 ## Lo que no está en la base
 
-- **El registro del banco de pruebas** está fuera del repositorio y fuera de la base ([ADR 0007](../adrs/0007-registro-del-banco-fuera-del-repositorio.md)). Las métricas de cada medición se guardan en el repositorio (T12).
+- **El registro del banco de pruebas** está fuera del repositorio y fuera de la base ([ADR 0007](../adrs/0007-registro-del-banco-fuera-del-repositorio.md)). Las métricas de cada medición se guardan en el repositorio, en `banco-de-pruebas/mediciones/`, con huellas y conteos y sin texto del registro ([`banco-de-pruebas/metricas.md`](../banco-de-pruebas/metricas.md)).
 - **Los textos crudos completos de las fuentes**: solo se guarda el fragmento enmascarado de la evidencia y la huella del contenido. La URL lleva al original.
