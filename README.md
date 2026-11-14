@@ -3,7 +3,7 @@
 [![licencia: MIT](https://img.shields.io/badge/licencia-MIT-green)](LICENSE)
 [![IA: agentes orquestados](https://img.shields.io/badge/IA-agentes%20orquestados-c0392b)](arranque/proyecto.md)
 [![fuentes: Estado uruguayo](https://img.shields.io/badge/fuentes-Estado%20uruguayo-1f4fae)](arranque/proyecto.md)
-[![estado: en diseño](https://img.shields.io/badge/estado-en%20dise%C3%B1o-orange)](tablero.md)
+[![estado: en construcción](https://img.shields.io/badge/estado-en%20construcci%C3%B3n-yellow)](tablero.md)
 [![idioma: español](https://img.shields.io/badge/idioma-espa%C3%B1ol-lightgrey)](arranque/como-se-trabaja.md)
 
 El Parte es un servicio web. Un grupo de agentes orquestados lee todas las noches lo que publica el Estado uruguayo en sus fuentes públicas, extrae hechos (quién, qué, cuándo, con qué fuente) y los guarda en una base común. Cada cliente tiene una página donde se suscribe a entidades: organismos, empresas, programas, licitaciones. Cada mañana su página muestra lo que se encontró la noche anterior sobre sus suscripciones, con la fuente de cada hecho, y dice con claridad cuándo no hubo nada nuevo.
