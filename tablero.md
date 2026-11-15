@@ -3,7 +3,7 @@
 Todo pendiente de El Parte vive acá, con dueño (regla 8). Este archivo es lo que manda. El kanban publicado es editable y se sincroniza con este archivo cada vez que una sesión de desarrollo lee o escribe el repositorio, o cuando se le pide; su copia sin conexión, [`kanban/index.html`](kanban/index.html), se genera desde acá con `python3 herramientas/generar_kanban.py` y no se edita a mano ([ADR 0009](adrs/0009-kanban-editable-sincronizado.md)).
 
 - Actualizado: 2026-11-14
-- Nota: La primera rebanada (T08) anda de punta a punta y espera su medición contra el banco (T20), que ya se puede hacer: el formato, la muestra y las métricas del banco de pruebas están en banco-de-pruebas/ (T12). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.
+- Nota: La primera rebanada (T08) anda de punta a punta y espera su medición contra el banco (T20), que ya se puede hacer: el formato, la muestra y las métricas del banco de pruebas están en banco-de-pruebas/ (T12). El analista, el presupuesto, la cola de revisión y el login (T21, T22, T23 y T25) no esperan a esa medición y se pueden empezar. El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.
 - Calendario: 2026-11-07, 2026-11-14, 2026-11-21, 2026-11-28
 - Repositorio: https://github.com/andresdiegolanda/el-parte
 
@@ -103,6 +103,92 @@ Registro:
 - 2026-11-14: Deja de depender de T08, que no podía cerrar sin esta medición.
 - 2026-11-14: Pasa a Para empezar: T12 está hecha. Suma la salida de las corridas y la revisión del registro, que pide el formato.
 
+### T21 · Completar el analista
+- Tipo: Componente
+- Dueño: desarrollo
+- Detalle: [docs/contratos.md](docs/contratos.md)
+
+En la primera rebanada el analista solo pasa la afirmación. Acá escribe qué dice, por qué importa y qué mirar.
+
+Etapas:
+- [ ] Contrato
+- [ ] Código
+- [ ] Pruebas
+- [ ] Medido contra el banco
+- [ ] Página cómo se hizo
+
+Registro:
+- 2026-11-07: Creada con el plan (T07).
+- 2026-11-15: Deja de depender de T08: el código de la rebanada ya está hecho, y a T08 solo le falta la medición (T20). Pasa a Para empezar.
+
+### T22 · Implementar el presupuesto que corta
+- Tipo: Componente
+- Dueño: desarrollo
+- Detalle: [adrs/0005-presupuesto-por-corrida.md](adrs/0005-presupuesto-por-corrida.md)
+
+El advisor de presupuesto, el libro de la corrida y la tabla de precios del ADR 0005.
+
+Etapas:
+- [ ] Contrato
+- [ ] Código
+- [ ] Pruebas
+- [ ] Medido contra el banco
+- [ ] Página cómo se hizo
+
+Lista:
+- [ ] Advisor de presupuesto en todos los ChatClient
+- [ ] Libro de la corrida con actualización atómica
+- [ ] Tabla de precios en la base, con fuente y fecha, y sus valores iniciales en una migración
+- [ ] Corte por tiempo y mensaje corrida.cortada
+
+Registro:
+- 2026-11-07: Creada con el plan (T07).
+- 2026-11-15: Deja de depender de T08: el código de la rebanada ya está hecho, y a T08 solo le falta la medición (T20). Pasa a Para empezar.
+
+### T23 · Armar la cola de revisión humana
+- Tipo: Web
+- Dueño: desarrollo
+- Detalle: [docs/contratos.md](docs/contratos.md)
+
+La cola de hechos INFERRED en la sala de máquinas, y la marca de pendiente en la página de la mañana (D6).
+
+Etapas:
+- [ ] Diseño
+- [ ] Código
+- [ ] Pruebas
+- [ ] Página cómo se hizo
+
+Registro:
+- 2026-11-07: Creada con el plan (T07).
+- 2026-11-15: Deja de depender de T08: el código de la rebanada ya está hecho, y a T08 solo le falta la medición (T20). Pasa a Para empezar.
+
+### T25 · Armar el login por enlace, los cuatro usuarios y la cuenta de demostración
+- Tipo: Web
+- Dueño: desarrollo
+- Detalle: [adrs/0013-acceso-perfil-y-parte-diario.md](adrs/0013-acceso-perfil-y-parte-diario.md), [adrs/0003-eleccion-del-stack.md](adrs/0003-eleccion-del-stack.md), [adrs/0008-datos-personales.md](adrs/0008-datos-personales.md)
+
+Login con token de un solo uso de Spring Security, correos en el esquema cuentas y lista de invitados desde la configuración. El diseño está en el ADR 0013 y en la vista del usuario del tablero de arquitectura.
+
+Etapas:
+- [x] Diseño
+- [ ] Código
+- [ ] Pruebas
+- [ ] Página cómo se hizo
+
+Lista:
+- [ ] Alta de invitados desde elparte.invitados: cuentas.usuarios y parte.clientes con el mismo identificador
+- [ ] Dos fuentes de datos, una por rol, y un UserDetailsService que lee cuentas.usuarios
+- [ ] Entrar por enlace: tokens en cuentas.one_time_tokens y el enlace por el correo saliente
+- [ ] La misma respuesta para un correo no invitado
+- [ ] Sesión recordada 30 días en cuentas.persistent_logins, y probar que se combina con el login por token
+- [ ] La página de la mañana muestra el informe de quien entró; sin sesión, el de demostración
+- [ ] La cuenta de demostración, de solo lectura
+
+Registro:
+- 2026-11-07: Creada con el plan (T07).
+- 2026-11-14: Diseño hecho: alta de invitados, entrar por enlace y sesión recordada (ADR 0013, propuesto). El perfil queda en T34 y el aviso diario en T35.
+- 2026-11-15: Deja de depender de T08: el código de la rebanada ya está hecho, y a T08 solo le falta la medición (T20). Pasa a Para empezar.
+
 ## Esperando
 
 ### T08 · Construir la primera rebanada de punta a punta
@@ -143,65 +229,6 @@ Registro:
 
 ## Pendiente
 
-### T21 · Completar el analista
-- Tipo: Componente
-- Dueño: desarrollo
-- Depende de: T08
-- Detalle: [docs/contratos.md](docs/contratos.md)
-
-En la primera rebanada el analista solo pasa la afirmación. Acá escribe qué dice, por qué importa y qué mirar.
-
-Etapas:
-- [ ] Contrato
-- [ ] Código
-- [ ] Pruebas
-- [ ] Medido contra el banco
-- [ ] Página cómo se hizo
-
-Registro:
-- 2026-11-07: Creada con el plan (T07).
-
-### T22 · Implementar el presupuesto que corta
-- Tipo: Componente
-- Dueño: desarrollo
-- Depende de: T08
-- Detalle: [adrs/0005-presupuesto-por-corrida.md](adrs/0005-presupuesto-por-corrida.md)
-
-El advisor de presupuesto, el libro de la corrida y la tabla de precios del ADR 0005.
-
-Etapas:
-- [ ] Contrato
-- [ ] Código
-- [ ] Pruebas
-- [ ] Medido contra el banco
-- [ ] Página cómo se hizo
-
-Lista:
-- [ ] Advisor de presupuesto en todos los ChatClient
-- [ ] Libro de la corrida con actualización atómica
-- [ ] Tabla de precios en la base, con fuente y fecha, y sus valores iniciales en una migración
-- [ ] Corte por tiempo y mensaje corrida.cortada
-
-Registro:
-- 2026-11-07: Creada con el plan (T07).
-
-### T23 · Armar la cola de revisión humana
-- Tipo: Web
-- Dueño: desarrollo
-- Depende de: T08
-- Detalle: [docs/contratos.md](docs/contratos.md)
-
-La cola de hechos INFERRED en la sala de máquinas, y la marca de pendiente en la página de la mañana (D6).
-
-Etapas:
-- [ ] Diseño
-- [ ] Código
-- [ ] Pruebas
-- [ ] Página cómo se hizo
-
-Registro:
-- 2026-11-07: Creada con el plan (T07).
-
 ### T24 · Sumar los exploradores del BID, el Banco Mundial y Presidencia
 - Tipo: Componente
 - Dueño: desarrollo
@@ -224,33 +251,6 @@ Lista:
 
 Registro:
 - 2026-11-07: Creada con el plan (T07).
-
-### T25 · Armar el login por enlace, los cuatro usuarios y la cuenta de demostración
-- Tipo: Web
-- Dueño: desarrollo
-- Depende de: T08
-- Detalle: [adrs/0013-acceso-perfil-y-parte-diario.md](adrs/0013-acceso-perfil-y-parte-diario.md), [adrs/0003-eleccion-del-stack.md](adrs/0003-eleccion-del-stack.md), [adrs/0008-datos-personales.md](adrs/0008-datos-personales.md)
-
-Login con token de un solo uso de Spring Security, correos en el esquema cuentas y lista de invitados desde la configuración. El diseño está en el ADR 0013 y en la vista del usuario del tablero de arquitectura.
-
-Etapas:
-- [x] Diseño
-- [ ] Código
-- [ ] Pruebas
-- [ ] Página cómo se hizo
-
-Lista:
-- [ ] Alta de invitados desde elparte.invitados: cuentas.usuarios y parte.clientes con el mismo identificador
-- [ ] Dos fuentes de datos, una por rol, y un UserDetailsService que lee cuentas.usuarios
-- [ ] Entrar por enlace: tokens en cuentas.one_time_tokens y el enlace por el correo saliente
-- [ ] La misma respuesta para un correo no invitado
-- [ ] Sesión recordada 30 días en cuentas.persistent_logins, y probar que se combina con el login por token
-- [ ] La página de la mañana muestra el informe de quien entró; sin sesión, el de demostración
-- [ ] La cuenta de demostración, de solo lectura
-
-Registro:
-- 2026-11-07: Creada con el plan (T07).
-- 2026-11-14: Diseño hecho: alta de invitados, entrar por enlace y sesión recordada (ADR 0013, propuesto). El perfil queda en T34 y el aviso diario en T35.
 
 ### T34 · Armar la página del perfil
 - Tipo: Web

@@ -2,6 +2,10 @@
 
 Cada entrada dice qué cambió, dónde, y enlaza al documento que tiene el porqué. Las más nuevas van arriba.
 
+## 2026-11-15
+
+- T21, T22, T23 y T25 dejan de depender de T08 y pasan a Para empezar: el código de la rebanada ya está hecho, y a T08 solo le falta la medición (T20). Así el analista, el presupuesto, la cola de revisión y el login se pueden hacer en paralelo con la medición. Por qué: [tablero.md](tablero.md).
+
 ## 2026-11-14
 
 - `herramientas/tablero_arquitectura.py` nombra los archivos del código con `/` también en Windows: antes el verificador fallaba ahí con 107 problemas del tablero de arquitectura, porque las rutas salían con `\` y no coincidían con `docs/tablero-de-arquitectura/sistema.json`. Por qué: [herramientas/README.md](herramientas/README.md).

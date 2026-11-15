@@ -225,7 +225,7 @@
 <script type="application/json" id="datos">{
  "meta": {
   "actualizado": "2026-11-14",
-  "nota": "La primera rebanada (T08) anda de punta a punta y espera su medición contra el banco (T20), que ya se puede hacer: el formato, la muestra y las métricas del banco de pruebas están en banco-de-pruebas/ (T12). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.",
+  "nota": "La primera rebanada (T08) anda de punta a punta y espera su medición contra el banco (T20), que ya se puede hacer: el formato, la muestra y las métricas del banco de pruebas están en banco-de-pruebas/ (T12). El analista, el presupuesto, la cola de revisión y el login (T21, T22, T23 y T25) no esperan a esa medición y se pueden empezar. El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.",
   "calendario": [
    "2026-11-07",
    "2026-11-14",
@@ -398,6 +398,268 @@
    ]
   },
   {
+   "id": "T21",
+   "titulo": "Completar el analista",
+   "columna": "para-empezar",
+   "orden": 2,
+   "tipo": "componente",
+   "dueno": "desarrollo",
+   "dependeDe": "",
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "docs/contratos.md",
+     "ruta": "docs/contratos.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Contrato",
+     "hecho": false
+    },
+    {
+     "texto": "Código",
+     "hecho": false
+    },
+    {
+     "texto": "Pruebas",
+     "hecho": false
+    },
+    {
+     "texto": "Medido contra el banco",
+     "hecho": false
+    },
+    {
+     "texto": "Página cómo se hizo",
+     "hecho": false
+    }
+   ],
+   "lista": [],
+   "notas": [
+    "En la primera rebanada el analista solo pasa la afirmación. Acá escribe qué dice, por qué importa y qué mirar."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada con el plan (T07)."
+    },
+    {
+     "fecha": "2026-11-15",
+     "texto": "Deja de depender de T08: el código de la rebanada ya está hecho, y a T08 solo le falta la medición (T20). Pasa a Para empezar."
+    }
+   ]
+  },
+  {
+   "id": "T22",
+   "titulo": "Implementar el presupuesto que corta",
+   "columna": "para-empezar",
+   "orden": 3,
+   "tipo": "componente",
+   "dueno": "desarrollo",
+   "dependeDe": "",
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "adrs/0005-presupuesto-por-corrida.md",
+     "ruta": "adrs/0005-presupuesto-por-corrida.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Contrato",
+     "hecho": false
+    },
+    {
+     "texto": "Código",
+     "hecho": false
+    },
+    {
+     "texto": "Pruebas",
+     "hecho": false
+    },
+    {
+     "texto": "Medido contra el banco",
+     "hecho": false
+    },
+    {
+     "texto": "Página cómo se hizo",
+     "hecho": false
+    }
+   ],
+   "lista": [
+    {
+     "texto": "Advisor de presupuesto en todos los ChatClient",
+     "hecho": false
+    },
+    {
+     "texto": "Libro de la corrida con actualización atómica",
+     "hecho": false
+    },
+    {
+     "texto": "Tabla de precios en la base, con fuente y fecha, y sus valores iniciales en una migración",
+     "hecho": false
+    },
+    {
+     "texto": "Corte por tiempo y mensaje corrida.cortada",
+     "hecho": false
+    }
+   ],
+   "notas": [
+    "El advisor de presupuesto, el libro de la corrida y la tabla de precios del ADR 0005."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada con el plan (T07)."
+    },
+    {
+     "fecha": "2026-11-15",
+     "texto": "Deja de depender de T08: el código de la rebanada ya está hecho, y a T08 solo le falta la medición (T20). Pasa a Para empezar."
+    }
+   ]
+  },
+  {
+   "id": "T23",
+   "titulo": "Armar la cola de revisión humana",
+   "columna": "para-empezar",
+   "orden": 4,
+   "tipo": "web",
+   "dueno": "desarrollo",
+   "dependeDe": "",
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "docs/contratos.md",
+     "ruta": "docs/contratos.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Diseño",
+     "hecho": false
+    },
+    {
+     "texto": "Código",
+     "hecho": false
+    },
+    {
+     "texto": "Pruebas",
+     "hecho": false
+    },
+    {
+     "texto": "Página cómo se hizo",
+     "hecho": false
+    }
+   ],
+   "lista": [],
+   "notas": [
+    "La cola de hechos INFERRED en la sala de máquinas, y la marca de pendiente en la página de la mañana (D6)."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada con el plan (T07)."
+    },
+    {
+     "fecha": "2026-11-15",
+     "texto": "Deja de depender de T08: el código de la rebanada ya está hecho, y a T08 solo le falta la medición (T20). Pasa a Para empezar."
+    }
+   ]
+  },
+  {
+   "id": "T25",
+   "titulo": "Armar el login por enlace, los cuatro usuarios y la cuenta de demostración",
+   "columna": "para-empezar",
+   "orden": 5,
+   "tipo": "web",
+   "dueno": "desarrollo",
+   "dependeDe": "",
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "adrs/0013-acceso-perfil-y-parte-diario.md",
+     "ruta": "adrs/0013-acceso-perfil-y-parte-diario.md"
+    },
+    {
+     "texto": "adrs/0003-eleccion-del-stack.md",
+     "ruta": "adrs/0003-eleccion-del-stack.md"
+    },
+    {
+     "texto": "adrs/0008-datos-personales.md",
+     "ruta": "adrs/0008-datos-personales.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Diseño",
+     "hecho": true
+    },
+    {
+     "texto": "Código",
+     "hecho": false
+    },
+    {
+     "texto": "Pruebas",
+     "hecho": false
+    },
+    {
+     "texto": "Página cómo se hizo",
+     "hecho": false
+    }
+   ],
+   "lista": [
+    {
+     "texto": "Alta de invitados desde elparte.invitados: cuentas.usuarios y parte.clientes con el mismo identificador",
+     "hecho": false
+    },
+    {
+     "texto": "Dos fuentes de datos, una por rol, y un UserDetailsService que lee cuentas.usuarios",
+     "hecho": false
+    },
+    {
+     "texto": "Entrar por enlace: tokens en cuentas.one_time_tokens y el enlace por el correo saliente",
+     "hecho": false
+    },
+    {
+     "texto": "La misma respuesta para un correo no invitado",
+     "hecho": false
+    },
+    {
+     "texto": "Sesión recordada 30 días en cuentas.persistent_logins, y probar que se combina con el login por token",
+     "hecho": false
+    },
+    {
+     "texto": "La página de la mañana muestra el informe de quien entró; sin sesión, el de demostración",
+     "hecho": false
+    },
+    {
+     "texto": "La cuenta de demostración, de solo lectura",
+     "hecho": false
+    }
+   ],
+   "notas": [
+    "Login con token de un solo uso de Spring Security, correos en el esquema cuentas y lista de invitados desde la configuración. El diseño está en el ADR 0013 y en la vista del usuario del tablero de arquitectura."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada con el plan (T07)."
+    },
+    {
+     "fecha": "2026-11-14",
+     "texto": "Diseño hecho: alta de invitados, entrar por enlace y sesión recordada (ADR 0013, propuesto). El perfil queda en T34 y el aviso diario en T35."
+    },
+    {
+     "fecha": "2026-11-15",
+     "texto": "Deja de depender de T08: el código de la rebanada ya está hecho, y a T08 solo le falta la medición (T20). Pasa a Para empezar."
+    }
+   ]
+  },
+  {
    "id": "T08",
    "titulo": "Construir la primera rebanada de punta a punta",
    "columna": "esperando",
@@ -516,170 +778,10 @@
    ]
   },
   {
-   "id": "T21",
-   "titulo": "Completar el analista",
-   "columna": "pendiente",
-   "orden": 1,
-   "tipo": "componente",
-   "dueno": "desarrollo",
-   "dependeDe": "T08",
-   "esperaA": "",
-   "fecha": "",
-   "detalle": [
-    {
-     "texto": "docs/contratos.md",
-     "ruta": "docs/contratos.md"
-    }
-   ],
-   "etapas": [
-    {
-     "texto": "Contrato",
-     "hecho": false
-    },
-    {
-     "texto": "Código",
-     "hecho": false
-    },
-    {
-     "texto": "Pruebas",
-     "hecho": false
-    },
-    {
-     "texto": "Medido contra el banco",
-     "hecho": false
-    },
-    {
-     "texto": "Página cómo se hizo",
-     "hecho": false
-    }
-   ],
-   "lista": [],
-   "notas": [
-    "En la primera rebanada el analista solo pasa la afirmación. Acá escribe qué dice, por qué importa y qué mirar."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-07",
-     "texto": "Creada con el plan (T07)."
-    }
-   ]
-  },
-  {
-   "id": "T22",
-   "titulo": "Implementar el presupuesto que corta",
-   "columna": "pendiente",
-   "orden": 2,
-   "tipo": "componente",
-   "dueno": "desarrollo",
-   "dependeDe": "T08",
-   "esperaA": "",
-   "fecha": "",
-   "detalle": [
-    {
-     "texto": "adrs/0005-presupuesto-por-corrida.md",
-     "ruta": "adrs/0005-presupuesto-por-corrida.md"
-    }
-   ],
-   "etapas": [
-    {
-     "texto": "Contrato",
-     "hecho": false
-    },
-    {
-     "texto": "Código",
-     "hecho": false
-    },
-    {
-     "texto": "Pruebas",
-     "hecho": false
-    },
-    {
-     "texto": "Medido contra el banco",
-     "hecho": false
-    },
-    {
-     "texto": "Página cómo se hizo",
-     "hecho": false
-    }
-   ],
-   "lista": [
-    {
-     "texto": "Advisor de presupuesto en todos los ChatClient",
-     "hecho": false
-    },
-    {
-     "texto": "Libro de la corrida con actualización atómica",
-     "hecho": false
-    },
-    {
-     "texto": "Tabla de precios en la base, con fuente y fecha, y sus valores iniciales en una migración",
-     "hecho": false
-    },
-    {
-     "texto": "Corte por tiempo y mensaje corrida.cortada",
-     "hecho": false
-    }
-   ],
-   "notas": [
-    "El advisor de presupuesto, el libro de la corrida y la tabla de precios del ADR 0005."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-07",
-     "texto": "Creada con el plan (T07)."
-    }
-   ]
-  },
-  {
-   "id": "T23",
-   "titulo": "Armar la cola de revisión humana",
-   "columna": "pendiente",
-   "orden": 3,
-   "tipo": "web",
-   "dueno": "desarrollo",
-   "dependeDe": "T08",
-   "esperaA": "",
-   "fecha": "",
-   "detalle": [
-    {
-     "texto": "docs/contratos.md",
-     "ruta": "docs/contratos.md"
-    }
-   ],
-   "etapas": [
-    {
-     "texto": "Diseño",
-     "hecho": false
-    },
-    {
-     "texto": "Código",
-     "hecho": false
-    },
-    {
-     "texto": "Pruebas",
-     "hecho": false
-    },
-    {
-     "texto": "Página cómo se hizo",
-     "hecho": false
-    }
-   ],
-   "lista": [],
-   "notas": [
-    "La cola de hechos INFERRED en la sala de máquinas, y la marca de pendiente en la página de la mañana (D6)."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-07",
-     "texto": "Creada con el plan (T07)."
-    }
-   ]
-  },
-  {
    "id": "T24",
    "titulo": "Sumar los exploradores del BID, el Banco Mundial y Presidencia",
    "columna": "pendiente",
-   "orden": 4,
+   "orden": 1,
    "tipo": "componente",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -742,96 +844,10 @@
    ]
   },
   {
-   "id": "T25",
-   "titulo": "Armar el login por enlace, los cuatro usuarios y la cuenta de demostración",
-   "columna": "pendiente",
-   "orden": 5,
-   "tipo": "web",
-   "dueno": "desarrollo",
-   "dependeDe": "T08",
-   "esperaA": "",
-   "fecha": "",
-   "detalle": [
-    {
-     "texto": "adrs/0013-acceso-perfil-y-parte-diario.md",
-     "ruta": "adrs/0013-acceso-perfil-y-parte-diario.md"
-    },
-    {
-     "texto": "adrs/0003-eleccion-del-stack.md",
-     "ruta": "adrs/0003-eleccion-del-stack.md"
-    },
-    {
-     "texto": "adrs/0008-datos-personales.md",
-     "ruta": "adrs/0008-datos-personales.md"
-    }
-   ],
-   "etapas": [
-    {
-     "texto": "Diseño",
-     "hecho": true
-    },
-    {
-     "texto": "Código",
-     "hecho": false
-    },
-    {
-     "texto": "Pruebas",
-     "hecho": false
-    },
-    {
-     "texto": "Página cómo se hizo",
-     "hecho": false
-    }
-   ],
-   "lista": [
-    {
-     "texto": "Alta de invitados desde elparte.invitados: cuentas.usuarios y parte.clientes con el mismo identificador",
-     "hecho": false
-    },
-    {
-     "texto": "Dos fuentes de datos, una por rol, y un UserDetailsService que lee cuentas.usuarios",
-     "hecho": false
-    },
-    {
-     "texto": "Entrar por enlace: tokens en cuentas.one_time_tokens y el enlace por el correo saliente",
-     "hecho": false
-    },
-    {
-     "texto": "La misma respuesta para un correo no invitado",
-     "hecho": false
-    },
-    {
-     "texto": "Sesión recordada 30 días en cuentas.persistent_logins, y probar que se combina con el login por token",
-     "hecho": false
-    },
-    {
-     "texto": "La página de la mañana muestra el informe de quien entró; sin sesión, el de demostración",
-     "hecho": false
-    },
-    {
-     "texto": "La cuenta de demostración, de solo lectura",
-     "hecho": false
-    }
-   ],
-   "notas": [
-    "Login con token de un solo uso de Spring Security, correos en el esquema cuentas y lista de invitados desde la configuración. El diseño está en el ADR 0013 y en la vista del usuario del tablero de arquitectura."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-07",
-     "texto": "Creada con el plan (T07)."
-    },
-    {
-     "fecha": "2026-11-14",
-     "texto": "Diseño hecho: alta de invitados, entrar por enlace y sesión recordada (ADR 0013, propuesto). El perfil queda en T34 y el aviso diario en T35."
-    }
-   ]
-  },
-  {
    "id": "T34",
    "titulo": "Armar la página del perfil",
    "columna": "pendiente",
-   "orden": 6,
+   "orden": 2,
    "tipo": "web",
    "dueno": "desarrollo",
    "dependeDe": "T25",
@@ -897,7 +913,7 @@
    "id": "T35",
    "titulo": "Mandar el aviso diario del parte",
    "columna": "pendiente",
-   "orden": 7,
+   "orden": 3,
    "tipo": "componente",
    "dueno": "desarrollo",
    "dependeDe": "T25",
@@ -971,7 +987,7 @@
    "id": "T26",
    "titulo": "Escribir la sección \"Cómo funciona\" y las páginas \"cómo se hizo\"",
    "columna": "pendiente",
-   "orden": 8,
+   "orden": 4,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -1016,7 +1032,7 @@
    "id": "T27",
    "titulo": "Escribir el ADR de despliegue",
    "columna": "pendiente",
-   "orden": 9,
+   "orden": 5,
    "tipo": "adr",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -1098,7 +1114,7 @@
    "id": "T33",
    "titulo": "Armar el expediente de cada entidad",
    "columna": "pendiente",
-   "orden": 10,
+   "orden": 6,
    "tipo": "web",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -1147,7 +1163,7 @@
    "id": "T29",
    "titulo": "Cambiar el modelo de cada agente sin reiniciar la aplicación",
    "columna": "pendiente",
-   "orden": 11,
+   "orden": 7,
    "tipo": "web",
    "dueno": "desarrollo",
    "dependeDe": "T22, T25",
@@ -1225,7 +1241,7 @@
    "id": "T30",
    "titulo": "Sumar el explorador de IMPO",
    "columna": "pendiente",
-   "orden": 12,
+   "orden": 8,
    "tipo": "componente",
    "dueno": "desarrollo",
    "dependeDe": "T08",
