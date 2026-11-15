@@ -11,6 +11,7 @@ La documentación técnica de El Parte: cómo está hecho el sistema, por qué, 
 | [`contratos.md`](contratos.md) | Los mensajes entre agentes, con su esquema y un ejemplo; la identidad de un hecho, la idempotencia, cómo termina y cómo se repite una corrida. |
 | [`base-de-afirmaciones.md`](base-de-afirmaciones.md) | El modelo de datos: dos esquemas, el DDL que es la primera migración, y de dónde sale cada vista. |
 | [`plan.md`](plan.md) | Los cuatro fines de semana: qué se hace, qué se muestra y cómo se comprueba cada uno. |
+| [`presentacion/`](presentacion/README.md) | Una presentación de siete diapositivas para quien no conoce el proyecto, en Marp, con sus dibujos y de dónde sale cada cifra. |
 | [`fuentes/`](fuentes/README.md) | Una página por fuente del Estado: qué publica, cómo se accede, con qué permiso y qué riesgos tiene. |
 | [`verificaciones/`](verificaciones/spring-ai.md) | Lo que se verificó de una tecnología antes de apoyarse en ella, con URL y fecha. |
 | [`laminas/`](laminas/arquitectura.json) | Las láminas de arquitectura: la fuente en JSON y el SVG que genera `herramientas/generar_laminas.py`. El SVG no se edita a mano. |

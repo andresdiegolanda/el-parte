@@ -10,6 +10,7 @@ Lo que generan no se edita a mano: se cambia la fuente y se vuelve a generar.
 |---|---|---|
 | [`herramientas/generar_kanban.py`](generar_kanban.py) | `kanban/index.html` | `tablero.md` y `kanban/plantilla.html` |
 | [`herramientas/generar_laminas.py`](generar_laminas.py) | `docs/laminas/<nombre>.svg` | `docs/laminas/<nombre>.json` |
+| [`herramientas/generar_presentacion.py`](generar_presentacion.py) | `docs/presentacion/imagenes/*.svg`, los dibujos de la presentación | Los datos y el dibujo, en el mismo script |
 | [`herramientas/generar_tablero_arquitectura.py`](generar_tablero_arquitectura.py) | `docs/tablero-de-arquitectura/index.html` y una página por vista, como `docs/tablero-de-arquitectura/usuarios.html` | `docs/tablero-de-arquitectura/sistema.json` y `docs/tablero-de-arquitectura/plantilla.html` |
 
 ## Control y sincronización

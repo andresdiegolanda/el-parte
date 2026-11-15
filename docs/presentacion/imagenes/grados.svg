@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="230" viewBox="0 0 1600 230" role="img" aria-label="Tres sellos: PROVEN con una marca de verificado, INFERRED punteado y NOT_MENTIONED tachado">
+<rect width="1600" height="230" rx="24" fill="#17263A"/>
+<circle cx="267" cy="80" r="50" fill="none" stroke="#7FB2DB" stroke-width="7"/>
+<path d="M 245 82 L 261 98 L 291 64" fill="none" stroke="#7FB2DB" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="267" y="192" font-family="Courier New, monospace" font-size="30" font-weight="bold" fill="#7FB2DB" text-anchor="middle">PROVEN</text>
+<circle cx="800" cy="80" r="50" fill="none" stroke="#F0A27A" stroke-width="7" stroke-dasharray="14 10"/>
+<circle cx="778" cy="80" r="7" fill="#F0A27A"/><circle cx="800" cy="80" r="7" fill="#F0A27A"/><circle cx="822" cy="80" r="7" fill="#F0A27A"/>
+<text x="800" y="192" font-family="Courier New, monospace" font-size="30" font-weight="bold" fill="#F0A27A" text-anchor="middle">INFERRED</text>
+<circle cx="1333" cy="80" r="50" fill="none" stroke="#A5AEBB" stroke-width="7"/>
+<line x1="1297.6" y1="115.4" x2="1368.4" y2="44.6" stroke="#A5AEBB" stroke-width="7" stroke-linecap="round"/>
+<text x="1333" y="192" font-family="Courier New, monospace" font-size="30" font-weight="bold" fill="#A5AEBB" text-anchor="middle">NOT_MENTIONED</text>
+</svg>

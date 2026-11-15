@@ -428,6 +428,29 @@ Registro:
 
 ## Hecho
 
+### T38 · Armar una presentación para quien no conoce el proyecto
+- Tipo: Documento
+- Dueño: desarrollo
+- Detalle: [docs/presentacion/README.md](docs/presentacion/README.md), [docs/presentacion/el-parte.md](docs/presentacion/el-parte.md)
+
+Siete diapositivas que explican El Parte a alguien que nunca oyó hablar de él, versionadas en Marp para que se puedan comparar en GitHub como el resto de la documentación.
+
+Etapas:
+- [x] Borrador
+- [x] Grados y fuentes
+- [x] Diagramas
+- [x] Releído y verificado
+
+Lista:
+- [x] El problema, qué hace y un ejemplo real del BPS
+- [x] Los agentes, los grados y la medición contra el banco
+- [x] Dónde está el proyecto
+- [x] Los dibujos en SVG, generados por herramientas/generar_presentacion.py
+- [x] De dónde sale cada cifra, en docs/presentacion/README.md
+
+Registro:
+- 2026-11-15: Creada y hecha. Se eligió Marp para que la presentación viva en el repositorio; lo que se resigna está en docs/presentacion/README.md.
+
 ### T37 · Aceptar o corregir el ADR 0014
 - Tipo: Gestión
 - Dueño: Andrés
