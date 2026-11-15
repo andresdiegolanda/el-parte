@@ -18,7 +18,7 @@ class EnmascaradorTest {
     @BeforeAll
     static void arrancar() {
         arce = new ArceDePrueba().arrancar();
-        lector = new LectorArce(JsonMapper.builder().build(), arce.urlBase());
+        lector = new LectorArce(JsonMapper.builder().build(), arce.urlBase(), 0);
     }
 
     @AfterAll

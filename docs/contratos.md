@@ -64,10 +64,10 @@ Lo emite el inicio de corrida. Arranca la noche.
 | `modo` | `normal`, `reproduccion` (respuestas grabadas, sin red) o `banco` (una noche del banco de pruebas). |
 | `fechaObjetivo` | La fecha cuyas publicaciones se leen. En modo normal es la de ayer; en modo banco, la de la noche que se repite. |
 | `fuentes` | Las fuentes de esta corrida. |
-| `entidadesSeguidas` | Las entidades con algún suscriptor. Los exploradores filtran por ellas antes de usar el modelo. |
+| `entidadesSeguidas` | Las entidades con algún suscriptor. Los exploradores filtran por ellas antes de usar el modelo. En modo `banco`, solo la entidad que se mide ([ADR 0014](../adrs/0014-medicion-contra-el-banco.md)). |
 | `presupuesto` | `costoMaximoUsd`, `pasosMaximos` y `minutosMaximos` ([ADR 0005](../adrs/0005-presupuesto-por-corrida.md)). |
 | `modelos` | El modelo de cada agente en esta corrida, el vigente al empezar ([ADR 0003](../adrs/0003-eleccion-del-stack.md)). Cada agente usa este y no otro. |
-| `reproduceA` | En modo `reproduccion`, la corrida que se repite; nulo en los demás modos. Se sumó con la primera rebanada (ver "Repetir una corrida"). |
+| `reproduceA` | En modo `reproduccion`, la corrida que se repite, normal o del banco; nulo en los demás modos. Se sumó con la primera rebanada (ver "Repetir una corrida"). |
 
 ```json
 {
@@ -282,7 +282,7 @@ Lo emite el editor por cada hecho que va a revisión humana (ver "Umbral de revi
 
 ### `fuente.fallida`
 
-Lo emite un explorador cuando su fuente no responde o la respuesta no sirve. Lleva `fuente`, `url`, `tipoDeFalla` (`sinRespuesta`, `bloqueo`, `formato` o `permiso`) y `detalle`. La corrida sigue con las demás fuentes.
+Lo emite un explorador cuando su fuente no responde o la respuesta no sirve. Lleva `fuente`, `url`, `tipoDeFalla` (`sinRespuesta`, `bloqueo`, `formato`, `permiso` o `sinFecha`) y `detalle`. La corrida sigue con las demás fuentes. `sinFecha` dice que la fuente no deja pedir lo publicado en la fecha objetivo: en modo banco, esa noche no se puede repetir para esa fuente (D1, [ADR 0014](../adrs/0014-medicion-contra-el-banco.md)). ARCE nunca lo emite, porque su feed es por mes.
 
 ```json
 { "fuente": "arce", "url": "https://www.comprasestatales.gub.uy/ocds/rss/2026/11",
@@ -332,7 +332,7 @@ Una corrida termina cuando todas sus fuentes mandaron `exploracion.terminada` y 
 
 Una corrida en modo `reproduccion` repite otra sin red y sin costo, y produce los mismos mensajes ([ADR 0011](../adrs/0011-grabacion-y-repeticion-de-corridas.md)).
 
-- **Qué se graba.** En una corrida normal se graba, ya enmascarado, todo lo que se lee de afuera: la ventana del feed, el comprador de cada publicación, cada publicación de una entidad seguida, la relectura del refutador y cada respuesta del modelo, incluidas las fallas. Se graba en `parte.grabaciones` ([base-de-afirmaciones.md](base-de-afirmaciones.md)), y cada agente sigue con lo grabado, no con lo leído, así la original y la repetición ven exactamente lo mismo.
+- **Qué se graba.** En una corrida normal o del banco se graba, ya enmascarado, todo lo que se lee de afuera: la ventana del feed, el comprador de cada publicación, cada publicación de una entidad seguida, la relectura del refutador y cada respuesta del modelo, incluidas las fallas. Se graba en `parte.grabaciones` ([base-de-afirmaciones.md](base-de-afirmaciones.md)), y cada agente sigue con lo grabado, no con lo leído, así la original y la repetición ven exactamente lo mismo.
 - **Qué hace la repetición.** Lee solo de las grabaciones de la corrida original. Si falta una, falla en lugar de salir a la red.
 - **Lo que no cambia en la base.** El editor de una repetición no escribe hechos ni informes: emite los mismos mensajes y nada más. El archivista coteja contra los hechos de las corridas que empezaron antes de la original, así decide lo mismo que decidió ella.
 - **Cómo se comparan.** Se comparan tipo, agente y contenido de cada mensaje. Quedan afuera los identificadores y las horas, `corrida.iniciada` (dice el modo), `uso.modelo` (la repetición no llama al modelo) y el costo y la duración de `corrida.terminada`. La sala de máquinas muestra la comparación en la página de cada repetición. [PROVEN: `PrimeraRebanadaTest` y una repetición en Docker Compose, 2026-11-14]

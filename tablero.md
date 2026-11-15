@@ -3,7 +3,7 @@
 Todo pendiente de El Parte vive acá, con dueño (regla 8). Este archivo es lo que manda. El kanban publicado es editable y se sincroniza con este archivo cada vez que una sesión de desarrollo lee o escribe el repositorio, o cuando se le pide; su copia sin conexión, [`kanban/index.html`](kanban/index.html), se genera desde acá con `python3 herramientas/generar_kanban.py` y no se edita a mano ([ADR 0009](adrs/0009-kanban-editable-sincronizado.md)).
 
 - Actualizado: 2026-11-14
-- Nota: La primera rebanada (T08) anda de punta a punta y espera su medición contra el banco (T20), que está en curso: el modo banco está diseñado en el ADR 0014, aceptado, y se construye ahora. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). El analista, el presupuesto, la cola de revisión y el login (T21, T22, T23 y T25) no esperan a esa medición y se pueden empezar. El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.
+- Nota: La primera rebanada (T08) anda de punta a punta y espera su medición contra el banco (T20), que está en curso: el modo banco está construido (ADR 0014) y falta correrlo con las noches reales, en la máquina que tiene la clave. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). El analista, el presupuesto, la cola de revisión y el login (T21, T22, T23 y T25) no esperan a esa medición y se pueden empezar. El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.
 - Calendario: 2026-11-07, 2026-11-14, 2026-11-21, 2026-11-28
 - Repositorio: https://github.com/andresdiegolanda/el-parte
 
@@ -90,13 +90,13 @@ La medición es parte de la versión 0. Corre la rebanada sobre cada noche del r
 
 Lista:
 - [x] Diseño del modo banco (ADR 0014)
-- [ ] compose.banco.yaml y el perfil banco: las noches en orden, una por vez, en un Compose aparte
-- [ ] La corrida en modo banco: fecha objetivo, solo la entidad medida, y la repetición que acepta una corrida del banco
-- [ ] Cuidar a ARCE: pausa entre pedidos y sin releer compradores ya leídos en la medición
-- [ ] El tope de gasto de toda la medición
-- [ ] El tipo de falla sinFecha en fuente.fallida (docs/contratos.md)
-- [ ] La salida al terminar, en banco-de-pruebas/mediciones/<medición>/
-- [ ] Tres noches reales primero, para conocer costo, duración y pedidos
+- [x] compose.banco.yaml y el perfil banco: las noches en orden, una por vez, en un Compose aparte
+- [x] La corrida en modo banco: fecha objetivo, solo la entidad medida, y la repetición que acepta una corrida del banco
+- [x] Cuidar a ARCE: pausa entre pedidos y sin releer compradores ya leídos en la medición
+- [x] El tope de gasto de toda la medición
+- [x] El tipo de falla sinFecha en fuente.fallida (docs/contratos.md)
+- [x] La salida al terminar, en banco-de-pruebas/mediciones/<medición>/
+- [ ] Tres noches reales primero, en la máquina del responsable, para conocer costo, duración y pedidos
 - [ ] Correr la rebanada sobre cada noche del registro
 - [ ] Revisar el registro: la fuente y la etiqueta de cada entrada, y después las correspondencias y los extras
 - [ ] Contar con las reglas de banco-de-pruebas/metricas.md; con la muestra tiene que dar banco-de-pruebas/muestra/medicion-esperada.json
@@ -109,6 +109,7 @@ Registro:
 - 2026-11-14: Pasa a Para empezar: T12 está hecha. Suma la salida de las corridas y la revisión del registro, que pide el formato.
 - 2026-11-15: Pasa a En curso. Diseño del modo banco en el ADR 0014, propuesto (T37): un Compose aparte por medición, las noches en orden, cuidado con ARCE y un tope de gasto. El código espera a que se acepte.
 - 2026-11-15: Aceptado el ADR 0014. Sigue con el código del modo banco.
+- 2026-11-15: Modo banco construido y probado: diecinueve pruebas contra contenedores y dos mediciones de prueba en Docker Compose (docs/como-se-hizo/medicion-contra-el-banco.md). Sigue con tres noches reales en la máquina del responsable, que tiene la clave.
 
 ## Para empezar
 

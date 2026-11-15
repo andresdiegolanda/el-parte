@@ -32,6 +32,9 @@ import tools.jackson.databind.json.JsonMapper;
  *
  * <p>Las horas que da ARCE vienen sin zona en el feed y con "Z" en el JSON, pero se comportan como
  * hora de Uruguay: casi todo se publica entre las 7 y las 17. Por eso se toman como hora local.
+ *
+ * <p>Antes de cada pedido espera {@code elparte.arce.pausa-ms}. Por omisión no espera; la medición contra
+ * el banco, que pide en horas lo que una noche pide en un día, espera un poco (ADR 0014).
  */
 @Component
 public class LectorArce {
@@ -43,9 +46,11 @@ public class LectorArce {
     private final RestClient http;
     private final JsonMapper json;
     private final String urlBase;
+    private final long pausaMs;
 
     public LectorArce(JsonMapper json,
-            @Value("${elparte.arce.url-base:https://www.comprasestatales.gub.uy/ocds}") String urlBase) {
+            @Value("${elparte.arce.url-base:https://www.comprasestatales.gub.uy/ocds}") String urlBase,
+            @Value("${elparte.arce.pausa-ms:0}") long pausaMs) {
         HttpClient cliente = HttpClient.newBuilder()
                 .proxy(ProxySelector.getDefault())
                 .connectTimeout(Duration.ofSeconds(15))
@@ -56,6 +61,7 @@ public class LectorArce {
         this.http = RestClient.builder().requestFactory(fabrica).build();
         this.json = json;
         this.urlBase = urlBase;
+        this.pausaMs = pausaMs;
     }
 
     /** Una entrada del feed: qué publicación, cuándo (hora de Uruguay) y de qué clase. */
@@ -120,6 +126,7 @@ public class LectorArce {
         RuntimeException ultima = null;
         for (int intento = 1; intento <= INTENTOS; intento++) {
             try {
+                pausar();
                 byte[] cuerpo = http.get().uri(url).retrieve().body(byte[].class);
                 if (cuerpo == null || cuerpo.length == 0) {
                     throw new FallaDeArce("formato", url, "Respuesta vacía");
@@ -140,6 +147,17 @@ public class LectorArce {
         }
         throw new FallaDeArce("sinRespuesta", url, "Sin respuesta después de " + INTENTOS + " intentos: "
                 + (ultima == null ? "" : ultima.getClass().getSimpleName()));
+    }
+
+    private void pausar() {
+        if (pausaMs <= 0) {
+            return;
+        }
+        try {
+            Thread.sleep(pausaMs);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 
     private static String texto(Element elemento, String etiqueta) {

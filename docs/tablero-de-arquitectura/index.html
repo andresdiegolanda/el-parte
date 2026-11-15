@@ -504,7 +504,7 @@ var S = {
    "col": 1,
    "fila": 0,
    "estado": "construido",
-   "que_es": "Arma una corrida normal para una noche, o una repetición de otra, y la anuncia. La corrida en modo banco, para medir contra el banco de pruebas, está diseñada (ADR 0014).",
+   "que_es": "Arma una corrida normal para una noche, una del banco para una noche del registro del banco de pruebas, que sigue solo la entidad medida (ADR 0014), o una repetición de una normal o del banco, y la anuncia.",
    "para_que": "Congela todo lo que la corrida necesita (noche, fuentes, entidades seguidas, presupuesto y modelos) para que cada agente use lo mismo y la corrida se pueda repetir.",
    "codigo": [
     "app/src/main/java/io/github/andresdiegolanda/elparte/corrida/InicioDeCorrida.java"
@@ -522,7 +522,7 @@ var S = {
    "col": 1,
    "fila": 1,
    "estado": "construido",
-   "que_es": "Lee la API de ARCE (el feed del mes y cada publicación), con tres reintentos, y tapa los datos personales de lo leído.",
+   "que_es": "Lee la API de ARCE (el feed del mes y cada publicación), con tres reintentos y una pausa configurable antes de cada pedido, que la medición contra el banco usa (ADR 0014), y tapa los datos personales de lo leído.",
    "para_que": "Concentra todo lo que se sabe de ARCE: rutas, formato, hora local y enmascarado. Lo usan el explorador y el refutador.",
    "codigo": [
     "app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/arce/LectorArce.java",
@@ -540,16 +540,22 @@ var S = {
    "sub": "perfil banco, en un Compose aparte",
    "col": 1,
    "fila": 6,
-   "estado": "disenado",
-   "que_es": "La aplicación con el perfil banco, en un Docker Compose aparte con su propia base: corre una corrida en modo banco por cada noche del registro, en orden y una por vez, hasta la última o hasta el tope de gasto de la medición. Al terminar escribe la salida de El Parte en la carpeta de la medición.",
+   "estado": "construido",
+   "que_es": "La aplicación con el perfil banco, en un Docker Compose aparte con su propia base (compose.banco.yaml): corre una corrida en modo banco por cada noche, en orden y una por vez, saltea las que ya terminaron y no inicia más si lo gastado llega al tope. Al terminar escribe la salida de El Parte en la carpeta de la medición.",
    "para_que": "Produce lo que se mide sin mezclarlo con lo que ven los invitados, con la memoria que El Parte tendría noche a noche y cuidando a ARCE y el gasto.",
    "docs": [
     "adrs/0014-medicion-contra-el-banco.md",
+    "docs/como-se-hizo/medicion-contra-el-banco.md",
     "banco-de-pruebas/formato.md",
-    "docs/plan.md"
+    "app/README.md"
    ],
    "tarjetas": [
     "T20"
+   ],
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/banco/MedicionContraElBanco.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/banco/SalidaDelBanco.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/banco/ArranqueDelBanco.java"
    ]
   },
   {
@@ -580,8 +586,8 @@ var S = {
    "sub": "banco-de-pruebas/mediciones/",
    "col": 2,
    "fila": 6,
-   "estado": "disenado",
-   "que_es": "Una carpeta por medición, con la salida de El Parte y la medición que dio el conteo. Se versionan: llevan claves de hechos, fechas, conteos y huellas, y nada del registro.",
+   "estado": "construido",
+   "que_es": "Una carpeta por medición, con la salida de El Parte y la medición que da el conteo. Se versionan: llevan claves de hechos, fechas, conteos y huellas, y nada del registro. Todavía no hay ninguna medición real.",
    "para_que": "Deja cada medición en el repositorio, para compararla con las siguientes y volver a contarla sin volver a correr.",
    "docs": [
     "banco-de-pruebas/metricas.md",
@@ -599,7 +605,7 @@ var S = {
    "col": 2,
    "fila": 1,
    "estado": "construido",
-   "que_es": "Lee lo publicado en ARCE la noche objetivo y un día de margen, se queda con las compras de las entidades seguidas y emite un candidato por cada una. No usa el modelo.",
+   "que_es": "Lee lo publicado en ARCE la noche objetivo y un día de margen, se queda con las compras de las entidades seguidas y emite un candidato por cada una. No usa el modelo. En modo banco, lo que la corrida de la noche anterior ya leyó de una publicación lo toma de su grabación (ADR 0014).",
    "para_que": "Es la puerta de entrada de los hechos de ARCE: filtra por comprador antes de cualquier otra cosa y graba todo lo que lee.",
    "codigo": [
     "app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/arce/ExploradorArce.java",
@@ -1174,7 +1180,7 @@ var S = {
    "col": 1,
    "fila": 11,
    "estado": "construido",
-   "que_es": "Devuelve lo que congeló corrida.iniciada para una corrida, y su estado.",
+   "que_es": "Devuelve lo que congeló corrida.iniciada para una corrida, su estado y, en modo banco, la corrida de la noche anterior.",
    "para_que": "Que cada agente use la noche, los modelos y el modo de su corrida, y sepa si es una repetición.",
    "codigo": [
     "app/src/main/java/io/github/andresdiegolanda/elparte/corrida/Corridas.java"
@@ -2799,10 +2805,10 @@ var S = {
    "de": "medicion-banco",
    "a": "inicio",
    "tipo": "usa",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "una corrida en modo banco por noche, en orden",
-   "detalle": "Iniciará una corrida en modo banco por cada noche del registro, que sigue solo la entidad medida, y esperará a que termine antes de la siguiente (ADR 0014).",
+   "detalle": "Inicia una corrida en modo banco por cada noche, que sigue solo la entidad medida, y espera a que termine antes de la siguiente.",
    "tarjetas": [
     "T20"
    ]
@@ -3153,10 +3159,10 @@ var S = {
    "de": "base/corridas",
    "a": "medicion-banco",
    "tipo": "lee",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "qué noches terminaron",
-   "detalle": "Leerá el estado de cada corrida de la medición para seguir con la noche siguiente, y al volver a levantarse saltear las que ya terminaron.",
+   "detalle": "Lee el estado de cada corrida del banco para seguir con la noche siguiente, saltear las que ya terminaron y retomar la que quedó en curso; y las corridas para armar la salida.",
    "tarjetas": [
     "T20"
    ]
@@ -3166,10 +3172,10 @@ var S = {
    "de": "base/mensajes",
    "a": "medicion-banco",
    "tipo": "lee",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "costo, grados y fallas",
-   "detalle": "Leerá de los mensajes de cada corrida el costo (uso.modelo y corrida.terminada), las claves y grados (candidatos.graduados) y las fallas (fuente.fallida), para el tope de gasto y para la salida.",
+   "detalle": "Lee de los mensajes de las corridas del banco lo gastado (uso.modelo) para el tope, y para la salida el costo y la duración (corrida.terminada), las claves y grados (candidatos.graduados) y las fallas (fuente.fallida).",
    "tarjetas": [
     "T20"
    ]
@@ -3179,10 +3185,10 @@ var S = {
    "de": "medicion-banco",
    "a": "afuera/mediciones-banco",
    "tipo": "llama",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "deja la salida",
-   "detalle": "Escribirá salida-de-el-parte.json en la carpeta de la medición, con la forma de banco-de-pruebas/formato.md.",
+   "detalle": "Escribe salida-de-el-parte.json en la carpeta de la medición, con la forma de banco-de-pruebas/formato.md.",
    "tarjetas": [
     "T20"
    ]
@@ -3218,10 +3224,23 @@ var S = {
    "de": "conteo-banco",
    "a": "afuera/mediciones-banco",
    "tipo": "llama",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "lee la salida, escribe la medición",
-   "detalle": "Leerá la salida de las corridas y escribirá medicion.json al lado; el código que cuenta ya está.",
+   "detalle": "Lee la salida de las corridas y escribe medicion.json al lado.",
+   "tarjetas": [
+    "T20"
+   ]
+  },
+  {
+   "id": "base/entidades>medicion-banco",
+   "de": "base/entidades",
+   "a": "medicion-banco",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "que la entidad exista",
+   "detalle": "Antes de empezar, controla que la entidad que se mide esté en parte.entidades.",
    "tarjetas": [
     "T20"
    ]
@@ -3620,7 +3639,7 @@ var S = {
   {
    "id": "banco",
    "titulo": "La medición contra el banco",
-   "sub": "de las noches del registro a la medición, diseñada",
+   "sub": "de las noches del registro a la medición",
    "pasos": [
     {
      "en": "medicion-banco",
@@ -3636,7 +3655,7 @@ var S = {
     },
     {
      "en": "afuera/arce",
-     "texto": "El explorador pide a ARCE lo publicado esa fecha, con una pausa entre pedidos y sin releer compradores que la medición ya leyó."
+     "texto": "El explorador pide a ARCE lo publicado esa fecha, con una pausa entre pedidos, y lo que la noche anterior ya leyó lo toma de su grabación."
     },
     {
      "en": "base/corridas>medicion-banco",
@@ -3674,12 +3693,8 @@ var S = {
    "sub": "lo diseñado, con su tarjeta",
    "pasos": [
     {
-     "en": "medicion-banco",
-     "texto": "La medición contra el banco de pruebas (T20): las corridas en modo banco en un Compose aparte (ADR 0014)."
-    },
-    {
      "en": "afuera/revision-banco",
-     "texto": "La revisión del registro, que hacen personas leyéndolo (T20)."
+     "texto": "La revisión del registro, que hacen personas leyéndolo, y la medición de las 78 noches (T20)."
     },
     {
      "en": "analista>modelo",
@@ -3783,6 +3798,18 @@ var S = {
     "afuera/mediciones-banco",
     "afuera/registro-banco",
     "inicio"
+   ]
+  },
+  {
+   "fecha": "2026-11-15",
+   "texto": "La medición contra el banco está construida (T20, ADR 0014): el perfil banco corre las noches en orden en un Compose aparte, con pausa y relectura evitada en ARCE y un tope de gasto, y escribe la salida. Falta correrla con las noches reales.",
+   "objetos": [
+    "medicion-banco",
+    "afuera/mediciones-banco",
+    "inicio",
+    "explorador-arce",
+    "lector-arce",
+    "corridas"
    ]
   }
  ],

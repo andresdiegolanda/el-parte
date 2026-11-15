@@ -1,6 +1,7 @@
 package io.github.andresdiegolanda.elparte.corrida;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.jdbc.core.simple.JdbcClient;
@@ -40,6 +41,22 @@ public class Corridas {
 
     public boolean esReproduccion(String corridaId) {
         return "reproduccion".equals(contexto(corridaId).modo());
+    }
+
+    /**
+     * En modo banco, la corrida del banco de la noche anterior en la misma base, si la hay: lo que ella
+     * leyó del día de margen no se vuelve a pedir a la fuente (ADR 0014).
+     */
+    public Optional<String> anteriorDelBanco(String corridaId) {
+        return jdbc.sql("""
+                select anterior.id from parte.corridas actual
+                join parte.corridas anterior on anterior.modo = 'banco'
+                     and anterior.fecha_objetivo = actual.fecha_objetivo - 1
+                where actual.id = :id
+                order by anterior.iniciada_en desc limit 1
+                """)
+                .param("id", corridaId)
+                .query(String.class).optional();
     }
 
     public String estado(String corridaId) {

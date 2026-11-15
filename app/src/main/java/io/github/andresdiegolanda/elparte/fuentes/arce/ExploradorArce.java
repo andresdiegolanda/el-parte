@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.function.Supplier;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +52,9 @@ import tools.jackson.databind.node.ObjectNode;
  * <li>Tapa los datos personales de las que quedan (ADR 0008) y arma los candidatos.</li>
  * </ol>
  *
- * <p>Todo lo que lee se graba ya enmascarado, para poder repetir la corrida sin red.
+ * <p>Todo lo que lee se graba ya enmascarado, para poder repetir la corrida sin red. En modo banco, lo
+ * que la corrida de la noche anterior ya leyó de una publicación se toma de su grabación en lugar de
+ * pedirlo otra vez, y se graba igual en esta corrida (ADR 0014).
  */
 @Component
 public class ExploradorArce {
@@ -102,6 +105,7 @@ public class ExploradorArce {
     private void explorar(Sobre inicio, CorridaIniciada corrida) {
         String corridaId = inicio.corridaId();
         Map<String, String> seguidos = compradoresSeguidos(corrida.entidadesSeguidas());
+        String anterior = "banco".equals(corrida.modo()) ? corridas.anteriorDelBanco(corridaId).orElse(null) : null;
         LocalDate fecha = LocalDate.parse(corrida.fechaObjetivo());
 
         List<ItemDelFeed> items;
@@ -119,7 +123,7 @@ public class ExploradorArce {
         try (ExecutorService hilos = Executors.newFixedThreadPool(concurrencia)) {
             List<Future<Optional<Candidato>>> pendientes = new ArrayList<>();
             for (ItemDelFeed item : items) {
-                pendientes.add(hilos.submit(() -> consultar(corridaId, item, seguidos)));
+                pendientes.add(hilos.submit(() -> consultar(corridaId, anterior, item, seguidos)));
             }
             for (Future<Optional<Candidato>> pendiente : pendientes) {
                 try {
@@ -196,11 +200,12 @@ public class ExploradorArce {
      * Lee una publicación una sola vez: graba quién compra, y si es una entidad seguida, graba también
      * la publicación ya enmascarada y arma el candidato (sin identificador todavía).
      */
-    private Optional<Candidato> consultar(String corridaId, ItemDelFeed item, Map<String, String> seguidos) {
+    private Optional<Candidato> consultar(String corridaId, String anterior, ItemDelFeed item,
+            Map<String, String> seguidos) {
         String claveComprador = "arce:comprador:" + item.publicacionId();
         String clavePublicacion = "arce:publicacion:" + item.publicacionId();
         Map<String, JsonNode> leida = new HashMap<>();
-        JsonNode comprador = grabaciones.conGrabacion(corridaId, claveComprador, "fuente", () -> {
+        JsonNode comprador = grabaciones.conGrabacion(corridaId, claveComprador, "fuente", deLaAnterior(anterior, claveComprador, () -> {
             Leida publicacion;
             try {
                 publicacion = lector.leer(item.publicacionId());
@@ -217,13 +222,13 @@ public class ExploradorArce {
                 leida.put("publicacion", guardada);
             }
             return json.createObjectNode().put("comprador", id);
-        });
+        }));
         lanzarSiFallo(comprador);
         String entidad = seguidos.get(comprador.path("comprador").asString(""));
         if (entidad == null) {
             return Optional.empty();
         }
-        JsonNode guardada = grabaciones.conGrabacion(corridaId, clavePublicacion, "fuente", () -> {
+        JsonNode guardada = grabaciones.conGrabacion(corridaId, clavePublicacion, "fuente", deLaAnterior(anterior, clavePublicacion, () -> {
             if (leida.containsKey("publicacion")) {
                 return leida.get("publicacion");
             }
@@ -239,10 +244,21 @@ public class ExploradorArce {
             nueva.put("tapados", enmascarada.tapados());
             nueva.put("hashContenido", publicacion.hashContenido());
             return nueva;
-        });
+        }));
         lanzarSiFallo(guardada);
         return Optional.of(CandidatosDeArce.armar(null, guardada.path("publicacion"), entidad,
                 guardada.path("tapados").asInt(), guardada.path("hashContenido").asString()));
+    }
+
+    /**
+     * La lectura de una publicación: si hay corrida anterior del banco y ella la leyó bien, su grabación;
+     * si no, la lectura de verdad. Una falla grabada no se reusa: se vuelve a intentar.
+     */
+    private Supplier<JsonNode> deLaAnterior(String anterior, String clave, Supplier<JsonNode> lectura) {
+        if (anterior == null) {
+            return lectura;
+        }
+        return () -> grabaciones.leer(anterior, clave).filter(grabado -> !grabado.has("falla")).orElseGet(lectura);
     }
 
     /** Código de comprador en ARCE de cada entidad seguida, sacado de {@code parte.entidades}. */

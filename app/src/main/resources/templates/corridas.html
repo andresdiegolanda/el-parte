@@ -17,7 +17,7 @@
             <input type="hidden" name="modo" value="reproduccion">
             <label>Repetir sin red ni costo la corrida
                 <select name="original">
-                    <option th:each="c : ${corridas}" th:if="${c.modo == 'normal' and c.estado != 'en_curso'}"
+                    <option th:each="c : ${corridas}" th:if="${(c.modo == 'normal' or c.modo == 'banco') and c.estado != 'en_curso'}"
                             th:value="${c.id}" th:text="${c.id}"></option>
                 </select></label>
             <button type="submit">Repetir</button>

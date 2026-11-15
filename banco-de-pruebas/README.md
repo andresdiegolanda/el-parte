@@ -10,7 +10,7 @@ Lo que se versiona del banco de pruebas: el registro de una vigilancia anterior 
 | [`banco-de-pruebas/muestra/salida-de-el-parte.json`](muestra/salida-de-el-parte.json) | Una salida de El Parte inventada, para esa muestra. |
 | [`banco-de-pruebas/muestra/medicion-esperada.json`](muestra/medicion-esperada.json) | La medición que tienen que dar la muestra y su salida. |
 | `banco-de-pruebas/privado/` | El registro real y su revisión. No se versiona: `.gitignore` lo deja afuera. |
-| `banco-de-pruebas/mediciones/` | Va a tener una carpeta por medición, con la salida de El Parte y la medición, sin contenido del registro (tablero, T20; [adrs/0014-medicion-contra-el-banco.md](../adrs/0014-medicion-contra-el-banco.md)). |
+| [`banco-de-pruebas/mediciones/`](mediciones/README.md) | Una carpeta por medición, con la salida de El Parte y la medición, sin contenido del registro ([adrs/0014-medicion-contra-el-banco.md](../adrs/0014-medicion-contra-el-banco.md)). Todavía no hay ninguna real (tablero, T20). |
 
 Todo lo que dice la muestra está inventado. Usa los dominios de las fuentes de El Parte para que la revisión tenga sentido, pero sus direcciones, sus claves y sus organismos no existen.
 
@@ -23,4 +23,4 @@ python3 herramientas/banco_de_pruebas.py validar banco-de-pruebas/privado
 python3 herramientas/banco_de_pruebas.py contar banco-de-pruebas/privado <salida de El Parte>
 ```
 
-Sin argumentos, los dos usan la muestra. `validar` dice si el registro y su revisión cumplen el formato, con los avisos donde el registro se contradice, y su huella. `contar` escribe la medición. El verificador del repositorio controla que la muestra cumpla el formato sin avisos y que dé la medición esperada.
+Sin argumentos, los dos usan la muestra. La salida de El Parte la producen las corridas en modo banco: cómo se corre una medición está en [app/README.md](../app/README.md), "Medir contra el banco". `validar` dice si el registro y su revisión cumplen el formato, con los avisos donde el registro se contradice, y su huella. `contar` escribe la medición. El verificador del repositorio controla que la muestra cumpla el formato sin avisos y que dé la medición esperada.

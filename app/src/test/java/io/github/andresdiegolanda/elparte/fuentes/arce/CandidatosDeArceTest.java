@@ -20,7 +20,7 @@ class CandidatosDeArceTest {
     @BeforeAll
     static void arrancar() {
         arce = new ArceDePrueba().arrancar();
-        lector = new LectorArce(json, arce.urlBase());
+        lector = new LectorArce(json, arce.urlBase(), 0);
     }
 
     @AfterAll

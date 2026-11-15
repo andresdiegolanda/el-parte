@@ -45,6 +45,9 @@ elparte:
     # Además de la noche objetivo, se lee el día anterior, por lo que ARCE publica con atraso.
     dias-de-margen: 1
     concurrencia: 4
+    # Espera antes de cada pedido a ARCE. Las noches de todos los días no esperan; la medición contra
+    # el banco sí (application-banco.yaml, ADR 0014).
+    pausa-ms: 0
   corrida:
     costo-maximo-usd: 0.50
     pasos-maximos: 200
@@ -53,6 +56,13 @@ elparte:
     maximo-candidatos: 60
     # Corrida por reloj, en hora de Uruguay: "-" la apaga; "0 0 6 * * *" corre todos los días a las 6.
     cron: "-"
+  # La medición contra el banco (ADR 0014). La arranca el perfil banco; ver application-banco.yaml.
+  banco:
+    entidad: organismo:bps
+    # Tope de gasto en el modelo para toda la medición, hasta saber cuánto cuesta una noche.
+    costo-maximo-usd: 5.00
+    carpeta: /mediciones
+    espera-ms: 2000
 
 management:
   endpoint:

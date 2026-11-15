@@ -66,7 +66,7 @@ flowchart TD
 | [`adrs/0013-acceso-perfil-y-parte-diario.md`](../adrs/0013-acceso-perfil-y-parte-diario.md) | Cómo entra cada usuario, dónde queda su perfil y cómo lee su parte cada mañana (T36). |
 | [`adrs/0014-medicion-contra-el-banco.md`](../adrs/0014-medicion-contra-el-banco.md) | La medición contra el banco corre en un Compose aparte, noche por noche (T20, T37). |
 | [`app/`](../app/README.md) | El código: una aplicación Spring Boot con un paquete por agente ([ADR 0003](../adrs/0003-eleccion-del-stack.md)), sus migraciones, sus páginas y sus pruebas. Cómo se levanta y qué hay adentro, en [app/README.md](../app/README.md). |
-| [`compose.yaml`](../compose.yaml) | Levanta en local la aplicación, PostgreSQL, Kafka y el buzón de correo de prueba. |
+| [`compose.yaml`](../compose.yaml) | Levanta en local la aplicación, PostgreSQL, Kafka y el buzón de correo de prueba. Con `compose.banco.yaml`, una medición contra el banco. |
 | [`obsoletos/README.md`](../obsoletos/README.md) | Índice de lo que se movió a obsoletos. |
 | [`.gitignore`](../.gitignore) | Lo que no se versiona: el registro real del banco de pruebas y los secretos. |
 | [`.gitattributes`](../.gitattributes) | La muestra del banco de pruebas, siempre con saltos de línea LF, porque se compara por su huella. |
@@ -74,11 +74,13 @@ flowchart TD
 | [`banco-de-pruebas/formato.md`](../banco-de-pruebas/formato.md) | La forma del registro, de su revisión y de la salida de El Parte, y la huella de cada registro (T12). |
 | [`banco-de-pruebas/metricas.md`](../banco-de-pruebas/metricas.md) | Cómo se mide El Parte contra el registro: resultados, descartes, cuentas y la forma de una medición (T12). |
 | `banco-de-pruebas/muestra/` | Un registro inventado con su revisión, una salida de El Parte inventada y la medición que tienen que dar (T12). |
+| [`banco-de-pruebas/mediciones/README.md`](../banco-de-pruebas/mediciones/README.md) | Qué hay en cada carpeta de medición. Todavía no hay ninguna real (T20). |
+| [`compose.banco.yaml`](../compose.banco.yaml) | Lo que cambia del Compose de todos los días para una medición contra el banco: sin puertos de la base, de Kafka ni del correo, la aplicación en el 8081 con el perfil `banco` (ADR 0014, T20). |
+| [`docs/como-se-hizo/medicion-contra-el-banco.md`](../docs/como-se-hizo/medicion-contra-el-banco.md) | Cómo se hizo la medición contra el banco: qué hace, cómo se construyó, qué se probó y qué falló (T20). |
 
 ## Lo que va a haber
 
 | Ruta | Qué va a tener | Tarea |
 |---|---|---|
-| `banco-de-pruebas/mediciones/` | Una carpeta por medición, con la salida de El Parte y la medición, sin texto del registro. El registro real está en `banco-de-pruebas/privado/`, que no se versiona. | T20 |
-| `compose.banco.yaml` | Lo que cambia del Compose de todos los días para una medición: sin puertos de la base, de Kafka ni del correo, la aplicación en el 8081 y con el perfil `banco` (ADR 0014). | T20 |
+| `banco-de-pruebas/mediciones/<medición>/` | La primera medición real: la salida de El Parte y la medición, sin texto del registro. El registro real está en `banco-de-pruebas/privado/`, que no se versiona. | T20 |
 | `docs/como-se-hizo/` | Las páginas de los componentes que faltan. | T21 en adelante, T26 |

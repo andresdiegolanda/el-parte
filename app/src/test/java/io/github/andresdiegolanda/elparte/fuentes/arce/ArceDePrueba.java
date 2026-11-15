@@ -29,10 +29,25 @@ import com.sun.net.httpserver.HttpServer;
  * <li>{@code llamado-1200005}: publicado dos días antes, fuera de la ventana: nunca se pide.</li>
  * <li>{@code llamado-1200006}: el servidor falla al pedirla.</li>
  * </ul>
+ *
+ * <p>Para la medición contra el banco hay además tres noches de octubre, del 14 al 16, con un día de
+ * margen cada una:
+ *
+ * <ul>
+ * <li>{@code llamado-1100001}: un llamado del BPS publicado el 13, en el margen de la primera noche.</li>
+ * <li>{@code adjudicacion-1100002}: una adjudicación del BPS del 14, que la segunda noche vuelve a ver.</li>
+ * <li>{@code llamado-1100003}: un llamado de otro organismo, del 14.</li>
+ * <li>{@code aclaracion_1100004}: una aclaración del BPS del 15, que la tercera noche vuelve a ver.</li>
+ * <li>{@code llamado-1100005}: un llamado de otro organismo, del 16.</li>
+ * <li>{@code llamado-1100006}: del 16; el servidor falla al pedirla.</li>
+ * </ul>
  */
 public class ArceDePrueba implements AutoCloseable {
 
     public static final String NOCHE = "2026-11-12";
+    /** Las noches de octubre para la medición contra el banco. */
+    public static final String PRIMERA_NOCHE_DEL_BANCO = "2026-10-14";
+    public static final String ULTIMA_NOCHE_DEL_BANCO = "2026-10-16";
 
     private static final DateTimeFormatter FECHA_DEL_FEED =
             DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss", Locale.ENGLISH);
@@ -92,6 +107,46 @@ public class ArceDePrueba implements AutoCloseable {
                 {"releases": [{"id": "llamado-1200005", "ocid": "ocds-yfs5dr-1200005", "date": "2026-11-10T08:00:00Z",
                   "tag": ["tender"], "buyer": %s, "tender": {"id": "1200005", "title": "Fuera de la ventana"}}]}"""
                 .formatted(BPS));
+
+        publicaciones.put("llamado-1100001", """
+                {"releases": [{
+                  "id": "llamado-1100001", "ocid": "ocds-yfs5dr-1100001", "date": "2026-10-13T10:00:00Z",
+                  "tag": ["tender"], "buyer": %s, "parties": [%s],
+                  "tender": {"id": "1100001", "title": "Compra Directa 800/2026",
+                    "description": "Adquisición de sillas de oficina", "status": "active",
+                    "items": [{"id": "1", "description": "Silla ergonómica"}]}
+                }]}""".formatted(BPS, PARTE_BPS));
+        publicaciones.put("adjudicacion-1100002", """
+                {"releases": [{
+                  "id": "adjudicacion-1100002", "ocid": "ocds-yfs5dr-1100002", "date": "2026-10-14T15:00:00Z",
+                  "tag": ["award"], "buyer": %s,
+                  "parties": [%s,
+                    {"id": "R210000000027", "name": "Mobiliario Ejemplo S.A.", "roles": ["supplier"],
+                     "identifier": {"scheme": "UY-RUT", "id": "210000000027"}}],
+                  "awards": [{"id": "1100002-1", "status": "active",
+                    "suppliers": [{"id": "R210000000027", "name": "Mobiliario Ejemplo S.A."}],
+                    "items": [{"id": "1", "description": "Escritorios"}],
+                    "value": {"amount": 98000, "currency": "UYU"}}]
+                }]}""".formatted(BPS, PARTE_BPS));
+        publicaciones.put("llamado-1100003", """
+                {"releases": [{
+                  "id": "llamado-1100003", "ocid": "ocds-yfs5dr-1100003", "date": "2026-10-14T11:00:00Z",
+                  "tag": ["tender"], "buyer": {"id": "99-1", "name": "Organismo Inventado"},
+                  "tender": {"id": "1100003", "title": "Licitación Abreviada 2/2026", "items": []}
+                }]}""");
+        publicaciones.put("aclaracion_1100004", """
+                {"releases": [{
+                  "id": "aclaracion_1100004", "ocid": "ocds-yfs5dr-1100004", "date": "2026-10-15T09:30:00Z",
+                  "tag": ["tenderAmendment"], "buyer": %s, "parties": [%s],
+                  "tender": {"id": "1100004",
+                    "documents": [{"id": "1", "description": "Se prorroga la fecha de apertura"}]}
+                }]}""".formatted(BPS, PARTE_BPS));
+        publicaciones.put("llamado-1100005", """
+                {"releases": [{
+                  "id": "llamado-1100005", "ocid": "ocds-yfs5dr-1100005", "date": "2026-10-16T10:00:00Z",
+                  "tag": ["tender"], "buyer": {"id": "99-1", "name": "Organismo Inventado"},
+                  "tender": {"id": "1100005", "title": "Licitación Abreviada 3/2026", "items": []}
+                }]}""");
     }
 
     public ArceDePrueba arrancar() {
@@ -119,7 +174,9 @@ public class ArceDePrueba implements AutoCloseable {
         String ruta = intercambio.getRequestURI().getPath();
         if (ruta.equals("/ocds/rss/2026/11")) {
             responder(intercambio, 200, "application/rss+xml", feed());
-        } else if (ruta.equals("/ocds/release/llamado-1200006")) {
+        } else if (ruta.equals("/ocds/rss/2026/10")) {
+            responder(intercambio, 200, "application/rss+xml", feedDeOctubre());
+        } else if (ruta.equals("/ocds/release/llamado-1200006") || ruta.equals("/ocds/release/llamado-1100006")) {
             responder(intercambio, 500, "text/plain", "Error interno");
         } else if (ruta.equals("/ocds/release/roto")) {
             responder(intercambio, 200, "text/html", "<html>Mantenimiento</html>");
@@ -141,6 +198,20 @@ public class ArceDePrueba implements AutoCloseable {
         item(rss, "llamado-1200003", LocalDateTime.of(2026, 11, 12, 11, 0), "llamado");
         item(rss, "llamado-1200006", LocalDateTime.of(2026, 11, 12, 12, 0), "llamado");
         item(rss, "adjudicacion-1200002", LocalDateTime.of(2026, 11, 12, 15, 40), "adjudicacion");
+        return rss.append("</channel></rss>\n").toString();
+    }
+
+    private static String feedDeOctubre() {
+        StringBuilder rss = new StringBuilder("""
+                <?xml version="1.0" encoding="UTF-8"?>
+                <rss version="2.0"><channel><title>Compras estatales (prueba, octubre)</title>
+                """);
+        item(rss, "llamado-1100001", LocalDateTime.of(2026, 10, 13, 10, 0), "llamado");
+        item(rss, "llamado-1100003", LocalDateTime.of(2026, 10, 14, 11, 0), "llamado");
+        item(rss, "adjudicacion-1100002", LocalDateTime.of(2026, 10, 14, 15, 0), "adjudicacion");
+        item(rss, "aclaracion_1100004", LocalDateTime.of(2026, 10, 15, 9, 30), "aclaracion");
+        item(rss, "llamado-1100005", LocalDateTime.of(2026, 10, 16, 10, 0), "llamado");
+        item(rss, "llamado-1100006", LocalDateTime.of(2026, 10, 16, 12, 0), "llamado");
         return rss.append("</channel></rss>\n").toString();
     }
 

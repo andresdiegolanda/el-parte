@@ -41,6 +41,11 @@ import io.github.andresdiegolanda.elparte.mensajes.Tipos;
  */
 class PrimeraRebanadaTest extends ConServicios {
 
+    // La base es la de todas las pruebas: se cuenta solo lo de esta noche de noviembre.
+    private static final String HECHOS_DE_ESTA_NOCHE = "h.clave_de_hecho like 'arce:ocds-yfs5dr-12%'";
+    private static final String VERSIONES_DE_ESTA_NOCHE = "select count(*) from parte.versiones_de_hecho v "
+            + "join parte.hechos h on h.id = v.hecho_id where " + HECHOS_DE_ESTA_NOCHE;
+
     @Autowired
     InicioDeCorrida inicio;
     @Autowired
@@ -88,12 +93,12 @@ class PrimeraRebanadaTest extends ConServicios {
                 .containsEntry("PROVEN", 2).containsEntry("INFERRED", 1).containsEntry("sinProcesar", 1);
 
         // Lo que quedó en la base: tres hechos, la aclaración a revisar y fuera de la noche leída.
-        assertThat(contar("select count(*) from parte.hechos")).isEqualTo(3);
-        assertThat(contar("select count(*) from parte.versiones_de_hecho")).isEqualTo(3);
+        assertThat(contar("select count(*) from parte.hechos h where " + HECHOS_DE_ESTA_NOCHE)).isEqualTo(3);
+        assertThat(contar(VERSIONES_DE_ESTA_NOCHE)).isEqualTo(3);
         assertThat(jdbc.sql("""
                 select v.estado_revision || ' ' || v.fecha_confirmada from parte.versiones_de_hecho v
-                join parte.hechos h on h.id = v.hecho_id where h.tipo_de_hecho = 'aclaracion'
-                """).query(String.class).single()).isEqualTo("pendiente false");
+                join parte.hechos h on h.id = v.hecho_id where h.tipo_de_hecho = 'aclaracion' and\s""" + HECHOS_DE_ESTA_NOCHE)
+                .query(String.class).single()).isEqualTo("pendiente false");
         assertThat(contar("select count(*) from parte.entidades where id = 'persona_juridica:uy-rut-210000000019'")).isEqualTo(1);
         assertThat(contar("select count(*) from parte.entidades where id like '%110000000012%'")).isZero();
         assertThat(jdbc.sql("""
@@ -124,8 +129,9 @@ class PrimeraRebanadaTest extends ConServicios {
         assertThat(ARCE.pedidos()).isEqualTo(pedidosAArce);
         assertThat(modelo.llamadas()).isEqualTo(llamadasAlModelo);
         assertThat(usos(repeticion)).hasSize(3).allSatisfy(uso -> assertThat(uso.resultado()).isEqualTo("reproducida"));
-        assertThat(contar("select count(*) from parte.versiones_de_hecho")).isEqualTo(3);
-        assertThat(contar("select count(*) from parte.informes")).isEqualTo(1);
+        assertThat(contar(VERSIONES_DE_ESTA_NOCHE)).isEqualTo(3);
+        assertThat(contar("select count(*) from parte.informes where corrida_id in ('" + original + "', '" + repeticion + "')"))
+                .isEqualTo(1);
 
         // 3. Las páginas.
         String manana = pagina("/manana");
@@ -145,7 +151,7 @@ class PrimeraRebanadaTest extends ConServicios {
         assertThat(registro.deCorridaYTipo(otraVez, Tipos.CANDIDATOS_COTEJADOS)).hasSize(3)
                 .allSatisfy(s -> assertThat(registro.contenido(s, CandidatoCotejado.class).estado()).isEqualTo("conocido"));
         assertThat(modelo.llamadas()).isEqualTo(llamadasAlModelo);
-        assertThat(contar("select count(*) from parte.versiones_de_hecho")).isEqualTo(3);
+        assertThat(contar(VERSIONES_DE_ESTA_NOCHE)).isEqualTo(3);
         assertThat(jdbc.sql("select sin_novedades from parte.informes where corrida_id = :c").param("c", otraVez)
                 .query(Boolean.class).single()).isTrue();
     }

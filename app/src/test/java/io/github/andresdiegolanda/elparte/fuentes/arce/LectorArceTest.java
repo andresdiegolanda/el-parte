@@ -24,7 +24,7 @@ class LectorArceTest {
     @BeforeAll
     static void arrancar() {
         arce = new ArceDePrueba().arrancar();
-        lector = new LectorArce(JsonMapper.builder().build(), arce.urlBase());
+        lector = new LectorArce(JsonMapper.builder().build(), arce.urlBase(), 0);
     }
 
     @AfterAll
@@ -55,6 +55,15 @@ class LectorArceTest {
         assertThatThrownBy(() -> lector.leer("roto"))
                 .isInstanceOf(FallaDeArce.class)
                 .satisfies(e -> assertThat(((FallaDeArce) e).tipoDeFalla()).isEqualTo("formato"));
+    }
+
+    @Test
+    void esperaLaPausaAntesDeCadaPedido() {
+        LectorArce conPausa = new LectorArce(JsonMapper.builder().build(), arce.urlBase(), 300);
+        long antes = System.nanoTime();
+        conPausa.leer("llamado-1200001");
+        conPausa.leer("llamado-1200001");
+        assertThat((System.nanoTime() - antes) / 1_000_000).isGreaterThanOrEqualTo(600);
     }
 
     @Test

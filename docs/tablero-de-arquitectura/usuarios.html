@@ -332,7 +332,7 @@ var S = {
    "col": 3,
    "fila": 3,
    "estado": "construido",
-   "que_es": "Arma una corrida normal para una noche, o una repetición de otra, y la anuncia. La corrida en modo banco, para medir contra el banco de pruebas, está diseñada (ADR 0014).",
+   "que_es": "Arma una corrida normal para una noche, una del banco para una noche del registro del banco de pruebas, que sigue solo la entidad medida (ADR 0014), o una repetición de una normal o del banco, y la anuncia.",
    "para_que": "Congela todo lo que la corrida necesita (noche, fuentes, entidades seguidas, presupuesto y modelos) para que cada agente use lo mismo y la corrida se pueda repetir.",
    "codigo": [
     "app/src/main/java/io/github/andresdiegolanda/elparte/corrida/InicioDeCorrida.java"
@@ -1143,6 +1143,13 @@ var S = {
    "objetos": [
     "inicio"
    ]
+  },
+  {
+   "fecha": "2026-11-15",
+   "texto": "La medición contra el banco está construida (T20, ADR 0014): el perfil banco corre las noches en orden en un Compose aparte, con pausa y relectura evitada en ARCE y un tope de gasto, y escribe la salida. Falta correrla con las noches reales.",
+   "objetos": [
+    "inicio"
+   ]
   }
  ],
  "fuera": {
@@ -1201,7 +1208,7 @@ var S = {
     "lado": "entra",
     "otro": "Medición contra el banco",
     "etiqueta": "una corrida en modo banco por noche, en orden",
-    "estado": "disenado"
+    "estado": "construido"
    }
   ],
   "armado-de-informes": [
@@ -1247,6 +1254,13 @@ var S = {
     "lado": "sale",
     "otro": "Explorador de ARCE",
     "etiqueta": "código de comprador",
+    "estado": "construido"
+   },
+   {
+    "id": "base/entidades>medicion-banco",
+    "lado": "sale",
+    "otro": "Medición contra el banco",
+    "etiqueta": "que la entidad exista",
     "estado": "construido"
    }
   ],

@@ -1,0 +1,14 @@
+# El perfil de la medición contra el banco de pruebas (ADR 0014). Lo activa compose.banco.yaml, que
+# corre la aplicación en un Docker Compose aparte, con su propia base y su propio Kafka.
+#
+# La medición, sus noches y el tope llegan por variables de entorno: ELPARTE_BANCO_MEDICION
+# (AAAA-MM-DD-N), ELPARTE_BANCO_DESDE y ELPARTE_BANCO_HASTA (las noches, AAAA-MM-DD),
+# ELPARTE_BANCO_COSTO_MAXIMO_USD y ELPARTE_COMMIT.
+elparte:
+  arce:
+    # La medición pide en horas lo que las noches de todos los días piden en semanas.
+    pausa-ms: 250
+  banco:
+    commit: ${ELPARTE_COMMIT:}
+  corrida:
+    cron: "-"

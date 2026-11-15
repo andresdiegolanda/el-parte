@@ -25,7 +25,9 @@ import tools.jackson.databind.json.JsonMapper;
  * la noche (docs/contratos.md).
  *
  * <p>Una corrida normal lee las fuentes activas para las entidades que alguien sigue, con el modelo
- * vigente de cada agente. Una de reproducción copia todo eso de la corrida que repite.
+ * vigente de cada agente. Una del banco hace lo mismo para una noche del registro del banco de
+ * pruebas, siguiendo solo la entidad que se mide (ADR 0014). Una de reproducción copia todo eso de la
+ * corrida que repite.
  *
  * <p>La corrida se anota en la base antes de emitir el mensaje, y sin transacción abierta, para que el
  * observador encuentre la corrida cuando guarde el mensaje.
@@ -60,29 +62,44 @@ public class InicioDeCorrida {
     }
 
     public String iniciarNormal(LocalDate fechaObjetivo) {
-        List<String> fuentes = jdbc.sql("select id from parte.fuentes where activa order by id").query(String.class).list();
         List<String> entidades = jdbc.sql("select distinct entidad_id from parte.suscripciones order by entidad_id")
                 .query(String.class).list();
+        CorridaIniciada inicio = new CorridaIniciada("normal", fechaObjetivo.toString(), fuentesActivas(), entidades,
+                presupuesto, modelosVigentes(), null);
+        return iniciar(inicio);
+    }
+
+    /** Una noche del banco de pruebas: la fecha del registro, y solo la entidad que se mide (ADR 0014). */
+    public String iniciarBanco(LocalDate fechaObjetivo, String entidad) {
+        CorridaIniciada inicio = new CorridaIniciada("banco", fechaObjetivo.toString(), fuentesActivas(),
+                List.of(entidad), presupuesto, modelosVigentes(), null);
+        return iniciar(inicio);
+    }
+
+    /** Repite una corrida normal o del banco con lo que ella grabó: sin red ni costo. */
+    public String iniciarReproduccion(String corridaOriginal) {
+        CorridaIniciada original = registro.contenido(registro.esperar(Corridas.idDeInicio(corridaOriginal)),
+                CorridaIniciada.class);
+        if (!"normal".equals(original.modo()) && !"banco".equals(original.modo())) {
+            throw new IllegalArgumentException("Solo se repite una corrida normal o del banco; " + corridaOriginal
+                    + " es " + original.modo());
+        }
+        CorridaIniciada inicio = new CorridaIniciada("reproduccion", original.fechaObjetivo(), original.fuentes(),
+                original.entidadesSeguidas(), original.presupuesto(), original.modelos(), corridaOriginal);
+        return iniciar(inicio);
+    }
+
+    private List<String> fuentesActivas() {
+        return jdbc.sql("select id from parte.fuentes where activa order by id").query(String.class).list();
+    }
+
+    private Map<String, String> modelosVigentes() {
         Map<String, String> modelos = new LinkedHashMap<>();
         jdbc.sql("select distinct on (agente) agente, modelo from parte.modelos_de_agente order by agente, desde desc")
                 .query((fila, n) -> Map.entry(fila.getString("agente"), fila.getString("modelo")))
                 .list()
                 .forEach(par -> modelos.put(par.getKey(), par.getValue()));
-        CorridaIniciada inicio = new CorridaIniciada("normal", fechaObjetivo.toString(), fuentes, entidades,
-                presupuesto, modelos, null);
-        return iniciar(inicio);
-    }
-
-    /** Repite una corrida con lo que ella grabó: sin red ni costo. */
-    public String iniciarReproduccion(String corridaOriginal) {
-        CorridaIniciada original = registro.contenido(registro.esperar(Corridas.idDeInicio(corridaOriginal)),
-                CorridaIniciada.class);
-        if (!"normal".equals(original.modo())) {
-            throw new IllegalArgumentException("Solo se repite una corrida normal; " + corridaOriginal + " es " + original.modo());
-        }
-        CorridaIniciada inicio = new CorridaIniciada("reproduccion", original.fechaObjetivo(), original.fuentes(),
-                original.entidadesSeguidas(), original.presupuesto(), original.modelos(), corridaOriginal);
-        return iniciar(inicio);
+        return modelos;
     }
 
     private String iniciar(CorridaIniciada inicio) {

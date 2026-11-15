@@ -18,7 +18,7 @@ import io.github.andresdiegolanda.elparte.fuentes.arce.ArceDePrueba;
  * corren con el dueño de la base: si a un agente le falta un permiso, las pruebas lo ven.
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        properties = "elparte.corrida.revisar-cierre-ms=300")
+        properties = {"elparte.corrida.revisar-cierre-ms=300", "elparte.banco.espera-ms=300"})
 @Import(FalsosDePrueba.class)
 public abstract class ConServicios {
 

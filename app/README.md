@@ -43,6 +43,45 @@ flowchart LR
     APP -->|llamadas, con la clave del .env| ANT[API de Anthropic]
 ```
 
+## Medir contra el banco
+
+La medición contra el banco de pruebas corre en un Docker Compose aparte, con su propia base y su propio Kafka, que nacen vacíos y no tocan los de todos los días ([adrs/0014-medicion-contra-el-banco.md](../adrs/0014-medicion-contra-el-banco.md)). La aplicación, con el perfil `banco`, corre una corrida por cada noche, en orden, y al terminar deja la salida de El Parte en `banco-de-pruebas/mediciones/<medición>/salida-de-el-parte.json`. Cómo se hizo: [docs/como-se-hizo/medicion-contra-el-banco.md](../docs/como-se-hizo/medicion-contra-el-banco.md).
+
+Usa la clave del modelo del `.env`, así que corre en la máquina que tiene la clave (tablero, T14). Desde la raíz del repositorio, en PowerShell:
+
+```
+$env:ELPARTE_BANCO_MEDICION = "2026-11-21-1"
+$env:ELPARTE_BANCO_DESDE = "2026-09-17"
+$env:ELPARTE_BANCO_HASTA = "2026-09-19"
+$env:ELPARTE_COMMIT = git rev-parse --short HEAD
+docker compose -p el-parte-banco-2026-11-21-1 -f compose.yaml -f compose.banco.yaml up --build -d
+```
+
+En bash es lo mismo con `export ELPARTE_BANCO_MEDICION=2026-11-21-1` y así con cada variable. Las variables se pueden poner también en el `.env`.
+
+| Variable | Qué es |
+|---|---|
+| `ELPARTE_BANCO_MEDICION` | El nombre de la medición, `AAAA-MM-DD-N`: la fecha en que se mide y un número de orden. Es también el nombre de su carpeta y va en el nombre del proyecto de Compose. |
+| `ELPARTE_BANCO_DESDE` y `ELPARTE_BANCO_HASTA` | La primera y la última noche, `AAAA-MM-DD`. El registro va del 2026-08-29 al 2026-11-14 ([banco-de-pruebas/formato.md](../banco-de-pruebas/formato.md)). |
+| `ELPARTE_BANCO_COSTO_MAXIMO_USD` | El tope de gasto en el modelo para toda la medición. Por omisión, 5. Al llegar, no se inicia ninguna noche más. |
+| `ELPARTE_COMMIT` | El commit de El Parte que corre, para la salida. |
+
+Mientras corre:
+
+- **Cómo va:** `docker compose -p el-parte-banco-2026-11-21-1 logs -f aplicacion` muestra cada noche que termina y, al final, dónde quedó la salida. La sala de máquinas de la medición está en http://localhost:8081/corridas.
+- **Si se corta:** se vuelve a levantar con el mismo comando y sigue donde quedó: saltea las noches que ya terminaron.
+- **Lo que pide a ARCE:** espera 250 ms antes de cada pedido, y no vuelve a pedir lo que la noche anterior ya leyó.
+
+Cuando termina, la medición se cuenta con el registro y su revisión ([banco-de-pruebas/metricas.md](../banco-de-pruebas/metricas.md)):
+
+```
+python3 herramientas/banco_de_pruebas.py contar banco-de-pruebas/privado banco-de-pruebas/mediciones/2026-11-21-1/salida-de-el-parte.json > banco-de-pruebas/mediciones/2026-11-21-1/medicion.json
+```
+
+Mientras haga falta repetir alguna noche, el Compose de la medición se deja; para borrarlo, con su base y sus grabaciones: `docker compose -p el-parte-banco-2026-11-21-1 -f compose.yaml -f compose.banco.yaml down -v`.
+
+La aplicación de la medición corre como root dentro de su contenedor, para poder escribir la salida en la carpeta del clon también en Linux; la de todos los días sigue con un usuario sin privilegios.
+
 ## Las versiones
 
 Todas fijas, para que dos máquinas levanten lo mismo:
@@ -73,9 +112,12 @@ mvn test
 | Prueba | Qué controla |
 |---|---|
 | `PrimeraRebanadaTest` | Una noche de punta a punta, su repetición sin red ni modelo con mensajes idénticos, la misma noche otra vez con todo conocido, que ningún dato personal llegue a la base, y las páginas. Deja una copia de cada página en `target/paginas/`. |
+| `banco.MedicionContraElBancoTest` | La medición contra el banco sobre tres noches de octubre: en orden, sin volver a pedir a ARCE lo que la noche anterior ya leyó, la salida con la forma del formato, el salteo de lo ya medido, el tope de gasto y la repetición de una noche del banco. Deja la salida en `target/banco/`. |
 | `PermisosDeLaBaseTest` | Cada rol ve solo su esquema y ninguno cambia el esquema. |
 | `ElParteAplicacionTest` | La salud de Kafka y los tópicos: uno por tipo de mensaje, con una partición y sin vencimiento. |
-| `fuentes.arce.*Test` | La lectura de ARCE, el enmascarado y el armado de los candidatos. |
+| `fuentes.arce.*Test` | La lectura de ARCE con su pausa, el enmascarado y el armado de los candidatos. |
+
+Las dos pruebas grandes comparten la base: cada una cuenta solo lo suyo, la primera rebanada con su noche de noviembre y la medición con sus noches de octubre, así pasan en cualquier orden.
 
 El verificador de la documentación (`python3 herramientas/verificar_docs.py`, desde la raíz) controla además que la primera migración sea igual al DDL de [docs/base-de-afirmaciones.md](../docs/base-de-afirmaciones.md).
 
@@ -85,7 +127,8 @@ El verificador de la documentación (`python3 herramientas/verificar_docs.py`, d
 |---|---|
 | `io.github.andresdiegolanda.elparte` | La clase que arranca la aplicación. |
 | `...mensajes` | Los tipos de mensaje y su contenido como `record`, el sobre, el emisor (identificadores deterministas) y el registro de mensajes, donde los agentes buscan y esperan la causa de lo que reciben ([docs/contratos.md](../docs/contratos.md)). |
-| `...corrida` | El inicio de una corrida normal o de una repetición, el cierre, la comparación entre una corrida y su repetición, y la corrida por reloj, apagada por omisión. |
+| `...corrida` | El inicio de una corrida normal, del banco o de una repetición, el cierre, la comparación entre una corrida y su repetición, y la corrida por reloj, apagada por omisión. |
+| `...banco` | La medición contra el banco: las noches en orden con su tope de gasto, la salida y el arranque con el perfil `banco` ([ADR 0014](../adrs/0014-medicion-contra-el-banco.md)). |
 | `...fuentes.arce` | El lector de la API de ARCE, el enmascarado, el armado de candidatos y el explorador. |
 | `...archivista`, `...refutador`, `...analista`, `...editor` | Un agente por paquete. El editor arma además los informes. |
 | `...modelo` | El servicio por el que pasan todas las llamadas al modelo: elige el modelo de la corrida, graba la respuesta y emite `uso.modelo`. |
