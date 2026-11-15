@@ -10,7 +10,7 @@ Lo que se versiona del banco de pruebas: el registro de una vigilancia anterior 
 | [`banco-de-pruebas/muestra/salida-de-el-parte.json`](muestra/salida-de-el-parte.json) | Una salida de El Parte inventada, para esa muestra. |
 | [`banco-de-pruebas/muestra/medicion-esperada.json`](muestra/medicion-esperada.json) | La medición que tienen que dar la muestra y su salida. |
 | `banco-de-pruebas/privado/` | El registro real y su revisión. No se versiona: `.gitignore` lo deja afuera. |
-| `banco-de-pruebas/mediciones/` | Va a tener una medición por archivo, con huellas y conteos y sin contenido del registro (tablero, T20). |
+| `banco-de-pruebas/mediciones/` | Va a tener una carpeta por medición, con la salida de El Parte y la medición, sin contenido del registro (tablero, T20; [adrs/0014-medicion-contra-el-banco.md](../adrs/0014-medicion-contra-el-banco.md)). |
 
 Todo lo que dice la muestra está inventado. Usa los dominios de las fuentes de El Parte para que la revisión tenga sentido, pero sus direcciones, sus claves y sus organismos no existen.
 

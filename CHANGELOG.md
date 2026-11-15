@@ -4,6 +4,7 @@ Cada entrada dice qué cambió, dónde, y enlaza al documento que tiene el porqu
 
 ## 2026-11-15
 
+- Diseño de la medición contra el banco (T20), en el [ADR 0014](adrs/0014-medicion-contra-el-banco.md) (`adrs/0014-medicion-contra-el-banco.md`), aceptado: cada medición corre en su propio Docker Compose con una base vacía, las noches en orden y una por vez, con pausa entre pedidos a ARCE y un tope de gasto para toda la medición; deja la salida y la medición en una carpeta por medición. T20 pasa a En curso; la tarjeta T37, creada para aceptarlo, pasa a Hecho. `banco-de-pruebas/formato.md` y `banco-de-pruebas/metricas.md` suman dónde se guarda cada medición y lo que la medición no dice. El tablero de arquitectura suma el conteo como objeto construido, las mediciones como diseñadas y el recorrido "La medición contra el banco". Por qué: [adrs/0014-medicion-contra-el-banco.md](adrs/0014-medicion-contra-el-banco.md).
 - T21, T22, T23 y T25 dejan de depender de T08 y pasan a Para empezar: el código de la rebanada ya está hecho, y a T08 solo le falta la medición (T20). Así el analista, el presupuesto, la cola de revisión y el login se pueden hacer en paralelo con la medición. Por qué: [tablero.md](tablero.md).
 
 ## 2026-11-14

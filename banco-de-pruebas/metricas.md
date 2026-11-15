@@ -23,10 +23,10 @@ flowchart TD
     D -- no, o lo que queda se informa --> F["4. La medición se guarda en<br/>banco-de-pruebas/mediciones/"]
 ```
 
-1. **Correr.** Una corrida en modo banco por cada noche del período del registro, con esa noche como fecha objetivo ([docs/contratos.md](../docs/contratos.md), `corrida.iniciada`). Lo que producen es la salida de El Parte ([banco-de-pruebas/formato.md](formato.md), "La salida de El Parte").
+1. **Correr.** Una corrida en modo banco por cada noche del período del registro, en orden, con esa noche como fecha objetivo ([docs/contratos.md](../docs/contratos.md), `corrida.iniciada`), en un Docker Compose aparte con su propia base ([adrs/0014-medicion-contra-el-banco.md](../adrs/0014-medicion-contra-el-banco.md)). Lo que producen es la salida de El Parte ([banco-de-pruebas/formato.md](formato.md), "La salida de El Parte").
 2. **Contar** el registro, la revisión y la salida, con `python3 herramientas/banco_de_pruebas.py contar <carpeta del registro> <salida>`.
 3. **Revisar.** Lo que el cómputo no puede decidir solo lo decide una persona que lee el registro: a qué fuente de El Parte corresponde cada entrada y qué etiqueta lleva cada descarte, qué hecho corresponde a qué entrada, y si cada hecho que no corresponde a nada está bien o mal. Después se vuelve a contar; no hace falta volver a correr, porque la salida queda guardada.
-4. **Guardar** la medición en `banco-de-pruebas/mediciones/`. Lo que no se revisó no se esconde: se informa como "sin revisar" o "sin juzgar", y nunca cuenta como acierto ni como error.
+4. **Guardar** la medición en `banco-de-pruebas/mediciones/`, en la carpeta de la medición y al lado de su salida. Lo que no se revisó no se esconde: se informa como "sin revisar" o "sin juzgar", y nunca cuenta como acierto ni como error.
 
 ## Qué pasa con cada entrada del registro
 
@@ -111,7 +111,7 @@ Las proporciones se redondean a cuatro decimales.
 
 ## La forma de una medición
 
-Una medición es un JSON, el que escribe `herramientas/banco_de_pruebas.py contar`. Se guarda en `banco-de-pruebas/mediciones/`, con el nombre `AAAA-MM-DD-N.json` (la fecha en que se midió y un número de orden).
+Una medición es un JSON, el que escribe `herramientas/banco_de_pruebas.py contar`. Cada medición tiene su carpeta, `banco-de-pruebas/mediciones/AAAA-MM-DD-N/` (la fecha en que se midió y un número de orden), con dos archivos: `salida-de-el-parte.json`, lo que produjeron las corridas, y `medicion.json`, lo que dio el conteo. Con la salida guardada, cualquiera que tenga el registro puede volver a contar sin volver a correr.
 
 | Campo | Qué tiene |
 |---|---|
@@ -124,6 +124,11 @@ Una medición es un JSON, el que escribe `herramientas/banco_de_pruebas.py conta
 | `detalle` | El resultado de cada entrada evaluada, por `id`, con las claves de sus hechos; el de cada hecho, con el `id` con el que coincide; y cada noche, con su costo, su duración y la de la vigilancia si consta. |
 
 Una medición lleva solo huellas, identificadores, claves de hechos, fechas, clasificaciones y conteos. Nunca lleva texto del registro ni de la revisión: ni `organismo`, ni `que_dice`, ni `motivo`, ni `url`, ni `sitio`, ni las notas. Así se puede versionar sin publicar el registro ([adrs/0007-registro-del-banco-fuera-del-repositorio.md](../adrs/0007-registro-del-banco-fuera-del-repositorio.md)).
+
+## Lo que la medición no dice
+
+- **Mide un poco de más.** Las corridas leen hoy lo que la fuente tiene de una noche pasada, ya completo; una noche real ve menos, porque ARCE publica con atraso. La cobertura medida puede salir mejor que la de todas las noches. [INFERRED: del atraso de ARCE, [adrs/0011-grabacion-y-repeticion-de-corridas.md](../adrs/0011-grabacion-y-repeticion-de-corridas.md)]
+- **Es una sola pasada.** El modelo no responde siempre igual. Repetir una medición desde sus grabaciones da los mismos mensajes, no otra muestra.
 
 ## El ejemplo de la muestra
 

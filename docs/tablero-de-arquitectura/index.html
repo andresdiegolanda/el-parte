@@ -223,7 +223,7 @@
 "use strict";
 var S = {
  "titulo": "El Parte · tablero de arquitectura",
- "actualizado": "2026-11-14",
+ "actualizado": "2026-11-15",
  "repositorio": "https://github.com/andresdiegolanda/el-parte/blob/main/",
  "tablero": "https://github.com/andresdiegolanda/el-parte/blob/main/tablero.md",
  "kanban": "https://claude.ai/artifact/4wQ9LjW4H98WnjUWpcFsf3",
@@ -437,14 +437,15 @@ var S = {
    "sub": "privado, fuera del repositorio",
    "col": 0,
    "fila": 6,
-   "estado": "disenado",
-   "que_es": "El registro de la vigilancia anterior: 84 entradas de 78 noches, con lo que encontró, lo que ya conocía y lo que descartó. Vive en banco-de-pruebas/privado/, que no se versiona (ADR 0007), y su forma está en banco-de-pruebas/formato.md.",
+   "estado": "construido",
+   "que_es": "El registro de la vigilancia anterior: 84 entradas de 78 noches, con lo que encontró, lo que ya conocía y lo que descartó. Vive en banco-de-pruebas/privado/, que no se versiona (ADR 0007), y su forma está en banco-de-pruebas/formato.md. Lo lee el conteo.",
    "para_que": "Es contra lo que se mide la rebanada: qué encontró El Parte y qué había encontrado la vigilancia.",
    "docs": [
     "banco-de-pruebas/formato.md",
     "adrs/0007-registro-del-banco-fuera-del-repositorio.md"
    ],
    "tarjetas": [
+    "T12",
     "T20"
    ]
   },
@@ -503,7 +504,7 @@ var S = {
    "col": 1,
    "fila": 0,
    "estado": "construido",
-   "que_es": "Arma una corrida normal para una noche, o una repetición de otra, y la anuncia.",
+   "que_es": "Arma una corrida normal para una noche, o una repetición de otra, y la anuncia. La corrida en modo banco, para medir contra el banco de pruebas, está diseñada (ADR 0014).",
    "para_que": "Congela todo lo que la corrida necesita (noche, fuentes, entidades seguidas, presupuesto y modelos) para que cada agente use lo mismo y la corrida se pueda repetir.",
    "codigo": [
     "app/src/main/java/io/github/andresdiegolanda/elparte/corrida/InicioDeCorrida.java"
@@ -536,19 +537,57 @@ var S = {
    "id": "medicion-banco",
    "tipo": "servicio",
    "titulo": "Medición contra el banco",
-   "sub": "corridas en modo banco",
+   "sub": "perfil banco, en un Compose aparte",
    "col": 1,
    "fila": 6,
    "estado": "disenado",
-   "que_es": "Corre la rebanada sobre cada noche del registro del banco de pruebas, en modo banco, y cuenta lo encontrado contra lo que encontró la vigilancia anterior, con la revisión que hicieron las personas. Escribe cada medición en banco-de-pruebas/mediciones/, con huellas y conteos y sin texto del registro.",
-   "para_que": "Dice cuánto acierta El Parte: la cobertura de los hallazgos y de los descartes publicables, la precisión de lo publicado y de lo que va a revisión, y el costo y la duración por noche.",
+   "que_es": "La aplicación con el perfil banco, en un Docker Compose aparte con su propia base: corre una corrida en modo banco por cada noche del registro, en orden y una por vez, hasta la última o hasta el tope de gasto de la medición. Al terminar escribe la salida de El Parte en la carpeta de la medición.",
+   "para_que": "Produce lo que se mide sin mezclarlo con lo que ven los invitados, con la memoria que El Parte tendría noche a noche y cuidando a ARCE y el gasto.",
    "docs": [
-    "banco-de-pruebas/metricas.md",
+    "adrs/0014-medicion-contra-el-banco.md",
     "banco-de-pruebas/formato.md",
     "docs/plan.md"
    ],
    "tarjetas": [
-    "T12",
+    "T20"
+   ]
+  },
+  {
+   "id": "conteo-banco",
+   "tipo": "servicio",
+   "titulo": "Conteo contra el banco",
+   "sub": "herramientas/banco_de_pruebas.py",
+   "col": 1,
+   "fila": 7,
+   "estado": "construido",
+   "que_es": "Valida el registro y su revisión, y con la salida de las corridas cuenta la cobertura de los hallazgos y de los descartes publicables, la precisión por grado, el costo y la duración. Es un programa del repositorio, no de la aplicación.",
+   "para_que": "Dice cuánto acierta El Parte con reglas escritas y probadas: con la muestra sintética tiene que dar banco-de-pruebas/muestra/medicion-esperada.json, y el verificador lo controla.",
+   "codigo": [
+    "herramientas/banco_de_pruebas.py"
+   ],
+   "docs": [
+    "banco-de-pruebas/metricas.md",
+    "banco-de-pruebas/formato.md"
+   ],
+   "tarjetas": [
+    "T12"
+   ]
+  },
+  {
+   "id": "afuera/mediciones-banco",
+   "tipo": "externo",
+   "titulo": "Mediciones del banco",
+   "sub": "banco-de-pruebas/mediciones/",
+   "col": 2,
+   "fila": 6,
+   "estado": "disenado",
+   "que_es": "Una carpeta por medición, con la salida de El Parte y la medición que dio el conteo. Se versionan: llevan claves de hechos, fechas, conteos y huellas, y nada del registro.",
+   "para_que": "Deja cada medición en el repositorio, para compararla con las siguientes y volver a contarla sin volver a correr.",
+   "docs": [
+    "banco-de-pruebas/metricas.md",
+    "adrs/0014-medicion-contra-el-banco.md"
+   ],
+   "tarjetas": [
     "T20"
    ]
   },
@@ -2762,23 +2801,9 @@ var S = {
    "tipo": "usa",
    "estado": "disenado",
    "papel": "auxiliar",
-   "etiqueta": "una corrida por noche del registro",
-   "detalle": "Correrá la rebanada en modo banco sobre cada noche del registro.",
+   "etiqueta": "una corrida en modo banco por noche, en orden",
+   "detalle": "Iniciará una corrida en modo banco por cada noche del registro, que sigue solo la entidad medida, y esperará a que termine antes de la siguiente (ADR 0014).",
    "tarjetas": [
-    "T20"
-   ]
-  },
-  {
-   "id": "medicion-banco>afuera/registro-banco",
-   "de": "medicion-banco",
-   "a": "afuera/registro-banco",
-   "tipo": "llama",
-   "estado": "disenado",
-   "papel": "auxiliar",
-   "etiqueta": "lee lo que encontró la vigilancia",
-   "detalle": "Leerá el registro para contar, entrada por entrada, qué encontró El Parte de lo que encontró y descartó la vigilancia.",
-   "tarjetas": [
-    "T12",
     "T20"
    ]
   },
@@ -3124,16 +3149,80 @@ var S = {
    ]
   },
   {
-   "id": "medicion-banco>afuera/revision-banco",
+   "id": "base/corridas>medicion-banco",
+   "de": "base/corridas",
+   "a": "medicion-banco",
+   "tipo": "lee",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "qué noches terminaron",
+   "detalle": "Leerá el estado de cada corrida de la medición para seguir con la noche siguiente, y al volver a levantarse saltear las que ya terminaron.",
+   "tarjetas": [
+    "T20"
+   ]
+  },
+  {
+   "id": "base/mensajes>medicion-banco",
+   "de": "base/mensajes",
+   "a": "medicion-banco",
+   "tipo": "lee",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "costo, grados y fallas",
+   "detalle": "Leerá de los mensajes de cada corrida el costo (uso.modelo y corrida.terminada), las claves y grados (candidatos.graduados) y las fallas (fuente.fallida), para el tope de gasto y para la salida.",
+   "tarjetas": [
+    "T20"
+   ]
+  },
+  {
+   "id": "medicion-banco>afuera/mediciones-banco",
    "de": "medicion-banco",
+   "a": "afuera/mediciones-banco",
+   "tipo": "llama",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "deja la salida",
+   "detalle": "Escribirá salida-de-el-parte.json en la carpeta de la medición, con la forma de banco-de-pruebas/formato.md.",
+   "tarjetas": [
+    "T20"
+   ]
+  },
+  {
+   "id": "conteo-banco>afuera/registro-banco",
+   "de": "conteo-banco",
+   "a": "afuera/registro-banco",
+   "tipo": "llama",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "lee y valida el registro",
+   "detalle": "Lee hallazgos.jsonl, indice.md y busquedas.jsonl, los valida contra el formato y calcula su huella.",
+   "tarjetas": [
+    "T12"
+   ]
+  },
+  {
+   "id": "conteo-banco>afuera/revision-banco",
+   "de": "conteo-banco",
    "a": "afuera/revision-banco",
    "tipo": "llama",
    "estado": "disenado",
    "papel": "auxiliar",
    "etiqueta": "lee la revisión",
-   "detalle": "Leerá la revisión: la fuente y la etiqueta de cada entrada, las correspondencias y los extras.",
+   "detalle": "Leerá la fuente y la etiqueta de cada entrada, las correspondencias y los extras, cuando la revisión exista; el código que la lee ya está.",
    "tarjetas": [
-    "T12",
+    "T20"
+   ]
+  },
+  {
+   "id": "conteo-banco>afuera/mediciones-banco",
+   "de": "conteo-banco",
+   "a": "afuera/mediciones-banco",
+   "tipo": "llama",
+   "estado": "disenado",
+   "papel": "auxiliar",
+   "etiqueta": "lee la salida, escribe la medición",
+   "detalle": "Leerá la salida de las corridas y escribirá medicion.json al lado; el código que cuenta ya está.",
+   "tarjetas": [
     "T20"
    ]
   }
@@ -3529,13 +3618,64 @@ var S = {
    ]
   },
   {
+   "id": "banco",
+   "titulo": "La medición contra el banco",
+   "sub": "de las noches del registro a la medición, diseñada",
+   "pasos": [
+    {
+     "en": "medicion-banco",
+     "texto": "En un Docker Compose aparte, con su propia base vacía, la aplicación arranca con el perfil banco (ADR 0014)."
+    },
+    {
+     "en": "medicion-banco>inicio",
+     "texto": "Inicia una corrida en modo banco para la primera noche del registro, que sigue solo la entidad medida."
+    },
+    {
+     "en": "inicio",
+     "texto": "Desde acá la noche es la de siempre: explorador, archivista, refutador, analista y editor, sobre la base de la medición."
+    },
+    {
+     "en": "afuera/arce",
+     "texto": "El explorador pide a ARCE lo publicado esa fecha, con una pausa entre pedidos y sin releer compradores que la medición ya leyó."
+    },
+    {
+     "en": "base/corridas>medicion-banco",
+     "texto": "Espera a que la corrida termine y sigue con la noche siguiente, en orden, hasta la última o hasta el tope de gasto."
+    },
+    {
+     "en": "base/mensajes>medicion-banco",
+     "texto": "Al terminar, lee de los mensajes el costo, los grados y las fallas de cada noche."
+    },
+    {
+     "en": "medicion-banco>afuera/mediciones-banco",
+     "texto": "Deja la salida de El Parte en la carpeta de la medición."
+    },
+    {
+     "en": "conteo-banco",
+     "texto": "El conteo, un programa del repositorio, toma la salida."
+    },
+    {
+     "en": "conteo-banco>afuera/registro-banco",
+     "texto": "Lee y valida el registro de la vigilancia anterior, que no se versiona."
+    },
+    {
+     "en": "conteo-banco>afuera/revision-banco",
+     "texto": "Lee lo que decidieron las personas: la fuente y la etiqueta de cada entrada, y qué hecho corresponde a cuál."
+    },
+    {
+     "en": "conteo-banco>afuera/mediciones-banco",
+     "texto": "Escribe la medición al lado de la salida: cobertura, precisión, costo y duración, sin nada del registro."
+    }
+   ]
+  },
+  {
    "id": "falta",
    "titulo": "Lo que falta construir",
    "sub": "lo diseñado, con su tarjeta",
    "pasos": [
     {
      "en": "medicion-banco",
-     "texto": "La medición contra el banco de pruebas (T20), con el formato, la revisión y las métricas de banco-de-pruebas/ (T12)."
+     "texto": "La medición contra el banco de pruebas (T20): las corridas en modo banco en un Compose aparte (ADR 0014)."
     },
     {
      "en": "afuera/revision-banco",
@@ -3632,6 +3772,17 @@ var S = {
     "afuera/registro-banco",
     "afuera/revision-banco",
     "medicion-banco"
+   ]
+  },
+  {
+   "fecha": "2026-11-15",
+   "texto": "Diseño de la medición contra el banco (ADR 0014, propuesto): un Compose aparte por medición, las noches en orden, y el conteo como objeto construido. Suma el recorrido de la medición.",
+   "objetos": [
+    "medicion-banco",
+    "conteo-banco",
+    "afuera/mediciones-banco",
+    "afuera/registro-banco",
+    "inicio"
    ]
   }
  ],

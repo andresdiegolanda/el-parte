@@ -51,6 +51,7 @@ Los términos que usa el proyecto, en orden alfabético. Si un documento usa un 
 | Micrometer | Biblioteca de métricas de Spring. Spring AI la usa para contar llamadas al modelo y tokens. |
 | Migración | Un archivo SQL que lleva la base de una versión a la siguiente. Los aplica Flyway, en orden, al arrancar la aplicación; cada uno corre una sola vez. |
 | Modelo de lenguaje | El sistema de inteligencia artificial que lee y escribe texto y que usan los agentes por dentro. |
+| Modo banco | El modo de una corrida que repite una noche del banco de pruebas: su fecha objetivo es esa noche y sigue solo la entidad medida. Las corridas de una medición corren en orden, en un Docker Compose aparte con su propia base ([adrs/0014-medicion-contra-el-banco.md](../adrs/0014-medicion-contra-el-banco.md)). |
 | NOT_MENTIONED | Grado de un hecho: las fuentes no respaldan lo que afirma el candidato. No se publica; queda en la sala de máquinas con lo que se buscó. |
 | Observador | Agente que copia cada mensaje de cada tópico al registro de mensajes de la base, que es de donde salen la sala de máquinas y las mediciones: precisión por fuente, costo y duración por corrida y por agente, y fuentes bloqueadas. |
 | OCDS | Estándar abierto de datos de contrataciones públicas (*Open Contracting Data Standard*). Es el formato en que publica ARCE. |

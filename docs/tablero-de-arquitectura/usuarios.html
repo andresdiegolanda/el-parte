@@ -222,7 +222,7 @@
 <script>
 "use strict";
 var S = {
- "actualizado": "2026-11-14",
+ "actualizado": "2026-11-15",
  "repositorio": "https://github.com/andresdiegolanda/el-parte/blob/main/",
  "tablero": "https://github.com/andresdiegolanda/el-parte/blob/main/tablero.md",
  "kanban": "https://claude.ai/artifact/4wQ9LjW4H98WnjUWpcFsf3",
@@ -332,7 +332,7 @@ var S = {
    "col": 3,
    "fila": 3,
    "estado": "construido",
-   "que_es": "Arma una corrida normal para una noche, o una repetición de otra, y la anuncia.",
+   "que_es": "Arma una corrida normal para una noche, o una repetición de otra, y la anuncia. La corrida en modo banco, para medir contra el banco de pruebas, está diseñada (ADR 0014).",
    "para_que": "Congela todo lo que la corrida necesita (noche, fuentes, entidades seguidas, presupuesto y modelos) para que cada agente use lo mismo y la corrida se pueda repetir.",
    "codigo": [
     "app/src/main/java/io/github/andresdiegolanda/elparte/corrida/InicioDeCorrida.java"
@@ -1136,6 +1136,13 @@ var S = {
    "fecha": "2026-11-14",
    "texto": "El formato del banco de pruebas, su muestra sintética y sus métricas (T12): la medición lee también la revisión que hacen las personas, y escribe cada medición en banco-de-pruebas/mediciones/.",
    "objetos": []
+  },
+  {
+   "fecha": "2026-11-15",
+   "texto": "Diseño de la medición contra el banco (ADR 0014, propuesto): un Compose aparte por medición, las noches en orden, y el conteo como objeto construido. Suma el recorrido de la medición.",
+   "objetos": [
+    "inicio"
+   ]
   }
  ],
  "fuera": {
@@ -1193,7 +1200,7 @@ var S = {
     "id": "medicion-banco>inicio",
     "lado": "entra",
     "otro": "Medición contra el banco",
-    "etiqueta": "una corrida por noche del registro",
+    "etiqueta": "una corrida en modo banco por noche, en orden",
     "estado": "disenado"
    }
   ],

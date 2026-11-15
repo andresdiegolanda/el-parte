@@ -21,7 +21,7 @@ flowchart LR
     R --> M["herramientas/banco_de_pruebas.py<br/>valida y cuenta"]
     V --> M
     S --> M
-    M --> ME["banco-de-pruebas/mediciones/<br/>una medición por archivo (T20)"]
+    M --> ME["banco-de-pruebas/mediciones/<br/>una carpeta por medición (T20)"]
     RM --> M
     SM --> M
     M -. "el verificador compara" .-> EM
@@ -145,7 +145,7 @@ El control da error si un `id` o una clave no existen o no tienen la forma, si u
 
 ## La salida de El Parte
 
-Es lo que producen las corridas en modo banco (T20), un JSON con estos campos:
+Es lo que producen las corridas en modo banco (T20), un JSON con estos campos. Se guarda en `banco-de-pruebas/mediciones/<medición>/salida-de-el-parte.json`, y cómo se produce está en el [ADR 0014](../adrs/0014-medicion-contra-el-banco.md) (`adrs/0014-medicion-contra-el-banco.md`).
 
 | Campo | Qué es |
 |---|---|
@@ -154,6 +154,6 @@ Es lo que producen las corridas en modo banco (T20), un JSON con estos campos:
 | `fuentes` | Las fuentes que leyó esta medición. |
 | `modelos` | Opcional: el modelo de cada agente. |
 | `corridas` | Una por noche: `noche`, `corrida` (su id), `estado` (`completa`, `cortada` o `fallida`), `noRepetibles` (las fuentes que no dejaron pedir esa fecha, D1), `costoUsd`, `duracionSegundos` y `lecturasFallidas`. |
-| `hechos` | Uno por clave de hecho de la entidad: `clave`, `noche` (la primera en que salió) y `grado` (`PROVEN`, `INFERRED` o `NOT_MENTIONED`). |
+| `hechos` | Uno por clave de hecho de la entidad: `clave`, `noche` y `grado`. Son la primera noche en que salió PROVEN o INFERRED, con ese grado; si nunca salió así, la primera en que salió `NOT_MENTIONED`. |
 
 Cada corrida en modo banco tiene como fecha objetivo la noche que repite ([docs/contratos.md](../docs/contratos.md), `corrida.iniciada`).

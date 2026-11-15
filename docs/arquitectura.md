@@ -129,7 +129,7 @@ flowchart LR
 ```
 
 - **Para probar:** se inyectan los mensajes de entrada guardados y el modelo de reproducción devuelve las respuestas grabadas ([ADR 0003](../adrs/0003-eleccion-del-stack.md)). Una corrida repetida tiene que producir los mismos mensajes. La primera rebanada lo resolvió grabando en la base todo lo que la corrida lee de afuera, fuentes y modelo, incluidas las fallas, y repitiendo desde ahí ([ADR 0011](../adrs/0011-grabacion-y-repeticion-de-corridas.md); detalle en los [contratos](contratos.md), "Repetir una corrida").
-- **Para medir contra el banco de pruebas:** los exploradores piden a cada fuente lo publicado en la fecha de cada noche, y lo que encuentra El Parte se compara con lo que encontró la vigilancia anterior (D1). Cómo se cuenta y qué forma tiene cada medición está en [`banco-de-pruebas/metricas.md`](../banco-de-pruebas/metricas.md).
+- **Para medir contra el banco de pruebas:** los exploradores piden a cada fuente lo publicado en la fecha de cada noche, y lo que encuentra El Parte se compara con lo que encontró la vigilancia anterior (D1). Las noches corren en orden, en modo banco, en un Docker Compose aparte con su propia base ([adrs/0014-medicion-contra-el-banco.md](../adrs/0014-medicion-contra-el-banco.md)). Cómo se cuenta y qué forma tiene cada medición está en [`banco-de-pruebas/metricas.md`](../banco-de-pruebas/metricas.md).
 
 ## Cuando algo falla
 
