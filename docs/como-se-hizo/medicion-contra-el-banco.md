@@ -73,7 +73,24 @@ La medición contra el banco es parte de la versión 0 y es lo que dice si El Pa
 - **La aplicación no podía escribir la salida en Linux.** La imagen corre con un usuario sin privilegios, y la carpeta montada era de otro usuario. La aplicación de la medición corre como root; la de todos los días sigue sin privilegios.
 - **Compose pedía las variables hasta para bajar.** Con `${VARIABLE:?}`, `docker compose down` fallaba si no estaban. Las variables pasaron a ser opcionales para Compose, y la aplicación las controla.
 
+## Las primeras tres noches reales
+
+Corrieron en la máquina del responsable, con la clave, del 2026-11-11 al 2026-11-13, con un tope de 1 USD. La salida está en `banco-de-pruebas/mediciones/2026-11-15-1/salida-de-el-parte.json`. [PROVEN: corrida del 2026-11-15, de la 01:38 a la 01:56]
+
+| Noche | Duración | Costo | Publicaciones leídas | De la noche anterior | Candidatos | Sin procesar | Llamadas al modelo |
+|---|---|---|---|---|---|---|---|
+| 2026-11-11 | 8,0 min | 0,489 USD | 1.597 | 0 | 60 | 13 | 60 |
+| 2026-11-12 | 5,8 min | 0,448 USD | 1.518 | 806 | 60 | 12 | 49 |
+| 2026-11-13 | 3,7 min | 0,266 USD | 1.119 | 712 | 55 | 0 | 27 |
+
+- **Costo y tiempo.** 1,20 USD y 18 minutos las tres; unos 0,009 USD por llamada al refutador. La primera noche cuesta más porque todo es nuevo; las siguientes, menos, porque lo del margen ya es conocido.
+- **Lo que se ahorra a ARCE.** De 4.234 publicaciones leídas, 1.518 se tomaron de la noche anterior: un 36 % menos de pedidos.
+- **El tope de gasto se pasa por una noche.** Se mira antes de empezar cada una: después de la segunda iban 0,94 USD, y la tercera llevó el total a 1,20.
+- **El tope de 60 candidatos se quedó corto.** En dos noches quedaron compras del BPS sin procesar, y las del día de margen, que la noche anterior ya había visto, ocupaban lugares. Desde entonces, al tope entran primero las compras de la fecha objetivo (`ExploradorArceTest`).
+- **Las 78 noches costarían unos 31 USD** con ese promedio de 0,40 USD por noche, y tardarían unas 8 horas. [INFERRED: de tres noches] Es más que el tope mensual del espacio de trabajo de la clave, de 20 USD (T14).
+- **El conteo en PowerShell.** Guardar la medición con `>` en Windows PowerShell 5.1 la dejaba en UTF-16. El conteo ahora escribe el archivo él mismo, en UTF-8.
+
 ## Qué falta
 
-- Correr tres noches reales en la máquina del responsable, con la clave, para conocer el costo, la duración y la cantidad de pedidos por noche, y con eso decidir si se corren las 78 (T20).
+- Subir el tope de gasto del espacio de trabajo y el de la organización, y correr las 78 noches (T20).
 - La revisión del registro, que hacen personas leyéndolo, para que el conteo pueda decir algo (T20).

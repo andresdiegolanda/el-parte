@@ -28,7 +28,7 @@ Las claves de la base tienen valores por omisión para usar en local. Para cambi
 
 ### Correr una noche
 
-En `/corridas` se elige la noche (por omisión, ayer en hora de Uruguay) y se aprieta "Correr". La corrida lee todas las publicaciones de la noche y del día de margen (unas 700 por día hábil), llama al modelo solo en el refutador, una vez por compra nueva del BPS, y tarda unos minutos; la página de la corrida muestra cómo avanza al recargarla. Mientras no esté el presupuesto que corta (T22), lo que limita el gasto es un tope de 60 candidatos por corrida (`elparte.corrida.maximo-candidatos`) y el tope de gasto del espacio de trabajo de la clave (T14). Cuando termina, la página de la mañana muestra lo encontrado. "Repetir" vuelve a correr una corrida terminada desde sus grabaciones, sin red ni costo, y su página dice si los mensajes son idénticos a los de la original ([ADR 0011](../adrs/0011-grabacion-y-repeticion-de-corridas.md)).
+En `/corridas` se elige la noche (por omisión, ayer en hora de Uruguay) y se aprieta "Correr". La corrida lee todas las publicaciones de la noche y del día de margen (unas 700 por día hábil), llama al modelo solo en el refutador, una vez por compra nueva del BPS, y tarda unos minutos; la página de la corrida muestra cómo avanza al recargarla. Mientras no esté el presupuesto que corta (T22), lo que limita el gasto es un tope de 60 candidatos por corrida (`elparte.corrida.maximo-candidatos`), al que entran primero las compras de la fecha objetivo y después las del día de margen, y el tope de gasto del espacio de trabajo de la clave (T14). Cuando termina, la página de la mañana muestra lo encontrado. "Repetir" vuelve a correr una corrida terminada desde sus grabaciones, sin red ni costo, y su página dice si los mensajes son idénticos a los de la original ([ADR 0011](../adrs/0011-grabacion-y-repeticion-de-corridas.md)).
 
 Para que corra sola todas las noches se fija `ELPARTE_CORRIDA_CRON` (por ejemplo `0 0 6 * * *`, las 6 de la mañana en Uruguay). Viene apagado hasta que se decida dónde corre la aplicación (T27).
 
@@ -75,8 +75,10 @@ Mientras corre:
 Cuando termina, la medición se cuenta con el registro y su revisión ([banco-de-pruebas/metricas.md](../banco-de-pruebas/metricas.md)):
 
 ```
-python3 herramientas/banco_de_pruebas.py contar banco-de-pruebas/privado banco-de-pruebas/mediciones/2026-11-21-1/salida-de-el-parte.json > banco-de-pruebas/mediciones/2026-11-21-1/medicion.json
+python herramientas/banco_de_pruebas.py contar banco-de-pruebas/privado banco-de-pruebas/mediciones/2026-11-21-1/salida-de-el-parte.json banco-de-pruebas/mediciones/2026-11-21-1/medicion.json
 ```
+
+El último argumento es el archivo de la medición, que el conteo escribe en UTF-8. No conviene redirigir con `>`: en Windows PowerShell 5.1 el archivo sale en UTF-16.
 
 Mientras haga falta repetir alguna noche, el Compose de la medición se deja; para borrarlo, con su base y sus grabaciones: `docker compose -p el-parte-banco-2026-11-21-1 -f compose.yaml -f compose.banco.yaml down -v`.
 

@@ -96,7 +96,9 @@ Lista:
 - [x] El tope de gasto de toda la medición
 - [x] El tipo de falla sinFecha en fuente.fallida (docs/contratos.md)
 - [x] La salida al terminar, en banco-de-pruebas/mediciones/<medición>/
-- [ ] Tres noches reales primero, en la máquina del responsable, para conocer costo, duración y pedidos
+- [x] Tres noches reales primero, en la máquina del responsable, para conocer costo, duración y pedidos
+- [x] Al tope de candidatos entran primero las compras de la fecha objetivo
+- [ ] Avisar al responsable para que suba el tope de gasto del espacio de trabajo y de la organización, antes de las 78 noches
 - [ ] Correr la rebanada sobre cada noche del registro
 - [ ] Revisar el registro: la fuente y la etiqueta de cada entrada, y después las correspondencias y los extras
 - [ ] Contar con las reglas de banco-de-pruebas/metricas.md; con la muestra tiene que dar banco-de-pruebas/muestra/medicion-esperada.json
@@ -110,6 +112,7 @@ Registro:
 - 2026-11-15: Pasa a En curso. Diseño del modo banco en el ADR 0014, propuesto (T37): un Compose aparte por medición, las noches en orden, cuidado con ARCE y un tope de gasto. El código espera a que se acepte.
 - 2026-11-15: Aceptado el ADR 0014. Sigue con el código del modo banco.
 - 2026-11-15: Modo banco construido y probado: diecinueve pruebas contra contenedores y dos mediciones de prueba en Docker Compose (docs/como-se-hizo/medicion-contra-el-banco.md). Sigue con tres noches reales en la máquina del responsable, que tiene la clave.
+- 2026-11-15: Tres noches reales, del 2026-11-11 al 13: 1,20 USD y 18 minutos, en banco-de-pruebas/mediciones/2026-11-15-1/. El tope de 60 candidatos se quedó corto en dos noches, y ahora entran primero las compras de la fecha objetivo. Las 78 noches costarían unos 31 USD: antes de correrlas hay que subir los topes de gasto. Sigue con el borrador de la revisión del registro.
 
 ## Para empezar
 

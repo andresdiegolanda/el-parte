@@ -200,6 +200,14 @@ try:
 except bp.ErrorDeFormato as e:
     comprobar("está repetido" in str(e), "un hecho repetido en la salida es un error")
 
+# Con un archivo de destino, contar lo escribe en UTF-8 y da lo mismo que medir.
+registro, salida = copia()
+destino = salida.parent / "mediciones" / "prueba" / "medicion.json"
+codigo = bp.main(["contar", str(registro), str(salida), str(destino)])
+escrito = destino.read_bytes()
+comprobar(codigo == 0 and json.loads(escrito.decode("utf-8")) == bp.medir(registro, salida) and not escrito.startswith(b"\xff\xfe"),
+          "contar con destino escribe la medición en UTF-8")
+
 # La huella depende de cada byte de los archivos del registro, y no de la revisión.
 registro, _ = copia()
 antes = bp.leer_registro(registro)[0]["huella"]

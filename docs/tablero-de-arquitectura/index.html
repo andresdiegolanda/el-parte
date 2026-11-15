@@ -587,7 +587,7 @@ var S = {
    "col": 2,
    "fila": 6,
    "estado": "construido",
-   "que_es": "Una carpeta por medición, con la salida de El Parte y la medición que da el conteo. Se versionan: llevan claves de hechos, fechas, conteos y huellas, y nada del registro. Todavía no hay ninguna medición real.",
+   "que_es": "Una carpeta por medición, con la salida de El Parte y la medición que da el conteo. Se versionan: llevan claves de hechos, fechas, conteos y huellas, y nada del registro. Por ahora hay una prueba de tres noches, sin medición porque el registro no está revisado.",
    "para_que": "Deja cada medición en el repositorio, para compararla con las siguientes y volver a contarla sin volver a correr.",
    "docs": [
     "banco-de-pruebas/metricas.md",
@@ -605,7 +605,7 @@ var S = {
    "col": 2,
    "fila": 1,
    "estado": "construido",
-   "que_es": "Lee lo publicado en ARCE la noche objetivo y un día de margen, se queda con las compras de las entidades seguidas y emite un candidato por cada una. No usa el modelo. En modo banco, lo que la corrida de la noche anterior ya leyó de una publicación lo toma de su grabación (ADR 0014).",
+   "que_es": "Lee lo publicado en ARCE la noche objetivo y un día de margen, se queda con las compras de las entidades seguidas y emite un candidato por cada una, hasta el máximo de la corrida, con las de la fecha objetivo primero. No usa el modelo. En modo banco, lo que la corrida de la noche anterior ya leyó de una publicación lo toma de su grabación (ADR 0014).",
    "para_que": "Es la puerta de entrada de los hechos de ARCE: filtra por comprador antes de cualquier otra cosa y graba todo lo que lee.",
    "codigo": [
     "app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/arce/ExploradorArce.java",
@@ -3810,6 +3810,14 @@ var S = {
     "explorador-arce",
     "lector-arce",
     "corridas"
+   ]
+  },
+  {
+   "fecha": "2026-11-15",
+   "texto": "Las primeras tres noches reales del banco: 1,20 USD y 18 minutos. El explorador pone primero, en el tope de candidatos, las compras de la fecha objetivo.",
+   "objetos": [
+    "explorador-arce",
+    "afuera/mediciones-banco"
    ]
   }
  ],

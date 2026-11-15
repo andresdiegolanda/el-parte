@@ -1,6 +1,10 @@
 # banco-de-pruebas/mediciones
 
-Una carpeta por cada medición de El Parte contra el banco de pruebas, con el nombre de la medición, `AAAA-MM-DD-N` (la fecha en que se midió y un número de orden). Todavía no hay ninguna real (tablero, T20).
+Una carpeta por cada medición de El Parte contra el banco de pruebas, con el nombre de la medición, `AAAA-MM-DD-N` (la fecha en que se midió y un número de orden).
+
+| Medición | Qué es |
+|---|---|
+| `banco-de-pruebas/mediciones/2026-11-15-1/` | Una prueba de tres noches, del 2026-11-11 al 2026-11-13, para conocer el costo y la duración antes de correr todas: 1,20 USD y 18 minutos (tablero, T20). No tiene `medicion.json` porque el registro todavía no está revisado. |
 
 | Archivo | Qué es | Quién lo escribe |
 |---|---|---|

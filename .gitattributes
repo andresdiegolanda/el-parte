@@ -2,3 +2,5 @@
 # de cada byte: se guarda con saltos de línea LF en cualquier sistema.
 # Ver banco-de-pruebas/formato.md, "La huella".
 banco-de-pruebas/muestra/** text eol=lf
+# Las salidas y las mediciones las escribe la aplicación o el conteo con LF; se guardan así.
+banco-de-pruebas/mediciones/** text eol=lf

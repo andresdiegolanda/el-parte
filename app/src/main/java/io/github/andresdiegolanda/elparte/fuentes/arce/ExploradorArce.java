@@ -52,6 +52,9 @@ import tools.jackson.databind.node.ObjectNode;
  * <li>Tapa los datos personales de las que quedan (ADR 0008) y arma los candidatos.</li>
  * </ol>
  *
+ * <p>Si hay más candidatos que el máximo de la corrida, entran primero los de la fecha objetivo: lo que
+ * queda afuera es del día de margen.
+ *
  * <p>Todo lo que lee se graba ya enmascarado, para poder repetir la corrida sin red. En modo banco, lo
  * que la corrida de la noche anterior ya leyó de una publicación se toma de su grabación en lugar de
  * pedirlo otra vez, y se graba igual en esta corrida (ADR 0014).
@@ -118,16 +121,16 @@ public class ExploradorArce {
             return;
         }
 
-        List<Optional<Candidato>> leidos = new ArrayList<>();
+        List<Leido> leidos = new ArrayList<>();
         List<FallaDeArce> fallas = new ArrayList<>();
         try (ExecutorService hilos = Executors.newFixedThreadPool(concurrencia)) {
             List<Future<Optional<Candidato>>> pendientes = new ArrayList<>();
             for (ItemDelFeed item : items) {
                 pendientes.add(hilos.submit(() -> consultar(corridaId, anterior, item, seguidos)));
             }
-            for (Future<Optional<Candidato>> pendiente : pendientes) {
+            for (int i = 0; i < pendientes.size(); i++) {
                 try {
-                    leidos.add(pendiente.get());
+                    leidos.add(new Leido(items.get(i), pendientes.get(i).get()));
                 } catch (Exception e) {
                     if (e.getCause() instanceof FallaDeArce falla) {
                         fallas.add(falla);
@@ -140,16 +143,12 @@ public class ExploradorArce {
 
         int emitidos = 0;
         int sinProcesar = fallas.size();
-        for (Optional<Candidato> leido : leidos) {
-            if (leido.isEmpty()) {
-                continue;
-            }
+        for (Candidato sinId : paraElTope(leidos, fecha)) {
             if (emitidos == maximoCandidatos) {
                 sinProcesar++;
                 continue;
             }
             emitidos++;
-            Candidato sinId = leido.get();
             Candidato candidato = new Candidato(String.format("k-arce-%04d", emitidos), sinId.fuente(),
                     sinId.identificadorEnFuente(), sinId.proceso(), sinId.url(), sinId.fechaPublicacion(),
                     sinId.tipoDeHecho(), sinId.entidades(), sinId.resumen(), sinId.evidencia(),
@@ -163,6 +162,23 @@ public class ExploradorArce {
                 corridaId, items.size(), emitidos, sinProcesar);
         emisor.emitir(corridaId, Tipos.EXPLORACION_TERMINADA, AGENTE, inicio.mensajeId(), 0,
                 new ExploracionTerminada("arce", items.size(), emitidos, sinProcesar));
+    }
+
+    /** Una publicación de la ventana y lo que dio leerla: un candidato si es de una entidad seguida. */
+    record Leido(ItemDelFeed item, Optional<Candidato> candidato) {
+    }
+
+    /**
+     * Los candidatos en el orden en que entran al tope de la corrida: primero los de la fecha objetivo y
+     * después los de los días de margen, cada grupo en orden de publicación. Así, si hay más que el
+     * máximo, lo que queda afuera es del margen, que la noche anterior ya vio.
+     */
+    static List<Candidato> paraElTope(List<Leido> leidos, LocalDate fecha) {
+        return leidos.stream()
+                .filter(leido -> leido.candidato().isPresent())
+                .sorted(Comparator.comparing((Leido leido) -> !leido.item().publicada().toLocalDate().equals(fecha)))
+                .map(leido -> leido.candidato().get())
+                .toList();
     }
 
     /** Lo publicado la fecha objetivo y los días de margen anteriores, en orden. */

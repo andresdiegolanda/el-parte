@@ -8,14 +8,16 @@ mismo, mandan los documentos.
 Uso, desde la raíz del repositorio:
 
     python3 herramientas/banco_de_pruebas.py validar [carpeta]
-    python3 herramientas/banco_de_pruebas.py contar [carpeta salida.json]
+    python3 herramientas/banco_de_pruebas.py contar [carpeta salida.json [medicion.json]]
 
 La carpeta es la del registro, con su revisión en revision/, y salida.json es
 lo que produjeron las corridas en modo banco. Por omisión son los de la
 muestra sintética: banco-de-pruebas/muestra/registro/ y
 banco-de-pruebas/muestra/salida-de-el-parte.json. "validar" sale con código 1
 si hay errores; los avisos no cambian el código. "contar" escribe la medición
-en la salida estándar.
+en medicion.json, en UTF-8, o si no se le da, en la salida estándar. Conviene
+darle el archivo: en Windows PowerShell 5.1, redirigir con ">" lo guarda en
+UTF-16.
 
 El registro tiene datos personales y es material de otro proyecto (ADR 0007 y
 ADR 0008). Nada de lo que este programa escribe copia su contenido: solo
@@ -717,10 +719,12 @@ def main(argumentos):
               f"{len(registro['indice']['noches'])} noches en A, {len(registro['indice']['tramos'])} tramos en B, "
               f"{len(registro['busquedas'])} búsquedas, {len(avisos)} avisos. Huella {registro['huella']}.")
         return 0
+    destino = None
     if len(argumentos) == 1:
         carpeta, ruta_salida = REGISTRO_DE_MUESTRA, SALIDA_DE_MUESTRA
-    elif len(argumentos) == 3:
+    elif len(argumentos) in (3, 4):
         carpeta, ruta_salida = Path(argumentos[1]), Path(argumentos[2])
+        destino = Path(argumentos[3]) if len(argumentos) == 4 else None
     else:
         print(__doc__)
         return 2
@@ -729,7 +733,13 @@ def main(argumentos):
     except ErrorDeFormato as e:
         print(f"Error: {e}", file=sys.stderr)
         return 1
-    print(json.dumps(medicion, ensure_ascii=False, indent=1))
+    texto = json.dumps(medicion, ensure_ascii=False, indent=1) + "\n"
+    if destino is None:
+        sys.stdout.write(texto)
+    else:
+        destino.parent.mkdir(parents=True, exist_ok=True)
+        destino.write_text(texto, encoding="utf-8", newline="\n")
+        print(f"Medición escrita en {destino}.")
     return 0
 
 

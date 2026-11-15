@@ -1,0 +1,434 @@
+{
+  "commit" : "290bbff",
+  "entidad" : "organismo:bps",
+  "fuentes" : [ "arce" ],
+  "modelos" : {
+    "editor" : "claude-haiku-5-5",
+    "analista" : "claude-sonnet-5-5",
+    "refutador" : "claude-sonnet-5-5",
+    "archivista" : "claude-haiku-5-5",
+    "explorador-arce" : "claude-haiku-5-5"
+  },
+  "corridas" : [ {
+    "noche" : "2026-11-11",
+    "corrida" : "c-2026-11-11-banco",
+    "estado" : "completa",
+    "noRepetibles" : [ ],
+    "costoUsd" : 0.488658,
+    "duracionSegundos" : 482,
+    "lecturasFallidas" : 0
+  }, {
+    "noche" : "2026-11-12",
+    "corrida" : "c-2026-11-12-banco",
+    "estado" : "completa",
+    "noRepetibles" : [ ],
+    "costoUsd" : 0.44795,
+    "duracionSegundos" : 348,
+    "lecturasFallidas" : 0
+  }, {
+    "noche" : "2026-11-13",
+    "corrida" : "c-2026-11-13-banco",
+    "estado" : "completa",
+    "noRepetibles" : [ ],
+    "costoUsd" : 0.265574,
+    "duracionSegundos" : 224,
+    "lecturasFallidas" : 0
+  } ],
+  "hechos" : [ {
+    "clave" : "arce:ocds-yfs5dr-1362695:adjudicacion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1364675:adjudicacion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1366175:adjudicacion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1366856:adjudicacion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1368423:adjudicacion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1368533:adjudicacion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1369224:adjudicacion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1370473:adjudicacion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1371694:adjudicacion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1371759:adjudicacion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1374187:adjudicacion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1374196:adjudicacion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1376110:adjudicacion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1376121:adjudicacion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1376291:adjudicacion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1376470:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1376981:adjudicacion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1377948:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1378357:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1378538:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1380550:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1380683:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1380890:adjudicacion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1380894:adjudicacion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1381043:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1381199:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1381438:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1381474:adjudicacion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1381502:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1381673:adjudicacion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1382235:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1382594:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1382788:adjudicacion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1382791:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1382814:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1383048:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1383057:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1383160:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1383174:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1383208:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1383239:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1383271:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1383273:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1383275:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1383306:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1383328:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1383683:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1383744:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1383788:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1384065:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1384178:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "INFERRED"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1384227:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1384282:aclaracion",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1385552:llamado",
+    "noche" : "2026-11-11",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1385561:llamado",
+    "noche" : "2026-11-11",
+    "grado" : "INFERRED"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1361596:adjudicacion",
+    "noche" : "2026-11-12",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1362670:adjudicacion",
+    "noche" : "2026-11-12",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1364656:adjudicacion",
+    "noche" : "2026-11-12",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1371736:adjudicacion",
+    "noche" : "2026-11-12",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1374600:adjudicacion",
+    "noche" : "2026-11-12",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1374650:adjudicacion",
+    "noche" : "2026-11-12",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1375943:adjudicacion",
+    "noche" : "2026-11-12",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1376497:adjudicacion",
+    "noche" : "2026-11-12",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1378125:adjudicacion",
+    "noche" : "2026-11-12",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1378158:aclaracion",
+    "noche" : "2026-11-12",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1378295:aclaracion",
+    "noche" : "2026-11-12",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1378698:adjudicacion",
+    "noche" : "2026-11-12",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1379088:adjudicacion",
+    "noche" : "2026-11-12",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1381267:adjudicacion",
+    "noche" : "2026-11-12",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1381420:adjudicacion",
+    "noche" : "2026-11-12",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1381460:aclaracion",
+    "noche" : "2026-11-12",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1381468:adjudicacion",
+    "noche" : "2026-11-12",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1383039:adjudicacion",
+    "noche" : "2026-11-12",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1383197:aclaracion",
+    "noche" : "2026-11-12",
+    "grado" : "INFERRED"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1383219:adjudicacion",
+    "noche" : "2026-11-12",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1384245:aclaracion",
+    "noche" : "2026-11-12",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1384298:aclaracion",
+    "noche" : "2026-11-12",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1384585:aclaracion",
+    "noche" : "2026-11-12",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1384586:aclaracion",
+    "noche" : "2026-11-12",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1384588:aclaracion",
+    "noche" : "2026-11-12",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1384590:aclaracion",
+    "noche" : "2026-11-12",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1385643:llamado",
+    "noche" : "2026-11-12",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1385798:llamado",
+    "noche" : "2026-11-12",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1385799:llamado",
+    "noche" : "2026-11-12",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1386167:llamado",
+    "noche" : "2026-11-12",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1386278:llamado",
+    "noche" : "2026-11-12",
+    "grado" : "INFERRED"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1375173:adjudicacion",
+    "noche" : "2026-11-13",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1380903:adjudicacion",
+    "noche" : "2026-11-13",
+    "grado" : "NOT_MENTIONED"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1381372:adjudicacion",
+    "noche" : "2026-11-13",
+    "grado" : "NOT_MENTIONED"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1384944:aclaracion",
+    "noche" : "2026-11-13",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1385542:adjudicacion",
+    "noche" : "2026-11-13",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1386271:llamado",
+    "noche" : "2026-11-13",
+    "grado" : "INFERRED"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1386404:aclaracion",
+    "noche" : "2026-11-13",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1386404:llamado",
+    "noche" : "2026-11-13",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1386437:llamado",
+    "noche" : "2026-11-13",
+    "grado" : "NOT_MENTIONED"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1386496:llamado",
+    "noche" : "2026-11-13",
+    "grado" : "NOT_MENTIONED"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1386504:llamado",
+    "noche" : "2026-11-13",
+    "grado" : "PROVEN"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1386511:llamado",
+    "noche" : "2026-11-13",
+    "grado" : "NOT_MENTIONED"
+  }, {
+    "clave" : "arce:ocds-yfs5dr-1386520:llamado",
+    "noche" : "2026-11-13",
+    "grado" : "NOT_MENTIONED"
+  } ]
+}

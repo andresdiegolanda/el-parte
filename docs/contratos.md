@@ -143,7 +143,7 @@ Lo emite cada explorador cuando terminó con su fuente, aunque haya fallado. Se 
 | `fuente` | La fuente explorada. |
 | `publicacionesLeidas` | Cuántas publicaciones de la noche leyó. |
 | `candidatosEmitidos` | Cuántos candidatos emitió. |
-| `sinProcesar` | Cuántas publicaciones de entidades seguidas no pudo leer o dejó afuera por el tope de candidatos. |
+| `sinProcesar` | Cuántas publicaciones de entidades seguidas no pudo leer o dejó afuera por el tope de candidatos. Al tope entran primero las de la fecha objetivo, así lo que queda afuera es del día de margen. |
 
 ```json
 { "fuente": "arce", "publicacionesLeidas": 712, "candidatosEmitidos": 41, "sinProcesar": 2 }
