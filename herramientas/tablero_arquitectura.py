@@ -220,10 +220,10 @@ def hechos_del_codigo():
     tablas = set(re.findall(r"^create table (\w+\.\w+)", PRIMERA_MIGRACION.read_text(encoding="utf-8"), re.M))
 
     java = {f: f.read_text(encoding="utf-8") for f in sorted(CODIGO.rglob("*.java"))}
-    clases = {f.stem: str(f.relative_to(RAIZ)) for f in java}
+    clases = {f.stem: f.relative_to(RAIZ).as_posix() for f in java}
     archivos, problemas = {}, []
     for f, fuente in java.items():
-        rel = str(f.relative_to(RAIZ))
+        rel = f.relative_to(RAIZ).as_posix()
         codigo = _sin_comentarios(fuente)
         h = {"emite": set(), "escucha": set(), "escucha_todos": False, "escribe": set(), "lee": set(),
              "usa": set(), "rutas": set()}
@@ -252,7 +252,7 @@ def hechos_del_codigo():
         for verbo, ruta in re.findall(r'@(Get|Post|Put|Delete)Mapping\("([^"]+)"\)', codigo):
             h["rutas"].add(f"{verbo.upper()} {ruta}")
         archivos[rel] = h
-    plantillas = sorted(str(f.relative_to(RAIZ)) for f in PLANTILLAS_WEB.glob("*.html"))
+    plantillas = sorted(f.relative_to(RAIZ).as_posix() for f in PLANTILLAS_WEB.glob("*.html"))
     return {"topicos": topicos, "todos": todos, "tablas": tablas, "archivos": archivos, "clases": clases,
             "plantillas": plantillas, "problemas": problemas}
 
