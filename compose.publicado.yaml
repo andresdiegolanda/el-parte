@@ -22,9 +22,11 @@ services:
   aplicacion:
     restart: unless-stopped
     environment:
-      # Resend por SMTP, con SSL en el puerto 465; el usuario es siempre "resend" y la clave es la de la API.
+      # Resend por SMTP, con SSL; el usuario es siempre "resend" y la clave es la de la API. El puerto es el
+      # 2465 y no el 465: algunos antivirus se meten en las conexiones al 465 con un certificado propio, que
+      # Java no acepta (docs/como-se-hizo/despliegue.md). Resend da SSL en los dos.
       CORREO_HOST: smtp.resend.com
-      CORREO_PUERTO: 465
+      CORREO_PUERTO: 2465
       CORREO_USUARIO: resend
       CORREO_CLAVE: ${CORREO_CLAVE:?falta CORREO_CLAVE en el .env}
       CORREO_AUTENTICA: "true"

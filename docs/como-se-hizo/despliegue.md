@@ -14,7 +14,7 @@ flowchart LR
         A --> K[(kafka)]
         R[respaldo] -->|pg_dump| B
     end
-    A -->|SMTP 465, SSL| RS[Resend]
+    A -->|SMTP 2465, SSL| RS[Resend]
     A -.->|8081, solo en la máquina:<br/>localhost:8090| S[la salud]
     R --> D[respaldos/]
 ```
@@ -22,7 +22,7 @@ flowchart LR
 `compose.publicado.yaml` no repite nada de `compose.yaml`: le suma lo que cambia al publicar.
 
 - **El túnel.** Un servicio `tunel` con el conector de Cloudflare, que lee el token del túnel del `.env`. Adónde lleva el subdominio se configura en el panel de Cloudflare: a `http://aplicacion:8080`, el nombre del servicio dentro de la red del Compose.
-- **El correo.** La aplicación pasa de Mailpit a Resend: servidor, puerto 465, usuario `resend`, la clave del `.env`, con usuario y SSL. Mailpit queda en un perfil que nunca se prende.
+- **El correo.** La aplicación pasa de Mailpit a Resend: servidor, puerto 2465, usuario `resend`, la clave del `.env`, con usuario y SSL. Mailpit queda en un perfil que nunca se prende.
 - **La corrida de cada noche**, prendida a las 6 de Uruguay.
 - **Que vuelva sola**: `restart: unless-stopped` en todos los servicios.
 - **La salud en otro puerto.** `MANAGEMENT_SERVER_PORT` la pasa al 8081, que en la máquina queda en `localhost:8090` y al que el túnel no llega.
@@ -56,8 +56,10 @@ Todo en un Docker local, con un Mailpit que exige SSL y usuario en lugar de Rese
 
 ## Qué falló
 
+- **El antivirus en el puerto 465.** Con las claves reales, la aplicación levantó, el túnel conectó y las páginas respondían desde afuera, pero el correo no salía: `PKIX path building failed`. Desde la red del Compose, `openssl s_client` mostró que en el 465 el certificado de `smtp.resend.com` lo firmaba el antivirus de la máquina, que revisa el correo saliente. Windows confía en ese certificado y Java, dentro del contenedor, no. En el 2465, que Resend también da con SSL, llega el certificado real. Se pasó al 2465 en lugar de hacer que Java confíe en el antivirus, que además leería cada correo.
 - **La copia vacía**, ver arriba.
 - **La salud a la vista**, ver arriba. Se vio al mirar qué respondía la aplicación publicada por el puerto de la web.
+- **El enlace Estado del menú daba error.** Llevaba a `/actuator/health`, que publicada está en otro puerto. Ahora el menú y la página de inicio lo muestran solo si la salud está en el mismo puerto que las páginas (`app/src/main/java/io/github/andresdiegolanda/elparte/web/SaludEnElMenu.java`). Lo vio el responsable al entrar desde afuera.
 
 ## Qué falta
 

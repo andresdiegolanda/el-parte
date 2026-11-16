@@ -267,7 +267,7 @@ Registro:
 - Tipo: Herramienta
 - Dueño: desarrollo
 - Depende de: T25, T27
-- Espera a: el túnel de Cloudflare, el dominio del correo verificado en Resend y sus claves en el .env (Andrés)
+- Espera a: que el responsable entre desde afuera con el enlace de un correo real (Andrés)
 - Detalle: [compose.publicado.yaml](compose.publicado.yaml), [app/README.md](app/README.md), [docs/como-se-hizo/despliegue.md](docs/como-se-hizo/despliegue.md), [adrs/0016-despliegue-en-la-maquina-del-responsable.md](adrs/0016-despliegue-en-la-maquina-del-responsable.md)
 
 Lo que el ADR 0016 decide, armado: el conector del túnel, el correo por Resend, la corrida de cada noche, los servicios que vuelven solos, la salud fuera del túnel y la copia diaria de la base. Probado en local con un correo de prueba que exige SSL y usuario; falta con el túnel y Resend reales.
@@ -283,13 +283,14 @@ Lista:
 - [x] La salud en un puerto al que el túnel no llega
 - [x] La copia diaria de la base, y cómo se vuelve a una copia, probado
 - [x] Las mediciones, sin los invitados del .env
-- [ ] El túnel creado en Cloudflare, con la ruta del subdominio a http://aplicacion:8080 (Andrés)
-- [ ] El dominio del correo verificado en Resend y su clave (Andrés)
-- [ ] Las claves, la dirección, el remitente y los invitados en el .env (Andrés)
+- [x] El túnel creado en Cloudflare, con la ruta del subdominio a http://aplicacion:8080 (Andrés)
+- [x] El dominio del correo verificado en Resend y su clave (Andrés)
+- [x] Las claves, la dirección, el remitente y los invitados en el .env (Andrés)
 - [ ] Levantarla publicada y entrar desde afuera con el enlace de un correo real
 
 Registro:
 - 2026-11-16: Creada con el ADR 0016. Armada y probada en local; espera las claves del túnel y del correo.
+- 2026-11-16: Levantada en la máquina del responsable con las claves reales: el túnel conecta y las páginas responden desde afuera. El correo pasa al puerto 2465 de Resend, porque el antivirus de la máquina interceptaba el 465.
 
 ### T27 · Escribir el ADR de despliegue
 - Tipo: ADR

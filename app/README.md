@@ -200,6 +200,7 @@ mvn test
 | `PrimeraRebanadaTest` | Una noche de punta a punta con el refutador y el analista, su repetición sin red ni modelo con mensajes idénticos, la revisión humana del hecho INFERRED, la misma noche otra vez con todo conocido, que ningún dato personal llegue a la base, y las páginas. Deja una copia de cada página en `target/paginas/`. |
 | `banco.MedicionContraElBancoTest` | La medición contra el banco sobre tres noches de octubre: en orden, sin volver a pedir a ARCE lo que la noche anterior ya leyó, la salida con la forma del formato, el salteo de lo ya medido, el tope de gasto y la repetición de una noche del banco. Deja la salida en `target/banco/`. |
 | `PermisosDeLaBaseTest` | Cada rol ve solo su esquema y ninguno cambia el esquema. |
+| `web.SaludEnElMenuTest` | El enlace a la salud se muestra en local y no publicada, donde la salud va en otro puerto. |
 | `ElParteAplicacionTest` | La salud de Kafka y los tópicos: uno por tipo de mensaje, con una partición y sin vencimiento. |
 | `fuentes.arce.*Test` | La lectura de ARCE con su pausa, el enmascarado y el armado de los candidatos. |
 | `analista.AnalistaTest` | El control de lo que escribe el modelo para el analista: una cifra que no está en la evidencia no se usa ([ADR 0015](../adrs/0015-que-puede-escribir-el-analista.md)). |
