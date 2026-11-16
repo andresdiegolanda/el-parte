@@ -101,13 +101,15 @@ Lista:
 - [x] Avisar al responsable para que suba el tope de gasto del espacio de trabajo y de la organización, antes de las 78 noches
 - [x] Correr la rebanada sobre cada noche del registro
 - [ ] Revisar el registro: la fuente y la etiqueta de cada entrada, y después las correspondencias y los extras
-- [ ] Decidir cómo se juzgan los extras: en las 78 noches salieron 800 hechos PROVEN o INFERRED, y 789 no corresponden a nada del registro
+- [x] Decidir cómo se juzgan los extras: en las 78 noches salieron 800 hechos PROVEN o INFERRED, y 789 no corresponden a nada del registro
+- [x] Juzgar un sorteo de 60 extras: 57 bien y 3 con el contenido equivocado
+- [ ] Confirmar la revisión: la fuente y la etiqueta de cada entrada, las correspondencias y el juicio del sorteo, que están en borrador
 - [x] Contar con las reglas de banco-de-pruebas/metricas.md; con la muestra tiene que dar banco-de-pruebas/muestra/medicion-esperada.json
 - [x] Costo y duración por noche
 - [x] Versionar las métricas con la huella del registro usado (ADR 0007)
 - [ ] Saber si ARCE publicó la compra directa del BPS a ATOS, el único hallazgo que esta medición podía encontrar
-- [ ] Que el explorador avise cuando un día hábil viene sin publicaciones: el feed de ARCE no trae nada del 2026-10-23 al 2026-10-29
-- [ ] Decidir qué hacer con el tope de 60 candidatos, que dejó 196 compras del BPS sin procesar
+- [ ] Que el explorador avise cuando un día hábil viene sin publicaciones: el feed de ARCE no trae nada del 2026-10-23 al 2026-10-29 (pasa a T39)
+- [ ] Decidir qué hacer con el tope de 60 candidatos, que dejó 196 compras del BPS sin procesar (pasa a T22)
 
 Registro:
 - 2026-11-07: Creada con el plan (T07).
@@ -119,6 +121,28 @@ Registro:
 - 2026-11-15: Tres noches reales, del 2026-11-11 al 13: 1,20 USD y 18 minutos, en banco-de-pruebas/mediciones/2026-11-15-1/. El tope de 60 candidatos se quedó corto en dos noches, y ahora entran primero las compras de la fecha objetivo. Las 78 noches costarían unos 31 USD: antes de correrlas hay que subir los topes de gasto. Sigue con el borrador de la revisión del registro.
 - 2026-11-15: Borrador de la fuente y la etiqueta de las 84 entradas, en banco-de-pruebas/privado/revision/entradas.jsonl, fuera del repositorio, para que lo confirme el responsable. Valida sin errores. De ARCE, la única fuente que lee esta medición, son 8: 1 hallazgo, 5 publicables, 1 no-nuevo y 1 otra-entidad; las demás son de otras fuentes o de ninguna.
 - 2026-11-16: Las 78 noches, en banco-de-pruebas/mediciones/2026-11-15-2/: 12,71 USD y 3 horas y 23 minutos, sin fallas. Con el borrador de la revisión y las correspondencias de seis entradas: 5 de 5 publicables encontrados, con 26 días de adelanto, y 0 de 1 hallazgo, la compra directa a ATOS. Faltan juzgar 789 extras. A la vista: el feed de ARCE no trae nada del 23 al 29 de octubre, y el tope de candidatos dejó 196 compras sin procesar (docs/como-se-hizo/medicion-contra-el-banco.md).
+- 2026-11-16: Los extras se juzgan por sorteo (banco-de-pruebas/metricas.md). Un sorteo de 60 de los 789, con la semilla 20261116: 57 bien y 3 con el contenido equivocado, adjudicaciones repartidas entre varios proveedores. Precisión estimada de los extras, 0,95 (de 0,86 a 0,98), y de todo lo publicado, 0,95. El arreglo del explorador y el aviso de día vacío pasan a T39; el tope de candidatos, a T22. Falta que el responsable confirme la revisión y saber lo de ATOS.
+
+### T39 · Arreglar lo que la medición mostró del explorador de ARCE
+- Tipo: Componente
+- Dueño: desarrollo
+- Detalle: [docs/como-se-hizo/medicion-contra-el-banco.md](docs/como-se-hizo/medicion-contra-el-banco.md)
+
+La medición de las 78 noches dejó a la vista dos fallas del explorador de ARCE: no avisa cuando un día hábil viene sin publicaciones, y la afirmación de una adjudicación repartida entre varios proveedores nombra solo al primero.
+
+Etapas:
+- [ ] Contrato
+- [ ] Código
+- [ ] Pruebas
+- [ ] Medido contra el banco
+- [ ] Página cómo se hizo
+
+Lista:
+- [ ] Un día hábil de la ventana sin publicaciones en el feed es una fuente fallida, no una noche sin novedades
+- [ ] La afirmación de una adjudicación nombra a todos los proveedores de la publicación
+
+Registro:
+- 2026-11-16: Creada a partir de la medición de las 78 noches (T20). Pasa a En curso.
 
 ## Para empezar
 
@@ -159,6 +183,7 @@ Lista:
 - [ ] Libro de la corrida con actualización atómica
 - [ ] Tabla de precios en la base, con fuente y fecha, y sus valores iniciales en una migración
 - [ ] Corte por tiempo y mensaje corrida.cortada
+- [ ] Revisar el tope de 60 candidatos por corrida: en las 78 noches dejó 196 compras del BPS sin procesar (T20)
 
 Registro:
 - 2026-11-07: Creada con el plan (T07).

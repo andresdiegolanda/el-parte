@@ -108,7 +108,8 @@ El conteo, con el borrador de la revisión: [PROVEN: `banco-de-pruebas/medicione
 
 - **Publicables: 5 de 5.** Las cinco compras del BPS que la vigilancia vio el 2026-11-01 y descartó por tema salieron en El Parte la noche en que se publicaron, con una mediana de 26 días de adelanto. Las cinco tienen su llamado y su aclaración, y una también su adjudicación.
 - **Hallazgos: 0 de 1.** De los 19 hallazgos, el único que esta medición podía encontrar es la compra directa del BPS a ATOS (`2026-09-29-1`), y no está. Ningún hecho ni ninguna publicación grabada la menciona; si ARCE la publicó, no se sabe todavía. [INFERRED: búsqueda en la base, 2026-11-16] Los otros 18 son de fuentes que esta medición no lee, o de ninguna.
-- **Precisión: sin decir todavía.** Los 11 hechos con correspondencia están bien; los otros 789 no corresponden a nada del registro y falta juzgarlos.
+- **Precisión: 95 %.** Los 11 hechos con correspondencia están bien. Los otros 789 no corresponden a nada del registro, y de ellos se juzgó un sorteo de 60, con la semilla 20261116 (`banco-de-pruebas/metricas.md`, "Cuando los extras son demasiados"): 57 bien y 3 con el contenido equivocado. La precisión estimada de los extras es 0,95, con un intervalo al 95 % de 0,86 a 0,98, y la de todo lo publicado, 0,95. Ninguno era de otra entidad ni material viejo.
+- **El error que encontró el sorteo.** Los tres hechos equivocados son adjudicaciones de compras repartidas entre varios proveedores: El Parte dice que la compra se adjudicó al primero, con sus ítems, y no nombra a los demás. El explorador arma la afirmación solo con la primera adjudicación de la publicación (`app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/arce/CandidatosDeArce.java`), y el refutador la da por PROVEN porque cada pedazo está en la fuente. Se arregla en T39.
 - **Más barata que lo estimado.** Las tres noches de prueba hacían esperar unos 31 USD; costó 12,71, porque muchas noches son fines de semana con pocas compras.
 
 Dos problemas que la medición dejó a la vista:
@@ -118,6 +119,7 @@ Dos problemas que la medición dejó a la vista:
 
 ## Qué falta
 
-- Juzgar los extras, o decidir cómo juzgarlos: 789 hechos sin correspondencia (T20).
-- Saber si ARCE publicó la compra directa a ATOS.
-- Que el explorador avise cuando un día hábil viene sin publicaciones, y qué hacer con el tope de candidatos (T20).
+- Que el responsable confirme la revisión: la fuente y la etiqueta de cada entrada, las correspondencias y el juicio del sorteo (T20).
+- Saber si ARCE publicó la compra directa a ATOS (T20).
+- Que el explorador avise cuando un día hábil viene sin publicaciones, y que la afirmación de una adjudicación nombre a todos los proveedores (T39).
+- Qué hacer con el tope de candidatos (T22).

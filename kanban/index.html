@@ -408,6 +408,14 @@
     },
     {
      "texto": "Decidir cómo se juzgan los extras: en las 78 noches salieron 800 hechos PROVEN o INFERRED, y 789 no corresponden a nada del registro",
+     "hecho": true
+    },
+    {
+     "texto": "Juzgar un sorteo de 60 extras: 57 bien y 3 con el contenido equivocado",
+     "hecho": true
+    },
+    {
+     "texto": "Confirmar la revisión: la fuente y la etiqueta de cada entrada, las correspondencias y el juicio del sorteo, que están en borrador",
      "hecho": false
     },
     {
@@ -427,11 +435,11 @@
      "hecho": false
     },
     {
-     "texto": "Que el explorador avise cuando un día hábil viene sin publicaciones: el feed de ARCE no trae nada del 2026-10-23 al 2026-10-29",
+     "texto": "Que el explorador avise cuando un día hábil viene sin publicaciones: el feed de ARCE no trae nada del 2026-10-23 al 2026-10-29 (pasa a T39)",
      "hecho": false
     },
     {
-     "texto": "Decidir qué hacer con el tope de 60 candidatos, que dejó 196 compras del BPS sin procesar",
+     "texto": "Decidir qué hacer con el tope de 60 candidatos, que dejó 196 compras del BPS sin procesar (pasa a T22)",
      "hecho": false
     }
    ],
@@ -474,6 +482,68 @@
     {
      "fecha": "2026-11-16",
      "texto": "Las 78 noches, en banco-de-pruebas/mediciones/2026-11-15-2/: 12,71 USD y 3 horas y 23 minutos, sin fallas. Con el borrador de la revisión y las correspondencias de seis entradas: 5 de 5 publicables encontrados, con 26 días de adelanto, y 0 de 1 hallazgo, la compra directa a ATOS. Faltan juzgar 789 extras. A la vista: el feed de ARCE no trae nada del 23 al 29 de octubre, y el tope de candidatos dejó 196 compras sin procesar (docs/como-se-hizo/medicion-contra-el-banco.md)."
+    },
+    {
+     "fecha": "2026-11-16",
+     "texto": "Los extras se juzgan por sorteo (banco-de-pruebas/metricas.md). Un sorteo de 60 de los 789, con la semilla 20261116: 57 bien y 3 con el contenido equivocado, adjudicaciones repartidas entre varios proveedores. Precisión estimada de los extras, 0,95 (de 0,86 a 0,98), y de todo lo publicado, 0,95. El arreglo del explorador y el aviso de día vacío pasan a T39; el tope de candidatos, a T22. Falta que el responsable confirme la revisión y saber lo de ATOS."
+    }
+   ]
+  },
+  {
+   "id": "T39",
+   "titulo": "Arreglar lo que la medición mostró del explorador de ARCE",
+   "columna": "en-curso",
+   "orden": 2,
+   "tipo": "componente",
+   "dueno": "desarrollo",
+   "dependeDe": "",
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "docs/como-se-hizo/medicion-contra-el-banco.md",
+     "ruta": "docs/como-se-hizo/medicion-contra-el-banco.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Contrato",
+     "hecho": false
+    },
+    {
+     "texto": "Código",
+     "hecho": false
+    },
+    {
+     "texto": "Pruebas",
+     "hecho": false
+    },
+    {
+     "texto": "Medido contra el banco",
+     "hecho": false
+    },
+    {
+     "texto": "Página cómo se hizo",
+     "hecho": false
+    }
+   ],
+   "lista": [
+    {
+     "texto": "Un día hábil de la ventana sin publicaciones en el feed es una fuente fallida, no una noche sin novedades",
+     "hecho": false
+    },
+    {
+     "texto": "La afirmación de una adjudicación nombra a todos los proveedores de la publicación",
+     "hecho": false
+    }
+   ],
+   "notas": [
+    "La medición de las 78 noches dejó a la vista dos fallas del explorador de ARCE: no avisa cuando un día hábil viene sin publicaciones, y la afirmación de una adjudicación repartida entre varios proveedores nombra solo al primero."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-16",
+     "texto": "Creada a partir de la medición de las 78 noches (T20). Pasa a En curso."
     }
    ]
   },
@@ -583,6 +653,10 @@
     },
     {
      "texto": "Corte por tiempo y mensaje corrida.cortada",
+     "hecho": false
+    },
+    {
+     "texto": "Revisar el tope de 60 candidatos por corrida: en las 78 noches dejó 196 compras del BPS sin procesar (T20)",
      "hecho": false
     }
    ],
