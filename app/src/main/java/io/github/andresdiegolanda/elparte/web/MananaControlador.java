@@ -46,7 +46,7 @@ public class MananaControlador {
 
     public record Hecho(String clave, String tipo, int version, String afirmacion, String grado, String razonamiento,
             String fechaPublicacion, boolean fechaConfirmada, String queDice, String porQueImporta, String queMirar,
-            String estadoRevision, String mensajeCandidato, List<Evidencia> evidencias) {
+            String estadoRevision, String notaDeRevision, String mensajeCandidato, List<Evidencia> evidencias) {
 
         /** Si el analista escribió algo: sin análisis, los dos campos empiezan con {@link Analista#SIN_ANALISIS}. */
         public boolean conAnalisis() {
@@ -88,11 +88,12 @@ public class MananaControlador {
         List<Map<String, Object>> filas = jdbc.sql("""
                 select h.clave_de_hecho, h.tipo_de_hecho, v.id as version_id, v.numero, v.afirmacion, v.grado,
                        v.razonamiento, v.fecha_publicacion, v.fecha_confirmada, v.que_dice, v.por_que_importa,
-                       v.que_mirar, v.estado_revision,
+                       v.que_mirar, v.estado_revision, r.nota as nota_de_revision,
                        v.mensaje_candidato
                 from parte.informe_hechos ih
                 join parte.versiones_de_hecho v on v.id = ih.version_id
                 join parte.hechos h on h.id = v.hecho_id
+                left join parte.revisiones r on r.version_id = v.id
                 where ih.informe_id = :informe
                 order by v.grado, h.tipo_de_hecho, h.clave_de_hecho, v.numero
                 """).param("informe", informeId).query().listOfRows();
@@ -109,6 +110,7 @@ public class MananaControlador {
                 (String) f.get("por_que_importa"),
                 (String) f.get("que_mirar"),
                 (String) f.get("estado_revision"),
+                (String) f.get("nota_de_revision"),
                 (String) f.get("mensaje_candidato"),
                 jdbc.sql("select url, fragmento from parte.evidencias where version_id = :v order by id")
                         .param("v", f.get("version_id"))

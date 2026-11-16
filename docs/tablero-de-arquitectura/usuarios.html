@@ -458,7 +458,7 @@ var S = {
    "col": 5,
    "fila": 0,
    "estado": "construido",
-   "que_es": "El último informe de la cuenta de demostración: cada hecho con su grado, su evidencia, el análisis marcado como análisis, su estado de revisión y el enlace a su traza. Avisa si una fuente falló, y si la corrida se cortó, por qué y cuántos candidatos quedaron sin procesar.",
+   "que_es": "El último informe de la cuenta de demostración: cada hecho con su grado, su evidencia, el análisis marcado como análisis, su estado de revisión y el enlace a su traza. Un hecho que en la revisión no se sostiene sigue, tachado y con la nota. Avisa si una fuente falló, y si la corrida se cortó, por qué y cuántos candidatos quedaron sin procesar.",
    "para_que": "Es lo que El Parte le da a quien sigue una entidad.",
    "codigo": [
     "app/src/main/java/io/github/andresdiegolanda/elparte/web/MananaControlador.java",
@@ -1179,6 +1179,13 @@ var S = {
    "objetos": [
     "web/manana"
    ]
+  },
+  {
+   "fecha": "2026-11-16",
+   "texto": "La cola de revisión humana: los INFERRED pendientes, se sostienen o no, y la página de la mañana muestra el resultado sin esconder nada (T23).",
+   "objetos": [
+    "web/manana"
+   ]
   }
  ],
  "fuera": {
@@ -1306,6 +1313,13 @@ var S = {
     "lado": "entra",
     "otro": "versiones_de_hecho",
     "etiqueta": "afirmación y grado",
+    "estado": "construido"
+   },
+   {
+    "id": "base/revisiones>web/manana",
+    "lado": "entra",
+    "otro": "revisiones",
+    "etiqueta": "la nota de la revisión",
     "estado": "construido"
    },
    {

@@ -364,6 +364,8 @@ La decisión D6 manda a revisión humana lo que tenga "demasiado INFERRED". En l
 
 - **Por qué:** al principio no hay datos sobre cuánto acierta el refutador cuando deduce, y el volumen esperado es bajo (unos pocos hechos por noche para un organismo). [INFERRED: de la noche de muestra del banco de pruebas]
 - **Cuándo se afloja:** cuando la medición contra el banco de pruebas y las revisiones muestren qué clases de INFERRED aciertan siempre. El umbral es un parámetro de configuración, y cambiarlo se anota en el CHANGELOG con la medición que lo justifica.
+- **Cómo se revisa:** en la cola de revisión de la sala de máquinas, `/revision`, que lista las versiones pendientes, la más vieja primero, con su razonamiento, su evidencia y el enlace a su traza. Quien revisa dice si la deducción se sostiene o no; un "no se sostiene" pide una nota. Cada revisión es una fila en `revisiones` y cambia `estado_revision` a `aceptado` o `rechazado`; una versión se revisa una sola vez. La cola no escucha `revision.pendiente`: lee las versiones pendientes de la base, y el mensaje queda en el registro de la corrida. Revisar no cambia el grado. [PROVEN: `PrimeraRebanadaTest`, 2026-11-16]
+- **Qué ve el cliente:** la página de la mañana lee el estado al mostrarse, así que una revisión se ve enseguida. Un hecho que se sostiene dice "revisado: se sostiene". Uno que no se sostiene sigue en la página, tachado, con la nota de la revisión y sin el análisis: nada desaparece sin que la página lo diga (D6).
 
 ## Datos personales en los mensajes
 

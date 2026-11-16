@@ -225,7 +225,7 @@
 <script type="application/json" id="datos">{
  "meta": {
   "actualizado": "2026-11-14",
-  "nota": "La primera rebanada (T08) anda de punta a punta y ya corrió contra el banco las 78 noches del registro (T20): 12,71 USD, 5 de 5 publicables encontrados, 0 de 1 hallazgo y una precisión estimada del 95 %. Falta que el responsable confirme la revisión. Lo que la medición mostró del explorador de ARCE se arregla en T39. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). El analista completo (T21) y el presupuesto que corta (T22) están hechos, sin el tope de 60 candidatos, y falta medirlos contra el banco junto con T39, en una sola corrida. La cola de revisión y el login (T23 y T25) se pueden empezar. El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.",
+  "nota": "La primera rebanada (T08) anda de punta a punta y ya corrió contra el banco las 78 noches del registro (T20): 12,71 USD, 5 de 5 publicables encontrados, 0 de 1 hallazgo y una precisión estimada del 95 %. Falta que el responsable confirme la revisión. Lo que la medición mostró del explorador de ARCE se arregla en T39. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). El analista completo (T21) y el presupuesto que corta (T22) están hechos, sin el tope de 60 candidatos, y falta medirlos contra el banco junto con T39, en una sola corrida. La cola de revisión humana está hecha (T23). El login (T25) se puede empezar, y con él la sala de máquinas y la cola quedan solo para el responsable. El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.",
   "calendario": [
    "2026-11-07",
    "2026-11-14",
@@ -703,59 +703,10 @@
    ]
   },
   {
-   "id": "T23",
-   "titulo": "Armar la cola de revisión humana",
-   "columna": "para-empezar",
-   "orden": 1,
-   "tipo": "web",
-   "dueno": "desarrollo",
-   "dependeDe": "",
-   "esperaA": "",
-   "fecha": "",
-   "detalle": [
-    {
-     "texto": "docs/contratos.md",
-     "ruta": "docs/contratos.md"
-    }
-   ],
-   "etapas": [
-    {
-     "texto": "Diseño",
-     "hecho": false
-    },
-    {
-     "texto": "Código",
-     "hecho": false
-    },
-    {
-     "texto": "Pruebas",
-     "hecho": false
-    },
-    {
-     "texto": "Página cómo se hizo",
-     "hecho": false
-    }
-   ],
-   "lista": [],
-   "notas": [
-    "La cola de hechos INFERRED en la sala de máquinas, y la marca de pendiente en la página de la mañana (D6)."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-07",
-     "texto": "Creada con el plan (T07)."
-    },
-    {
-     "fecha": "2026-11-15",
-     "texto": "Deja de depender de T08: el código de la rebanada ya está hecho, y a T08 solo le falta la medición (T20). Pasa a Para empezar."
-    }
-   ]
-  },
-  {
    "id": "T25",
    "titulo": "Armar el login por enlace, los cuatro usuarios y la cuenta de demostración",
    "columna": "para-empezar",
-   "orden": 2,
+   "orden": 1,
    "tipo": "web",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -821,6 +772,10 @@
     {
      "texto": "La cuenta de demostración, de solo lectura",
      "hecho": false
+    },
+    {
+     "texto": "La sala de máquinas y la cola de revisión, solo para el responsable del proyecto: hoy las puede usar cualquiera que llegue a la aplicación (D6, T23)",
+     "hecho": false
     }
    ],
    "notas": [
@@ -838,6 +793,10 @@
     {
      "fecha": "2026-11-15",
      "texto": "Deja de depender de T08: el código de la rebanada ya está hecho, y a T08 solo le falta la medición (T20). Pasa a Para empezar."
+    },
+    {
+     "fecha": "2026-11-16",
+     "texto": "Suma a la lista que la sala de máquinas y la cola de revisión las use solo el responsable: la cola de revisión (T23) ya escribe en la base y no tiene login."
     }
    ]
   },
@@ -1494,10 +1453,67 @@
    ]
   },
   {
+   "id": "T23",
+   "titulo": "Armar la cola de revisión humana",
+   "columna": "hecho",
+   "orden": 1,
+   "tipo": "web",
+   "dueno": "desarrollo",
+   "dependeDe": "",
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "docs/contratos.md",
+     "ruta": "docs/contratos.md"
+    },
+    {
+     "texto": "docs/como-se-hizo/revision.md",
+     "ruta": "docs/como-se-hizo/revision.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Diseño",
+     "hecho": true
+    },
+    {
+     "texto": "Código",
+     "hecho": true
+    },
+    {
+     "texto": "Pruebas",
+     "hecho": true
+    },
+    {
+     "texto": "Página cómo se hizo",
+     "hecho": true
+    }
+   ],
+   "lista": [],
+   "notas": [
+    "La cola de hechos INFERRED en la sala de máquinas, y la marca de pendiente en la página de la mañana (D6)."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada con el plan (T07)."
+    },
+    {
+     "fecha": "2026-11-15",
+     "texto": "Deja de depender de T08: el código de la rebanada ya está hecho, y a T08 solo le falta la medición (T20). Pasa a Para empezar."
+    },
+    {
+     "fecha": "2026-11-16",
+     "texto": "Hecha: la cola en /revision lista las versiones INFERRED pendientes con su razonamiento, su evidencia y su traza; quien revisa dice si la deducción se sostiene, y un no pide una nota. La página de la mañana muestra el resultado enseguida, y un hecho que no se sostiene sigue, tachado y con la nota (D6). Quién puede revisar queda para el login (T25). Pasa a Hecho."
+    }
+   ]
+  },
+  {
    "id": "T38",
    "titulo": "Armar una presentación para quien no conoce el proyecto",
    "columna": "hecho",
-   "orden": 1,
+   "orden": 2,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1567,7 +1583,7 @@
    "id": "T37",
    "titulo": "Aceptar o corregir el ADR 0014",
    "columna": "hecho",
-   "orden": 2,
+   "orden": 3,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1604,7 +1620,7 @@
    "id": "T12",
    "titulo": "Escribir el formato, la muestra sintética y las métricas del banco de pruebas",
    "columna": "hecho",
-   "orden": 3,
+   "orden": 4,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T11",
@@ -1686,7 +1702,7 @@
    "id": "T36",
    "titulo": "Aceptar o corregir el ADR 0013",
    "columna": "hecho",
-   "orden": 4,
+   "orden": 5,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1727,7 +1743,7 @@
    "id": "T32",
    "titulo": "Armar el tablero de arquitectura",
    "columna": "hecho",
-   "orden": 5,
+   "orden": 6,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1801,7 +1817,7 @@
    "id": "T31",
    "titulo": "Aceptar o corregir el ADR 0011",
    "columna": "hecho",
-   "orden": 6,
+   "orden": 7,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1838,7 +1854,7 @@
    "id": "T18",
    "titulo": "Pedir a IMPO que aclare si su JSON de normas se puede reutilizar",
    "columna": "hecho",
-   "orden": 7,
+   "orden": 8,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1870,7 +1886,7 @@
    "id": "T11",
    "titulo": "Entregar el registro completo del banco de pruebas",
    "columna": "hecho",
-   "orden": 8,
+   "orden": 9,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1902,7 +1918,7 @@
    "id": "T14",
    "titulo": "Dejar la clave del proveedor de modelos fuera del repositorio",
    "columna": "hecho",
-   "orden": 9,
+   "orden": 10,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "T05",
@@ -1955,7 +1971,7 @@
    "id": "T19",
    "titulo": "Aceptar o corregir los ADRs propuestos",
    "columna": "hecho",
-   "orden": 10,
+   "orden": 11,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -2032,7 +2048,7 @@
    "id": "T05",
    "titulo": "Escribir los primeros ADRs",
    "columna": "hecho",
-   "orden": 11,
+   "orden": 12,
    "tipo": "adr",
    "dueno": "desarrollo",
    "dependeDe": "T09",
@@ -2134,7 +2150,7 @@
    "id": "T06",
    "titulo": "Escribir los ADRs de las decisiones D2 y D3",
    "columna": "hecho",
-   "orden": 12,
+   "orden": 13,
    "tipo": "adr",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -2200,7 +2216,7 @@
    "id": "T28",
    "titulo": "Hacer editable el kanban y sincronizarlo con el tablero",
    "columna": "hecho",
-   "orden": 13,
+   "orden": 14,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -2257,7 +2273,7 @@
    "id": "T07",
    "titulo": "Escribir docs/plan.md",
    "columna": "hecho",
-   "orden": 14,
+   "orden": 15,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T02",
@@ -2319,7 +2335,7 @@
    "id": "T04",
    "titulo": "Escribir docs/base-de-afirmaciones.md",
    "columna": "hecho",
-   "orden": 15,
+   "orden": 16,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T03",
@@ -2389,7 +2405,7 @@
    "id": "T03",
    "titulo": "Escribir docs/contratos.md",
    "columna": "hecho",
-   "orden": 16,
+   "orden": 17,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T02",
@@ -2459,7 +2475,7 @@
    "id": "T15",
    "titulo": "Comprobar en el verificador que los diagramas Mermaid se dibujan",
    "columna": "hecho",
-   "orden": 17,
+   "orden": 18,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -2504,7 +2520,7 @@
    "id": "T02",
    "titulo": "Escribir docs/arquitectura.md",
    "columna": "hecho",
-   "orden": 18,
+   "orden": 19,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T09",
@@ -2590,7 +2606,7 @@
    "id": "T10",
    "titulo": "Verificar las fuentes candidatas",
    "columna": "hecho",
-   "orden": 19,
+   "orden": 20,
    "tipo": "verificacion",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -2663,7 +2679,7 @@
    "id": "T09",
    "titulo": "Verificar Spring AI y sus patrones de orquestación",
    "columna": "hecho",
-   "orden": 20,
+   "orden": 21,
    "tipo": "verificacion",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -2716,7 +2732,7 @@
    "id": "T13",
    "titulo": "Elegir la licencia del repositorio",
    "columna": "hecho",
-   "orden": 21,
+   "orden": 22,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -2752,7 +2768,7 @@
    "id": "T17",
    "titulo": "Dar acceso de escritura al repositorio a las sesiones en la nube",
    "columna": "hecho",
-   "orden": 22,
+   "orden": 23,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -2779,7 +2795,7 @@
    "id": "T16",
    "titulo": "Armar el kanban generado desde el tablero",
    "columna": "hecho",
-   "orden": 23,
+   "orden": 24,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -2828,7 +2844,7 @@
    "id": "T01",
    "titulo": "Armar la base documental",
    "columna": "hecho",
-   "orden": 24,
+   "orden": 25,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "",

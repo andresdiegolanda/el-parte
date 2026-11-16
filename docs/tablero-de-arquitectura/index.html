@@ -799,7 +799,7 @@ var S = {
    "fila": 1,
    "estado": "construido",
    "que_es": "Un hecho que va a revisión humana, con su grado y el motivo. En la versión 0, todo INFERRED.",
-   "para_que": "Alimentará la cola de revisión (T23).",
+   "para_que": "Deja en el registro de la corrida qué hechos fueron a revisión. La cola no lo escucha: lee las versiones pendientes de la base.",
    "docs": [
     "docs/contratos.md"
    ],
@@ -1465,7 +1465,7 @@ var S = {
    "fila": 15,
    "estado": "construido",
    "que_es": "Cada revisión humana de una versión.",
-   "para_que": "La va a escribir la cola de revisión (T23). Hoy nadie la escribe.",
+   "para_que": "La escribe la cola de revisión; la página de la mañana lee la nota de un rechazo.",
    "docs": [
     "docs/base-de-afirmaciones.md"
    ],
@@ -1537,7 +1537,7 @@ var S = {
    "col": 11,
    "fila": 17,
    "estado": "construido",
-   "que_es": "El último informe de la cuenta de demostración: cada hecho con su grado, su evidencia, el análisis marcado como análisis, su estado de revisión y el enlace a su traza. Avisa si una fuente falló, y si la corrida se cortó, por qué y cuántos candidatos quedaron sin procesar.",
+   "que_es": "El último informe de la cuenta de demostración: cada hecho con su grado, su evidencia, el análisis marcado como análisis, su estado de revisión y el enlace a su traza. Un hecho que en la revisión no se sostiene sigue, tachado y con la nota. Avisa si una fuente falló, y si la corrida se cortó, por qué y cuántos candidatos quedaron sin procesar.",
    "para_que": "Es lo que El Parte le da a quien sigue una entidad.",
    "codigo": [
     "app/src/main/java/io/github/andresdiegolanda/elparte/web/MananaControlador.java",
@@ -1575,18 +1575,29 @@ var S = {
    "id": "web/revision",
    "tipo": "pagina",
    "titulo": "Cola de revisión",
-   "sub": "",
+   "sub": "GET /revision · POST /revision/{versión}",
    "col": 5,
    "fila": 17,
-   "estado": "disenado",
-   "que_es": "La cola de hechos INFERRED pendientes de revisión, en la sala de máquinas.",
-   "para_que": "Que una persona confirme o corrija lo que el refutador dedujo (D6).",
+   "estado": "construido",
+   "que_es": "La cola de versiones INFERRED pendientes de revisión, la más vieja primero, con su razonamiento, su evidencia y su traza. Quien revisa dice si la deducción se sostiene o no; un no pide una nota.",
+   "para_que": "Que una persona confirme o corrija lo que el refutador dedujo, sin cambiar el grado (D6).",
    "docs": [
-    "docs/contratos.md"
+    "docs/contratos.md",
+    "docs/como-se-hizo/revision.md"
    ],
    "tarjetas": [
-    "T23"
-   ]
+    "T23",
+    "T25"
+   ],
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/web/RevisionControlador.java",
+    "app/src/main/resources/templates/revision.html"
+   ],
+   "rutas": [
+    "GET /revision",
+    "POST /revision/{versionId}"
+   ],
+   "nota": "Sin login todavía: la puede usar cualquiera que llegue a la aplicación, como el resto de la sala (T25)."
   },
   {
    "id": "web/responsable",
@@ -2416,6 +2427,16 @@ var S = {
    "detalle": "Afirmación, grado, razonamiento, fecha y estado de revisión."
   },
   {
+   "id": "base/revisiones>web/manana",
+   "de": "base/revisiones",
+   "a": "web/manana",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "la nota de la revisión",
+   "detalle": "Si un hecho no se sostuvo en la revisión, la página muestra por qué."
+  },
+  {
    "id": "base/hechos>web/manana",
    "de": "base/hechos",
    "a": "web/manana",
@@ -2816,26 +2837,40 @@ var S = {
    "de": "web/revision",
    "a": "base/revisiones",
    "tipo": "escribe",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "la revisión",
-   "detalle": "Guardará cada revisión humana.",
-   "tarjetas": [
-    "T23"
-   ]
+   "detalle": "Guarda cada revisión: se sostiene o no, y la nota."
   },
   {
    "id": "web/revision>base/versiones_de_hecho",
    "de": "web/revision",
    "a": "base/versiones_de_hecho",
    "tipo": "escribe",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "el estado de revisión",
-   "detalle": "Pasará la versión de pendiente a revisada.",
-   "tarjetas": [
-    "T23"
-   ]
+   "detalle": "Lee las versiones pendientes, y pasa la revisada de pendiente a aceptado o rechazado, solo si sigue pendiente, en la misma transacción."
+  },
+  {
+   "id": "base/hechos>web/revision",
+   "de": "base/hechos",
+   "a": "web/revision",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "clave y tipo",
+   "detalle": "La clave y el tipo de cada hecho pendiente o revisado."
+  },
+  {
+   "id": "base/evidencias>web/revision",
+   "de": "base/evidencias",
+   "a": "web/revision",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "la evidencia",
+   "detalle": "Los fragmentos y la URL de cada versión pendiente, para decidir sin salir de la página."
   },
   {
    "id": "web/responsable>base/modelos_de_agente",
@@ -3699,10 +3734,6 @@ var S = {
      "texto": "La revisión del registro, que hacen personas leyéndolo, y la medición de las 78 noches (T20)."
     },
     {
-     "en": "web/revision",
-     "texto": "La cola de revisión humana (T23)."
-    },
-    {
      "en": "explorador-bid",
      "texto": "Los exploradores del BID, el Banco Mundial y Presidencia (T24)."
     },
@@ -3844,6 +3875,15 @@ var S = {
     "base/libros_de_corrida",
     "cierre",
     "explorador-arce",
+    "web/manana"
+   ]
+  },
+  {
+   "fecha": "2026-11-16",
+   "texto": "La cola de revisión humana: los INFERRED pendientes, se sostienen o no, y la página de la mañana muestra el resultado sin esconder nada (T23).",
+   "objetos": [
+    "web/revision",
+    "base/revisiones",
     "web/manana"
    ]
   }

@@ -156,7 +156,28 @@ class PrimeraRebanadaTest extends ConServicios {
         assertThat(pagina("/corridas/" + original)).contains("k-arce-0001", "k-arce-0003", "fuente.fallida", "refutador");
         assertThat(pagina("/corridas/" + repeticion)).contains("Los mensajes son idénticos");
 
-        // 4. La misma noche otra vez: el archivista ya conoce los tres hechos, y no se llama al modelo.
+        // 4. La revisión humana de la aclaración INFERRED (D6): está en la cola, un rechazo sin nota no
+        // entra, el rechazo con nota sí, una segunda revisión no pisa la primera, y la página de la mañana
+        // lo dice sin esconder el hecho.
+        long aclaracion = jdbc.sql("""
+                select v.id from parte.versiones_de_hecho v join parte.hechos h on h.id = v.hecho_id
+                where h.clave_de_hecho = 'arce:ocds-yfs5dr-1200004:aclaracion'
+                """).query(Long.class).single();
+        assertThat(pagina("/revision")).contains("version-" + aclaracion, "Se deduce de:",
+                "La publicación es una enmienda del llamado 1200004");
+        assertThat(revisar(aclaracion, "rechazado", "")).isEqualTo(400);
+        assertThat(revisar(aclaracion, "a-medias", "nota")).isEqualTo(400);
+        assertThat(revisar(aclaracion, "rechazado", "El documento no dice que se prorrogue nada.")).isEqualTo(302);
+        assertThat(revisar(aclaracion, "aceptado", "")).isEqualTo(409);
+        assertThat(jdbc.sql("select estado_revision from parte.versiones_de_hecho where id = :v").param("v", aclaracion)
+                .query(String.class).single()).isEqualTo("rechazado");
+        assertThat(pagina("/revision")).doesNotContain("version-" + aclaracion)
+                .contains("El documento no dice que se prorrogue nada.", "no se sostiene");
+        assertThat(pagina("/manana")).contains("revisado: no se sostiene",
+                "En la revisión se vio que esta deducción no se sostiene", "El documento no dice que se prorrogue nada.",
+                "Banco de Previsión Social publicó el llamado Compra Directa 900/2026");
+
+        // 5. La misma noche otra vez: el archivista ya conoce los tres hechos, y no se llama al modelo.
         String otraVez = inicio.iniciarNormal(LocalDate.parse(ArceDePrueba.NOCHE));
         assertThat(otraVez).isNotEqualTo(original);
         assertThat(esperarFin(otraVez)).isEqualTo("completa");
@@ -166,6 +187,15 @@ class PrimeraRebanadaTest extends ConServicios {
         assertThat(contar(VERSIONES_DE_ESTA_NOCHE)).isEqualTo(3);
         assertThat(jdbc.sql("select sin_novedades from parte.informes where corrida_id = :c").param("c", otraVez)
                 .query(Boolean.class).single()).isTrue();
+    }
+
+    private int revisar(long version, String estado, String nota) throws IOException, InterruptedException {
+        String cuerpo = "estado=" + java.net.URLEncoder.encode(estado, java.nio.charset.StandardCharsets.UTF_8)
+                + "&nota=" + java.net.URLEncoder.encode(nota, java.nio.charset.StandardCharsets.UTF_8);
+        return web.send(HttpRequest.newBuilder(URI.create("http://127.0.0.1:" + puerto + "/revision/" + version))
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .POST(HttpRequest.BodyPublishers.ofString(cuerpo)).build(), HttpResponse.BodyHandlers.ofString())
+                .statusCode();
     }
 
     private String esperarFin(String corridaId) {

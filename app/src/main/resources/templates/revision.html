@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabeza('Cola de revisión')}"></head>
+<body>
+<header th:replace="~{fragmentos :: menu}"></header>
+<main>
+    <h1>Cola de revisión</h1>
+    <p class="sub">Los hechos INFERRED esperan acá a que una persona los revise (D6). Mientras tanto salen en la
+        página de la mañana con la marca "pendiente de revisión". Revisar no cambia el grado: dice si la deducción
+        del refutador se sostiene.</p>
+
+    <div th:if="${pendientes.isEmpty()}" class="tarjeta vacio">No hay nada pendiente de revisión.</div>
+
+    <div th:each="p : ${pendientes}" class="tarjeta" th:id="'version-' + ${p.versionId}">
+        <div>
+            <span class="grado INFERRED">INFERRED</span>
+            <span class="sub" th:text="${p.tipo} + ' · versión ' + ${p.version} + ' · ' + ${p.clave}">aclaracion · versión 1</span>
+        </div>
+        <p th:text="${p.afirmacion}">La afirmación.</p>
+        <p class="sub">Se deduce de: <span th:text="${p.razonamiento}"></span></p>
+        <div th:each="e : ${p.evidencias}" class="evidencia">
+            <span th:text="${e.fragmento}"></span>
+            · <a th:href="${e.url}" th:text="'fuente'">fuente</a>
+        </div>
+        <p class="sub">Publicado el <span th:text="${#strings.replace(#strings.substring(p.fechaPublicacion, 0, 16), 'T', ' ')}"></span>.
+            <a th:href="@{/corridas/{id}(id=${p.corridaId})} + '#' + ${p.mensajeCandidato}">Ver su traza</a>.</p>
+        <form method="post" th:action="@{/revision/{v}(v=${p.versionId})}" class="fila">
+            <input type="text" name="nota" placeholder="Nota (obligatoria para rechazar)" size="50">
+            <button type="submit" name="estado" value="aceptado">Se sostiene</button>
+            <button type="submit" name="estado" value="rechazado">No se sostiene</button>
+        </form>
+    </div>
+
+    <h2>Revisados hace poco</h2>
+    <p th:if="${revisadas.isEmpty()}" class="vacio">Todavía no se revisó nada.</p>
+    <table th:unless="${revisadas.isEmpty()}">
+        <tr><th>Cuándo</th><th>Hecho</th><th>Resultado</th><th>Nota</th></tr>
+        <tr th:each="r : ${revisadas}">
+            <td th:text="${r.revisadaEn}">2026-11-16 10:00</td>
+            <td><span th:text="${r.afirmacion}"></span><br><span class="sub" th:text="${r.clave}"></span></td>
+            <td th:text="${r.estado == 'aceptado'} ? 'se sostiene' : 'no se sostiene'"
+                th:class="${r.estado == 'aceptado'} ? 'ok' : 'mal'">se sostiene</td>
+            <td th:text="${r.nota}"></td>
+        </tr>
+    </table>
+</main>
+</body>
+</html>

@@ -281,7 +281,7 @@ Algunas decisiones que se ven en el DDL:
 |---|---|
 | Página de la mañana | Las versiones de hecho de la última corrida sobre entidades a las que el cliente está suscripto, con su grado, su evidencia y su estado de revisión. Si no hay ninguna, el informe tiene `sin_novedades`. Si una fuente falló esa noche, la página lo avisa: una fuente que no respondió no es lo mismo que una noche sin novedades. |
 | Expediente | Todas las versiones de todos los hechos de una entidad, en orden, con su historia. |
-| Revisión humana | Las versiones con `estado_revision = 'pendiente'`. Al revisarlas se crea una fila en `revisiones` y se actualiza el estado. |
+| Revisión humana | Las versiones con `estado_revision = 'pendiente'`, en `/revision`. Al revisarlas se crea una fila en `revisiones` y se actualiza el estado, en la misma transacción y solo si la versión sigue pendiente (T23). |
 | Sala de máquinas | Los mensajes de una corrida, encadenados por `causa_id`, más su libro de gasto. El costo por agente sale de los mensajes `uso.modelo`. |
 
 Por ejemplo, la página de la mañana de un cliente es, en esencia, esta consulta:

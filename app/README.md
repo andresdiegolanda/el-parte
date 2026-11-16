@@ -17,6 +17,7 @@ La primera vez baja las imágenes y compila la aplicación dentro de Docker, con
 | La aplicación | http://localhost:8080 |
 | La página de la mañana de la cuenta de demostración | http://localhost:8080/manana |
 | La sala de máquinas: las corridas, y el botón para correr una noche o repetir una corrida | http://localhost:8080/corridas |
+| La cola de revisión humana de los hechos INFERRED (D6) | http://localhost:8080/revision |
 | Su estado, el de la base y el de Kafka | http://localhost:8080/actuator/health |
 | El buzón de prueba de los correos del login | http://localhost:8025 |
 | PostgreSQL | `localhost:5432`, base `elparte`. El dueño es `elparte`; la aplicación entra con `elparte_agentes`. |
@@ -113,13 +114,15 @@ mvn test
 
 | Prueba | Qué controla |
 |---|---|
-| `PrimeraRebanadaTest` | Una noche de punta a punta, su repetición sin red ni modelo con mensajes idénticos, la misma noche otra vez con todo conocido, que ningún dato personal llegue a la base, y las páginas. Deja una copia de cada página en `target/paginas/`. |
+| `PrimeraRebanadaTest` | Una noche de punta a punta con el refutador y el analista, su repetición sin red ni modelo con mensajes idénticos, la revisión humana del hecho INFERRED, la misma noche otra vez con todo conocido, que ningún dato personal llegue a la base, y las páginas. Deja una copia de cada página en `target/paginas/`. |
 | `banco.MedicionContraElBancoTest` | La medición contra el banco sobre tres noches de octubre: en orden, sin volver a pedir a ARCE lo que la noche anterior ya leyó, la salida con la forma del formato, el salteo de lo ya medido, el tope de gasto y la repetición de una noche del banco. Deja la salida en `target/banco/`. |
 | `PermisosDeLaBaseTest` | Cada rol ve solo su esquema y ninguno cambia el esquema. |
 | `ElParteAplicacionTest` | La salud de Kafka y los tópicos: uno por tipo de mensaje, con una partición y sin vencimiento. |
 | `fuentes.arce.*Test` | La lectura de ARCE con su pausa, el enmascarado y el armado de los candidatos. |
+| `analista.AnalistaTest` | El control de lo que escribe el modelo para el analista: una cifra que no está en la evidencia no se usa ([ADR 0015](../adrs/0015-que-puede-escribir-el-analista.md)). |
+| `presupuesto.PresupuestoQueCortaTest` | El libro de la corrida con reservas a la vez, y una noche de setiembre que se queda sin presupuesto, se corta y se repite igual. |
 
-Las dos pruebas grandes comparten la base: cada una cuenta solo lo suyo, la primera rebanada con su noche de noviembre y la medición con sus noches de octubre, así pasan en cualquier orden.
+Las pruebas grandes comparten la base: cada una cuenta solo lo suyo, la primera rebanada con su noche de noviembre, la medición con sus noches de octubre y el presupuesto con su noche de setiembre, así pasan en cualquier orden.
 
 El verificador de la documentación (`python3 herramientas/verificar_docs.py`, desde la raíz) controla además que la primera migración sea igual al DDL de [docs/base-de-afirmaciones.md](../docs/base-de-afirmaciones.md).
 
@@ -138,6 +141,6 @@ El verificador de la documentación (`python3 herramientas/verificar_docs.py`, d
 | `...grabaciones` | Lo que cada corrida leyó de afuera, para repetirla ([ADR 0011](../adrs/0011-grabacion-y-repeticion-de-corridas.md)). |
 | `...observador` | Copia cada mensaje al registro de la base. |
 | `...infraestructura` | Los tópicos, el reloj, el manejo de errores de los consumidores, las huellas, el registro de lo procesado y `SaludDeKafka`, que agrega la salud de Kafka a `/actuator/health`. |
-| `...web` | Las páginas: inicio, mañana, corridas y sala de máquinas, con plantillas Thymeleaf. |
+| `...web` | Las páginas: inicio, mañana, corridas, sala de máquinas y cola de revisión, con plantillas Thymeleaf. |
 
 Las migraciones están en `src/main/resources/db/migration/`: `V1__base.sql` es el DDL de [docs/base-de-afirmaciones.md](../docs/base-de-afirmaciones.md), `V2__roles.sql` crea los dos roles y reparte los permisos, y `V3__datos_iniciales.sql` carga la fuente, el organismo, la cuenta de demostración, los modelos y los precios.
