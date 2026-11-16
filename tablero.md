@@ -103,11 +103,11 @@ Lista:
 - [ ] Revisar el registro: la fuente y la etiqueta de cada entrada, y después las correspondencias y los extras
 - [x] Decidir cómo se juzgan los extras: en las 78 noches salieron 800 hechos PROVEN o INFERRED, y 789 no corresponden a nada del registro
 - [x] Juzgar un sorteo de 60 extras: 57 bien y 3 con el contenido equivocado
-- [ ] Confirmar la revisión: la fuente y la etiqueta de cada entrada, las correspondencias y el juicio del sorteo, que están en borrador
+- [ ] Confirmar la revisión: la fuente y la etiqueta de cada entrada, las correspondencias y el juicio del sorteo, que están en borrador; entre ellas, si la compra a ATOS se cuenta como de ARCE
 - [x] Contar con las reglas de banco-de-pruebas/metricas.md; con la muestra tiene que dar banco-de-pruebas/muestra/medicion-esperada.json
 - [x] Costo y duración por noche
 - [x] Versionar las métricas con la huella del registro usado (ADR 0007)
-- [ ] Saber si ARCE publicó la compra directa del BPS a ATOS, el único hallazgo que esta medición podía encontrar
+- [x] Buscar la compra directa del BPS a ATOS, el único hallazgo que esta medición podía encontrar: no está en ninguna publicación del BPS que trajo el feed en el período, pero el feed no trae nada del 23 al 29 de octubre
 - [ ] Que el explorador avise cuando un día hábil viene sin publicaciones: el feed de ARCE no trae nada del 2026-10-23 al 2026-10-29 (pasa a T39)
 - [ ] Decidir qué hacer con el tope de 60 candidatos, que dejó 196 compras del BPS sin procesar (pasa a T22)
 

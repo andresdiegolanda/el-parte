@@ -4,6 +4,7 @@ Cada entrada dice qué cambió, dónde, y enlaza al documento que tiene el porqu
 
 ## 2026-11-16
 
+- La compra directa del BPS a ATOS, el único hallazgo que la medición podía encontrar, no está en ninguna publicación del BPS que el feed de ARCE trajo en el período; como el feed no trae nada del 23 al 29 de octubre, no se puede descartar que esté ahí. La fuente de esa entrada se decide al confirmar la revisión (T20).
 - El explorador de ARCE avisa cuando la fecha objetivo es un día hábil y el feed no trae nada de ese día, con `fuente.fallida` de tipo `sinPublicaciones` (`docs/contratos.md`), y en modo banco esa noche cuenta como no repetible. El resumen de una adjudicación repartida en varias nombra a todos los proveedores y dice en cuántas adjudicaciones se repartió (T39).
 - Los extras de la medición de las 78 noches se juzgaron por sorteo: 60 de 789, con 57 bien y 3 con el contenido equivocado. Precisión estimada de los extras, 0,95 (de 0,86 a 0,98 al 95 %), y de todo lo publicado, 0,95. Los equivocados son adjudicaciones repartidas entre varios proveedores en las que El Parte nombra solo al primero; el arreglo y el aviso de día hábil vacío quedan en T39, y el tope de candidatos, en T22.
 - El conteo del banco puede juzgar los extras por sorteo cuando son demasiados: `herramientas/banco_de_pruebas.py sortear` los elige al azar con una semilla, y la medición estima la precisión de los extras y la de todo lo publicado con su intervalo de Wilson al 95 % (`banco-de-pruebas/metricas.md`, "Cuando los extras son demasiados").
