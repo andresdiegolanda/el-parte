@@ -282,7 +282,7 @@ Lo emite el editor por cada hecho que va a revisión humana (ver "Umbral de revi
 
 ### `fuente.fallida`
 
-Lo emite un explorador cuando su fuente no responde o la respuesta no sirve. Lleva `fuente`, `url`, `tipoDeFalla` (`sinRespuesta`, `bloqueo`, `formato`, `permiso` o `sinFecha`) y `detalle`. La corrida sigue con las demás fuentes. `sinFecha` dice que la fuente no deja pedir lo publicado en la fecha objetivo: en modo banco, esa noche no se puede repetir para esa fuente (D1, [ADR 0014](../adrs/0014-medicion-contra-el-banco.md)). ARCE nunca lo emite, porque su feed es por mes.
+Lo emite un explorador cuando su fuente no responde o la respuesta no sirve. Lleva `fuente`, `url`, `tipoDeFalla` (`sinRespuesta`, `bloqueo`, `formato`, `permiso`, `sinFecha` o `sinPublicaciones`) y `detalle`. La corrida sigue con las demás fuentes. `sinFecha` dice que la fuente no deja pedir lo publicado en la fecha objetivo: en modo banco, esa noche no se puede repetir para esa fuente (D1, [ADR 0014](../adrs/0014-medicion-contra-el-banco.md)). ARCE nunca lo emite, porque su feed es por mes. `sinPublicaciones` dice que la fecha objetivo es un día hábil y la fuente no trae nada publicado ese día: puede ser un feriado o un hueco de la fuente, y la noche no es una noche sin novedades. En modo banco tampoco se puede repetir. Lo emite el explorador de ARCE (T39).
 
 ```json
 { "fuente": "arce", "url": "https://www.comprasestatales.gub.uy/ocds/rss/2026/11",

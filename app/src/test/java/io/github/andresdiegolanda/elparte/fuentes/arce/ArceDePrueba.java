@@ -28,6 +28,8 @@ import com.sun.net.httpserver.HttpServer;
  * <li>{@code aclaracion_1200004}: una aclaración del BPS publicada el día anterior, en el margen.</li>
  * <li>{@code llamado-1200005}: publicado dos días antes, fuera de la ventana: nunca se pide.</li>
  * <li>{@code llamado-1200006}: el servidor falla al pedirla.</li>
+ * <li>{@code adjudicacion-1200007}: una compra del BPS repartida en dos adjudicaciones a dos proveedores.
+ * No está en el feed: solo la pide la prueba de los candidatos.</li>
  * </ul>
  *
  * <p>Para la medición contra el banco hay además tres noches de octubre, del 14 al 16, con un día de
@@ -89,6 +91,23 @@ public class ArceDePrueba implements AutoCloseable {
                                   {"id": "R110000000012", "name": "Fulana de Tal"}],
                     "items": [{"id": "1", "description": "Tóner negro"}],
                     "value": {"amount": 125000, "currency": "UYU"}}]
+                }]}""".formatted(BPS, PARTE_BPS));
+        publicaciones.put("adjudicacion-1200007", """
+                {"releases": [{
+                  "id": "adjudicacion-1200007", "ocid": "ocds-yfs5dr-1200007", "date": "2026-11-12T16:00:00Z",
+                  "tag": ["award"], "buyer": %s,
+                  "parties": [%s,
+                    {"id": "R210000000027", "name": "Laboratorio Uno S.A.", "roles": ["supplier"]},
+                    {"id": "R210000000035", "name": "Laboratorio Dos S.A.", "roles": ["supplier"]}],
+                  "awards": [
+                    {"id": "1200007-1", "status": "active",
+                     "suppliers": [{"id": "R210000000027", "name": "Laboratorio Uno S.A."}],
+                     "items": [{"id": "1", "description": "Ácido fólico"}, {"id": "2", "description": "Vitamina D"}],
+                     "value": {"amount": 1000, "currency": "UYU"}},
+                    {"id": "1200007-2", "status": "active",
+                     "suppliers": [{"id": "R210000000035", "name": "Laboratorio Dos S.A."}],
+                     "items": [{"id": "3", "description": "Hierro"}, {"id": "4", "description": "Zinc"}],
+                     "value": {"amount": 2000, "currency": "UYU"}}]
                 }]}""".formatted(BPS, PARTE_BPS));
         publicaciones.put("llamado-1200003", """
                 {"releases": [{

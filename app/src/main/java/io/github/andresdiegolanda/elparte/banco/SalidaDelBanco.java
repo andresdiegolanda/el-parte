@@ -17,6 +17,8 @@ import java.util.TreeSet;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
+import io.github.andresdiegolanda.elparte.fuentes.arce.ExploradorArce;
+
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.SerializationFeature;
 import tools.jackson.databind.json.JsonMapper;
@@ -27,8 +29,9 @@ import tools.jackson.databind.json.JsonMapper;
  *
  * <ul>
  * <li>Cada corrida: su estado; el costo y la duración de {@code corrida.terminada}; las fuentes que no
- * dejaron pedir la fecha ({@code fuente.fallida} de tipo {@code sinFecha}) y las demás lecturas
- * fallidas.</li>
+ * dejaron pedir la fecha o que vinieron vacías un día hábil ({@code fuente.fallida} de tipo
+ * {@code sinFecha} o {@code sinPublicaciones}), que no se pueden repetir esa noche, y las demás
+ * lecturas fallidas.</li>
  * <li>Cada clave de hecho de {@code candidatos.graduados}: la primera noche en que salió PROVEN o
  * INFERRED, con ese grado; si nunca salió así, la primera en que salió NOT_MENTIONED.</li>
  * </ul>
@@ -99,7 +102,8 @@ public class SalidaDelBanco {
         TreeSet<String> noRepetibles = new TreeSet<>();
         int fallidas = 0;
         for (JsonNode falla : mensajes(c.id(), "fuente.fallida")) {
-            if (SIN_FECHA.equals(falla.path("tipoDeFalla").asString())) {
+            String tipo = falla.path("tipoDeFalla").asString();
+            if (SIN_FECHA.equals(tipo) || ExploradorArce.SIN_PUBLICACIONES.equals(tipo)) {
                 noRepetibles.add(falla.path("fuente").asString());
             } else {
                 fallidas++;

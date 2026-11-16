@@ -225,7 +225,7 @@
 <script type="application/json" id="datos">{
  "meta": {
   "actualizado": "2026-11-14",
-  "nota": "La primera rebanada (T08) anda de punta a punta y ya corrió contra el banco las 78 noches del registro (T20): 12,71 USD, 5 de 5 publicables encontrados y 0 de 1 hallazgo. Falta juzgar los extras y resolver lo que la medición dejó a la vista: el hueco del feed de ARCE del 23 al 29 de octubre y el tope de candidatos. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). El analista, el presupuesto, la cola de revisión y el login (T21, T22, T23 y T25) se pueden empezar. El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.",
+  "nota": "La primera rebanada (T08) anda de punta a punta y ya corrió contra el banco las 78 noches del registro (T20): 12,71 USD, 5 de 5 publicables encontrados, 0 de 1 hallazgo y una precisión estimada del 95 %. Falta que el responsable confirme la revisión. Lo que la medición mostró del explorador de ARCE se arregla en T39, y el tope de candidatos se revisa en T22. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). El analista, el presupuesto, la cola de revisión y el login (T21, T22, T23 y T25) se pueden empezar. El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.",
   "calendario": [
    "2026-11-07",
    "2026-11-14",
@@ -508,15 +508,15 @@
    "etapas": [
     {
      "texto": "Contrato",
-     "hecho": false
+     "hecho": true
     },
     {
      "texto": "Código",
-     "hecho": false
+     "hecho": true
     },
     {
      "texto": "Pruebas",
-     "hecho": false
+     "hecho": true
     },
     {
      "texto": "Medido contra el banco",
@@ -524,17 +524,17 @@
     },
     {
      "texto": "Página cómo se hizo",
-     "hecho": false
+     "hecho": true
     }
    ],
    "lista": [
     {
-     "texto": "Un día hábil de la ventana sin publicaciones en el feed es una fuente fallida, no una noche sin novedades",
-     "hecho": false
+     "texto": "Un día hábil sin publicaciones en el feed es una fuente fallida, no una noche sin novedades",
+     "hecho": true
     },
     {
      "texto": "La afirmación de una adjudicación nombra a todos los proveedores de la publicación",
-     "hecho": false
+     "hecho": true
     }
    ],
    "notas": [
@@ -544,6 +544,10 @@
     {
      "fecha": "2026-11-16",
      "texto": "Creada a partir de la medición de las 78 noches (T20). Pasa a En curso."
+    },
+    {
+     "fecha": "2026-11-16",
+     "texto": "Hecho el código: fuente.fallida de tipo sinPublicaciones cuando la fecha objetivo es un día hábil y el feed no trae nada de ese día, y el resumen de una adjudicación repartida nombra a todos los proveedores (docs/contratos.md, docs/como-se-hizo/primera-rebanada.md). La medición espera a la próxima corrida del banco, con T21."
     }
    ]
   },

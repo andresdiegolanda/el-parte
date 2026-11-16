@@ -31,12 +31,14 @@ El feed de las últimas 500 no sirve para El Parte: en los días hábiles de oct
 
 ## Consulta por fecha
 
-Sí. El feed mensual trae todo lo publicado en un mes: octubre de 2026 tiene 9.393 publicaciones. [PROVEN: `https://www.comprasestatales.gub.uy/ocds/rss/2026/10`, 2026-11-07] Para repetir una noche se filtran las publicaciones por su fecha de publicación (`pubDate`). [INFERRED]
+Sí. El feed mensual trae lo publicado en un mes, aunque no siempre todo (abajo, "Publicaciones atrasadas"): octubre de 2026 tiene 9.393 publicaciones. [PROVEN: `https://www.comprasestatales.gub.uy/ocds/rss/2026/10`, 2026-11-07] Para repetir una noche se filtran las publicaciones por su fecha de publicación (`pubDate`). [INFERRED]
 
 Hay dos cosas para resolver antes de la primera rebanada (tablero, T08):
 
 - **La zona horaria.** La `pubDate` del feed no trae zona horaria, y el JSON muestra la misma hora con "Z" (UTC). No se pudo verificar si es UTC o la hora de Uruguay. Importa para saber dónde termina una noche. [PROVEN que falta la zona, 2026-11-07]
 - **Publicaciones atrasadas.** El feed de octubre de 2026 no tiene publicaciones entre el 23 y el 29, y después hay picos (el 3 de noviembre, 1.919). [PROVEN: conteo, 2026-11-07] Lo probable es una caída con publicación atrasada. [INFERRED] Para El Parte, la fecha que manda es la de publicación, no la del acto.
+  - El 2026-11-15 el feed de octubre seguía sin nada del 23 al 29: el hueco no se rellenó. [PROVEN: `https://www.comprasestatales.gub.uy/ocds/rss/2026/10`, 2026-11-15] En la medición contra el banco, las ventanas del 3 y el 4 de noviembre trajeron 1.959 y 3.157 publicaciones, y ahí el tope de candidatos dejó más compras sin procesar: 60 la noche del 4. [PROVEN: `banco-de-pruebas/mediciones/2026-11-15-2/`] Que lo atrasado haya salido con fecha de noviembre es una deducción. [INFERRED]
+  - Desde T39, un día hábil sin publicaciones en el feed es una `fuente.fallida` de tipo `sinPublicaciones` ([docs/contratos.md](../contratos.md)), y no una noche sin novedades.
 
 ## Lo que se aprendió en la primera rebanada
 

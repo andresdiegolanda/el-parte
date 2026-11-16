@@ -1,5 +1,6 @@
 package io.github.andresdiegolanda.elparte.fuentes.arce;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
@@ -63,6 +64,8 @@ import tools.jackson.databind.node.ObjectNode;
 public class ExploradorArce {
 
     public static final String AGENTE = "explorador-arce";
+    /** El tipo de {@code fuente.fallida} de un día hábil sin publicaciones en el feed (docs/contratos.md). */
+    public static final String SIN_PUBLICACIONES = "sinPublicaciones";
     private static final Logger log = LoggerFactory.getLogger(ExploradorArce.class);
     private static final int POSICION_DE_FALLAS = 100_000;
 
@@ -121,6 +124,12 @@ public class ExploradorArce {
             return;
         }
 
+        if (diaHabilSinPublicaciones(items, fecha)) {
+            fallo(inicio, 0, new FallaDeArce(SIN_PUBLICACIONES, lector.urlDelFeed(YearMonth.from(fecha)),
+                    "El feed de ARCE no trae nada publicado el " + fecha
+                            + ", un día hábil: puede ser un feriado o un hueco de la fuente."));
+        }
+
         List<Leido> leidos = new ArrayList<>();
         List<FallaDeArce> fallas = new ArrayList<>();
         try (ExecutorService hilos = Executors.newFixedThreadPool(concurrencia)) {
@@ -162,6 +171,18 @@ public class ExploradorArce {
                 corridaId, items.size(), emitidos, sinProcesar);
         emisor.emitir(corridaId, Tipos.EXPLORACION_TERMINADA, AGENTE, inicio.mensajeId(), 0,
                 new ExploracionTerminada("arce", items.size(), emitidos, sinProcesar));
+    }
+
+    /**
+     * Si la fecha objetivo es un día hábil y el feed no trae nada publicado ese día. Un día hábil sin
+     * publicaciones no es una noche sin novedades: es una fuente que vino vacía, o un feriado (T39).
+     */
+    static boolean diaHabilSinPublicaciones(List<ItemDelFeed> items, LocalDate fecha) {
+        DayOfWeek dia = fecha.getDayOfWeek();
+        if (dia == DayOfWeek.SATURDAY || dia == DayOfWeek.SUNDAY) {
+            return false;
+        }
+        return items.stream().noneMatch(item -> item.publicada().toLocalDate().equals(fecha));
     }
 
     /** Una publicación de la ventana y lo que dio leerla: un candidato si es de una entidad seguida. */

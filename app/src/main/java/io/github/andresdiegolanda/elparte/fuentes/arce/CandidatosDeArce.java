@@ -76,29 +76,43 @@ public final class CandidatosDeArce {
                 }
             }
             case "adjudicacion" -> {
-                JsonNode adjudicacion = publicacion.path("awards").path(0);
+                // Una compra puede estar repartida en varias adjudicaciones, cada una a otros proveedores:
+                // el resumen los nombra a todos, y no solo a los de la primera (T39).
+                JsonNode adjudicaciones = publicacion.path("awards");
                 List<String> proveedores = new ArrayList<>();
-                int n = 0;
-                for (JsonNode proveedor : adjudicacion.path("suppliers")) {
-                    proveedores.add(campos.agregar("awards[0].suppliers[" + n++ + "].name", proveedor.path("name").asString("")));
-                }
                 List<String> items = new ArrayList<>();
-                n = 0;
-                for (JsonNode item : adjudicacion.path("items")) {
-                    if (n == MAXIMO_ITEMS_EN_RESUMEN) {
-                        break;
+                int totalDeItems = 0;
+                for (int a = 0; a < adjudicaciones.size(); a++) {
+                    JsonNode adjudicacion = adjudicaciones.path(a);
+                    int n = 0;
+                    for (JsonNode proveedor : adjudicacion.path("suppliers")) {
+                        String nombre = proveedor.path("name").asString("");
+                        String campo = "awards[" + a + "].suppliers[" + n++ + "].name";
+                        if (!nombre.isBlank() && !proveedores.contains(nombre)) {
+                            proveedores.add(campos.agregar(campo, nombre));
+                        }
                     }
-                    items.add(campos.agregar("awards[0].items[" + n++ + "].description", item.path("description").asString("")));
+                    n = 0;
+                    for (JsonNode item : adjudicacion.path("items")) {
+                        totalDeItems++;
+                        if (items.size() < MAXIMO_ITEMS_EN_RESUMEN) {
+                            items.add(campos.agregar("awards[" + a + "].items[" + n + "].description",
+                                    item.path("description").asString("")));
+                        }
+                        n++;
+                    }
                 }
                 String monto = "";
-                if (adjudicacion.path("value").has("amount")) {
-                    monto = campos.agregar("awards[0].value.amount", adjudicacion.path("value").path("amount").asString(""))
-                            + " " + campos.agregar("awards[0].value.currency", adjudicacion.path("value").path("currency").asString(""));
+                JsonNode unica = adjudicaciones.path(0);
+                if (adjudicaciones.size() == 1 && unica.path("value").has("amount")) {
+                    monto = campos.agregar("awards[0].value.amount", unica.path("value").path("amount").asString(""))
+                            + " " + campos.agregar("awards[0].value.currency", unica.path("value").path("currency").asString(""));
                 }
                 resumen = comprador + " adjudicó la compra " + compra
-                        + (proveedores.isEmpty() ? "" : " a " + String.join(", ", proveedores))
+                        + (adjudicaciones.size() > 1 ? " en " + adjudicaciones.size() + " adjudicaciones" : "")
+                        + (proveedores.isEmpty() ? "" : (adjudicaciones.size() > 1 ? ", a " : " a ") + String.join(", ", proveedores))
                         + (items.isEmpty() ? "" : ": " + String.join("; ", items)
-                                + (adjudicacion.path("items").size() > items.size() ? " y otros ítems" : ""))
+                                + (totalDeItems > items.size() ? " y otros ítems" : ""))
                         + (monto.isBlank() ? "" : ", por " + monto.trim())
                         + ".";
             }
@@ -111,13 +125,18 @@ public final class CandidatosDeArce {
 
         List<EntidadEnCandidato> entidades = new ArrayList<>();
         entidades.add(new EntidadEnCandidato("comprador", entidadDelComprador, comprador));
-        for (JsonNode proveedor : publicacion.path("awards").path(0).path("suppliers")) {
-            String nombre = proveedor.path("name").asString("");
-            String rut = proveedor.path("id").asString("");
-            boolean tapado = Enmascarador.PERSONA.equals(nombre);
-            entidades.add(new EntidadEnCandidato("proveedor",
-                    tapado || rut.isBlank() ? null : "persona_juridica:uy-rut-" + rut.replaceFirst("^R", ""),
-                    nombre));
+        for (JsonNode adjudicacion : publicacion.path("awards")) {
+            for (JsonNode proveedor : adjudicacion.path("suppliers")) {
+                String nombre = proveedor.path("name").asString("");
+                String rut = proveedor.path("id").asString("");
+                boolean tapado = Enmascarador.PERSONA.equals(nombre);
+                EntidadEnCandidato entidad = new EntidadEnCandidato("proveedor",
+                        tapado || rut.isBlank() ? null : "persona_juridica:uy-rut-" + rut.replaceFirst("^R", ""),
+                        nombre);
+                if (!entidades.contains(entidad)) {
+                    entidades.add(entidad);
+                }
+            }
         }
         String fecha = publicacion.path("date").asString("").replace("Z", "");
         return new Candidato(candidatoId, "arce", id, ocid, LectorArce.urlPublica(id), fecha, tipo, entidades,

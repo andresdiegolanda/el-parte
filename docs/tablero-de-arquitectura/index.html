@@ -605,7 +605,7 @@ var S = {
    "col": 2,
    "fila": 1,
    "estado": "construido",
-   "que_es": "Lee lo publicado en ARCE la noche objetivo y un día de margen, se queda con las compras de las entidades seguidas y emite un candidato por cada una, hasta el máximo de la corrida, con las de la fecha objetivo primero. No usa el modelo. En modo banco, lo que la corrida de la noche anterior ya leyó de una publicación lo toma de su grabación (ADR 0014).",
+   "que_es": "Lee lo publicado en ARCE la noche objetivo y un día de margen, se queda con las compras de las entidades seguidas y emite un candidato por cada una, hasta el máximo de la corrida, con las de la fecha objetivo primero. No usa el modelo. Si la fecha objetivo es un día hábil y el feed no trae nada de ese día, emite fuente.fallida de tipo sinPublicaciones. En modo banco, lo que la corrida de la noche anterior ya leyó de una publicación lo toma de su grabación (ADR 0014).",
    "para_que": "Es la puerta de entrada de los hechos de ARCE: filtra por comprador antes de cualquier otra cosa y graba todo lo que lee.",
    "codigo": [
     "app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/arce/ExploradorArce.java",
@@ -3825,6 +3825,13 @@ var S = {
    "texto": "La medición de las 78 noches del registro: 12,71 USD, 5 de 5 publicables encontrados y 0 de 1 hallazgo.",
    "objetos": [
     "afuera/mediciones-banco"
+   ]
+  },
+  {
+   "fecha": "2026-11-16",
+   "texto": "El explorador de ARCE avisa cuando un día hábil viene sin publicaciones, y nombra a todos los proveedores de una adjudicación repartida (T39).",
+   "objetos": [
+    "explorador-arce"
    ]
   }
  ],

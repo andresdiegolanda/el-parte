@@ -79,6 +79,21 @@ class CandidatosDeArceTest {
     }
 
     @Test
+    void unaAdjudicacionRepartidaNombraATodosLosProveedores() {
+        Candidato candidato = armar("adjudicacion-1200007");
+
+        assertThat(candidato.resumen()).isEqualTo("Banco de Previsión Social adjudicó la compra 1200007 en 2 "
+                + "adjudicaciones, a Laboratorio Uno S.A., Laboratorio Dos S.A.: Ácido fólico; Vitamina D; Hierro "
+                + "y otros ítems.");
+        assertThat(candidato.evidencia().fragmento()).contains("awards[0].suppliers[0].name = Laboratorio Uno S.A.",
+                "awards[1].suppliers[0].name = Laboratorio Dos S.A.", "awards[1].items[0].description = Hierro");
+        assertThat(candidato.entidades()).containsExactly(
+                new EntidadEnCandidato("comprador", "organismo:bps", "Banco de Previsión Social"),
+                new EntidadEnCandidato("proveedor", "persona_juridica:uy-rut-210000000027", "Laboratorio Uno S.A."),
+                new EntidadEnCandidato("proveedor", "persona_juridica:uy-rut-210000000035", "Laboratorio Dos S.A."));
+    }
+
+    @Test
     void unaAclaracion() {
         Candidato candidato = armar("aclaracion_1200004");
 
