@@ -74,6 +74,14 @@ services:
       KAFKA_SERVIDORES: kafka:19092
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-sin-clave}
       ELPARTE_CORRIDA_CRON: ${ELPARTE_CORRIDA_CRON:--}
+      CORREO_HOST: correo
+      CORREO_PUERTO: 1025
+      ELPARTE_URL_PUBLICA: ${ELPARTE_URL_PUBLICA:-http://localhost:8080}
+    # La lista de invitados (ELPARTE_INVITADOS_0_CORREO y las demás) va en el .env, que no se versiona,
+    # y llega así a la aplicación; si no hay .env, no hay invitados y solo se ve la cuenta de demostración.
+    env_file:
+      - path: .env
+        required: false
     ports:
       - "8080:8080"
     depends_on:

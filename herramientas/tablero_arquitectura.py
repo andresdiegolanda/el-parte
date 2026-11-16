@@ -31,7 +31,7 @@ TABLERO = RAIZ / "tablero.md"
 
 CODIGO = RAIZ / "app" / "src" / "main" / "java"
 PLANTILLAS_WEB = RAIZ / "app" / "src" / "main" / "resources" / "templates"
-PRIMERA_MIGRACION = RAIZ / "app" / "src" / "main" / "resources" / "db" / "migration" / "V1__base.sql"
+MIGRACIONES = RAIZ / "app" / "src" / "main" / "resources" / "db" / "migration"
 
 MARCA_DATOS = "/*SISTEMA*/"
 MARCA_AVISO = "<!--AVISO-->"
@@ -207,7 +207,7 @@ def hechos_del_codigo():
     """Lo que dice el código, por archivo. Devuelve un dict con:
 
     - topicos: {constante: nombre} de Tipos.java, y todos: la lista TODOS en nombres.
-    - tablas: los nombres esquema.tabla de la primera migración.
+    - tablas: los nombres esquema.tabla que crean las migraciones.
     - archivos: {ruta relativa: {emite, escucha, escucha_todos, escribe, lee, usa, rutas}}.
     - clases: {nombre simple: ruta relativa}.
     - plantillas: las rutas relativas de las plantillas web.
@@ -217,7 +217,8 @@ def hechos_del_codigo():
     topicos = dict(re.findall(r'public static final String (\w+) = "([^"]+)";', tipos_java))
     todos_m = re.search(r"TODOS\s*=\s*List\.of\((.*?)\);", tipos_java, re.S)
     todos = [topicos[c] for c in re.findall(r"\b([A-Z_]+)\b", todos_m.group(1)) if c in topicos] if todos_m else []
-    tablas = set(re.findall(r"^create table (\w+\.\w+)", PRIMERA_MIGRACION.read_text(encoding="utf-8"), re.M))
+    tablas = {t for m in sorted(MIGRACIONES.glob("V*.sql"))
+              for t in re.findall(r"^create table (\w+\.\w+)", m.read_text(encoding="utf-8"), re.M)}
 
     java = {f: f.read_text(encoding="utf-8") for f in sorted(CODIGO.rglob("*.java"))}
     clases = {f.stem: f.relative_to(RAIZ).as_posix() for f in java}
@@ -319,13 +320,14 @@ def verificar_contra_el_codigo(modelo, hechos, tarjetas):
         errores.append(f"tablero de arquitectura: el tópico {t} está construido en el tablero y no está en Tipos.java")
     del_modelo = {n["tabla"] for n in modelo["nodos"] if n["tipo"] == "tabla" and n["estado"] == "construido"}
     for t in sorted(hechos["tablas"] - del_modelo):
-        errores.append(f"tablero de arquitectura: la tabla {t} está en la primera migración y no en el tablero")
+        errores.append(f"tablero de arquitectura: la tabla {t} está en las migraciones y no en el tablero")
     for t in sorted(del_modelo - hechos["tablas"]):
-        errores.append(f"tablero de arquitectura: la tabla {t} está construida en el tablero y no en la primera migración")
+        errores.append(f"tablero de arquitectura: la tabla {t} está construida en el tablero y no en las migraciones")
 
     # Relaciones: las del código, construidas en el modelo; las construidas del modelo, en el código.
     del_codigo = _relaciones_del_codigo(modelo, hechos, errores)
     construidas, disenadas = {}, {}
+    por_un_marco = {f["id"] for f in modelo["flechas"] if f.get("marco")}
     for f in modelo["flechas"]:
         clave = (f["tipo"], f["de"], f["a"])
         (construidas if f["estado"] == "construido" else disenadas)[clave] = f["id"]
@@ -337,7 +339,11 @@ def verificar_contra_el_codigo(modelo, hechos, tarjetas):
         else:
             errores.append(f"tablero de arquitectura: falta la flecha {clave[0]} de {clave[1]} a {clave[2]} ({motivo})")
     for clave, fid in sorted(construidas.items()):
-        if clave[0] in VERIFICABLES and clave not in del_codigo:
+        # Lo que hace alguien de afuera, como una persona que usa una página, no está en el código, y lo
+        # que hace una biblioteca configurada en el código, como Spring Security, tampoco: la flecha lo dice
+        # con su campo marco.
+        de_afuera = nodos.get(clave[1], {}).get("tipo") == "externo"
+        if clave[0] in VERIFICABLES and clave not in del_codigo and not de_afuera and fid not in por_un_marco:
             errores.append(f"tablero de arquitectura: la flecha {fid} está construida y el código no la tiene")
 
     # Rutas web: las de cada página, exactamente las de sus controladores.

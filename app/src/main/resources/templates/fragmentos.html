@@ -35,6 +35,8 @@
         form.fila { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; margin: 0.5rem 0; }
         input, select, button { font: inherit; padding: 0.3rem 0.5rem; }
         .ok { color: var(--verde); font-weight: 600; }
+        .quien { margin-left: auto; display: inline-flex; gap: 0.5rem; align-items: center; }
+        form.en-linea { display: inline; margin: 0; }
         .mal { color: var(--rojo); font-weight: 600; }
     </style>
 </head>
@@ -43,8 +45,15 @@
     <strong>El Parte</strong>
     <a href="/manana">Página de la mañana</a>
     <a href="/corridas">Sala de máquinas</a>
-    <a href="/revision">Revisión</a>
+    <a th:if="${usuario != null and usuario.responsable}" href="/revision">Revisión</a>
     <a href="/actuator/health">Estado</a>
+    <span class="quien">
+        <a th:if="${usuario == null}" href="/entrar">Entrar</a>
+        <th:block th:if="${usuario != null}">
+            <span th:text="${usuario.alias}">Invitado</span>
+            <form method="post" th:action="@{/logout}" class="en-linea"><button type="submit">Salir</button></form>
+        </th:block>
+    </span>
 </header>
 </body>
 </html>

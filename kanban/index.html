@@ -227,7 +227,7 @@
 <script type="application/json" id="datos">{
  "meta": {
   "actualizado": "2026-11-16",
-  "nota": "La primera rebanada (T08) anda de punta a punta y ya corrió contra el banco las 78 noches del registro (T20): 12,71 USD, 5 de 5 publicables encontrados, 0 de 1 hallazgo y una precisión estimada del 95 %. Falta que el responsable confirme la revisión. Lo que la medición mostró del explorador de ARCE se arregla en T39. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). El analista completo (T21) y el presupuesto que corta (T22) están hechos, sin el tope de 60 candidatos, y falta medirlos contra el banco junto con T39, en una sola corrida. La cola de revisión humana está hecha (T23). El login (T25) se puede empezar, y con él la sala de máquinas y la cola quedan solo para el responsable. El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.",
+  "nota": "La primera rebanada (T08) anda de punta a punta y ya corrió contra el banco las 78 noches del registro (T20): 12,71 USD, 5 de 5 publicables encontrados, 0 de 1 hallazgo y una precisión estimada del 95 %. Falta que el responsable confirme la revisión. Lo que la medición mostró del explorador de ARCE se arregla en T39. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). El analista completo (T21) y el presupuesto que corta (T22) están hechos, sin el tope de 60 candidatos, y falta medirlos contra el banco junto con T39, en una sola corrida. La cola de revisión humana (T23) y el login por enlace (T25) están hechos: correr y revisar son solo del responsable. Siguen el perfil (T34) y el despliegue en la máquina del responsable con un túnel (T27). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.",
   "calendario": [
    "2026-11-07",
    "2026-11-14",
@@ -717,27 +717,19 @@
    ]
   },
   {
-   "id": "T25",
-   "titulo": "Armar el login por enlace, los cuatro usuarios y la cuenta de demostración",
+   "id": "T34",
+   "titulo": "Armar la página del perfil",
    "columna": "para-empezar",
    "orden": 1,
    "tipo": "web",
    "dueno": "desarrollo",
-   "dependeDe": "",
+   "dependeDe": "T25",
    "esperaA": "",
    "fecha": "",
    "detalle": [
     {
      "texto": "adrs/0013-acceso-perfil-y-parte-diario.md",
      "ruta": "adrs/0013-acceso-perfil-y-parte-diario.md"
-    },
-    {
-     "texto": "adrs/0003-eleccion-del-stack.md",
-     "ruta": "adrs/0003-eleccion-del-stack.md"
-    },
-    {
-     "texto": "adrs/0008-datos-personales.md",
-     "ruta": "adrs/0008-datos-personales.md"
     }
    ],
    "etapas": [
@@ -760,57 +752,115 @@
    ],
    "lista": [
     {
-     "texto": "Alta de invitados desde elparte.invitados: cuentas.usuarios y parte.clientes con el mismo identificador",
+     "texto": "Lo que sigue y el catálogo de lo que se puede seguir: las entidades con su identificador en alguna fuente",
      "hecho": false
     },
     {
-     "texto": "Dos fuentes de datos, una por rol, y un UserDetailsService que lee cuentas.usuarios",
+     "texto": "Seguir y dejar de seguir, en parte.suscripciones",
      "hecho": false
     },
     {
-     "texto": "Entrar por enlace: tokens en cuentas.one_time_tokens y el enlace por el correo saliente",
+     "texto": "Aviso diario sí o no, en cuentas.usuarios, con el rol de cuentas",
      "hecho": false
     },
     {
-     "texto": "La misma respuesta para un correo no invitado",
+     "texto": "La cuenta de demostración lo ve pero no lo cambia",
      "hecho": false
     },
     {
-     "texto": "Sesión recordada 30 días en cuentas.persistent_logins, y probar que se combina con el login por token",
-     "hecho": false
-    },
-    {
-     "texto": "La página de la mañana muestra el informe de quien entró; sin sesión, el de demostración",
-     "hecho": false
-    },
-    {
-     "texto": "La cuenta de demostración, de solo lectura",
-     "hecho": false
-    },
-    {
-     "texto": "La sala de máquinas y la cola de revisión, solo para el responsable del proyecto: hoy las puede usar cualquiera que llegue a la aplicación (D6, T23)",
+     "texto": "Catálogo inicial: organismos con su código de comprador en ARCE, verificado",
      "hecho": false
     }
    ],
    "notas": [
-    "Login con token de un solo uso de Spring Security, correos en el esquema cuentas y lista de invitados desde la configuración. El diseño está en el ADR 0013 y en la vista del usuario del tablero de arquitectura."
+    "Donde cada invitado elige qué entidades seguir y si quiere el aviso diario por correo. Los cambios valen desde la corrida siguiente."
    ],
    "registro": [
     {
-     "fecha": "2026-11-07",
-     "texto": "Creada con el plan (T07)."
-    },
-    {
      "fecha": "2026-11-14",
-     "texto": "Diseño hecho: alta de invitados, entrar por enlace y sesión recordada (ADR 0013, propuesto). El perfil queda en T34 y el aviso diario en T35."
-    },
-    {
-     "fecha": "2026-11-15",
-     "texto": "Deja de depender de T08: el código de la rebanada ya está hecho, y a T08 solo le falta la medición (T20). Pasa a Para empezar."
+     "texto": "Creada con el diseño del acceso y el perfil (ADR 0013)."
     },
     {
      "fecha": "2026-11-16",
-     "texto": "Suma a la lista que la sala de máquinas y la cola de revisión las use solo el responsable: la cola de revisión (T23) ya escribe en la base y no tiene login."
+     "texto": "Pasa a Para empezar: T25 está hecha."
+    }
+   ]
+  },
+  {
+   "id": "T35",
+   "titulo": "Mandar el aviso diario del parte",
+   "columna": "para-empezar",
+   "orden": 2,
+   "tipo": "componente",
+   "dueno": "desarrollo",
+   "dependeDe": "T25",
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "adrs/0013-acceso-perfil-y-parte-diario.md",
+     "ruta": "adrs/0013-acceso-perfil-y-parte-diario.md"
+    },
+    {
+     "texto": "docs/contratos.md",
+     "ruta": "docs/contratos.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Contrato",
+     "hecho": false
+    },
+    {
+     "texto": "Código",
+     "hecho": false
+    },
+    {
+     "texto": "Pruebas",
+     "hecho": false
+    },
+    {
+     "texto": "Medido contra el banco",
+     "hecho": false
+    },
+    {
+     "texto": "Página cómo se hizo",
+     "hecho": false
+    }
+   ],
+   "lista": [
+    {
+     "texto": "El mensaje informes suma el modo de la corrida, y el aviso saltea lo que no es normal",
+     "hecho": false
+    },
+    {
+     "texto": "Correo y preferencia con el rol de cuentas",
+     "hecho": false
+    },
+    {
+     "texto": "Registro de envíos en cuentas.envios_del_parte, para no mandar dos veces",
+     "hecho": false
+    },
+    {
+     "texto": "El aviso: asunto con la noche y cuántos hechos; cuerpo con pendientes, corrida cortada y el enlace",
+     "hecho": false
+    },
+    {
+     "texto": "El correo saliente por SMTP; el servicio real se decide en T27",
+     "hecho": false
+    }
+   ],
+   "notas": [
+    "Cada mañana, a cada invitado que lo quiere, un aviso corto con la noche, cuántos hechos hay y el enlace a su página. No manda el contenido de los hechos."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-14",
+     "texto": "Creada con el diseño del parte diario (ADR 0013)."
+    },
+    {
+     "fecha": "2026-11-16",
+     "texto": "Pasa a Para empezar: T25 está hecha."
     }
    ]
   },
@@ -999,150 +1049,10 @@
    ]
   },
   {
-   "id": "T34",
-   "titulo": "Armar la página del perfil",
-   "columna": "pendiente",
-   "orden": 2,
-   "tipo": "web",
-   "dueno": "desarrollo",
-   "dependeDe": "T25",
-   "esperaA": "",
-   "fecha": "",
-   "detalle": [
-    {
-     "texto": "adrs/0013-acceso-perfil-y-parte-diario.md",
-     "ruta": "adrs/0013-acceso-perfil-y-parte-diario.md"
-    }
-   ],
-   "etapas": [
-    {
-     "texto": "Diseño",
-     "hecho": true
-    },
-    {
-     "texto": "Código",
-     "hecho": false
-    },
-    {
-     "texto": "Pruebas",
-     "hecho": false
-    },
-    {
-     "texto": "Página cómo se hizo",
-     "hecho": false
-    }
-   ],
-   "lista": [
-    {
-     "texto": "Lo que sigue y el catálogo de lo que se puede seguir: las entidades con su identificador en alguna fuente",
-     "hecho": false
-    },
-    {
-     "texto": "Seguir y dejar de seguir, en parte.suscripciones",
-     "hecho": false
-    },
-    {
-     "texto": "Aviso diario sí o no, en cuentas.usuarios, con el rol de cuentas",
-     "hecho": false
-    },
-    {
-     "texto": "La cuenta de demostración lo ve pero no lo cambia",
-     "hecho": false
-    },
-    {
-     "texto": "Catálogo inicial: organismos con su código de comprador en ARCE, verificado",
-     "hecho": false
-    }
-   ],
-   "notas": [
-    "Donde cada invitado elige qué entidades seguir y si quiere el aviso diario por correo. Los cambios valen desde la corrida siguiente."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-14",
-     "texto": "Creada con el diseño del acceso y el perfil (ADR 0013)."
-    }
-   ]
-  },
-  {
-   "id": "T35",
-   "titulo": "Mandar el aviso diario del parte",
-   "columna": "pendiente",
-   "orden": 3,
-   "tipo": "componente",
-   "dueno": "desarrollo",
-   "dependeDe": "T25",
-   "esperaA": "",
-   "fecha": "",
-   "detalle": [
-    {
-     "texto": "adrs/0013-acceso-perfil-y-parte-diario.md",
-     "ruta": "adrs/0013-acceso-perfil-y-parte-diario.md"
-    },
-    {
-     "texto": "docs/contratos.md",
-     "ruta": "docs/contratos.md"
-    }
-   ],
-   "etapas": [
-    {
-     "texto": "Contrato",
-     "hecho": false
-    },
-    {
-     "texto": "Código",
-     "hecho": false
-    },
-    {
-     "texto": "Pruebas",
-     "hecho": false
-    },
-    {
-     "texto": "Medido contra el banco",
-     "hecho": false
-    },
-    {
-     "texto": "Página cómo se hizo",
-     "hecho": false
-    }
-   ],
-   "lista": [
-    {
-     "texto": "El mensaje informes suma el modo de la corrida, y el aviso saltea lo que no es normal",
-     "hecho": false
-    },
-    {
-     "texto": "Correo y preferencia con el rol de cuentas",
-     "hecho": false
-    },
-    {
-     "texto": "Registro de envíos en cuentas.envios_del_parte, para no mandar dos veces",
-     "hecho": false
-    },
-    {
-     "texto": "El aviso: asunto con la noche y cuántos hechos; cuerpo con pendientes, corrida cortada y el enlace",
-     "hecho": false
-    },
-    {
-     "texto": "El correo saliente por SMTP; el servicio real se decide en T27",
-     "hecho": false
-    }
-   ],
-   "notas": [
-    "Cada mañana, a cada invitado que lo quiere, un aviso corto con la noche, cuántos hechos hay y el enlace a su página. No manda el contenido de los hechos."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-14",
-     "texto": "Creada con el diseño del parte diario (ADR 0013)."
-    }
-   ]
-  },
-  {
    "id": "T26",
    "titulo": "Escribir la sección \"Cómo funciona\" y las páginas \"cómo se hizo\"",
    "columna": "pendiente",
-   "orden": 4,
+   "orden": 2,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -1187,7 +1097,7 @@
    "id": "T27",
    "titulo": "Escribir el ADR de despliegue",
    "columna": "pendiente",
-   "orden": 5,
+   "orden": 3,
    "tipo": "adr",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -1269,7 +1179,7 @@
    "id": "T33",
    "titulo": "Armar el expediente de cada entidad",
    "columna": "pendiente",
-   "orden": 6,
+   "orden": 4,
    "tipo": "web",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -1318,7 +1228,7 @@
    "id": "T29",
    "titulo": "Cambiar el modelo de cada agente sin reiniciar la aplicación",
    "columna": "pendiente",
-   "orden": 7,
+   "orden": 5,
    "tipo": "web",
    "dueno": "desarrollo",
    "dependeDe": "T22, T25",
@@ -1396,7 +1306,7 @@
    "id": "T30",
    "titulo": "Sumar el explorador de IMPO",
    "columna": "pendiente",
-   "orden": 8,
+   "orden": 6,
    "tipo": "componente",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -1467,10 +1377,116 @@
    ]
   },
   {
+   "id": "T25",
+   "titulo": "Armar el login por enlace, los cuatro usuarios y la cuenta de demostración",
+   "columna": "hecho",
+   "orden": 1,
+   "tipo": "web",
+   "dueno": "desarrollo",
+   "dependeDe": "",
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "adrs/0013-acceso-perfil-y-parte-diario.md",
+     "ruta": "adrs/0013-acceso-perfil-y-parte-diario.md"
+    },
+    {
+     "texto": "adrs/0003-eleccion-del-stack.md",
+     "ruta": "adrs/0003-eleccion-del-stack.md"
+    },
+    {
+     "texto": "adrs/0008-datos-personales.md",
+     "ruta": "adrs/0008-datos-personales.md"
+    },
+    {
+     "texto": "docs/como-se-hizo/login.md",
+     "ruta": "docs/como-se-hizo/login.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Diseño",
+     "hecho": true
+    },
+    {
+     "texto": "Código",
+     "hecho": true
+    },
+    {
+     "texto": "Pruebas",
+     "hecho": true
+    },
+    {
+     "texto": "Página cómo se hizo",
+     "hecho": true
+    }
+   ],
+   "lista": [
+    {
+     "texto": "Alta de invitados desde elparte.invitados: cuentas.usuarios y parte.clientes con el mismo identificador",
+     "hecho": true
+    },
+    {
+     "texto": "Dos fuentes de datos, una por rol, y un UserDetailsService que lee cuentas.usuarios",
+     "hecho": true
+    },
+    {
+     "texto": "Entrar por enlace: tokens en cuentas.one_time_tokens y el enlace por el correo saliente",
+     "hecho": true
+    },
+    {
+     "texto": "La misma respuesta para un correo no invitado",
+     "hecho": true
+    },
+    {
+     "texto": "Sesión recordada 30 días en cuentas.persistent_logins, y probar que se combina con el login por token",
+     "hecho": true
+    },
+    {
+     "texto": "La página de la mañana muestra el informe de quien entró; sin sesión, el de demostración",
+     "hecho": true
+    },
+    {
+     "texto": "La cuenta de demostración, de solo lectura",
+     "hecho": true
+    },
+    {
+     "texto": "La sala de máquinas y la cola de revisión, solo para el responsable del proyecto: hoy las puede usar cualquiera que llegue a la aplicación (D6, T23). Quedaron cerrados correr, repetir y la cola; la sala se mira sin entrar",
+     "hecho": true
+    }
+   ],
+   "notas": [
+    "Login con token de un solo uso de Spring Security, correos en el esquema cuentas y lista de invitados desde la configuración. El diseño está en el ADR 0013 y en la vista del usuario del tablero de arquitectura."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada con el plan (T07)."
+    },
+    {
+     "fecha": "2026-11-14",
+     "texto": "Diseño hecho: alta de invitados, entrar por enlace y sesión recordada (ADR 0013, propuesto). El perfil queda en T34 y el aviso diario en T35."
+    },
+    {
+     "fecha": "2026-11-15",
+     "texto": "Deja de depender de T08: el código de la rebanada ya está hecho, y a T08 solo le falta la medición (T20). Pasa a Para empezar."
+    },
+    {
+     "fecha": "2026-11-16",
+     "texto": "Suma a la lista que la sala de máquinas y la cola de revisión las use solo el responsable: la cola de revisión (T23) ya escribe en la base y no tiene login."
+    },
+    {
+     "fecha": "2026-11-16",
+     "texto": "Hecha: el alta de invitados desde el entorno, el enlace de un solo uso con un botón para confirmarlo, el recordatorio de 30 días, y la página de la mañana de quien entró, con dos fuentes de datos, una por rol. Correr, repetir y la cola de revisión son solo del responsable; la sala de máquinas se mira sin entrar. Un invitado nuevo empieza siguiendo lo mismo que la demostración. El correo real y la dirección pública quedan para el despliegue (T27). Pasa a Hecho."
+    }
+   ]
+  },
+  {
    "id": "T23",
    "titulo": "Armar la cola de revisión humana",
    "columna": "hecho",
-   "orden": 1,
+   "orden": 2,
    "tipo": "web",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1527,7 +1543,7 @@
    "id": "T38",
    "titulo": "Armar una presentación para quien no conoce el proyecto",
    "columna": "hecho",
-   "orden": 2,
+   "orden": 3,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1597,7 +1613,7 @@
    "id": "T37",
    "titulo": "Aceptar o corregir el ADR 0014",
    "columna": "hecho",
-   "orden": 3,
+   "orden": 4,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1634,7 +1650,7 @@
    "id": "T12",
    "titulo": "Escribir el formato, la muestra sintética y las métricas del banco de pruebas",
    "columna": "hecho",
-   "orden": 4,
+   "orden": 5,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T11",
@@ -1716,7 +1732,7 @@
    "id": "T36",
    "titulo": "Aceptar o corregir el ADR 0013",
    "columna": "hecho",
-   "orden": 5,
+   "orden": 6,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1757,7 +1773,7 @@
    "id": "T32",
    "titulo": "Armar el tablero de arquitectura",
    "columna": "hecho",
-   "orden": 6,
+   "orden": 7,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1831,7 +1847,7 @@
    "id": "T31",
    "titulo": "Aceptar o corregir el ADR 0011",
    "columna": "hecho",
-   "orden": 7,
+   "orden": 8,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1868,7 +1884,7 @@
    "id": "T18",
    "titulo": "Pedir a IMPO que aclare si su JSON de normas se puede reutilizar",
    "columna": "hecho",
-   "orden": 8,
+   "orden": 9,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1900,7 +1916,7 @@
    "id": "T11",
    "titulo": "Entregar el registro completo del banco de pruebas",
    "columna": "hecho",
-   "orden": 9,
+   "orden": 10,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1932,7 +1948,7 @@
    "id": "T14",
    "titulo": "Dejar la clave del proveedor de modelos fuera del repositorio",
    "columna": "hecho",
-   "orden": 10,
+   "orden": 11,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "T05",
@@ -1985,7 +2001,7 @@
    "id": "T19",
    "titulo": "Aceptar o corregir los ADRs propuestos",
    "columna": "hecho",
-   "orden": 11,
+   "orden": 12,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -2062,7 +2078,7 @@
    "id": "T05",
    "titulo": "Escribir los primeros ADRs",
    "columna": "hecho",
-   "orden": 12,
+   "orden": 13,
    "tipo": "adr",
    "dueno": "desarrollo",
    "dependeDe": "T09",
@@ -2164,7 +2180,7 @@
    "id": "T06",
    "titulo": "Escribir los ADRs de las decisiones D2 y D3",
    "columna": "hecho",
-   "orden": 13,
+   "orden": 14,
    "tipo": "adr",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -2230,7 +2246,7 @@
    "id": "T28",
    "titulo": "Hacer editable el kanban y sincronizarlo con el tablero",
    "columna": "hecho",
-   "orden": 14,
+   "orden": 15,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -2287,7 +2303,7 @@
    "id": "T07",
    "titulo": "Escribir docs/plan.md",
    "columna": "hecho",
-   "orden": 15,
+   "orden": 16,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T02",
@@ -2349,7 +2365,7 @@
    "id": "T04",
    "titulo": "Escribir docs/base-de-afirmaciones.md",
    "columna": "hecho",
-   "orden": 16,
+   "orden": 17,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T03",
@@ -2419,7 +2435,7 @@
    "id": "T03",
    "titulo": "Escribir docs/contratos.md",
    "columna": "hecho",
-   "orden": 17,
+   "orden": 18,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T02",
@@ -2489,7 +2505,7 @@
    "id": "T15",
    "titulo": "Comprobar en el verificador que los diagramas Mermaid se dibujan",
    "columna": "hecho",
-   "orden": 18,
+   "orden": 19,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -2534,7 +2550,7 @@
    "id": "T02",
    "titulo": "Escribir docs/arquitectura.md",
    "columna": "hecho",
-   "orden": 19,
+   "orden": 20,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T09",
@@ -2620,7 +2636,7 @@
    "id": "T10",
    "titulo": "Verificar las fuentes candidatas",
    "columna": "hecho",
-   "orden": 20,
+   "orden": 21,
    "tipo": "verificacion",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -2693,7 +2709,7 @@
    "id": "T09",
    "titulo": "Verificar Spring AI y sus patrones de orquestación",
    "columna": "hecho",
-   "orden": 21,
+   "orden": 22,
    "tipo": "verificacion",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -2746,7 +2762,7 @@
    "id": "T13",
    "titulo": "Elegir la licencia del repositorio",
    "columna": "hecho",
-   "orden": 22,
+   "orden": 23,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -2782,7 +2798,7 @@
    "id": "T17",
    "titulo": "Dar acceso de escritura al repositorio a las sesiones en la nube",
    "columna": "hecho",
-   "orden": 23,
+   "orden": 24,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -2809,7 +2825,7 @@
    "id": "T16",
    "titulo": "Armar el kanban generado desde el tablero",
    "columna": "hecho",
-   "orden": 24,
+   "orden": 25,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -2858,7 +2874,7 @@
    "id": "T01",
    "titulo": "Armar la base documental",
    "columna": "hecho",
-   "orden": 25,
+   "orden": 26,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "",

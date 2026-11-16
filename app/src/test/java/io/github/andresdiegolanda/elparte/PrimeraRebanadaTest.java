@@ -48,6 +48,8 @@ class PrimeraRebanadaTest extends ConServicios {
             + "join parte.hechos h on h.id = v.hecho_id where " + HECHOS_DE_ESTA_NOCHE;
 
     @Autowired
+    BuzonDePrueba buzon;
+    @Autowired
     InicioDeCorrida inicio;
     @Autowired
     RegistroDeMensajes registro;
@@ -114,7 +116,8 @@ class PrimeraRebanadaTest extends ConServicios {
         assertThat(contar("select count(*) from parte.entidades where id like '%110000000012%'")).isZero();
         assertThat(jdbc.sql("""
                 select count(*) from parte.informes i join parte.informe_hechos ih on ih.informe_id = i.id
-                where i.corrida_id = :c and not i.sin_novedades
+                join parte.clientes c on c.cliente_id = i.cliente_id
+                where i.corrida_id = :c and not i.sin_novedades and c.es_demo
                 """).param("c", original).query(Long.class).single()).isEqualTo(3);
 
         // Ningún dato personal llegó a los mensajes, a las grabaciones ni a la base (ADR 0008).
@@ -141,8 +144,9 @@ class PrimeraRebanadaTest extends ConServicios {
         assertThat(modelo.llamadas()).isEqualTo(llamadasAlModelo);
         assertThat(usos(repeticion)).hasSize(6).allSatisfy(uso -> assertThat(uso.resultado()).isEqualTo("reproducida"));
         assertThat(contar(VERSIONES_DE_ESTA_NOCHE)).isEqualTo(3);
+        // Los informes son de la original, uno por cliente que sigue al BPS; la repetición no arma informes.
         assertThat(contar("select count(*) from parte.informes where corrida_id in ('" + original + "', '" + repeticion + "')"))
-                .isEqualTo(1);
+                .isEqualTo(3);
 
         // 3. Las páginas.
         String manana = pagina("/manana");
@@ -163,15 +167,18 @@ class PrimeraRebanadaTest extends ConServicios {
                 select v.id from parte.versiones_de_hecho v join parte.hechos h on h.id = v.hecho_id
                 where h.clave_de_hecho = 'arce:ocds-yfs5dr-1200004:aclaracion'
                 """).query(Long.class).single();
-        assertThat(pagina("/revision")).contains("version-" + aclaracion, "Se deduce de:",
+        // La cola es del responsable: entra con su enlace.
+        Navegador responsable = new Navegador(puerto);
+        responsable.entrarComo(RESPONSABLE, buzon);
+        assertThat(responsable.get("/revision").body()).contains("version-" + aclaracion, "Se deduce de:",
                 "La publicación es una enmienda del llamado 1200004");
-        assertThat(revisar(aclaracion, "rechazado", "")).isEqualTo(400);
-        assertThat(revisar(aclaracion, "a-medias", "nota")).isEqualTo(400);
-        assertThat(revisar(aclaracion, "rechazado", "El documento no dice que se prorrogue nada.")).isEqualTo(302);
-        assertThat(revisar(aclaracion, "aceptado", "")).isEqualTo(409);
+        assertThat(revisar(responsable, aclaracion, "rechazado", "")).isEqualTo(400);
+        assertThat(revisar(responsable, aclaracion, "a-medias", "nota")).isEqualTo(400);
+        assertThat(revisar(responsable, aclaracion, "rechazado", "El documento no dice que se prorrogue nada.")).isEqualTo(302);
+        assertThat(revisar(responsable, aclaracion, "aceptado", "")).isEqualTo(409);
         assertThat(jdbc.sql("select estado_revision from parte.versiones_de_hecho where id = :v").param("v", aclaracion)
                 .query(String.class).single()).isEqualTo("rechazado");
-        assertThat(pagina("/revision")).doesNotContain("version-" + aclaracion)
+        assertThat(responsable.get("/revision").body()).doesNotContain("version-" + aclaracion)
                 .contains("El documento no dice que se prorrogue nada.", "no se sostiene");
         assertThat(pagina("/manana")).contains("revisado: no se sostiene",
                 "En la revisión se vio que esta deducción no se sostiene", "El documento no dice que se prorrogue nada.",
@@ -185,17 +192,13 @@ class PrimeraRebanadaTest extends ConServicios {
                 .allSatisfy(s -> assertThat(registro.contenido(s, CandidatoCotejado.class).estado()).isEqualTo("conocido"));
         assertThat(modelo.llamadas()).isEqualTo(llamadasAlModelo);
         assertThat(contar(VERSIONES_DE_ESTA_NOCHE)).isEqualTo(3);
+        // Un informe por cliente que sigue al BPS: la demostración y los dos invitados de las pruebas.
         assertThat(jdbc.sql("select sin_novedades from parte.informes where corrida_id = :c").param("c", otraVez)
-                .query(Boolean.class).single()).isTrue();
+                .query(Boolean.class).list()).hasSize(3).containsOnly(true);
     }
 
-    private int revisar(long version, String estado, String nota) throws IOException, InterruptedException {
-        String cuerpo = "estado=" + java.net.URLEncoder.encode(estado, java.nio.charset.StandardCharsets.UTF_8)
-                + "&nota=" + java.net.URLEncoder.encode(nota, java.nio.charset.StandardCharsets.UTF_8);
-        return web.send(HttpRequest.newBuilder(URI.create("http://127.0.0.1:" + puerto + "/revision/" + version))
-                .header("Content-Type", "application/x-www-form-urlencoded")
-                .POST(HttpRequest.BodyPublishers.ofString(cuerpo)).build(), HttpResponse.BodyHandlers.ofString())
-                .statusCode();
+    private static int revisar(Navegador navegador, long version, String estado, String nota) {
+        return navegador.post("/revision", "/revision/" + version, Map.of("estado", estado, "nota", nota)).statusCode();
     }
 
     private String esperarFin(String corridaId) {
@@ -219,7 +222,8 @@ class PrimeraRebanadaTest extends ConServicios {
     }
 
     private <T> T unico(String corridaId, String tipo, Class<T> clase) {
-        List<Sobre> sobres = registro.deCorridaYTipo(corridaId, tipo);
+        // El estado de la corrida cambia en la base antes de que el observador guarde el mensaje: se lo espera.
+        List<Sobre> sobres = esperar(() -> registro.deCorridaYTipo(corridaId, tipo), lista -> !lista.isEmpty());
         assertThat(sobres).as(tipo).hasSize(1);
         return registro.contenido(sobres.getFirst(), clase);
     }

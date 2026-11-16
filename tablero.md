@@ -3,7 +3,7 @@
 Todo pendiente de El Parte vive acá, con dueño (regla 8). Este archivo es lo que manda. El kanban publicado es editable y se sincroniza con este archivo cada vez que una sesión de desarrollo lee o escribe el repositorio, o cuando se le pide; su copia sin conexión, [`kanban/index.html`](kanban/index.html), se genera desde acá con `python3 herramientas/generar_kanban.py` y no se edita a mano ([ADR 0009](adrs/0009-kanban-editable-sincronizado.md)).
 
 - Actualizado: 2026-11-16
-- Nota: La primera rebanada (T08) anda de punta a punta y ya corrió contra el banco las 78 noches del registro (T20): 12,71 USD, 5 de 5 publicables encontrados, 0 de 1 hallazgo y una precisión estimada del 95 %. Falta que el responsable confirme la revisión. Lo que la medición mostró del explorador de ARCE se arregla en T39. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). El analista completo (T21) y el presupuesto que corta (T22) están hechos, sin el tope de 60 candidatos, y falta medirlos contra el banco junto con T39, en una sola corrida. La cola de revisión humana está hecha (T23). El login (T25) se puede empezar, y con él la sala de máquinas y la cola quedan solo para el responsable. El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.
+- Nota: La primera rebanada (T08) anda de punta a punta y ya corrió contra el banco las 78 noches del registro (T20): 12,71 USD, 5 de 5 publicables encontrados, 0 de 1 hallazgo y una precisión estimada del 95 %. Falta que el responsable confirme la revisión. Lo que la medición mostró del explorador de ARCE se arregla en T39. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). El analista completo (T21) y el presupuesto que corta (T22) están hechos, sin el tope de 60 candidatos, y falta medirlos contra el banco junto con T39, en una sola corrida. La cola de revisión humana (T23) y el login por enlace (T25) están hechos: correr y revisar son solo del responsable. Siguen el perfil (T34) y el despliegue en la máquina del responsable con un túnel (T27). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.
 - Calendario: 2026-11-07, 2026-11-14, 2026-11-21, 2026-11-28
 - Repositorio: https://github.com/andresdiegolanda/el-parte
 
@@ -196,12 +196,13 @@ Registro:
 
 ## Para empezar
 
-### T25 · Armar el login por enlace, los cuatro usuarios y la cuenta de demostración
+### T34 · Armar la página del perfil
 - Tipo: Web
 - Dueño: desarrollo
-- Detalle: [adrs/0013-acceso-perfil-y-parte-diario.md](adrs/0013-acceso-perfil-y-parte-diario.md), [adrs/0003-eleccion-del-stack.md](adrs/0003-eleccion-del-stack.md), [adrs/0008-datos-personales.md](adrs/0008-datos-personales.md)
+- Depende de: T25
+- Detalle: [adrs/0013-acceso-perfil-y-parte-diario.md](adrs/0013-acceso-perfil-y-parte-diario.md)
 
-Login con token de un solo uso de Spring Security, correos en el esquema cuentas y lista de invitados desde la configuración. El diseño está en el ADR 0013 y en la vista del usuario del tablero de arquitectura.
+Donde cada invitado elige qué entidades seguir y si quiere el aviso diario por correo. Los cambios valen desde la corrida siguiente.
 
 Etapas:
 - [x] Diseño
@@ -210,20 +211,41 @@ Etapas:
 - [ ] Página cómo se hizo
 
 Lista:
-- [ ] Alta de invitados desde elparte.invitados: cuentas.usuarios y parte.clientes con el mismo identificador
-- [ ] Dos fuentes de datos, una por rol, y un UserDetailsService que lee cuentas.usuarios
-- [ ] Entrar por enlace: tokens en cuentas.one_time_tokens y el enlace por el correo saliente
-- [ ] La misma respuesta para un correo no invitado
-- [ ] Sesión recordada 30 días en cuentas.persistent_logins, y probar que se combina con el login por token
-- [ ] La página de la mañana muestra el informe de quien entró; sin sesión, el de demostración
-- [ ] La cuenta de demostración, de solo lectura
-- [ ] La sala de máquinas y la cola de revisión, solo para el responsable del proyecto: hoy las puede usar cualquiera que llegue a la aplicación (D6, T23)
+- [ ] Lo que sigue y el catálogo de lo que se puede seguir: las entidades con su identificador en alguna fuente
+- [ ] Seguir y dejar de seguir, en parte.suscripciones
+- [ ] Aviso diario sí o no, en cuentas.usuarios, con el rol de cuentas
+- [ ] La cuenta de demostración lo ve pero no lo cambia
+- [ ] Catálogo inicial: organismos con su código de comprador en ARCE, verificado
 
 Registro:
-- 2026-11-07: Creada con el plan (T07).
-- 2026-11-14: Diseño hecho: alta de invitados, entrar por enlace y sesión recordada (ADR 0013, propuesto). El perfil queda en T34 y el aviso diario en T35.
-- 2026-11-15: Deja de depender de T08: el código de la rebanada ya está hecho, y a T08 solo le falta la medición (T20). Pasa a Para empezar.
-- 2026-11-16: Suma a la lista que la sala de máquinas y la cola de revisión las use solo el responsable: la cola de revisión (T23) ya escribe en la base y no tiene login.
+- 2026-11-14: Creada con el diseño del acceso y el perfil (ADR 0013).
+- 2026-11-16: Pasa a Para empezar: T25 está hecha.
+
+### T35 · Mandar el aviso diario del parte
+- Tipo: Componente
+- Dueño: desarrollo
+- Depende de: T25
+- Detalle: [adrs/0013-acceso-perfil-y-parte-diario.md](adrs/0013-acceso-perfil-y-parte-diario.md), [docs/contratos.md](docs/contratos.md)
+
+Cada mañana, a cada invitado que lo quiere, un aviso corto con la noche, cuántos hechos hay y el enlace a su página. No manda el contenido de los hechos.
+
+Etapas:
+- [ ] Contrato
+- [ ] Código
+- [ ] Pruebas
+- [ ] Medido contra el banco
+- [ ] Página cómo se hizo
+
+Lista:
+- [ ] El mensaje informes suma el modo de la corrida, y el aviso saltea lo que no es normal
+- [ ] Correo y preferencia con el rol de cuentas
+- [ ] Registro de envíos en cuentas.envios_del_parte, para no mandar dos veces
+- [ ] El aviso: asunto con la noche y cuántos hechos; cuerpo con pendientes, corrida cortada y el enlace
+- [ ] El correo saliente por SMTP; el servicio real se decide en T27
+
+Registro:
+- 2026-11-14: Creada con el diseño del parte diario (ADR 0013).
+- 2026-11-16: Pasa a Para empezar: T25 está hecha.
 
 ## Esperando
 
@@ -287,55 +309,6 @@ Lista:
 
 Registro:
 - 2026-11-07: Creada con el plan (T07).
-
-### T34 · Armar la página del perfil
-- Tipo: Web
-- Dueño: desarrollo
-- Depende de: T25
-- Detalle: [adrs/0013-acceso-perfil-y-parte-diario.md](adrs/0013-acceso-perfil-y-parte-diario.md)
-
-Donde cada invitado elige qué entidades seguir y si quiere el aviso diario por correo. Los cambios valen desde la corrida siguiente.
-
-Etapas:
-- [x] Diseño
-- [ ] Código
-- [ ] Pruebas
-- [ ] Página cómo se hizo
-
-Lista:
-- [ ] Lo que sigue y el catálogo de lo que se puede seguir: las entidades con su identificador en alguna fuente
-- [ ] Seguir y dejar de seguir, en parte.suscripciones
-- [ ] Aviso diario sí o no, en cuentas.usuarios, con el rol de cuentas
-- [ ] La cuenta de demostración lo ve pero no lo cambia
-- [ ] Catálogo inicial: organismos con su código de comprador en ARCE, verificado
-
-Registro:
-- 2026-11-14: Creada con el diseño del acceso y el perfil (ADR 0013).
-
-### T35 · Mandar el aviso diario del parte
-- Tipo: Componente
-- Dueño: desarrollo
-- Depende de: T25
-- Detalle: [adrs/0013-acceso-perfil-y-parte-diario.md](adrs/0013-acceso-perfil-y-parte-diario.md), [docs/contratos.md](docs/contratos.md)
-
-Cada mañana, a cada invitado que lo quiere, un aviso corto con la noche, cuántos hechos hay y el enlace a su página. No manda el contenido de los hechos.
-
-Etapas:
-- [ ] Contrato
-- [ ] Código
-- [ ] Pruebas
-- [ ] Medido contra el banco
-- [ ] Página cómo se hizo
-
-Lista:
-- [ ] El mensaje informes suma el modo de la corrida, y el aviso saltea lo que no es normal
-- [ ] Correo y preferencia con el rol de cuentas
-- [ ] Registro de envíos en cuentas.envios_del_parte, para no mandar dos veces
-- [ ] El aviso: asunto con la noche y cuántos hechos; cuerpo con pendientes, corrida cortada y el enlace
-- [ ] El correo saliente por SMTP; el servicio real se decide en T27
-
-Registro:
-- 2026-11-14: Creada con el diseño del parte diario (ADR 0013).
 
 ### T26 · Escribir la sección "Cómo funciona" y las páginas "cómo se hizo"
 - Tipo: Documento
@@ -448,6 +421,36 @@ Registro:
 - 2026-11-14: Creada con el ADR 0010.
 
 ## Hecho
+
+### T25 · Armar el login por enlace, los cuatro usuarios y la cuenta de demostración
+- Tipo: Web
+- Dueño: desarrollo
+- Detalle: [adrs/0013-acceso-perfil-y-parte-diario.md](adrs/0013-acceso-perfil-y-parte-diario.md), [adrs/0003-eleccion-del-stack.md](adrs/0003-eleccion-del-stack.md), [adrs/0008-datos-personales.md](adrs/0008-datos-personales.md), [docs/como-se-hizo/login.md](docs/como-se-hizo/login.md)
+
+Login con token de un solo uso de Spring Security, correos en el esquema cuentas y lista de invitados desde la configuración. El diseño está en el ADR 0013 y en la vista del usuario del tablero de arquitectura.
+
+Etapas:
+- [x] Diseño
+- [x] Código
+- [x] Pruebas
+- [x] Página cómo se hizo
+
+Lista:
+- [x] Alta de invitados desde elparte.invitados: cuentas.usuarios y parte.clientes con el mismo identificador
+- [x] Dos fuentes de datos, una por rol, y un UserDetailsService que lee cuentas.usuarios
+- [x] Entrar por enlace: tokens en cuentas.one_time_tokens y el enlace por el correo saliente
+- [x] La misma respuesta para un correo no invitado
+- [x] Sesión recordada 30 días en cuentas.persistent_logins, y probar que se combina con el login por token
+- [x] La página de la mañana muestra el informe de quien entró; sin sesión, el de demostración
+- [x] La cuenta de demostración, de solo lectura
+- [x] La sala de máquinas y la cola de revisión, solo para el responsable del proyecto: hoy las puede usar cualquiera que llegue a la aplicación (D6, T23). Quedaron cerrados correr, repetir y la cola; la sala se mira sin entrar
+
+Registro:
+- 2026-11-07: Creada con el plan (T07).
+- 2026-11-14: Diseño hecho: alta de invitados, entrar por enlace y sesión recordada (ADR 0013, propuesto). El perfil queda en T34 y el aviso diario en T35.
+- 2026-11-15: Deja de depender de T08: el código de la rebanada ya está hecho, y a T08 solo le falta la medición (T20). Pasa a Para empezar.
+- 2026-11-16: Suma a la lista que la sala de máquinas y la cola de revisión las use solo el responsable: la cola de revisión (T23) ya escribe en la base y no tiene login.
+- 2026-11-16: Hecha: el alta de invitados desde el entorno, el enlace de un solo uso con un botón para confirmarlo, el recordatorio de 30 días, y la página de la mañana de quien entró, con dos fuentes de datos, una por rol. Correr, repetir y la cola de revisión son solo del responsable; la sala de máquinas se mira sin entrar. Un invitado nuevo empieza siguiendo lo mismo que la demostración. El correo real y la dirección pública quedan para el despliegue (T27). Pasa a Hecho.
 
 ### T23 · Armar la cola de revisión humana
 - Tipo: Web

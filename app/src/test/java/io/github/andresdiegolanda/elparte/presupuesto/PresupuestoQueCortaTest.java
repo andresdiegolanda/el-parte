@@ -124,17 +124,18 @@ class PresupuestoQueCortaTest extends ConServicios {
 
         // Cada candidato que el refutador no pudo graduar quedó sin procesar: no hay hecho de él.
         long rechazadosAlRefutador = rechazados.stream().filter(u -> "refutador".equals(u.agenteQueLlama())).count();
-        CorridaCortada corte = registro.contenido(registro.deCorridaYTipo(corrida, Tipos.CORRIDA_CORTADA).getFirst(),
-                CorridaCortada.class);
+        // El estado cambia en la base antes de que el observador guarde los mensajes: se los espera.
+        CorridaCortada corte = registro.contenido(esperar(() -> registro.deCorridaYTipo(corrida, Tipos.CORRIDA_CORTADA),
+                lista -> !lista.isEmpty()).getFirst(), CorridaCortada.class);
         assertThat(corte.limite()).isEqualTo("costo");
         assertThat(corte.sinProcesar()).isEqualTo((int) rechazadosAlRefutador).isPositive();
-        CorridaTerminada terminada = registro.contenido(registro.deCorridaYTipo(corrida, Tipos.CORRIDA_TERMINADA)
-                .getFirst(), CorridaTerminada.class);
+        CorridaTerminada terminada = registro.contenido(esperar(() -> registro.deCorridaYTipo(corrida,
+                Tipos.CORRIDA_TERMINADA), lista -> !lista.isEmpty()).getFirst(), CorridaTerminada.class);
         assertThat(terminada.estado()).isEqualTo("cortada");
         assertThat(terminada.conteos().get("PROVEN") + terminada.conteos().get("sinProcesar")).isEqualTo(3);
         assertThat(registro.deCorridaYTipo(corrida, Tipos.HECHOS_ANALIZADOS)).hasSize(terminada.conteos().get("PROVEN"));
         assertThat(jdbc.sql("select corrida_cortada from parte.informes where corrida_id = :c").param("c", corrida)
-                .query(Boolean.class).single()).isTrue();
+                .query(Boolean.class).list()).isNotEmpty().containsOnly(true);
 
         // La repetición se corta en el mismo lugar, sin llamar al modelo.
         int llamadas = modelo.llamadas();

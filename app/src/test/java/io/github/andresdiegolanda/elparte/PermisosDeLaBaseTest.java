@@ -31,7 +31,8 @@ class PermisosDeLaBaseTest extends ConServicios {
     @Test
     void elLoginNoVeLaBaseDeAfirmaciones() throws SQLException {
         try (Connection cuentas = DriverManager.getConnection(POSTGRES.getJdbcUrl(), "elparte_cuentas", "cuentas-local")) {
-            assertThat(contar(cuentas, "select count(*) from cuentas.usuarios")).isZero();
+            // Los dos invitados de las pruebas (ConServicios).
+            assertThat(contar(cuentas, "select count(*) from cuentas.usuarios")).isEqualTo(2);
             assertThatThrownBy(() -> contar(cuentas, "select count(*) from parte.hechos"))
                     .hasMessageContaining("permission denied");
             assertThatThrownBy(() -> ejecutar(cuentas, "create table cuentas.intrusa (id int)"))

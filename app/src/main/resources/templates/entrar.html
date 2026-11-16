@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabeza('Entrar')}"></head>
+<body>
+<header th:replace="~{fragmentos :: menu}"></header>
+<main>
+    <h1>Entrar</h1>
+    <div th:if="${usuario != null}" class="tarjeta">
+        Ya entraste como <strong th:text="${usuario.alias}">Invitado</strong>. <a href="/manana">Ir a tu página de la mañana</a>.
+    </div>
+    <div th:if="${vencido}" class="tarjeta marca">Ese enlace ya se usó o venció. Pedí otro.</div>
+    <p>El Parte es por invitación. Poné tu correo y te mandamos un enlace para entrar. Sirve una sola vez y vence a los 5 minutos.</p>
+    <form class="fila" method="post" th:action="@{/ott/generate}">
+        <label>Correo <input type="email" name="username" required autocomplete="email" size="30"></label>
+        <button type="submit">Mandame el enlace</button>
+    </form>
+    <p class="sub">Sin entrar se ve la página de la mañana de la cuenta de demostración.</p>
+</main>
+</body>
+</html>

@@ -82,6 +82,7 @@ flowchart TD
 | [`docs/como-se-hizo/analista.md`](../docs/como-se-hizo/analista.md) | Cómo se hizo el analista: qué le pide al modelo, el control de cifras y qué se probó (T21). |
 | [`docs/como-se-hizo/presupuesto.md`](../docs/como-se-hizo/presupuesto.md) | Cómo se hizo el presupuesto que corta: el advisor, el libro de la corrida y qué se probó (T22). |
 | [`docs/como-se-hizo/revision.md`](../docs/como-se-hizo/revision.md) | Cómo se hizo la cola de revisión humana y lo que cambia en la página de la mañana (T23). |
+| [`docs/como-se-hizo/login.md`](../docs/como-se-hizo/login.md) | Cómo se hizo el login por enlace de correo, el alta de invitados y quién puede hacer qué (T25). |
 
 ## Lo que va a haber
 

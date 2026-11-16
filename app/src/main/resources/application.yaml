@@ -20,6 +20,11 @@ spring:
       rol_cuentas: elparte_cuentas
       clave_cuentas: ${BASE_CLAVE_CUENTAS:cuentas-local}
 
+  # El correo del enlace para entrar (ADR 0013): en local, Mailpit; con el despliegue, el servicio real.
+  mail:
+    host: ${CORREO_HOST:localhost}
+    port: ${CORREO_PUERTO:1025}
+
   kafka:
     bootstrap-servers: ${KAFKA_SERVIDORES:localhost:9092}
     consumer:
@@ -40,6 +45,14 @@ spring:
         model: claude-haiku-5-5
 
 elparte:
+  # El acceso (ADR 0013). La lista de invitados no va acá: va en el entorno, como ELPARTE_INVITADOS_0_CORREO,
+  # ELPARTE_INVITADOS_0_ALIAS y ELPARTE_INVITADOS_0_RESPONSABLE (app/README.md, "Los invitados").
+  acceso:
+    url-publica: ${ELPARTE_URL_PUBLICA:http://localhost:8080}
+    remitente: ${ELPARTE_REMITENTE:El Parte <parte@localhost>}
+  cuentas:
+    usuario: elparte_cuentas
+    clave: ${BASE_CLAVE_CUENTAS:cuentas-local}
   arce:
     url-base: ${ARCE_URL_BASE:https://www.comprasestatales.gub.uy/ocds}
     # Además de la noche objetivo, se lee el día anterior, por lo que ARCE publica con atraso.

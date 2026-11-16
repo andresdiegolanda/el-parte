@@ -5,10 +5,13 @@
 <header th:replace="~{fragmentos :: menu}"></header>
 <main>
     <h1>Página de la mañana</h1>
-    <p class="sub">Cuenta de demostración. Sigue a: <span th:text="${#strings.listJoin(seguidas, ', ')}">Banco de Previsión Social</span>.</p>
+    <p class="sub"><span th:text="${usuario == null} ? 'Cuenta de demostración' : 'El parte de ' + ${usuario.alias}">Cuenta de demostración</span>.
+        <th:block th:if="${!seguidas.isEmpty()}">Sigue a: <span th:text="${#strings.listJoin(seguidas, ', ')}">Banco de Previsión Social</span>.</th:block>
+        <th:block th:if="${seguidas.isEmpty()}">Todavía no sigue a ninguna entidad.</th:block>
+        <a th:if="${usuario == null}" href="/entrar">Entrar</a></p>
 
     <div th:if="${informe == null}" class="tarjeta vacio">
-        Todavía no corrió ninguna noche. Se corre desde la <a href="/corridas">sala de máquinas</a>.
+        Todavía no hay un parte para esta cuenta: el primero sale después de la próxima corrida de la noche.
     </div>
 
     <th:block th:if="${informe != null}">

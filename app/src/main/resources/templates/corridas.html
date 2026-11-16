@@ -7,13 +7,17 @@
     <h1>Sala de máquinas</h1>
     <p class="sub">Cada corrida, con sus mensajes, su costo y cómo terminó.</p>
 
-    <div class="tarjeta">
-        <form class="fila" method="post" action="/corridas">
+    <div th:if="${usuario == null or !usuario.responsable}" class="tarjeta vacio">
+        Correr o repetir una corrida es del responsable del proyecto: una corrida gasta crédito del modelo.
+        Mirar las corridas y sus mensajes es libre.
+    </div>
+    <div th:if="${usuario != null and usuario.responsable}" class="tarjeta">
+        <form class="fila" method="post" th:action="@{/corridas}">
             <input type="hidden" name="modo" value="normal">
             <label>Correr la noche del <input type="date" name="fecha" th:value="${ayer}"></label>
             <button type="submit">Correr</button>
         </form>
-        <form class="fila" method="post" action="/corridas">
+        <form class="fila" method="post" th:action="@{/corridas}">
             <input type="hidden" name="modo" value="reproduccion">
             <label>Repetir sin red ni costo la corrida
                 <select name="original">

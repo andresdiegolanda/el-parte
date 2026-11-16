@@ -17,9 +17,10 @@ La primera vez baja las imágenes y compila la aplicación dentro de Docker, con
 | La aplicación | http://localhost:8080 |
 | La página de la mañana de la cuenta de demostración | http://localhost:8080/manana |
 | La sala de máquinas: las corridas, y el botón para correr una noche o repetir una corrida | http://localhost:8080/corridas |
-| La cola de revisión humana de los hechos INFERRED (D6) | http://localhost:8080/revision |
+| La cola de revisión humana de los hechos INFERRED (D6), solo para el responsable | http://localhost:8080/revision |
+| Entrar con un enlace de correo | http://localhost:8080/entrar |
 | Su estado, el de la base y el de Kafka | http://localhost:8080/actuator/health |
-| El buzón de prueba de los correos del login | http://localhost:8025 |
+| El buzón de prueba, donde llegan en local los enlaces para entrar | http://localhost:8025 |
 | PostgreSQL | `localhost:5432`, base `elparte`. El dueño es `elparte`; la aplicación entra con `elparte_agentes`. |
 | Kafka | `localhost:9092` |
 
@@ -27,9 +28,25 @@ La clave del modelo se lee del archivo `.env` de la raíz, que no se versiona (t
 
 Las claves de la base tienen valores por omisión para usar en local. Para cambiarlas, se agregan al mismo `.env` antes de la primera vez que arranca la base: `BASE_DUENO_CLAVE` (el dueño), `BASE_CLAVE` (el rol de los agentes) y `BASE_CLAVE_CUENTAS` (el del login). Las de los roles se fijan cuando los crea la migración; cambiarlas después no las cambia en la base.
 
+### Los invitados
+
+El Parte es por invitación ([ADR 0013](../adrs/0013-acceso-perfil-y-parte-diario.md)). La lista va en el `.env` de la raíz, que no se versiona, y nunca en el repositorio, porque son correos de personas ([ADR 0008](../adrs/0008-datos-personales.md)):
+
+```
+ELPARTE_INVITADOS_0_CORREO=correo-del-responsable
+ELPARTE_INVITADOS_0_ALIAS=Responsable
+ELPARTE_INVITADOS_0_RESPONSABLE=true
+ELPARTE_INVITADOS_1_CORREO=correo-de-la-primera-persona
+ELPARTE_INVITADOS_1_ALIAS=Cliente 1
+```
+
+Y así con 2, 3 y 4. Al arrancar, la aplicación da de alta a los nuevos, actualiza el alias de los que ya estaban y desactiva a los que ya no están en la lista. Un invitado nuevo empieza siguiendo lo mismo que la cuenta de demostración.
+
+Para entrar se va a `/entrar`, se pone el correo y llega un enlace que sirve una vez y vence a los 5 minutos; en local llega a Mailpit, en http://localhost:8025. Al abrirlo hay que apretar "Entrar", y la aplicación recuerda la sesión 30 días. Sin entrar se ve la página de la mañana de la cuenta de demostración y la sala de máquinas; correr o repetir una corrida y la cola de revisión son solo del responsable. Cómo se hizo: [docs/como-se-hizo/login.md](../docs/como-se-hizo/login.md).
+
 ### Correr una noche
 
-En `/corridas` se elige la noche (por omisión, ayer en hora de Uruguay) y se aprieta "Correr". La corrida lee todas las publicaciones de la noche y del día de margen (unas 700 por día hábil), llama al modelo en el refutador y en el analista, una vez cada uno por compra nueva del BPS, y tarda unos minutos; la página de la corrida muestra cómo avanza al recargarla. Lo que limita el gasto es el presupuesto de cada corrida (`elparte.corrida.costo-maximo-usd`, `pasos-maximos` y `minutos-maximos`, [ADR 0005](../adrs/0005-presupuesto-por-corrida.md)): antes de cada llamada se reserva el peor caso, y si no alcanza la llamada no se hace y la corrida termina cortada. Las compras de la fecha objetivo pasan primero, así lo que queda sin procesar es del día de margen. Por encima está el tope de gasto del espacio de trabajo de la clave (T14). Cuando termina, la página de la mañana muestra lo encontrado. "Repetir" vuelve a correr una corrida terminada desde sus grabaciones, sin red ni costo, y su página dice si los mensajes son idénticos a los de la original ([ADR 0011](../adrs/0011-grabacion-y-repeticion-de-corridas.md)).
+En `/corridas`, el responsable, ya adentro, elige la noche (por omisión, ayer en hora de Uruguay) y se aprieta "Correr". La corrida lee todas las publicaciones de la noche y del día de margen (unas 700 por día hábil), llama al modelo en el refutador y en el analista, una vez cada uno por compra nueva del BPS, y tarda unos minutos; la página de la corrida muestra cómo avanza al recargarla. Lo que limita el gasto es el presupuesto de cada corrida (`elparte.corrida.costo-maximo-usd`, `pasos-maximos` y `minutos-maximos`, [ADR 0005](../adrs/0005-presupuesto-por-corrida.md)): antes de cada llamada se reserva el peor caso, y si no alcanza la llamada no se hace y la corrida termina cortada. Las compras de la fecha objetivo pasan primero, así lo que queda sin procesar es del día de margen. Por encima está el tope de gasto del espacio de trabajo de la clave (T14). Cuando termina, la página de la mañana muestra lo encontrado. "Repetir" vuelve a correr una corrida terminada desde sus grabaciones, sin red ni costo, y su página dice si los mensajes son idénticos a los de la original ([ADR 0011](../adrs/0011-grabacion-y-repeticion-de-corridas.md)).
 
 Para que corra sola todas las noches se fija `ELPARTE_CORRIDA_CRON` (por ejemplo `0 0 6 * * *`, las 6 de la mañana en Uruguay). Viene apagado hasta que se decida dónde corre la aplicación (T27).
 
@@ -132,6 +149,7 @@ mvn test
 | `ElParteAplicacionTest` | La salud de Kafka y los tópicos: uno por tipo de mensaje, con una partición y sin vencimiento. |
 | `fuentes.arce.*Test` | La lectura de ARCE con su pausa, el enmascarado y el armado de los candidatos. |
 | `analista.AnalistaTest` | El control de lo que escribe el modelo para el analista: una cifra que no está en la evidencia no se usa ([ADR 0015](../adrs/0015-que-puede-escribir-el-analista.md)). |
+| `acceso.LoginTest` | Entrar con el enlace: la misma respuesta para un correo no invitado, el token que sirve una vez, el recordatorio de 30 días, salir, y qué puede hacer cada uno: sin entrar, una invitada y el responsable. Deja copias de la página para entrar y de la de una invitada en `target/paginas/`. |
 | `presupuesto.PresupuestoQueCortaTest` | El libro de la corrida con reservas a la vez, y una noche de setiembre que se queda sin presupuesto, se corta y se repite igual. |
 
 Las pruebas grandes comparten la base: cada una cuenta solo lo suyo, la primera rebanada con su noche de noviembre, la medición con sus noches de octubre y el presupuesto con su noche de setiembre, así pasan en cualquier orden.
@@ -154,5 +172,6 @@ El verificador de la documentación (`python3 herramientas/verificar_docs.py`, d
 | `...observador` | Copia cada mensaje al registro de la base. |
 | `...infraestructura` | Los tópicos, el reloj, el manejo de errores de los consumidores, las huellas, el registro de lo procesado y `SaludDeKafka`, que agrega la salud de Kafka a `/actuator/health`. |
 | `...web` | Las páginas: inicio, mañana, corridas, sala de máquinas y cola de revisión, con plantillas Thymeleaf. |
+| `...acceso` | El login por enlace de correo, el alta de invitados y quién puede hacer qué, con Spring Security ([ADR 0013](../adrs/0013-acceso-perfil-y-parte-diario.md)). |
 
 Las migraciones están en `src/main/resources/db/migration/`: `V1__base.sql` es el DDL de [docs/base-de-afirmaciones.md](../docs/base-de-afirmaciones.md), `V2__roles.sql` crea los dos roles y reparte los permisos, y `V3__datos_iniciales.sql` carga la fuente, el organismo, la cuenta de demostración, los modelos y los precios.

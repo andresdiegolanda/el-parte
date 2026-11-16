@@ -775,13 +775,14 @@
    "col": 0,
    "fila": 10,
    "estado": "construido",
-   "que_es": "El proceso donde corren todos los agentes, el observador y la web: arranque, tópicos, reintentos de los consumidores, salud de Kafka y el marco común de las páginas.",
+   "que_es": "El proceso donde corren todos los agentes, el observador y la web: arranque, tópicos, reintentos de los consumidores, salud de Kafka y el marco común de las páginas, y la configuración del acceso que usan el login y el correo: la dirección pública, el remitente y la clave de los recordatorios.",
    "para_que": "Un solo proceso hace la versión 0 fácil de levantar (ADR 0003).",
    "codigo": [
     "app/src/main/java/io/github/andresdiegolanda/elparte/ElParteAplicacion.java",
     "app/src/main/java/io/github/andresdiegolanda/elparte/infraestructura/ConfiguracionGeneral.java",
     "app/src/main/java/io/github/andresdiegolanda/elparte/infraestructura/SaludDeKafka.java",
-    "app/src/main/resources/templates/fragmentos.html"
+    "app/src/main/resources/templates/fragmentos.html",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/acceso/Acceso.java"
    ],
    "docs": [
     "app/README.md",
@@ -1290,7 +1291,7 @@
    "col": 3,
    "fila": 17,
    "estado": "construido",
-   "que_es": "La lista de corridas, el botón para correr una noche o repetir una corrida, y la página de cada corrida: la cadena de mensajes de cada candidato, el costo por agente y la comparación con la original.",
+   "que_es": "La lista de corridas, el botón para correr una noche o repetir una corrida, y la página de cada corrida: la cadena de mensajes de cada candidato, el costo por agente y la comparación con la original. Se mira sin entrar; correr y repetir son del responsable, porque una corrida gasta crédito.",
    "para_que": "Ver qué hizo cada agente y por qué, y cuánto costó (ADR 0002).",
    "codigo": [
     "app/src/main/java/io/github/andresdiegolanda/elparte/web/SalaDeMaquinasControlador.java",
@@ -1304,6 +1305,9 @@
     "GET /corridas",
     "POST /corridas",
     "GET /corridas/{id}"
+   ],
+   "tarjetas": [
+    "T25"
    ]
   },
   {
@@ -1314,7 +1318,7 @@
    "col": 11,
    "fila": 17,
    "estado": "construido",
-   "que_es": "El último informe de la cuenta de demostración: cada hecho con su grado, su evidencia, el análisis marcado como análisis, su estado de revisión y el enlace a su traza. Un hecho que en la revisión no se sostiene sigue, tachado y con la nota. Avisa si una fuente falló, y si la corrida se cortó, por qué y cuántos candidatos quedaron sin procesar.",
+   "que_es": "El último informe de quien entró, o el de la cuenta de demostración sin sesión: cada hecho con su grado, su evidencia, el análisis marcado como análisis, su estado de revisión y el enlace a su traza. Un hecho que en la revisión no se sostiene sigue, tachado y con la nota. Avisa si una fuente falló, y si la corrida se cortó, por qué y cuántos candidatos quedaron sin procesar.",
    "para_que": "Es lo que El Parte le da a quien sigue una entidad.",
    "codigo": [
     "app/src/main/java/io/github/andresdiegolanda/elparte/web/MananaControlador.java",
@@ -1326,7 +1330,6 @@
    "rutas": [
     "GET /manana"
    ],
-   "nota": "Diseñado (T25): con sesión, muestra el informe de quien entró; sin sesión, el de la cuenta de demostración.",
    "tarjetas": [
     "T25"
    ]
@@ -1374,7 +1377,7 @@
     "GET /revision",
     "POST /revision/{versionId}"
    ],
-   "nota": "Sin login todavía: la puede usar cualquiera que llegue a la aplicación, como el resto de la sala (T25)."
+   "nota": "Solo para el responsable, que entra con su enlace (T25)."
   },
   {
    "id": "web/responsable",
@@ -1414,18 +1417,37 @@
    "id": "web/login",
    "tipo": "pagina",
    "titulo": "Entrar por enlace",
-   "sub": "GET /entrar · POST /ott/generate",
+   "sub": "GET /entrar · POST /ott/generate · POST /login/ott",
    "col": 12,
    "fila": 17,
-   "estado": "disenado",
-   "que_es": "La página para entrar: la persona pone su correo y, si está invitada, le llega un enlace de un solo uso. Al hacer clic entra, y la aplicación la recuerda 30 días. Es el login con token de un solo uso de Spring Security, con los tokens y los recordatorios guardados en el esquema cuentas.",
+   "estado": "construido",
+   "que_es": "La página para entrar: la persona pone su correo y, si está invitada, le llega un enlace de un solo uso. Abrir el enlace muestra un botón, y al apretarlo entra y la aplicación la recuerda 30 días. Es el login con token de un solo uso de Spring Security, con los tokens y los recordatorios en el esquema cuentas, que se lee con su propio rol. Correr o repetir una corrida y la cola de revisión son solo del responsable. Los POST /ott/generate, /login/ott y /logout los atiende Spring Security, no un controlador.",
    "para_que": "Que cada invitado vea su página y su perfil sin contraseña, y que no tenga que pedir un enlace cada mañana. Ante un correo no invitado responde lo mismo, así no se puede averiguar quién está.",
    "docs": [
     "adrs/0013-acceso-perfil-y-parte-diario.md",
-    "adrs/0008-datos-personales.md"
+    "adrs/0008-datos-personales.md",
+    "docs/como-se-hizo/login.md"
    ],
    "tarjetas": [
     "T25"
+   ],
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/acceso/Seguridad.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/acceso/Cuentas.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/acceso/FuenteDeCuentas.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/acceso/TokensDeInvitados.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/acceso/ManejoDelEnlace.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/acceso/EntrarControlador.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/acceso/UsuarioDeElParte.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/acceso/UsuarioEnLaVista.java",
+    "app/src/main/resources/templates/entrar.html",
+    "app/src/main/resources/templates/entrar-enviado.html",
+    "app/src/main/resources/templates/entrar-confirmar.html"
+   ],
+   "rutas": [
+    "GET /entrar",
+    "GET /entrar/enviado",
+    "GET /login/ott"
    ]
   },
   {
@@ -1435,7 +1457,7 @@
    "sub": "su navegador y su correo",
    "col": 13,
    "fila": 17,
-   "estado": "disenado",
+   "estado": "construido",
    "tarjetas": [
     "T25"
    ],
@@ -1452,15 +1474,21 @@
    "sub": "lista elparte.invitados",
    "col": 12,
    "fila": 11,
-   "estado": "disenado",
+   "estado": "construido",
    "tarjetas": [
     "T25"
    ],
    "docs": [
-    "adrs/0013-acceso-perfil-y-parte-diario.md"
+    "adrs/0013-acceso-perfil-y-parte-diario.md",
+    "app/README.md",
+    "docs/como-se-hizo/login.md"
    ],
-   "que_es": "Al arrancar, lee la lista de invitados de la configuración (correo y alias) y crea la cuenta de cada uno que no esté: su correo en el esquema cuentas y su cliente, con el mismo identificador y sin correo, en el esquema parte.",
-   "para_que": "Que nadie se registre solo: en la versión 0 entran cuatro personas invitadas. Sumar a alguien es sumar su correo a la lista."
+   "que_es": "La lista de invitados de la configuración, en el entorno y fuera del repositorio. Al arrancar, cada invitado tiene su cuenta en el esquema cuentas y su cliente en el esquema parte, con el mismo identificador; uno nuevo empieza siguiendo lo mismo que la cuenta de demostración, y el que ya no está en la lista no puede entrar.",
+   "para_que": "Que nadie se registre solo: en la versión 0 entran cuatro personas invitadas. Sumar a alguien es sumar su correo a la lista.",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/acceso/Invitados.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/acceso/AltaDeInvitados.java"
+   ]
   },
   {
    "id": "correo",
@@ -1469,7 +1497,7 @@
    "sub": "Spring Boot Mail · SMTP",
    "col": 13,
    "fila": 10,
-   "estado": "disenado",
+   "estado": "construido",
    "tarjetas": [
     "T25",
     "T35"
@@ -1477,8 +1505,12 @@
    "docs": [
     "adrs/0013-acceso-perfil-y-parte-diario.md"
    ],
-   "que_es": "Manda correos por SMTP: el enlace para entrar y el aviso de cada mañana.",
-   "para_que": "Un solo lugar que sabe mandar correos, con el servidor que diga la configuración: Mailpit en local, uno real cuando se despliegue."
+   "que_es": "Manda correos por SMTP: hoy, el enlace para entrar; con T35, el aviso de cada mañana.",
+   "para_que": "Un solo lugar que sabe mandar correos, con el servidor que diga la configuración: Mailpit en local, uno real cuando se despliegue.",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/acceso/EnvioDelEnlace.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/acceso/CorreoDelEnlace.java"
+   ]
   },
   {
    "id": "envio-del-parte",
@@ -1522,7 +1554,7 @@
    "sub": "cuentas.one_time_tokens",
    "col": 12,
    "fila": 14,
-   "estado": "disenado",
+   "estado": "construido",
    "tarjetas": [
     "T25"
    ],
@@ -1540,7 +1572,7 @@
    "sub": "cuentas.persistent_logins",
    "col": 13,
    "fila": 14,
-   "estado": "disenado",
+   "estado": "construido",
    "tarjetas": [
     "T25"
    ],
@@ -2706,7 +2738,7 @@
    "de": "invitados",
    "a": "base/usuarios",
    "tipo": "escribe",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "crea la cuenta",
    "detalle": "Inserta el correo de cada invitado nuevo, con un identificador nuevo.",
@@ -2719,7 +2751,7 @@
    "de": "invitados",
    "a": "base/clientes",
    "tipo": "escribe",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "crea el cliente",
    "detalle": "Inserta el cliente con el mismo identificador y su alias, sin correo.",
@@ -2728,11 +2760,21 @@
    ]
   },
   {
+   "id": "invitados>base/suscripciones",
+   "de": "invitados",
+   "a": "base/suscripciones",
+   "tipo": "escribe",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "lo que sigue al empezar",
+   "detalle": "Un invitado nuevo empieza siguiendo lo mismo que la cuenta de demostración, así su primera página no sale vacía; lo cambia en su perfil (T34)."
+  },
+  {
    "id": "afuera/persona>web/login",
    "de": "afuera/persona",
    "a": "web/login",
    "tipo": "usa",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "camino",
    "etiqueta": "pone su correo",
    "detalle": "En /entrar escribe su correo y pide el enlace.",
@@ -2745,10 +2787,23 @@
    "de": "base/usuarios",
    "a": "web/login",
    "tipo": "lee",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "¿está invitado?",
    "detalle": "Busca el correo; si está, sigue, y si no, responde lo mismo sin mandar nada. Al entrar, toma de acá el identificador del cliente y lo guarda en la sesión.",
+   "tarjetas": [
+    "T25"
+   ]
+  },
+  {
+   "id": "base/clientes>web/login",
+   "de": "base/clientes",
+   "a": "web/login",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "su alias",
+   "detalle": "En cada página, el menú muestra el alias de quien entró, que está en el esquema parte; el correo no llega a las páginas.",
    "tarjetas": [
     "T25"
    ]
@@ -2758,21 +2813,22 @@
    "de": "web/login",
    "a": "base/tokens",
    "tipo": "escribe",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "token de un solo uso",
    "detalle": "Spring Security genera el token (POST /ott/generate) y lo guarda, con vencimiento a los 5 minutos.",
    "tarjetas": [
     "T25"
    ],
-   "fuente": "https://docs.spring.io/spring-security/reference/servlet/authentication/onetimetoken.html"
+   "fuente": "https://docs.spring.io/spring-security/reference/servlet/authentication/onetimetoken.html",
+   "marco": "Spring Security"
   },
   {
    "id": "web/login>correo",
    "de": "web/login",
    "a": "correo",
    "tipo": "usa",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "camino",
    "etiqueta": "manda el enlace",
    "detalle": "Arma el enlace /login/ott?token=… y lo manda al correo de la persona.",
@@ -2785,7 +2841,7 @@
    "de": "correo",
    "a": "afuera/mailpit",
    "tipo": "llama",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "camino",
    "etiqueta": "SMTP",
    "detalle": "Entrega el correo al servidor de la configuración: Mailpit en local.",
@@ -2799,7 +2855,7 @@
    "de": "afuera/persona",
    "a": "afuera/mailpit",
    "tipo": "usa",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "camino",
    "etiqueta": "abre su correo",
    "detalle": "Lee el enlace para entrar, o el aviso de la mañana, y hace clic.",
@@ -2812,27 +2868,29 @@
    "de": "web/login",
    "a": "base/recuerdos",
    "tipo": "escribe",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "la recuerda 30 días",
    "detalle": "Al validar el token, la deja entrar y guarda un recordatorio de sesión.",
    "tarjetas": [
     "T25"
    ],
-   "fuente": "https://docs.spring.io/spring-security/reference/servlet/authentication/rememberme.html"
+   "fuente": "https://docs.spring.io/spring-security/reference/servlet/authentication/rememberme.html",
+   "marco": "Spring Security"
   },
   {
    "id": "base/recuerdos>web/login",
    "de": "base/recuerdos",
    "a": "web/login",
    "tipo": "lee",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "¿la recuerda?",
    "detalle": "En cada visita sin sesión, el recordatorio de la cookie se valida acá y la sesión se rehace sola.",
    "tarjetas": [
     "T25"
-   ]
+   ],
+   "marco": "Spring Security"
   },
   {
    "id": "afuera/persona>web/perfil",
@@ -2956,7 +3014,7 @@
    "de": "afuera/persona",
    "a": "web/manana",
    "tipo": "usa",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "camino",
    "etiqueta": "lee su parte",
    "detalle": "Entra a /manana desde el aviso; el recordatorio la deja adentro sin pedir enlace.",
@@ -3525,10 +3583,6 @@
      "texto": "Los exploradores del BID, el Banco Mundial y Presidencia (T24)."
     },
     {
-     "en": "web/login",
-     "texto": "El alta de invitados, entrar por enlace y la sesión recordada (T25)."
-    },
-    {
      "en": "web/perfil",
      "texto": "La página del perfil, para elegir qué seguir (T34)."
     },
@@ -3679,6 +3733,22 @@
    "texto": "La medición contra el banco se detiene en la primera noche con errores del modelo, sin escribir la salida: la 2026-11-16-1 se quedó sin crédito y siguió con noches vacías.",
    "objetos": [
     "medicion-banco"
+   ]
+  },
+  {
+   "fecha": "2026-11-16",
+   "texto": "El login por enlace de correo: el alta de invitados desde la configuración, el token de un solo uso y el recordatorio de 30 días en el esquema cuentas, y la página de la mañana de quien entró. Correr y la cola de revisión, solo para el responsable (T25).",
+   "objetos": [
+    "invitados",
+    "web/login",
+    "correo",
+    "base/tokens",
+    "base/recuerdos",
+    "web/manana",
+    "web/sala",
+    "aplicacion",
+    "base/clientes>web/login",
+    "afuera/persona>web/manana"
    ]
   }
  ],

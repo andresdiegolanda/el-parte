@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabeza('Revisá tu correo')}"></head>
+<body>
+<header th:replace="~{fragmentos :: menu}"></header>
+<main>
+    <h1>Revisá tu correo</h1>
+    <p>Si ese correo está invitado, te llega un enlace para entrar en un minuto. Sirve una sola vez y vence a los 5 minutos.</p>
+    <p class="sub">Si no te llega, revisá el correo no deseado, o <a href="/entrar">pedí otro</a>.</p>
+</main>
+</body>
+</html>

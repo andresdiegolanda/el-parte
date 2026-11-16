@@ -18,9 +18,16 @@ import io.github.andresdiegolanda.elparte.fuentes.arce.ArceDePrueba;
  * corren con el dueño de la base: si a un agente le falta un permiso, las pruebas lo ven.
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        properties = {"elparte.corrida.revisar-cierre-ms=300", "elparte.banco.espera-ms=300"})
+        properties = {"elparte.corrida.revisar-cierre-ms=300", "elparte.banco.espera-ms=300",
+                "elparte.invitados[0].correo=" + ConServicios.RESPONSABLE, "elparte.invitados[0].alias=Responsable",
+                "elparte.invitados[0].responsable=true",
+                "elparte.invitados[1].correo=" + ConServicios.INVITADA, "elparte.invitados[1].alias=Invitada uno"})
 @Import(FalsosDePrueba.class)
 public abstract class ConServicios {
+
+    /** Los invitados de las pruebas: correos de un dominio reservado para pruebas, que no existe. */
+    public static final String RESPONSABLE = "responsable@prueba.test";
+    public static final String INVITADA = "Invitada.Uno@Prueba.test";
 
     protected static final PostgreSQLContainer POSTGRES = new PostgreSQLContainer("postgres:18.7");
     protected static final KafkaContainer KAFKA = new KafkaContainer("apache/kafka:4.4.0");

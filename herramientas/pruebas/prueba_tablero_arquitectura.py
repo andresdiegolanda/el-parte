@@ -68,7 +68,7 @@ comprobar(ok, f"un tópico nuevo en el código se detecta {e if not ok else ''}"
 # Una tabla nueva en la migración.
 h = copy.deepcopy(HECHOS)
 h["tablas"].add("parte.nueva")
-ok, e = con_error("la tabla parte.nueva está en la primera migración y no en el tablero", hechos=h)
+ok, e = con_error("la tabla parte.nueva está en las migraciones y no en el tablero", hechos=h)
 comprobar(ok, f"una tabla nueva en la migración se detecta {e if not ok else ''}")
 
 # Una clase nueva que no está en ningún nodo.
@@ -79,10 +79,12 @@ h["clases"]["Resumidor"] = ruta
 ok, e = con_error("Resumidor.java no está en ningún nodo", hechos=h)
 comprobar(ok, f"una clase sin nodo se detecta {e if not ok else ''}")
 
-# Lo diseñado que se construye: la flecha diseñada tiene que pasar a construida.
-h = copy.deepcopy(HECHOS)
-h["archivos"][archivo("Analista.java")]["usa"].add("Modelo")
-ok, e = con_error("la flecha analista>modelo está diseñada pero ya está en el código", hechos=h)
+# Lo diseñado que se construye: la flecha diseñada tiene que pasar a construida. Se toma una flecha que
+# el código ya tiene y se la vuelve diseñada, así la prueba no depende de lo que falte construir.
+m = copy.deepcopy(MODELO)
+f = next(f for f in m["flechas"] if f["id"] == "analista>modelo")
+f["estado"], f["tarjetas"] = "disenado", [next(t for t, c in TARJETAS.items() if c != "hecho")]
+ok, e = con_error("la flecha analista>modelo está diseñada pero ya está en el código", modelo=m)
 comprobar(ok, f"una flecha diseñada que ya se construyó se detecta {e if not ok else ''}")
 
 # Una dependencia hacia un objeto común no pide flecha.
@@ -96,11 +98,20 @@ h["archivos"][archivo("MananaControlador.java")]["rutas"].add("GET /manana/{fech
 ok, e = con_error("la página web/manana dice", hechos=h)
 comprobar(ok, f"una ruta nueva en un controlador se detecta {e if not ok else ''}")
 
-# Lo diseñado con sus tarjetas ya hechas.
+# Lo diseñado con sus tarjetas ya hechas: una tarjeta que cita algo diseñado, como si se hubiera hecho.
+pendiente = next(t for o in MODELO["nodos"] + MODELO["flechas"] if o["estado"] == "disenado"
+                 for t in o.get("tarjetas", []) if TARJETAS.get(t) != "hecho")
 t = dict(TARJETAS)
-t["T22"] = "hecho"
+t[pendiente] = "hecho"
 e = errores(tarjetas=t)
-comprobar(e and all("sus tarjetas (T22) ya están hechas" in x for x in e), "lo diseñado con su tarjeta hecha se detecta")
+comprobar(e and all(f"sus tarjetas ({pendiente}) ya están hechas" in x for x in e), "lo diseñado con su tarjeta hecha se detecta")
+
+# Una flecha que hace una biblioteca no se busca en el código; sin su marco, sí.
+m = copy.deepcopy(MODELO)
+f = next(f for f in m["flechas"] if f.get("marco"))
+del f["marco"]
+ok, e = con_error(f"la flecha {f['id']} está construida y el código no la tiene", modelo=m)
+comprobar(ok, f"una flecha sin su marco se busca en el código {e if not ok else ''}")
 
 # Errores de forma: una flecha hacia un nodo que no existe, un paso de recorrido roto.
 m = copy.deepcopy(MODELO)

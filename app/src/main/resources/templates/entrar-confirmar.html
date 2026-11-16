@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabeza('Entrar')}"></head>
+<body>
+<header th:replace="~{fragmentos :: menu}"></header>
+<main>
+    <h1>Entrar a El Parte</h1>
+    <div th:if="${token == null or #strings.isEmpty(token)}" class="tarjeta marca">
+        A este enlace le falta el token. <a href="/entrar">Pedí otro</a>.
+    </div>
+    <form th:unless="${token == null or #strings.isEmpty(token)}" class="fila" method="post" th:action="@{/login/ott}">
+        <input type="hidden" name="token" th:value="${token}">
+        <button type="submit">Entrar</button>
+    </form>
+    <p class="sub">Quedás adentro por 30 días en este navegador, hasta que salgas.</p>
+</main>
+</body>
+</html>

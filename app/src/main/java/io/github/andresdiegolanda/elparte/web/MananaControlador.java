@@ -3,12 +3,15 @@ package io.github.andresdiegolanda.elparte.web;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import io.github.andresdiegolanda.elparte.acceso.UsuarioDeElParte;
 import io.github.andresdiegolanda.elparte.analista.Analista;
 
 /**
@@ -54,14 +57,19 @@ public class MananaControlador {
         }
     }
 
+    /** Con sesión, el parte de quien entró; sin sesión, el de la cuenta de demostración (ADR 0013). */
     @GetMapping("/manana")
-    public String manana(Model modelo) {
+    public String manana(@AuthenticationPrincipal UsuarioDeElParte usuario, Model modelo) {
+        UUID cliente = usuario != null ? usuario.clienteId()
+                : jdbc.sql("select cliente_id from parte.clientes where es_demo order by alias limit 1")
+                        .query(UUID.class).single();
         Optional<Informe> informe = jdbc.sql("""
                 select i.id, i.fecha_objetivo, i.corrida_id, i.sin_novedades, i.corrida_cortada
-                from parte.informes i join parte.clientes c on c.cliente_id = i.cliente_id
-                where c.es_demo
+                from parte.informes i
+                where i.cliente_id = :cliente
                 order by i.fecha_objetivo desc, i.creado_en desc limit 1
                 """)
+                .param("cliente", cliente)
                 .query((f, n) -> new Informe(f.getLong(1), f.getString(2), f.getString(3), f.getBoolean(4), f.getBoolean(5)))
                 .optional();
         modelo.addAttribute("informe", informe.orElse(null));
@@ -77,10 +85,9 @@ public class MananaControlador {
                 .param("c", i.corridaId()).query(Long.class).single()).orElse(0L));
         modelo.addAttribute("seguidas", jdbc.sql("""
                 select e.nombre from parte.suscripciones s
-                join parte.clientes c on c.cliente_id = s.cliente_id
                 join parte.entidades e on e.id = s.entidad_id
-                where c.es_demo order by e.nombre
-                """).query(String.class).list());
+                where s.cliente_id = :cliente order by e.nombre
+                """).param("cliente", cliente).query(String.class).list());
         return "manana";
     }
 

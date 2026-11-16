@@ -81,6 +81,7 @@ El botón "Cómo se usa" de la página explica el resto: fichas, menú del botó
 | flecha | `tipo` | `emite` y `escucha` (tópicos), `escribe` y `lee` (tablas), `usa` (otro objeto) o `llama` (afuera). |
 | flecha | `papel` | `camino`, el de un hecho por la corrida, o `auxiliar`. |
 | flecha | `etiqueta`, `detalle`, `fuente` | Qué pasa por ahí, en corto y en largo, y de dónde sale. |
+| flecha | `marco` | La biblioteca que la hace, configurada en el código pero sin nombrar la tabla, como Spring Security con sus tokens: el verificador no la busca en el código. |
 | recorrido | `pasos` | Cada parada: `en` (un id de nodo o de flecha) y `texto`. |
 | vista | `id`, `archivo`, `boton`, `titulo`, `sub` | Su identidad, su página y cómo se nombra. |
 | vista | `franjas`, `columnas`, `grupos`, `posiciones` | Su propia grilla: `posiciones` dice la celda de cada objeto de la vista, que tiene que existir en el modelo. |
@@ -91,13 +92,13 @@ El botón "Cómo se usa" de la página explica el resto: fichas, menú del botó
 Controla, en los dos sentidos:
 
 - Que cada clase Java de `app/src/main/java` y cada plantilla web esté en un solo objeto.
-- Que los tópicos construidos sean los de `Tipos.java`, y las tablas construidas, las de la primera migración.
+- Que los tópicos construidos sean los de `Tipos.java`, y las tablas construidas, las que crean las migraciones.
 - Que cada `emisor.emitir` del código sea una flecha `emite`; cada `@KafkaListener`, una `escucha`; cada `insert`, `update` o `delete` en un texto SQL, una `escribe`; cada tabla nombrada en otro texto SQL, una `lee`; cada dependencia del constructor hacia otro objeto que no es común, una `usa`. Y que cada una de esas flechas construidas esté en el código.
 - Que cada página construida atienda exactamente las rutas que dice.
 - Que lo diseñado cite tarjetas que existen y no están todas hechas: si ya se construyó, pasa a construido.
 - Que cada vista ubique objetos que existen, sin dos en una celda, y que sus recorridos quepan en ella.
 - Que `index.html` y cada vista sean exactamente lo que se genera desde `sistema.json`, y que no sobre ninguna página.
 
-No controla, y se revisa a mano en cada cambio: los textos de cada objeto y cada flecha, los recorridos, las flechas `llama` (hacia afuera) y lo diseñado más allá de su tarjeta.
+No controla, y se revisa a mano en cada cambio: los textos de cada objeto y cada flecha, los recorridos, las flechas `llama` (hacia afuera), las que salen de un objeto `externo` (una persona que usa una página), las que tienen `marco` y lo diseñado más allá de su tarjeta.
 
 El control está en [`herramientas/tablero_arquitectura.py`](../../herramientas/tablero_arquitectura.py), y su prueba en [`herramientas/pruebas/prueba_tablero_arquitectura.py`](../../herramientas/pruebas/prueba_tablero_arquitectura.py).
