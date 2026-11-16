@@ -27,6 +27,14 @@ for (const t of datos.tarjetas) {
   semilla["tarjetas/" + id] = { version: 1, data: { ...resto, huellaRepo: null, editadaEnKanban: false } };
 }
 
+// El tablero de verdad avanza, y las tarjetas que usa la prueba cambian de columna. La prueba fija acá
+// el estado que necesita de cada una: T05 en curso con su última etapa abierta, T14 esperando solo a T05,
+// y T08 pendiente, con T14 entre sus dependencias abiertas.
+const fijar = (id, cambios) => Object.assign(semilla["tarjetas/" + id].data, cambios);
+fijar("T05", { columna: "en-curso", etapas: semilla["tarjetas/T05"].data.etapas.map((e, i, todas) => ({ ...e, hecho: i < todas.length - 1 })) });
+fijar("T14", { columna: "pendiente", dependeDe: "T05" });
+fijar("T08", { columna: "pendiente", esperaA: "" });
+
 const fallas = [];
 const comprobar = (condicion, mensaje) => { if (!condicion) fallas.push(mensaje); console.log((condicion ? "ok   " : "MAL  ") + mensaje); };
 

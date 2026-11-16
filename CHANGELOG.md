@@ -4,6 +4,7 @@ Cada entrada dice qué cambió, dónde, y enlaza al documento que tiene el porqu
 
 ## 2026-11-16
 
+- La prueba del kanban en navegador (`herramientas/pruebas/prueba_kanban.mjs`) fija el estado que necesita de T05, T08 y T14 en vez de tomarlo del tablero, que avanzó: tres comprobaciones fallaban porque esas tarjetas ya no estaban en las columnas que la prueba suponía. Pasan todas, y la prueba de la sincronización también.
 - El kanban tiene un botón, "Cargar crédito de la API", que abre los pasos para cargar crédito en la consola de Claude; los mismos pasos están en `app/README.md`, "Crédito de la API".
 - La medición contra el banco se detiene en la primera noche con errores del modelo y no escribe la salida. La medición `2026-11-16-1` se quedó sin crédito de la API en la noche del 2026-09-24, después de 22 noches y 6,11 USD, y siguió con noches completas y sin hechos, porque el refutador gradúa NOT_MENTIONED lo que no puede verificar; se paró a mano y no se usa. Detalle: [docs/como-se-hizo/medicion-contra-el-banco.md](docs/como-se-hizo/medicion-contra-el-banco.md).
 - La medición contra el banco acepta el presupuesto de cada noche por el entorno, `ELPARTE_CORRIDA_COSTO_MAXIMO_USD` y `ELPARTE_CORRIDA_PASOS_MAXIMOS` (`compose.banco.yaml`, `app/README.md`), para medir con los valores que se decidan para T22.
