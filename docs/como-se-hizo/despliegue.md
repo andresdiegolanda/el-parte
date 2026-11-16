@@ -59,9 +59,12 @@ Todo en un Docker local, con un Mailpit que exige SSL y usuario en lugar de Rese
 
 - **El antivirus en el puerto 465.** Con las claves reales, la aplicación levantó, el túnel conectó y las páginas respondían desde afuera, pero el correo no salía: `PKIX path building failed`. Desde la red del Compose, `openssl s_client` mostró que en el 465 el certificado de `smtp.resend.com` lo firmaba el antivirus de la máquina, que revisa el correo saliente. Windows confía en ese certificado y Java, dentro del contenedor, no. En el 2465, que Resend también da con SSL, llega el certificado real. Se pasó al 2465 en lugar de hacer que Java confíe en el antivirus, que además leería cada correo.
 - **La copia vacía**, ver arriba.
+- **Un invitado que no era un correo.** En el `.env` quedó el texto de ejemplo en lugar de la dirección. La aplicación lo dio de alta igual, y como un correo no invitado recibe la misma respuesta, no había error a la vista: el enlace no llegaba. Se vio en la base, contando que el correo guardado no tenía arroba. Se arregló en el `.env`, y `app/README.md` lo advierte.
+- **El panel de Cloudflare no dejaba seguir** hasta que el túnel se conectara una vez. Se conectó con el comando que muestra el panel, y después se cortó.
 - **La salud a la vista**, ver arriba. Se vio al mirar qué respondía la aplicación publicada por el puerto de la web.
 - **El enlace Estado del menú daba error.** Llevaba a `/actuator/health`, que publicada está en otro puerto. Ahora el menú y la página de inicio lo muestran solo si la salud está en el mismo puerto que las páginas (`app/src/main/java/io/github/andresdiegolanda/elparte/web/SaludEnElMenu.java`). Lo vio el responsable al entrar desde afuera.
 
 ## Qué falta
 
 - **Copiar las copias a otro disco.** Hoy quedan en la misma máquina.
+- **Que el alta avise si un invitado no es un correo**, en el registro de la aplicación, sin mostrar el texto.

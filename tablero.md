@@ -263,6 +263,25 @@ Registro:
 
 ## Pendiente
 
+### T42 · Comparar El Parte con una sesión de la Claude Console sobre el banco
+- Tipo: Verificación
+- Dueño: desarrollo
+- Depende de: T20
+- Detalle: [banco-de-pruebas/README.md](banco-de-pruebas/README.md), [adrs/0014-medicion-contra-el-banco.md](adrs/0014-medicion-contra-el-banco.md), [adrs/0004-grados-de-evidencia.md](adrs/0004-grados-de-evidencia.md)
+
+Media hora con la Claude Console, con lo que ARCE publicó cada noche, puede dar un parte que se lee mejor que el de El Parte. Lo que no da es cuánto acierta, de dónde sale cada afirmación, la garantía de que no agrega cifras y lo que cuesta por noche. Esta comparación lo mide con el mismo banco y el mismo conteo.
+
+Lo que la plataforma vuelve gratis con cada versión es la orquestación y la infraestructura. Lo que no trae es el banco con lo que pasó de verdad, la evidencia de cada afirmación y la medición en el dominio. Si la sesión de la Console sale igual o mejor, lo que vale de El Parte es la medición y no la infraestructura, y se recorta. Va después del material para la demo.
+
+Lista:
+- [ ] Una muestra de 10 noches del registro, con lo que ARCE publicó del BPS en cada una
+- [ ] La misma consigna a la Console, noche por noche, con la salida en el formato del banco
+- [ ] El conteo con la misma herramienta, y el costo y el tiempo de cada lado
+- [ ] La conclusión escrita: qué se mantiene de El Parte y qué se recorta
+
+Registro:
+- 2026-11-16: Creada. Se hace después del material para la demo.
+
 ### T24 · Sumar los exploradores del BID, el Banco Mundial y Presidencia
 - Tipo: Componente
 - Dueño: desarrollo
@@ -311,6 +330,8 @@ Registro:
 
 Todo lo que la base sabe de una entidad: cada hecho y cada versión, en orden, para consultar cuando se quiera y no solo lo de anoche.
 
+Es donde el sistema necesita contexto largo. Los agentes de la noche ven un candidato por vez, a propósito, para que el grado no se contamine con el resto (ADR 0004). El expediente mira a cada organismo a lo largo del tiempo, y ahí aparecen patrones que una publicación sola no muestra. El contexto largo no alcanza solo: lo que no se puede perder se escribe afuera del modelo, en la base y en el repositorio.
+
 Etapas:
 - [ ] Diseño
 - [ ] Código
@@ -319,6 +340,7 @@ Etapas:
 
 Registro:
 - 2026-11-14: Creada: el tablero de arquitectura mostró que el expediente estaba diseñado en la arquitectura y en la base, pero ninguna tarjeta lo construía.
+- 2026-11-16: Suma por qué el expediente es donde hace falta contexto largo, y los agentes de la noche, no.
 
 ### T29 · Cambiar el modelo de cada agente sin reiniciar la aplicación
 - Tipo: Web

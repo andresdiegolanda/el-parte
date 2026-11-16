@@ -70,7 +70,7 @@ El Parte se publica desde la máquina del responsable, con un túnel de Cloudfla
 
 ### Lo que se prepara una vez
 
-1. **El túnel.** En el panel de Cloudflare, en Networking > Tunnels > Create Tunnel, se crea un túnel, se elige Docker y se copia solo el token: el texto largo que va después de `--token`. En la pestaña Routes del túnel, Add route > Published application: el subdominio, el dominio y, como Service URL, `http://aplicacion:8080`.
+1. **El túnel.** En el panel de Cloudflare, en Networking > Tunnels > Create Tunnel, se crea un túnel, se elige Docker y se copia solo el token: el texto largo que va después de `--token`. El panel no deja seguir hasta que el túnel se conecta una vez: se corre el comando que muestra, y se corta con Ctrl+C cuando ya conectó. En la pestaña Routes del túnel, Add route > Published application: el subdominio, el dominio y, como Service URL, `http://aplicacion:8080`. El token da acceso al túnel: no va en capturas de pantalla, y si se expone, se renueva en el panel del túnel y se cambia en el `.env`.
 2. **El correo.** En Resend se crea la cuenta y, en Domains > Add domain, se agrega un subdominio del dominio del responsable, solo para el correo de El Parte. Los registros DNS que pide se cargan en Cloudflare, y se espera a que diga Verified. En API Keys se crea una clave con permiso de envío para ese dominio.
 3. **El `.env`** de la raíz, que no se versiona, suma:
 
@@ -81,7 +81,7 @@ ELPARTE_URL_PUBLICA=https://el-subdominio-del-responsable
 ELPARTE_REMITENTE="El Parte <parte@el-subdominio-del-correo>"
 ```
 
-y los invitados, como en "Los invitados", arriba. Si falta una de las cuatro primeras, Docker Compose no arranca y dice cuál.
+y los invitados, como en "Los invitados", arriba, con su dirección de correo real: un texto que no es un correo no da error, porque un correo no invitado recibe la misma respuesta. Si falta una de las cuatro primeras, Docker Compose no arranca y dice cuál.
 
 4. **Docker Desktop** arranca con la sesión (en su configuración, General > Start Docker Desktop when you sign in), así El Parte vuelve solo si la máquina se reinicia.
 
