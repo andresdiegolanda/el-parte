@@ -28,14 +28,18 @@ import io.github.andresdiegolanda.elparte.mensajes.Emisor;
 import io.github.andresdiegolanda.elparte.mensajes.RegistroDeMensajes;
 import io.github.andresdiegolanda.elparte.mensajes.Sobre;
 import io.github.andresdiegolanda.elparte.mensajes.Tipos;
+import io.github.andresdiegolanda.elparte.modelo.Modelo;
+import io.github.andresdiegolanda.elparte.refutador.Refutador;
 
 /**
  * Cierra cada corrida cuando todos sus candidatos llegaron a un final, o la corta cuando pasa su tope
- * de tiempo (ADR 0005; el tope de costo y el de pasos llegan con T22).
+ * de tiempo (ADR 0005). Si el presupuesto rechazó alguna llamada al modelo, la corrida cierra cortada,
+ * con el límite que se alcanzó.
  *
  * <p>Un candidato llega a un final cuando el archivista lo da por conocido, cuando el refutador lo
- * gradúa NOT_MENTIONED o cuando el editor procesó su análisis. Todo se cuenta desde el registro de
- * mensajes, así una reproducción cierra igual que la original.
+ * gradúa NOT_MENTIONED, cuando el presupuesto le rechazó la llamada al refutador (queda sin procesar)
+ * o cuando el editor procesó su análisis. Todo se cuenta desde el registro de mensajes, así una
+ * reproducción cierra igual que la original.
  */
 @Component
 public class CierreDeCorrida {
@@ -83,7 +87,7 @@ public class CierreDeCorrida {
         // mensajes de cada tópico a su ritmo, y un candidato puede llegar a la tabla después.
         boolean explorada = conteo.exploraciones >= corrida.fuentes().size();
         if (explorada && conteo.finales() >= conteo.esperados) {
-            cerrar(corridaId, corrida, iniciada, conteo, null);
+            cerrar(corridaId, corrida, iniciada, conteo, conteo.limite);
         } else if (Duration.between(iniciada, reloj.instant()).toMinutes() >= corrida.presupuesto().minutosMaximos()) {
             cerrar(corridaId, corrida, iniciada, conteo, "tiempo");
         }
@@ -104,7 +108,8 @@ public class CierreDeCorrida {
             return;
         }
         String inicio = Corridas.idDeInicio(corridaId);
-        int sinProcesar = conteo.sinProcesarEnExploracion + Math.max(0, conteo.esperados - conteo.finales());
+        int sinProcesar = conteo.sinProcesarEnExploracion + conteo.rechazadosAlRefutador
+                + Math.max(0, conteo.esperados - conteo.finales());
         long minutos = Duration.between(iniciada, reloj.instant()).toMinutes();
         if (limite != null) {
             emisor.emitir(corridaId, Tipos.CORRIDA_CORTADA, Editor.AGENTE, inicio, 0,
@@ -151,8 +156,18 @@ public class CierreDeCorrida {
                 }
                 case Tipos.HECHOS_ANALIZADOS -> conteo.analizados.add(sobre.mensajeId());
                 case Tipos.USO_MODELO -> {
-                    conteo.llamadas++;
-                    conteo.costo = conteo.costo.add(registro.contenido(sobre, UsoModelo.class).costoUsd());
+                    UsoModelo uso = registro.contenido(sobre, UsoModelo.class);
+                    if (Modelo.RECHAZADA.equals(uso.resultado())) {
+                        if (Refutador.AGENTE.equals(uso.agenteQueLlama())) {
+                            conteo.rechazadosAlRefutador++;
+                        }
+                        if (conteo.limite == null) {
+                            conteo.limite = uso.limite();
+                        }
+                    } else {
+                        conteo.llamadas++;
+                    }
+                    conteo.costo = conteo.costo.add(uso.costoUsd());
                 }
                 default -> {
                 }
@@ -180,12 +195,14 @@ public class CierreDeCorrida {
         int inferred;
         int notMentioned;
         int editados;
+        int rechazadosAlRefutador;
+        String limite;
         int llamadas;
         BigDecimal costo = BigDecimal.ZERO;
         final List<String> analizados = new java.util.ArrayList<>();
 
         int finales() {
-            return conocidos + notMentioned + editados;
+            return conocidos + notMentioned + rechazadosAlRefutador + editados;
         }
     }
 }

@@ -225,7 +225,7 @@
 <script type="application/json" id="datos">{
  "meta": {
   "actualizado": "2026-11-14",
-  "nota": "La primera rebanada (T08) anda de punta a punta y ya corrió contra el banco las 78 noches del registro (T20): 12,71 USD, 5 de 5 publicables encontrados, 0 de 1 hallazgo y una precisión estimada del 95 %. Falta que el responsable confirme la revisión. Lo que la medición mostró del explorador de ARCE se arregla en T39, y el tope de candidatos se revisa en T22. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). El analista escribe qué dice, por qué importa y qué mirar, y falta medirlo contra el banco junto con T39 (T21). El presupuesto, la cola de revisión y el login (T22, T23 y T25) se pueden empezar. El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.",
+  "nota": "La primera rebanada (T08) anda de punta a punta y ya corrió contra el banco las 78 noches del registro (T20): 12,71 USD, 5 de 5 publicables encontrados, 0 de 1 hallazgo y una precisión estimada del 95 %. Falta que el responsable confirme la revisión. Lo que la medición mostró del explorador de ARCE se arregla en T39. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). El analista completo (T21) y el presupuesto que corta (T22) están hechos, sin el tope de 60 candidatos, y falta medirlos contra el banco junto con T39, en una sola corrida. La cola de revisión y el login (T23 y T25) se pueden empezar. El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.",
   "calendario": [
    "2026-11-07",
    "2026-11-14",
@@ -435,12 +435,12 @@
      "hecho": true
     },
     {
-     "texto": "Que el explorador avise cuando un día hábil viene sin publicaciones: el feed de ARCE no trae nada del 2026-10-23 al 2026-10-29 (pasa a T39)",
-     "hecho": false
+     "texto": "Que el explorador avise cuando un día hábil viene sin publicaciones: el feed de ARCE no trae nada del 2026-10-23 al 2026-10-29 (pasa a T39, hecho)",
+     "hecho": true
     },
     {
-     "texto": "Decidir qué hacer con el tope de 60 candidatos, que dejó 196 compras del BPS sin procesar (pasa a T22)",
-     "hecho": false
+     "texto": "Decidir qué hacer con el tope de 60 candidatos, que dejó 196 compras del BPS sin procesar (pasa a T22: se va, y corta el presupuesto)",
+     "hecho": true
     }
    ],
    "notas": [
@@ -619,8 +619,8 @@
   {
    "id": "T22",
    "titulo": "Implementar el presupuesto que corta",
-   "columna": "para-empezar",
-   "orden": 1,
+   "columna": "en-curso",
+   "orden": 4,
    "tipo": "componente",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -630,20 +630,24 @@
     {
      "texto": "adrs/0005-presupuesto-por-corrida.md",
      "ruta": "adrs/0005-presupuesto-por-corrida.md"
+    },
+    {
+     "texto": "docs/como-se-hizo/presupuesto.md",
+     "ruta": "docs/como-se-hizo/presupuesto.md"
     }
    ],
    "etapas": [
     {
      "texto": "Contrato",
-     "hecho": false
+     "hecho": true
     },
     {
      "texto": "Código",
-     "hecho": false
+     "hecho": true
     },
     {
      "texto": "Pruebas",
-     "hecho": false
+     "hecho": true
     },
     {
      "texto": "Medido contra el banco",
@@ -651,28 +655,32 @@
     },
     {
      "texto": "Página cómo se hizo",
-     "hecho": false
+     "hecho": true
     }
    ],
    "lista": [
     {
      "texto": "Advisor de presupuesto en todos los ChatClient",
-     "hecho": false
+     "hecho": true
     },
     {
      "texto": "Libro de la corrida con actualización atómica",
-     "hecho": false
+     "hecho": true
     },
     {
      "texto": "Tabla de precios en la base, con fuente y fecha, y sus valores iniciales en una migración",
-     "hecho": false
+     "hecho": true
     },
     {
      "texto": "Corte por tiempo y mensaje corrida.cortada",
-     "hecho": false
+     "hecho": true
     },
     {
      "texto": "Revisar el tope de 60 candidatos por corrida: en las 78 noches dejó 196 compras del BPS sin procesar (T20)",
+     "hecho": true
+    },
+    {
+     "texto": "Fijar los valores del presupuesto con la medición: con el analista y sin el tope de candidatos, la noche más cargada costaría unos 1,60 USD y pasaría las 200 llamadas",
      "hecho": false
     }
    ],
@@ -687,6 +695,10 @@
     {
      "fecha": "2026-11-15",
      "texto": "Deja de depender de T08: el código de la rebanada ya está hecho, y a T08 solo le falta la medición (T20). Pasa a Para empezar."
+    },
+    {
+     "fecha": "2026-11-16",
+     "texto": "Hechos el contrato, el código, las pruebas y la página: un advisor en el ChatClient reserva el peor caso de cada llamada en el libro de la corrida, con un solo update que solo pasa si alcanza, y la rechaza si no; el rechazo se graba, y el cierre corta la corrida con el límite. La tabla de precios y el corte por tiempo ya estaban desde la primera rebanada. Se va el tope de 60 candidatos: los de la fecha objetivo pasan primero. Falta medirlo contra el banco y fijar sus valores. Pasa a En curso."
     }
    ]
   },
@@ -694,7 +706,7 @@
    "id": "T23",
    "titulo": "Armar la cola de revisión humana",
    "columna": "para-empezar",
-   "orden": 2,
+   "orden": 1,
    "tipo": "web",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -743,7 +755,7 @@
    "id": "T25",
    "titulo": "Armar el login por enlace, los cuatro usuarios y la cuenta de demostración",
    "columna": "para-empezar",
-   "orden": 3,
+   "orden": 2,
    "tipo": "web",
    "dueno": "desarrollo",
    "dependeDe": "",

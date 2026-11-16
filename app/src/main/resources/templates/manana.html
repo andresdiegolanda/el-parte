@@ -14,7 +14,11 @@
     <th:block th:if="${informe != null}">
         <p>Noche del <strong th:text="${informe.fecha}">2026-11-12</strong>,
             corrida <a th:href="@{/corridas/{id}(id=${informe.corridaId})}" th:text="${informe.corridaId}">c-...</a>.
-            <span th:if="${informe.corridaCortada}" class="marca">La corrida se cortó antes de terminar: puede faltar algo.</span></p>
+            <span th:if="${informe.corridaCortada and corte == null}" class="marca">La corrida se cortó antes de terminar: puede faltar algo.</span>
+            <span th:if="${corte != null}" class="marca">La corrida se cortó antes de terminar porque
+                <th:block th:text="${corte.motivo}">se acabó su presupuesto</th:block>:
+                <th:block th:text="${corte.sinProcesar == 1} ? 'quedó 1 candidato sin procesar' : 'quedaron ' + ${corte.sinProcesar} + ' candidatos sin procesar'"></th:block>,
+                así que puede faltar algo.</span></p>
 
         <div th:if="${fallas > 0}" class="tarjeta marca">
             Esta noche no se pudo leer todo: <span th:text="${fallas}">1</span>

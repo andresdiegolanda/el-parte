@@ -31,6 +31,19 @@ public class MananaControlador {
     public record Evidencia(String url, String fragmento) {
     }
 
+    /** Por qué se cortó la corrida y cuántos candidatos quedaron sin procesar (ADR 0005). */
+    public record Corte(String limite, int sinProcesar) {
+
+        public String motivo() {
+            return switch (limite) {
+                case "costo" -> "se acabó su presupuesto de costo";
+                case "pasos" -> "llegó a su máximo de llamadas al modelo";
+                case "tiempo" -> "se le acabó el tiempo";
+                default -> "alcanzó un límite";
+            };
+        }
+    }
+
     public record Hecho(String clave, String tipo, int version, String afirmacion, String grado, String razonamiento,
             String fechaPublicacion, boolean fechaConfirmada, String queDice, String porQueImporta, String queMirar,
             String estadoRevision, String mensajeCandidato, List<Evidencia> evidencias) {
@@ -53,6 +66,11 @@ public class MananaControlador {
                 .optional();
         modelo.addAttribute("informe", informe.orElse(null));
         modelo.addAttribute("hechos", informe.map(i -> hechos(i.id())).orElse(List.of()));
+        modelo.addAttribute("corte", informe.filter(Informe::corridaCortada).flatMap(i -> jdbc.sql("""
+                select contenido->>'limite', (contenido->>'sinProcesar')::int from parte.mensajes
+                where corrida_id = :c and tipo = 'corrida.cortada'
+                """).param("c", i.corridaId()).query((f, n) -> new Corte(f.getString(1), f.getInt(2))).optional())
+                .orElse(null));
         // Una fuente que falló no es lo mismo que una noche sin novedades: la página lo dice.
         modelo.addAttribute("fallas", informe.map(i -> jdbc.sql(
                 "select count(*) from parte.mensajes where corrida_id = :c and tipo = 'fuente.fallida'")

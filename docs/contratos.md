@@ -143,7 +143,7 @@ Lo emite cada explorador cuando terminó con su fuente, aunque haya fallado. Se 
 | `fuente` | La fuente explorada. |
 | `publicacionesLeidas` | Cuántas publicaciones de la noche leyó. |
 | `candidatosEmitidos` | Cuántos candidatos emitió. |
-| `sinProcesar` | Cuántas publicaciones de entidades seguidas no pudo leer o dejó afuera por el tope de candidatos. Al tope entran primero las de la fecha objetivo, así lo que queda afuera es del día de margen. |
+| `sinProcesar` | Cuántas publicaciones de entidades seguidas no pudo leer. Los candidatos salen con los de la fecha objetivo primero y la cadena los procesa en ese orden, así, si el presupuesto corta la corrida, lo que queda sin procesar es del día de margen. Hasta T22 había además un tope de 60 candidatos por corrida, y lo que quedaba afuera se contaba acá. |
 
 ```json
 { "fuente": "arce", "publicacionesLeidas": 712, "candidatosEmitidos": 41, "sinProcesar": 2 }
@@ -293,22 +293,23 @@ Lo emite un explorador cuando su fuente no responde o la respuesta no sirve. Lle
 
 ### `uso.modelo`
 
-Lo emite el advisor de presupuesto por cada llamada al modelo, se haga o no ([ADR 0005](../adrs/0005-presupuesto-por-corrida.md)).
+Lo emite el servicio del modelo por cada llamada, se haga o no, con lo que le dejó el advisor de presupuesto ([ADR 0005](../adrs/0005-presupuesto-por-corrida.md)).
 
 | Campo | Qué es |
 |---|---|
 | `agenteQueLlama` | Qué agente pidió la llamada. |
 | `modelo` | Qué modelo, por ejemplo `claude-haiku-5-5`. |
-| `resultado` | `hecha`, `rechazadaPorPresupuesto`, `error` o `reproducida` (en modo reproducción: la respuesta sale de la grabación, con los tokens grabados y costo cero). `reproducida` se sumó con la primera rebanada, y `rechazadaPorPresupuesto` llega con el presupuesto que corta (T22). |
+| `resultado` | `hecha`, `rechazadaPorPresupuesto`, `error` o `reproducida` (en modo reproducción: la respuesta sale de la grabación, con los tokens grabados y costo cero). `reproducida` se sumó con la primera rebanada, y `rechazadaPorPresupuesto` llegó con el presupuesto que corta (T22): la llamada no se hizo porque no alcanzaba. El rechazo se graba como una respuesta, y la repetición lo vuelve a emitir como `rechazadaPorPresupuesto`. |
 | `tokensEntrada`, `tokensSalida`, `tokensCacheLectura`, `tokensCacheEscritura` | Lo usado. |
 | `costoUsd` | Lo gastado, según la tabla de precios. |
 | `reservaUsd` | Lo que se reservó antes de llamar. |
 | `duracionMs` | Cuánto tardó. |
+| `limite` | Solo si se rechazó: el límite que no alcanzaba, `costo`, `pasos` o `tiempo`. Se sumó con T22. |
 
 ```json
 { "agenteQueLlama": "refutador", "modelo": "claude-sonnet-5-5", "resultado": "hecha",
   "tokensEntrada": 3850, "tokensSalida": 640, "tokensCacheLectura": 2100, "tokensCacheEscritura": 0,
-  "costoUsd": 0.01431, "reservaUsd": 0.0477, "duracionMs": 6120 }
+  "costoUsd": 0.01431, "reservaUsd": 0.0477, "duracionMs": 6120, "limite": null }
 ```
 
 ### `corrida.cortada` y `corrida.terminada`
@@ -321,7 +322,7 @@ Lo emite el advisor de presupuesto por cada llamada al modelo, se haga o no ([AD
 
 ### Cuándo termina una corrida
 
-Una corrida termina cuando todas sus fuentes mandaron `exploracion.terminada` y todos los candidatos llegaron a un final: el archivista los dio por conocidos, el refutador los graduó NOT_MENTIONED o el editor procesó su análisis. Lo controla un proceso que revisa cada dos segundos las corridas en curso, contando desde el registro de mensajes. El total de candidatos sale de `exploracion.terminada` y no de contar los mensajes `candidatos`, porque el observador guarda cada tópico a su ritmo. Al terminar, el editor emite un `informes` por cada cliente con suscripciones y después `corrida.terminada`. Si la corrida pasa su tope de tiempo, se corta: primero `corrida.cortada`, después los informes con `corridaCortada` y `corrida.terminada`. [PROVEN: primera rebanada, `CierreDeCorrida`, 2026-11-14] Los topes de costo y de pasos llegan con T22.
+Una corrida termina cuando todas sus fuentes mandaron `exploracion.terminada` y todos los candidatos llegaron a un final: el archivista los dio por conocidos, el refutador los graduó NOT_MENTIONED, el presupuesto le rechazó la llamada al refutador (el candidato queda sin procesar) o el editor procesó su análisis. Lo controla un proceso que revisa cada dos segundos las corridas en curso, contando desde el registro de mensajes. El total de candidatos sale de `exploracion.terminada` y no de contar los mensajes `candidatos`, porque el observador guarda cada tópico a su ritmo. Al terminar, el editor emite un `informes` por cada cliente con suscripciones y después `corrida.terminada`. Si la corrida pasa su tope de tiempo, se corta: primero `corrida.cortada`, después los informes con `corridaCortada` y `corrida.terminada`. [PROVEN: primera rebanada, `CierreDeCorrida`, 2026-11-14] Si el presupuesto rechazó alguna llamada, por costo o por pasos, la corrida termina igual cuando todos sus candidatos llegaron a un final, pero cortada, con el límite del primer `uso.modelo` rechazado. Un candidato rechazado en el refutador queda sin procesar; uno rechazado en el analista se publica sin análisis. [PROVEN: `PresupuestoQueCortaTest`, 2026-11-16]
 
 ```json
 { "estado": "completa",

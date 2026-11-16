@@ -78,13 +78,11 @@ public class ExploradorArce {
     private final JsonMapper json;
     private final int diasDeMargen;
     private final int concurrencia;
-    private final int maximoCandidatos;
 
     public ExploradorArce(LectorArce lector, Grabaciones grabaciones, Corridas corridas, Emisor emisor,
             Procesados procesados, JdbcClient jdbc, JsonMapper json,
             @Value("${elparte.arce.dias-de-margen:1}") int diasDeMargen,
-            @Value("${elparte.arce.concurrencia:4}") int concurrencia,
-            @Value("${elparte.corrida.maximo-candidatos:60}") int maximoCandidatos) {
+            @Value("${elparte.arce.concurrencia:4}") int concurrencia) {
         this.lector = lector;
         this.grabaciones = grabaciones;
         this.corridas = corridas;
@@ -94,7 +92,6 @@ public class ExploradorArce {
         this.json = json;
         this.diasDeMargen = diasDeMargen;
         this.concurrencia = concurrencia;
-        this.maximoCandidatos = maximoCandidatos;
     }
 
     @KafkaListener(topics = Tipos.CORRIDA_INICIADA, groupId = AGENTE)
@@ -153,10 +150,6 @@ public class ExploradorArce {
         int emitidos = 0;
         int sinProcesar = fallas.size();
         for (Candidato sinId : paraElTope(leidos, fecha)) {
-            if (emitidos == maximoCandidatos) {
-                sinProcesar++;
-                continue;
-            }
             emitidos++;
             Candidato candidato = new Candidato(String.format("k-arce-%04d", emitidos), sinId.fuente(),
                     sinId.identificadorEnFuente(), sinId.proceso(), sinId.url(), sinId.fechaPublicacion(),
@@ -190,9 +183,10 @@ public class ExploradorArce {
     }
 
     /**
-     * Los candidatos en el orden en que entran al tope de la corrida: primero los de la fecha objetivo y
-     * después los de los días de margen, cada grupo en orden de publicación. Así, si hay más que el
-     * máximo, lo que queda afuera es del margen, que la noche anterior ya vio.
+     * Los candidatos en el orden en que entran a la cadena: primero los de la fecha objetivo y después
+     * los de los días de margen, cada grupo en orden de publicación. La cadena los procesa en ese orden,
+     * así, si el presupuesto corta la corrida, lo que queda sin procesar es del margen, que la noche
+     * anterior ya vio (ADR 0005).
      */
     static List<Candidato> paraElTope(List<Leido> leidos, LocalDate fecha) {
         return leidos.stream()

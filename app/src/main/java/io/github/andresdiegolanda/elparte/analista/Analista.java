@@ -24,6 +24,7 @@ import io.github.andresdiegolanda.elparte.mensajes.RegistroDeMensajes;
 import io.github.andresdiegolanda.elparte.mensajes.Sobre;
 import io.github.andresdiegolanda.elparte.mensajes.Tipos;
 import io.github.andresdiegolanda.elparte.modelo.Modelo;
+import io.github.andresdiegolanda.elparte.presupuesto.SinPresupuesto;
 import tools.jackson.databind.json.JsonMapper;
 
 /**
@@ -97,15 +98,19 @@ public class Analista {
         Candidato candidato = registro.contenido(registro.esperar(sobreDelCotejo.causaId()), Candidato.class);
         CorridaIniciada corrida = corridas.contexto(sobre.corridaId());
 
-        Analisis analisis;
+        Analisis analisis = null;
+        String sinAnalisis = null;
         try {
             analisis = modelo.pedir(new Modelo.Pedido(sobre.corridaId(), AGENTE, sobre.mensajeId(), 1, SISTEMA,
                     pedidoAlModelo(graduado, cotejo, candidato, corrida), TOKENS_DE_SALIDA), Analisis.class);
         } catch (Modelo.FallaDelModelo falla) {
-            analisis = null;
+            sinAnalisis = "el modelo no respondió.";
+        } catch (SinPresupuesto sinPresupuesto) {
+            // El hecho ya está graduado: se publica igual, sin análisis (ADR 0005, ADR 0015).
+            sinAnalisis = "se acabó el presupuesto de la corrida.";
         }
         emisor.emitir(sobre.corridaId(), Tipos.HECHOS_ANALIZADOS, AGENTE, sobre.mensajeId(), 0,
-                revisar(graduado, List.of(candidato.fechaPublicacion(), corrida.fechaObjetivo()), analisis));
+                revisar(graduado, List.of(candidato.fechaPublicacion(), corrida.fechaObjetivo()), analisis, sinAnalisis));
     }
 
     /**
@@ -115,8 +120,14 @@ public class Analista {
      * publicación y de la noche también valen: el modelo las recibe y puede nombrarlas.
      */
     static HechoAnalizado revisar(CandidatoGraduado graduado, List<String> fechas, Analisis analisis) {
+        return revisar(graduado, fechas, analisis, "el modelo no respondió.");
+    }
+
+    /** {@code sinAnalisis} dice por qué no hay análisis cuando {@code analisis} es nulo. */
+    static HechoAnalizado revisar(CandidatoGraduado graduado, List<String> fechas, Analisis analisis,
+            String sinAnalisis) {
         if (analisis == null) {
-            String motivo = SIN_ANALISIS + ": el modelo no respondió.";
+            String motivo = SIN_ANALISIS + ": " + sinAnalisis;
             return new HechoAnalizado(graduado.candidatoId(), graduado.claveDeHecho(), graduado.grado(),
                     graduado.afirmacion(), motivo, motivo);
         }

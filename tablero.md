@@ -3,7 +3,7 @@
 Todo pendiente de El Parte vive acá, con dueño (regla 8). Este archivo es lo que manda. El kanban publicado es editable y se sincroniza con este archivo cada vez que una sesión de desarrollo lee o escribe el repositorio, o cuando se le pide; su copia sin conexión, [`kanban/index.html`](kanban/index.html), se genera desde acá con `python3 herramientas/generar_kanban.py` y no se edita a mano ([ADR 0009](adrs/0009-kanban-editable-sincronizado.md)).
 
 - Actualizado: 2026-11-14
-- Nota: La primera rebanada (T08) anda de punta a punta y ya corrió contra el banco las 78 noches del registro (T20): 12,71 USD, 5 de 5 publicables encontrados, 0 de 1 hallazgo y una precisión estimada del 95 %. Falta que el responsable confirme la revisión. Lo que la medición mostró del explorador de ARCE se arregla en T39, y el tope de candidatos se revisa en T22. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). El analista escribe qué dice, por qué importa y qué mirar, y falta medirlo contra el banco junto con T39 (T21). El presupuesto, la cola de revisión y el login (T22, T23 y T25) se pueden empezar. El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.
+- Nota: La primera rebanada (T08) anda de punta a punta y ya corrió contra el banco las 78 noches del registro (T20): 12,71 USD, 5 de 5 publicables encontrados, 0 de 1 hallazgo y una precisión estimada del 95 %. Falta que el responsable confirme la revisión. Lo que la medición mostró del explorador de ARCE se arregla en T39. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). El analista completo (T21) y el presupuesto que corta (T22) están hechos, sin el tope de 60 candidatos, y falta medirlos contra el banco junto con T39, en una sola corrida. La cola de revisión y el login (T23 y T25) se pueden empezar. El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.
 - Calendario: 2026-11-07, 2026-11-14, 2026-11-21, 2026-11-28
 - Repositorio: https://github.com/andresdiegolanda/el-parte
 
@@ -108,8 +108,8 @@ Lista:
 - [x] Costo y duración por noche
 - [x] Versionar las métricas con la huella del registro usado (ADR 0007)
 - [x] Buscar la compra directa del BPS a ATOS, el único hallazgo que esta medición podía encontrar: no está en ninguna publicación del BPS que trajo el feed en el período, pero el feed no trae nada del 23 al 29 de octubre
-- [ ] Que el explorador avise cuando un día hábil viene sin publicaciones: el feed de ARCE no trae nada del 2026-10-23 al 2026-10-29 (pasa a T39)
-- [ ] Decidir qué hacer con el tope de 60 candidatos, que dejó 196 compras del BPS sin procesar (pasa a T22)
+- [x] Que el explorador avise cuando un día hábil viene sin publicaciones: el feed de ARCE no trae nada del 2026-10-23 al 2026-10-29 (pasa a T39, hecho)
+- [x] Decidir qué hacer con el tope de 60 candidatos, que dejó 196 compras del BPS sin procesar (pasa a T22: se va, y corta el presupuesto)
 
 Registro:
 - 2026-11-07: Creada con el plan (T07).
@@ -164,32 +164,34 @@ Registro:
 - 2026-11-15: Deja de depender de T08: el código de la rebanada ya está hecho, y a T08 solo le falta la medición (T20). Pasa a Para empezar.
 - 2026-11-16: Hechos el contrato, el código, las pruebas y la página: el analista le pide al modelo qué dice, por qué importa y qué mirar, copia el grado del refutador y no usa un campo con una cifra que no está en la evidencia (ADR 0015). La página de la mañana muestra el análisis aparte. Falta medirlo contra el banco, junto con T39: se estima que la medición de las 78 noches cuesta unos 16 USD. Pasa a En curso.
 
-## Para empezar
-
 ### T22 · Implementar el presupuesto que corta
 - Tipo: Componente
 - Dueño: desarrollo
-- Detalle: [adrs/0005-presupuesto-por-corrida.md](adrs/0005-presupuesto-por-corrida.md)
+- Detalle: [adrs/0005-presupuesto-por-corrida.md](adrs/0005-presupuesto-por-corrida.md), [docs/como-se-hizo/presupuesto.md](docs/como-se-hizo/presupuesto.md)
 
 El advisor de presupuesto, el libro de la corrida y la tabla de precios del ADR 0005.
 
 Etapas:
-- [ ] Contrato
-- [ ] Código
-- [ ] Pruebas
+- [x] Contrato
+- [x] Código
+- [x] Pruebas
 - [ ] Medido contra el banco
-- [ ] Página cómo se hizo
+- [x] Página cómo se hizo
 
 Lista:
-- [ ] Advisor de presupuesto en todos los ChatClient
-- [ ] Libro de la corrida con actualización atómica
-- [ ] Tabla de precios en la base, con fuente y fecha, y sus valores iniciales en una migración
-- [ ] Corte por tiempo y mensaje corrida.cortada
-- [ ] Revisar el tope de 60 candidatos por corrida: en las 78 noches dejó 196 compras del BPS sin procesar (T20)
+- [x] Advisor de presupuesto en todos los ChatClient
+- [x] Libro de la corrida con actualización atómica
+- [x] Tabla de precios en la base, con fuente y fecha, y sus valores iniciales en una migración
+- [x] Corte por tiempo y mensaje corrida.cortada
+- [x] Revisar el tope de 60 candidatos por corrida: en las 78 noches dejó 196 compras del BPS sin procesar (T20)
+- [ ] Fijar los valores del presupuesto con la medición: con el analista y sin el tope de candidatos, la noche más cargada costaría unos 1,60 USD y pasaría las 200 llamadas
 
 Registro:
 - 2026-11-07: Creada con el plan (T07).
 - 2026-11-15: Deja de depender de T08: el código de la rebanada ya está hecho, y a T08 solo le falta la medición (T20). Pasa a Para empezar.
+- 2026-11-16: Hechos el contrato, el código, las pruebas y la página: un advisor en el ChatClient reserva el peor caso de cada llamada en el libro de la corrida, con un solo update que solo pasa si alcanza, y la rechaza si no; el rechazo se graba, y el cierre corta la corrida con el límite. La tabla de precios y el corte por tiempo ya estaban desde la primera rebanada. Se va el tope de 60 candidatos: los de la fecha objetivo pasan primero. Falta medirlo contra el banco y fijar sus valores. Pasa a En curso.
+
+## Para empezar
 
 ### T23 · Armar la cola de revisión humana
 - Tipo: Web

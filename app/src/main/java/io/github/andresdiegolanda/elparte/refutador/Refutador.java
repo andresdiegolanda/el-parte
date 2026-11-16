@@ -27,6 +27,7 @@ import io.github.andresdiegolanda.elparte.mensajes.RegistroDeMensajes;
 import io.github.andresdiegolanda.elparte.mensajes.Sobre;
 import io.github.andresdiegolanda.elparte.mensajes.Tipos;
 import io.github.andresdiegolanda.elparte.modelo.Modelo;
+import io.github.andresdiegolanda.elparte.presupuesto.SinPresupuesto;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.databind.node.ArrayNode;
@@ -128,6 +129,10 @@ public class Refutador {
             } catch (Modelo.FallaDelModelo falla) {
                 veredicto = new Veredicto("NOT_MENTIONED", candidato.resumen(), List.of(), null,
                         "No hubo veredicto del modelo (" + falla.getMessage() + "); sin veredicto no se publica.", null);
+            } catch (SinPresupuesto sinPresupuesto) {
+                // Sin presupuesto el candidato queda sin procesar: no se gradúa, y el cierre lo cuenta por el
+                // uso.modelo rechazado (ADR 0005). Un candidato a medio verificar nunca se publica.
+                return;
             }
             graduado = graduar(candidato, cotejo, veredicto, fecha, duplicado);
         }

@@ -62,6 +62,11 @@ public class InicioDeCorrida {
     }
 
     public String iniciarNormal(LocalDate fechaObjetivo) {
+        return iniciarNormal(fechaObjetivo, presupuesto);
+    }
+
+    /** Una noche normal con otro presupuesto que el de la configuración. */
+    public String iniciarNormal(LocalDate fechaObjetivo, Presupuesto presupuesto) {
         List<String> entidades = jdbc.sql("select distinct entidad_id from parte.suscripciones order by entidad_id")
                 .query(String.class).list();
         CorridaIniciada inicio = new CorridaIniciada("normal", fechaObjetivo.toString(), fuentesActivas(), entidades,

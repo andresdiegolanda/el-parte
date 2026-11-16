@@ -1,15 +1,12 @@
 package io.github.andresdiegolanda.elparte.modelo;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.Optional;
 
 import org.springframework.ai.anthropic.AnthropicChatOptions;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.ChatClientResponse;
 import org.springframework.ai.chat.metadata.Usage;
-import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.converter.BeanOutputConverter;
-import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Service;
 
 import io.github.andresdiegolanda.elparte.corrida.Corridas;
@@ -19,6 +16,8 @@ import io.github.andresdiegolanda.elparte.mensajes.Contenidos.CorridaIniciada;
 import io.github.andresdiegolanda.elparte.mensajes.Contenidos.UsoModelo;
 import io.github.andresdiegolanda.elparte.mensajes.Emisor;
 import io.github.andresdiegolanda.elparte.mensajes.Tipos;
+import io.github.andresdiegolanda.elparte.presupuesto.AdvisorDePresupuesto;
+import io.github.andresdiegolanda.elparte.presupuesto.SinPresupuesto;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.databind.node.ObjectNode;
@@ -31,29 +30,32 @@ import tools.jackson.databind.node.ObjectNode;
  * pedido.</li>
  * <li>La respuesta se pide como salida estructurada y se convierte al {@code record} del agente.</li>
  * <li>Cada respuesta se graba, y en modo reproducción se lee de la grabación sin llamar al modelo.</li>
- * <li>Cada llamada emite {@code uso.modelo} con los tokens y el costo según la tabla de precios. El
- * presupuesto que corta la corrida llega con T22.</li>
+ * <li>Cada llamada pasa por el advisor de presupuesto, que reserva antes y anota después en el libro de
+ * la corrida (ADR 0005). Si no alcanza, la llamada no se hace, y también eso se graba.</li>
+ * <li>Cada llamada emite {@code uso.modelo}, se haga o no, con los tokens, el costo según la tabla de
+ * precios y lo reservado.</li>
  * </ul>
  */
 @Service
 public class Modelo {
 
-    private static final BigDecimal MILLON = BigDecimal.valueOf(1_000_000);
+    public static final String HECHA = "hecha";
+    public static final String REPRODUCIDA = "reproducida";
+    public static final String ERROR = "error";
+    public static final String RECHAZADA = "rechazadaPorPresupuesto";
 
     private final ChatClient chat;
     private final Grabaciones grabaciones;
     private final Corridas corridas;
     private final Emisor emisor;
-    private final JdbcClient jdbc;
     private final JsonMapper json;
 
-    public Modelo(ChatClient.Builder chat, Grabaciones grabaciones, Corridas corridas, Emisor emisor, JdbcClient jdbc,
-            JsonMapper json) {
-        this.chat = chat.build();
+    public Modelo(ChatClient.Builder chat, AdvisorDePresupuesto presupuesto, Grabaciones grabaciones, Corridas corridas,
+            Emisor emisor, JsonMapper json) {
+        this.chat = chat.defaultAdvisors(presupuesto).build();
         this.grabaciones = grabaciones;
         this.corridas = corridas;
         this.emisor = emisor;
-        this.jdbc = jdbc;
         this.json = json;
     }
 
@@ -76,8 +78,13 @@ public class Modelo {
         if ("reproduccion".equals(contexto.modo())) {
             JsonNode grabada = grabaciones.leer(contexto.reproduceA(), clave)
                     .orElseThrow(() -> new Grabaciones.SinGrabacionException(contexto.reproduceA(), clave));
-            emitirUso(pedido, modelo, "reproducida", grabada.path("tokensEntrada").asLong(),
-                    grabada.path("tokensSalida").asLong(), BigDecimal.ZERO, 0);
+            if (grabada.has("sinPresupuesto")) {
+                String limite = grabada.path("sinPresupuesto").asString();
+                emitirUso(pedido, modelo, RECHAZADA, 0, 0, BigDecimal.ZERO, BigDecimal.ZERO, 0, limite);
+                throw new SinPresupuesto(limite, BigDecimal.ZERO);
+            }
+            emitirUso(pedido, modelo, REPRODUCIDA, grabada.path("tokensEntrada").asLong(),
+                    grabada.path("tokensSalida").asLong(), BigDecimal.ZERO, BigDecimal.ZERO, 0, null);
             if (grabada.has("error")) {
                 throw new FallaDelModelo(grabada.path("error").asString());
             }
@@ -85,24 +92,36 @@ public class Modelo {
         }
 
         long inicio = System.currentTimeMillis();
-        ChatResponse respuesta;
+        ChatClientResponse respuesta;
         try {
             respuesta = chat.prompt()
                     .system(pedido.sistema())
                     .user(usuario)
                     .options(AnthropicChatOptions.builder().model(modelo).maxTokens(pedido.maximoTokensSalida()))
+                    .advisors(a -> a.param(AdvisorDePresupuesto.CORRIDA, pedido.corridaId())
+                            .param(AdvisorDePresupuesto.MODELO, modelo)
+                            .param(AdvisorDePresupuesto.PRESUPUESTO, contexto.presupuesto())
+                            .param(AdvisorDePresupuesto.MAXIMO_SALIDA, pedido.maximoTokensSalida()))
                     .call()
-                    .chatResponse();
+                    .chatClientResponse();
+        } catch (SinPresupuesto sinPresupuesto) {
+            // Se graba como una respuesta, así la corrida repetida se corta en el mismo lugar.
+            grabaciones.guardar(pedido.corridaId(), clave, "modelo",
+                    json.createObjectNode().put("modelo", modelo).put("sinPresupuesto", sinPresupuesto.limite()));
+            emitirUso(pedido, modelo, RECHAZADA, 0, 0, BigDecimal.ZERO, sinPresupuesto.reserva(), 0,
+                    sinPresupuesto.limite());
+            throw sinPresupuesto;
         } catch (RuntimeException e) {
             String detalle = e.getClass().getSimpleName() + (e.getMessage() == null ? "" : ": " + e.getMessage());
             grabaciones.guardar(pedido.corridaId(), clave, "modelo",
                     json.createObjectNode().put("modelo", modelo).put("error", detalle));
-            emitirUso(pedido, modelo, "error", 0, 0, BigDecimal.ZERO, System.currentTimeMillis() - inicio);
+            emitirUso(pedido, modelo, ERROR, 0, 0, BigDecimal.ZERO, BigDecimal.ZERO, System.currentTimeMillis() - inicio,
+                    null);
             throw new FallaDelModelo(detalle);
         }
         long duracion = System.currentTimeMillis() - inicio;
-        String texto = respuesta.getResult().getOutput().getText();
-        Usage uso = respuesta.getMetadata().getUsage();
+        String texto = respuesta.chatResponse().getResult().getOutput().getText();
+        Usage uso = respuesta.chatResponse().getMetadata().getUsage();
         long entrada = valor(uso == null ? null : uso.getPromptTokens());
         long salida = valor(uso == null ? null : uso.getCompletionTokens());
 
@@ -113,7 +132,8 @@ public class Modelo {
         grabacion.put("tokensSalida", salida);
         grabaciones.guardar(pedido.corridaId(), clave, "modelo", grabacion);
 
-        emitirUso(pedido, modelo, "hecha", entrada, salida, costo(pedido.corridaId(), modelo, entrada, salida), duracion);
+        emitirUso(pedido, modelo, HECHA, entrada, salida, decimal(respuesta, AdvisorDePresupuesto.COSTO),
+                decimal(respuesta, AdvisorDePresupuesto.RESERVA), duracion, null);
         return convertir(conversor, texto);
     }
 
@@ -143,30 +163,15 @@ public class Modelo {
     }
 
     private void emitirUso(Pedido pedido, String modelo, String resultado, long entrada, long salida, BigDecimal costo,
-            long duracionMs) {
+            BigDecimal reserva, long duracionMs, String limite) {
         emisor.emitir(pedido.corridaId(), Tipos.USO_MODELO, "presupuesto", pedido.causaId(), pedido.posicion(),
-                new UsoModelo(pedido.agente(), modelo, resultado, entrada, salida, 0, 0, costo, BigDecimal.ZERO,
-                        duracionMs));
+                new UsoModelo(pedido.agente(), modelo, resultado, entrada, salida, 0, 0, costo, reserva, duracionMs,
+                        limite));
     }
 
-    /** El precio que regía al empezar la corrida (ADR 0005). Sin precio, la llamada se rechaza antes. */
-    private BigDecimal costo(String corridaId, String modelo, long entrada, long salida) {
-        Optional<BigDecimal[]> precio = jdbc.sql("""
-                select p.usd_millon_entrada, p.usd_millon_salida
-                from parte.precios_de_modelo p, parte.corridas c
-                where c.id = :corrida and p.modelo = :modelo and p.desde <= c.iniciada_en
-                order by p.desde desc limit 1
-                """)
-                .param("corrida", corridaId)
-                .param("modelo", modelo)
-                .query((fila, n) -> new BigDecimal[] { fila.getBigDecimal(1), fila.getBigDecimal(2) })
-                .optional();
-        if (precio.isEmpty()) {
-            return BigDecimal.ZERO;
-        }
-        return precio.get()[0].multiply(BigDecimal.valueOf(entrada))
-                .add(precio.get()[1].multiply(BigDecimal.valueOf(salida)))
-                .divide(MILLON, 6, RoundingMode.HALF_UP);
+    private static BigDecimal decimal(ChatClientResponse respuesta, String clave) {
+        Object valor = respuesta.context().get(clave);
+        return valor instanceof BigDecimal numero ? numero : BigDecimal.ZERO;
     }
 
     private static long valor(Integer n) {

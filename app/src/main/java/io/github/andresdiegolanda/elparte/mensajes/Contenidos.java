@@ -113,7 +113,8 @@ public final class Contenidos {
             long tokensCacheEscritura,
             BigDecimal costoUsd,
             BigDecimal reservaUsd,
-            long duracionMs) {
+            long duracionMs,
+            String limite) {
     }
 
     public record CorridaCortada(String limite, BigDecimal gastadoUsd, int pasos, long minutos, int sinProcesar) {

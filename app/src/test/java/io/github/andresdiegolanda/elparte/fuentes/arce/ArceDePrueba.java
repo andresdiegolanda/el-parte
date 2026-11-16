@@ -43,6 +43,9 @@ import com.sun.net.httpserver.HttpServer;
  * <li>{@code llamado-1100005}: un llamado de otro organismo, del 16.</li>
  * <li>{@code llamado-1100006}: del 16; el servidor falla al pedirla.</li>
  * </ul>
+ *
+ * <p>Para el presupuesto que corta hay una noche de setiembre, el 10, con tres llamados del BPS
+ * ({@code llamado-1300001} a {@code llamado-1300003}): más de lo que alcanza un presupuesto chico.
  */
 public class ArceDePrueba implements AutoCloseable {
 
@@ -50,6 +53,8 @@ public class ArceDePrueba implements AutoCloseable {
     /** Las noches de octubre para la medición contra el banco. */
     public static final String PRIMERA_NOCHE_DEL_BANCO = "2026-10-14";
     public static final String ULTIMA_NOCHE_DEL_BANCO = "2026-10-16";
+    /** La noche de setiembre para el presupuesto que corta. */
+    public static final String NOCHE_DEL_PRESUPUESTO = "2026-09-10";
 
     private static final DateTimeFormatter FECHA_DEL_FEED =
             DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss", Locale.ENGLISH);
@@ -160,6 +165,16 @@ public class ArceDePrueba implements AutoCloseable {
                   "tender": {"id": "1100004",
                     "documents": [{"id": "1", "description": "Se prorroga la fecha de apertura"}]}
                 }]}""".formatted(BPS, PARTE_BPS));
+        for (int n = 1; n <= 3; n++) {
+            publicaciones.put("llamado-130000" + n, """
+                    {"releases": [{
+                      "id": "llamado-130000%d", "ocid": "ocds-yfs5dr-130000%d", "date": "2026-09-10T1%d:00:00Z",
+                      "tag": ["tender"], "buyer": %s, "parties": [%s],
+                      "tender": {"id": "130000%d", "title": "Compra Directa 70%d/2026",
+                        "description": "Adquisición de papel, lote %d", "status": "active",
+                        "items": [{"id": "1", "description": "Resma de papel A4"}]}
+                    }]}""".formatted(n, n, n, BPS, PARTE_BPS, n, n, n));
+        }
         publicaciones.put("llamado-1100005", """
                 {"releases": [{
                   "id": "llamado-1100005", "ocid": "ocds-yfs5dr-1100005", "date": "2026-10-16T10:00:00Z",
@@ -195,6 +210,8 @@ public class ArceDePrueba implements AutoCloseable {
             responder(intercambio, 200, "application/rss+xml", feed());
         } else if (ruta.equals("/ocds/rss/2026/10")) {
             responder(intercambio, 200, "application/rss+xml", feedDeOctubre());
+        } else if (ruta.equals("/ocds/rss/2026/09")) {
+            responder(intercambio, 200, "application/rss+xml", feedDeSetiembre());
         } else if (ruta.equals("/ocds/release/llamado-1200006") || ruta.equals("/ocds/release/llamado-1100006")) {
             responder(intercambio, 500, "text/plain", "Error interno");
         } else if (ruta.equals("/ocds/release/roto")) {
@@ -231,6 +248,17 @@ public class ArceDePrueba implements AutoCloseable {
         item(rss, "aclaracion_1100004", LocalDateTime.of(2026, 10, 15, 9, 30), "aclaracion");
         item(rss, "llamado-1100005", LocalDateTime.of(2026, 10, 16, 10, 0), "llamado");
         item(rss, "llamado-1100006", LocalDateTime.of(2026, 10, 16, 12, 0), "llamado");
+        return rss.append("</channel></rss>\n").toString();
+    }
+
+    private static String feedDeSetiembre() {
+        StringBuilder rss = new StringBuilder("""
+                <?xml version="1.0" encoding="UTF-8"?>
+                <rss version="2.0"><channel><title>Compras estatales (prueba, setiembre)</title>
+                """);
+        for (int n = 1; n <= 3; n++) {
+            item(rss, "llamado-130000" + n, LocalDateTime.of(2026, 9, 10, 10 + n, 0), "llamado");
+        }
         return rss.append("</channel></rss>\n").toString();
     }
 

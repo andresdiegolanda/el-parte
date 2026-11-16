@@ -605,7 +605,7 @@ var S = {
    "col": 2,
    "fila": 1,
    "estado": "construido",
-   "que_es": "Lee lo publicado en ARCE la noche objetivo y un día de margen, se queda con las compras de las entidades seguidas y emite un candidato por cada una, hasta el máximo de la corrida, con las de la fecha objetivo primero. No usa el modelo. Si la fecha objetivo es un día hábil y el feed no trae nada de ese día, emite fuente.fallida de tipo sinPublicaciones. En modo banco, lo que la corrida de la noche anterior ya leyó de una publicación lo toma de su grabación (ADR 0014).",
+   "que_es": "Lee lo publicado en ARCE la noche objetivo y un día de margen, se queda con las compras de las entidades seguidas y emite un candidato por cada una, con las de la fecha objetivo primero: si el presupuesto corta, lo que queda sin procesar es del margen. No usa el modelo. Si la fecha objetivo es un día hábil y el feed no trae nada de ese día, emite fuente.fallida de tipo sinPublicaciones. En modo banco, lo que la corrida de la noche anterior ya leyó de una publicación lo toma de su grabación (ADR 0014).",
    "para_que": "Es la puerta de entrada de los hechos de ARCE: filtra por comprador antes de cualquier otra cosa y graba todo lo que lee.",
    "codigo": [
     "app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/arce/ExploradorArce.java",
@@ -843,7 +843,7 @@ var S = {
    "col": 11,
    "fila": 5,
    "estado": "construido",
-   "que_es": "Dice qué límite se alcanzó y cuánto quedó sin procesar. Hoy, solo el de tiempo.",
+   "que_es": "Dice qué límite se alcanzó (costo, pasos o tiempo) y cuánto quedó sin procesar.",
    "para_que": "Explica por qué una corrida no terminó entera.",
    "docs": [
     "docs/contratos.md"
@@ -858,8 +858,8 @@ var S = {
    "col": 7,
    "fila": 10,
    "estado": "construido",
-   "que_es": "Una por llamada al modelo: modelo, tokens, costo y resultado (hecha, error o reproducida).",
-   "para_que": "Es de donde sale el costo por agente de la sala de máquinas, y la base del presupuesto que corta (T22).",
+   "que_es": "Una por llamada al modelo, se haga o no: modelo, tokens, costo, lo reservado y resultado (hecha, error, reproducida o rechazadaPorPresupuesto, con el límite).",
+   "para_que": "Es de donde sale el costo por agente de la sala de máquinas, y de donde el cierre sabe que el presupuesto cortó la corrida.",
    "docs": [
     "docs/contratos.md"
    ],
@@ -981,7 +981,7 @@ var S = {
    "col": 10,
    "fila": 4,
    "estado": "construido",
-   "que_es": "Revisa cada dos segundos las corridas en curso: cierra la que tiene todos sus candidatos en un final y corta la que pasó su tope de tiempo.",
+   "que_es": "Revisa cada dos segundos las corridas en curso: cierra la que tiene todos sus candidatos en un final, cortada si el presupuesto rechazó alguna llamada, y corta la que pasó su tope de tiempo.",
    "para_que": "Sin cierre no hay informe ni corrida.terminada. Cuenta desde el registro de mensajes, así una repetición cierra igual.",
    "codigo": [
     "app/src/main/java/io/github/andresdiegolanda/elparte/corrida/CierreDeCorrida.java"
@@ -1076,12 +1076,20 @@ var S = {
    "sub": "advisor · libro de la corrida",
    "col": 5,
    "fila": 10,
-   "estado": "disenado",
-   "que_es": "Reservará el peor caso antes de cada llamada al modelo y cortará la corrida si no alcanza, por costo o por pasos.",
-   "para_que": "Que ninguna noche gaste más que su tope (ADR 0005). Hoy el tope de 60 candidatos y el del espacio de trabajo hacen de red.",
+   "estado": "construido",
+   "que_es": "Un advisor en el ChatClient del servicio del modelo: antes de cada llamada reserva el peor caso en el libro de la corrida y, si no alcanza por costo o por pasos, la llamada no se hace. Después anota lo gastado de verdad y libera la reserva.",
+   "para_que": "Que ninguna noche gaste más que su tope, aunque varios agentes llamen a la vez (ADR 0005).",
    "docs": [
-    "adrs/0005-presupuesto-por-corrida.md"
+    "adrs/0005-presupuesto-por-corrida.md",
+    "docs/como-se-hizo/presupuesto.md"
    ],
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/presupuesto/AdvisorDePresupuesto.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/presupuesto/LibroDeCorrida.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/presupuesto/Precios.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/presupuesto/SinPresupuesto.java"
+   ],
+   "nota": "Falta medirlo contra el banco y fijar sus valores con la medición (T22).",
    "tarjetas": [
     "T22"
    ]
@@ -1336,8 +1344,8 @@ var S = {
    "col": 1,
    "fila": 14,
    "estado": "construido",
-   "que_es": "El libro de gasto de cada corrida.",
-   "para_que": "Lo crea el inicio; lo va a llevar el presupuesto que corta (T22).",
+   "que_es": "El libro de gasto de cada corrida: lo gastado, lo reservado, los pasos y el primer límite que no alcanzó.",
+   "para_que": "Lo crea el inicio y lo lleva el presupuesto que corta (ADR 0005).",
    "docs": [
     "docs/base-de-afirmaciones.md"
    ],
@@ -1529,7 +1537,7 @@ var S = {
    "col": 11,
    "fila": 17,
    "estado": "construido",
-   "que_es": "El último informe de la cuenta de demostración: cada hecho con su grado, su evidencia, el análisis marcado como análisis, su estado de revisión y el enlace a su traza. Avisa si una fuente falló.",
+   "que_es": "El último informe de la cuenta de demostración: cada hecho con su grado, su evidencia, el análisis marcado como análisis, su estado de revisión y el enlace a su traza. Avisa si una fuente falló, y si la corrida se cortó, por qué y cuántos candidatos quedaron sin procesar.",
    "para_que": "Es lo que El Parte le da a quien sigue una entidad.",
    "codigo": [
     "app/src/main/java/io/github/andresdiegolanda/elparte/web/MananaControlador.java",
@@ -1965,7 +1973,7 @@ var S = {
    "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "tokens y costo",
-   "detalle": "Una por llamada: hecha, error o reproducida, con tokens y costo según la tabla de precios."
+   "detalle": "Una por llamada, se haga o no: hecha, error, reproducida o rechazadaPorPresupuesto, con tokens, costo, lo reservado y, si se rechazó, el límite."
   },
   {
    "id": "refutador>kafka/candidatos.graduados",
@@ -2054,8 +2062,8 @@ var S = {
    "tipo": "emite",
    "estado": "construido",
    "papel": "auxiliar",
-   "etiqueta": "la corta por tiempo",
-   "detalle": "Si la corrida pasó sus minutos máximos, emite corrida.cortada antes de los informes."
+   "etiqueta": "la corta",
+   "detalle": "Si la corrida pasó sus minutos máximos, o el presupuesto rechazó alguna llamada al modelo, emite corrida.cortada con el límite antes de los informes."
   },
   {
    "id": "kafka/todos>observador",
@@ -2336,26 +2344,6 @@ var S = {
    "papel": "auxiliar",
    "etiqueta": "versiones de la corrida",
    "detalle": "Las versiones que escribió esta corrida."
-  },
-  {
-   "id": "base/corridas>modelo",
-   "de": "base/corridas",
-   "a": "modelo",
-   "tipo": "lee",
-   "estado": "construido",
-   "papel": "auxiliar",
-   "etiqueta": "cuándo empezó",
-   "detalle": "Para elegir el precio que regía al empezar la corrida."
-  },
-  {
-   "id": "base/precios_de_modelo>modelo",
-   "de": "base/precios_de_modelo",
-   "a": "modelo",
-   "tipo": "lee",
-   "estado": "construido",
-   "papel": "auxiliar",
-   "etiqueta": "precio vigente",
-   "detalle": "Entrada y salida por millón de tokens."
   },
   {
    "id": "base/corridas>corridas",
@@ -2769,10 +2757,10 @@ var S = {
    "de": "modelo",
    "a": "presupuesto",
    "tipo": "usa",
-   "estado": "disenado",
-   "papel": "auxiliar",
+   "estado": "construido",
+   "papel": "camino",
    "etiqueta": "reserva antes de llamar",
-   "detalle": "Cada llamada reservará el peor caso en el libro de la corrida; si no alcanza, no se hace.",
+   "detalle": "Cada llamada pasa por el advisor, con la corrida, el modelo, el presupuesto y el máximo de salida en el contexto del pedido. Si no alcanza, el servicio del modelo graba el rechazo y avisa a quien llamó.",
    "tarjetas": [
     "T22"
    ]
@@ -2782,26 +2770,33 @@ var S = {
    "de": "presupuesto",
    "a": "base/libros_de_corrida",
    "tipo": "escribe",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "reserva y gasto",
-   "detalle": "Llevará la reserva y el gasto real de cada llamada.",
+   "detalle": "Reserva con un solo update que solo pasa si alcanza, en su propia transacción; anota el gasto real y libera la reserva. El primer límite que no alcanza queda en agotado y corta todo lo que sigue.",
    "tarjetas": [
     "T22"
    ]
   },
   {
-   "id": "presupuesto>kafka/corrida.cortada",
-   "de": "presupuesto",
-   "a": "kafka/corrida.cortada",
-   "tipo": "emite",
-   "estado": "disenado",
+   "id": "base/precios_de_modelo>presupuesto",
+   "de": "base/precios_de_modelo",
+   "a": "presupuesto",
+   "tipo": "lee",
+   "estado": "construido",
    "papel": "auxiliar",
-   "etiqueta": "corta por costo o pasos",
-   "detalle": "Cortará la corrida cuando se acabe el presupuesto.",
-   "tarjetas": [
-    "T22"
-   ]
+   "etiqueta": "precio vigente",
+   "detalle": "Entrada y salida por millón de tokens, el que regía al empezar la corrida. Sin precio, la llamada no se hace."
+  },
+  {
+   "id": "base/corridas>presupuesto",
+   "de": "base/corridas",
+   "a": "presupuesto",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "cuándo empezó y si sigue",
+   "detalle": "Para elegir el precio que regía al empezar, y para no gastar en una corrida que ya no está en curso."
   },
   {
    "id": "medicion-banco>inicio",
@@ -3560,6 +3555,10 @@ var S = {
      "texto": "Si el modelo no contesta o contesta algo ilegible, el error se graba y el candidato sale NOT_MENTIONED: sin veredicto no se publica."
     },
     {
+     "en": "modelo>presupuesto",
+     "texto": "Si no alcanza el presupuesto, la llamada no se hace: el refutador deja el candidato sin procesar y el analista publica el hecho sin análisis."
+    },
+    {
      "en": "cierre",
      "texto": "El cierre cierra la corrida con lo que hubo."
     },
@@ -3619,7 +3618,7 @@ var S = {
     },
     {
      "en": "base/mensajes_procesados>cierre",
-     "texto": "Cuenta los finales: conocidos, NOT_MENTIONED y lo que ya procesó el editor."
+     "texto": "Cuenta los finales: conocidos, NOT_MENTIONED, los que el presupuesto dejó sin procesar y lo que ya procesó el editor."
     },
     {
      "en": "cierre>base/corridas",
@@ -3635,7 +3634,7 @@ var S = {
     },
     {
      "en": "cierre>kafka/corrida.cortada",
-     "texto": "Si pasaron los 45 minutos, la corta: corrida.cortada, los informes marcados y corrida.terminada."
+     "texto": "Si pasaron los 45 minutos, o el presupuesto rechazó una llamada, la corta: corrida.cortada con el límite, los informes marcados y corrida.terminada."
     }
    ]
   },
@@ -3698,10 +3697,6 @@ var S = {
     {
      "en": "afuera/revision-banco",
      "texto": "La revisión del registro, que hacen personas leyéndolo, y la medición de las 78 noches (T20)."
-    },
-    {
-     "en": "presupuesto",
-     "texto": "El presupuesto que corta, por costo y por pasos (T22)."
     },
     {
      "en": "web/revision",
@@ -3838,6 +3833,17 @@ var S = {
    "texto": "El analista escribe con el modelo qué dice, por qué importa y qué mirar, y la página de la mañana lo muestra aparte, como análisis (T21, ADR 0015).",
    "objetos": [
     "analista",
+    "web/manana"
+   ]
+  },
+  {
+   "fecha": "2026-11-16",
+   "texto": "El presupuesto que corta: un advisor reserva el peor caso de cada llamada en el libro de la corrida y la rechaza si no alcanza; el cierre corta la corrida con el límite. Se va el tope de 60 candidatos (T22).",
+   "objetos": [
+    "presupuesto",
+    "base/libros_de_corrida",
+    "cierre",
+    "explorador-arce",
     "web/manana"
    ]
   }

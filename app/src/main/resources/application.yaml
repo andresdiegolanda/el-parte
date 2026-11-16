@@ -52,8 +52,6 @@ elparte:
     costo-maximo-usd: 0.50
     pasos-maximos: 200
     minutos-maximos: 45
-    # Tope de candidatos por corrida, hasta que llegue el presupuesto que corta (T22).
-    maximo-candidatos: 60
     # Corrida por reloj, en hora de Uruguay: "-" la apaga; "0 0 6 * * *" corre todos los días a las 6.
     cron: "-"
   # La medición contra el banco (ADR 0014). La arranca el perfil banco; ver application-banco.yaml.
