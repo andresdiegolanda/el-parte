@@ -4,7 +4,8 @@
 #   docker compose -p el-parte-banco-<medición> -f compose.yaml -f compose.banco.yaml up --build
 #
 # Las variables van en el entorno o en el .env de la raíz: ELPARTE_BANCO_MEDICION, ELPARTE_BANCO_DESDE
-# y ELPARTE_BANCO_HASTA, y si se quiere ELPARTE_BANCO_COSTO_MAXIMO_USD y ELPARTE_COMMIT. Si falta
+# y ELPARTE_BANCO_HASTA, y si se quiere ELPARTE_BANCO_COSTO_MAXIMO_USD, ELPARTE_CORRIDA_COSTO_MAXIMO_USD,
+# ELPARTE_CORRIDA_PASOS_MAXIMOS y ELPARTE_COMMIT. Si falta
 # alguna, la aplicación lo dice en su registro y no mide; los demás comandos (ps, logs, down) andan sin
 # ellas. La aplicación de la medición queda en http://localhost:8081, y la salida, en
 # banco-de-pruebas/mediciones/<medición>/. Cómo se usa: app/README.md, "Medir contra el banco".
@@ -29,6 +30,9 @@ services:
       ELPARTE_BANCO_DESDE: ${ELPARTE_BANCO_DESDE:-}
       ELPARTE_BANCO_HASTA: ${ELPARTE_BANCO_HASTA:-}
       ELPARTE_BANCO_COSTO_MAXIMO_USD: ${ELPARTE_BANCO_COSTO_MAXIMO_USD:-5.00}
+      # El presupuesto de cada noche (ADR 0005); por omisión, el de application.yaml.
+      ELPARTE_CORRIDA_COSTO_MAXIMO_USD: ${ELPARTE_CORRIDA_COSTO_MAXIMO_USD:-0.50}
+      ELPARTE_CORRIDA_PASOS_MAXIMOS: ${ELPARTE_CORRIDA_PASOS_MAXIMOS:-200}
       ELPARTE_COMMIT: ${ELPARTE_COMMIT:-}
     volumes:
       - ./banco-de-pruebas/mediciones:/mediciones
