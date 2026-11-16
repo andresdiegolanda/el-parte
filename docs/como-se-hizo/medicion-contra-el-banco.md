@@ -57,6 +57,7 @@ La medición contra el banco es parte de la versión 0 y es lo que dice si El Pa
   - Una fuente que no deja pedir la fecha sale como no repetible y no como lectura fallida.
   - Con lo gastado en el tope, no se inicia ninguna noche más.
   - Una noche del banco se repite sin red ni costo, con los mismos mensajes.
+  - Con el modelo fallando como falla la API sin crédito, la medición se detiene en la primera noche y no escribe la salida. [PROVEN: `mvn test`, 2026-11-16]
 - **`LectorArceTest`** controla que el lector espere la pausa antes de cada pedido.
 - **En Docker Compose**, en un espacio en la nube, con `compose.banco.yaml`. [PROVEN: dos mediciones de prueba, 2026-11-15]
   - Sin las variables, la aplicación lo dice y no mide.
@@ -117,9 +118,20 @@ Dos problemas que la medición dejó a la vista:
 - **Una semana sin datos en ARCE.** El feed de octubre no trae nada publicado del 2026-10-23 al 2026-10-29, cinco días hábiles; el resto del mes trae entre 550 y 670 publicaciones por día hábil. [PROVEN: feed de 2026-10 bajado el 2026-11-15 a las 23:05] Las noches del 24 al 29 terminaron completas y sin leer nada: El Parte no avisa cuando una fuente viene vacía un día hábil.
 - **El tope de 60 candidatos.** Dejó 196 compras del BPS sin procesar, casi todas en noviembre; la noche del 2026-11-04, 60.
 
+## La medición que se quedó sin crédito
+
+La medición `2026-11-16-1` iba a medir de una vez el analista (T21), el presupuesto que corta (T22) y el explorador arreglado (T39), con 2 USD y 400 llamadas por noche y un tope de 25 USD.
+
+- Las primeras 22 noches, del 2026-08-29 al 2026-09-23, anduvieron bien: 6,11 USD y unos 110 segundos por noche. El analista escribió 395 análisis, y en 20 el control de cifras descartó el "qué dice" y dejó la afirmación (ADR 0015). [PROVEN: base de la medición, 2026-11-16]
+- En la noche del 2026-09-24 la API empezó a responder que no había crédito, y desde ahí falló cada llamada al modelo: 1.029 del refutador y una del analista. [PROVEN: base de la medición, 2026-11-16]
+- **La medición no se dio cuenta.** El refutador gradúa NOT_MENTIONED lo que no puede verificar, así que cada noche siguiente terminó completa y sin hechos, igual que una noche sin novedades. Se paró a mano en la noche del 2026-11-05, sin escribir la salida, y no se usa.
+
+Por eso la medición ahora se detiene en la primera noche con errores del modelo y no escribe la salida (`app/src/main/java/io/github/andresdiegolanda/elparte/banco/MedicionContraElBanco.java`). Esa noche no se puede volver a correr en la misma base, porque ya está terminada: se corrige la causa y se mide de nuevo, con otro nombre. En la medición `2026-11-15-2` no hubo ningún error del modelo en 1.333 llamadas, así que la regla no la habría frenado. [PROVEN: base de esa medición, 2026-11-16]
+
 ## Qué falta
 
 - Que el responsable confirme la revisión: la fuente y la etiqueta de cada entrada, las correspondencias y el juicio del sorteo (T20).
 - Decidir, al confirmar la revisión, si la compra directa a ATOS se cuenta como de ARCE (T20).
 - Que el explorador avise cuando un día hábil viene sin publicaciones, y que la afirmación de una adjudicación nombre a todos los proveedores (T39).
-- Qué hacer con el tope de candidatos (T22).
+- Qué hacer con el tope de candidatos (T22): se fue, y ahora corta el presupuesto.
+- Medir de nuevo las 78 noches con el analista, el presupuesto y el explorador arreglado, cuando haya crédito (T21, T22 y T39).

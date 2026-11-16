@@ -133,6 +133,23 @@ class MedicionContraElBancoTest extends ConServicios {
                 .isTrue();
         assertThat(ARCE.pedidos()).isEqualTo(pedidosAntes);
         assertThat(modelo.llamadas()).isEqualTo(llamadas);
+
+        // 6. Una noche con errores del modelo detiene la medición sin escribir la salida, como cuando se
+        // acaba el crédito de la API. La noche de setiembre de la prueba del presupuesto tiene compras del
+        // BPS; con el modelo fallando no deja hechos, así que esa prueba no se entera.
+        modelo.sinCredito(true);
+        try {
+            MedicionContraElBanco.Resultado sinCredito = medicion.medir(new MedicionContraElBanco.Parametros("2026-10-20-3",
+                    LocalDate.parse(ArceDePrueba.NOCHE_DEL_PRESUPUESTO),
+                    LocalDate.parse(ArceDePrueba.NOCHE_DEL_PRESUPUESTO).plusDays(1), "organismo:bps", new BigDecimal("5.00"),
+                    CARPETA, "prueba"));
+            assertThat(sinCredito.nocheConErrores()).isEqualTo(LocalDate.parse(ArceDePrueba.NOCHE_DEL_PRESUPUESTO));
+            assertThat(sinCredito.corridas()).containsExactly(LocalDate.parse(ArceDePrueba.NOCHE_DEL_PRESUPUESTO));
+            assertThat(sinCredito.salida()).isNull();
+            assertThat(CARPETA.resolve("2026-10-20-3")).doesNotExist();
+        } finally {
+            modelo.sinCredito(false);
+        }
     }
 
     private static MedicionContraElBanco.Parametros parametros(BigDecimal tope) {

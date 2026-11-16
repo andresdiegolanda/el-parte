@@ -541,7 +541,7 @@ var S = {
    "col": 1,
    "fila": 6,
    "estado": "construido",
-   "que_es": "La aplicación con el perfil banco, en un Docker Compose aparte con su propia base (compose.banco.yaml): corre una corrida en modo banco por cada noche, en orden y una por vez, saltea las que ya terminaron y no inicia más si lo gastado llega al tope. Al terminar escribe la salida de El Parte en la carpeta de la medición.",
+   "que_es": "La aplicación con el perfil banco, en un Docker Compose aparte con su propia base (compose.banco.yaml): corre una corrida en modo banco por cada noche, en orden y una por vez, saltea las que ya terminaron y no inicia más si lo gastado llega al tope. Si una noche tuvo errores del modelo, se detiene sin escribir la salida. Al terminar escribe la salida de El Parte en la carpeta de la medición.",
    "para_que": "Produce lo que se mide sin mezclarlo con lo que ven los invitados, con la memoria que El Parte tendría noche a noche y cuidando a ARCE y el gasto.",
    "docs": [
     "adrs/0014-medicion-contra-el-banco.md",
@@ -3277,6 +3277,16 @@ var S = {
    "tarjetas": [
     "T20"
    ]
+  },
+  {
+   "id": "base/grabaciones>medicion-banco",
+   "de": "base/grabaciones",
+   "a": "medicion-banco",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "errores del modelo",
+   "detalle": "Después de cada noche busca llamadas al modelo grabadas con error; si hay, la medición se detiene sin escribir la salida."
   }
  ],
  "recorridos": [
@@ -3885,6 +3895,13 @@ var S = {
     "web/revision",
     "base/revisiones",
     "web/manana"
+   ]
+  },
+  {
+   "fecha": "2026-11-16",
+   "texto": "La medición contra el banco se detiene en la primera noche con errores del modelo, sin escribir la salida: la 2026-11-16-1 se quedó sin crédito y siguió con noches vacías.",
+   "objetos": [
+    "medicion-banco"
    ]
   }
  ],

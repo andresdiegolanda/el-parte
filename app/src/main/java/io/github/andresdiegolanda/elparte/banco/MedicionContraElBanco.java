@@ -27,6 +27,12 @@ import io.github.andresdiegolanda.elparte.corrida.InicioDeCorrida;
  * medición. Si se interrumpe, al volver a medir saltea las noches que ya terminaron y espera la que
  * quedó en curso. Antes de iniciar cada noche suma lo gastado en el modelo por todas las corridas del
  * banco, y si llegó al tope no inicia más.
+ *
+ * <p>Si una noche tuvo llamadas al modelo con error, la medición se detiene ahí y no escribe la salida:
+ * el refutador gradúa NOT_MENTIONED lo que no pudo verificar, así que esa noche se ve como una noche sin
+ * novedades y la medición daría mal. Pasó en la medición 2026-11-16-1, cuando se acabó el crédito de la
+ * API. Esa noche no se puede volver a correr en la misma base: se corrige la causa y se mide de nuevo,
+ * con otro nombre.
  */
 @Service
 public class MedicionContraElBanco {
@@ -56,9 +62,12 @@ public class MedicionContraElBanco {
             BigDecimal costoMaximoUsd, Path carpeta, String commit) {
     }
 
-    /** Lo que pasó: las noches corridas ahora, las que ya estaban, si cortó el tope y dónde quedó la salida. */
+    /**
+     * Lo que pasó: las noches corridas ahora, las que ya estaban, si cortó el tope, la noche con errores del
+     * modelo si la hubo, y dónde quedó la salida, que es nula si la medición se detuvo por errores.
+     */
     public record Resultado(List<LocalDate> corridas, List<LocalDate> salteadas, boolean cortadaPorTope,
-            BigDecimal gastadoUsd, Path salida) {
+            LocalDate nocheConErrores, BigDecimal gastadoUsd, Path salida) {
     }
 
     public Resultado medir(Parametros p) {
@@ -85,13 +94,21 @@ public class MedicionContraElBanco {
             String estado = esperarFin(corridaId);
             log.info("Medición {}: noche {} {} ({})", p.medicion(), noche, estado, corridaId);
             corridas.add(noche);
+            Optional<String> error = primerErrorDelModelo(corridaId);
+            if (error.isPresent()) {
+                BigDecimal gastado = gastado();
+                log.error("Medición {}: la noche {} tuvo llamadas al modelo con error, y lo que no se pudo verificar salió "
+                        + "NOT_MENTIONED. La medición se detiene sin escribir la salida ({} USD gastados). Primer error: {}. "
+                        + "Corregí la causa y medí de nuevo con otro nombre.", p.medicion(), noche, gastado, error.get());
+                return new Resultado(corridas, salteadas, false, noche, gastado, null);
+            }
         }
         Path archivo = p.carpeta().resolve(p.medicion()).resolve(SalidaDelBanco.ARCHIVO);
         salida.escribir(archivo, p.entidad(), p.commit());
         BigDecimal gastado = gastado();
         log.info("Medición {}: {} noches corridas ahora, {} ya estaban, {} USD en total{}; salida en {}", p.medicion(),
                 corridas.size(), salteadas.size(), gastado, cortadaPorTope ? ", cortada por el tope" : "", archivo);
-        return new Resultado(corridas, salteadas, cortadaPorTope, gastado, archivo);
+        return new Resultado(corridas, salteadas, cortadaPorTope, null, gastado, archivo);
     }
 
     private void validar(Parametros p) {
@@ -125,6 +142,19 @@ public class MedicionContraElBanco {
                 where modo = 'banco' and fecha_objetivo = :noche and estado = 'en_curso'
                 order by iniciada_en limit 1
                 """).param("noche", noche).query(String.class).optional();
+    }
+
+    /**
+     * El primer error del modelo de una corrida, si lo hubo. Se lee de las grabaciones, que el agente
+     * escribe en su transacción antes de seguir, y no de {@code uso.modelo}, que llega a la base por el
+     * observador y puede llegar después del cierre.
+     */
+    private Optional<String> primerErrorDelModelo(String corridaId) {
+        return jdbc.sql("""
+                select contenido->>'error' from parte.grabaciones
+                where corrida_id = :corrida and tipo = 'modelo' and contenido->>'error' is not null
+                order by grabada_en limit 1
+                """).param("corrida", corridaId).query(String.class).optional();
     }
 
     /** Lo gastado en el modelo por todas las corridas del banco de esta base. */

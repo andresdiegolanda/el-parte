@@ -110,6 +110,7 @@ Lista:
 - [x] Buscar la compra directa del BPS a ATOS, el único hallazgo que esta medición podía encontrar: no está en ninguna publicación del BPS que trajo el feed en el período, pero el feed no trae nada del 23 al 29 de octubre
 - [x] Que el explorador avise cuando un día hábil viene sin publicaciones: el feed de ARCE no trae nada del 2026-10-23 al 2026-10-29 (pasa a T39, hecho)
 - [x] Decidir qué hacer con el tope de 60 candidatos, que dejó 196 compras del BPS sin procesar (pasa a T22: se va, y corta el presupuesto)
+- [x] Que la medición se detenga en la primera noche con errores del modelo: la 2026-11-16-1 se quedó sin crédito en la noche del 2026-09-24 y siguió con noches vacías
 
 Registro:
 - 2026-11-07: Creada con el plan (T07).
@@ -163,6 +164,7 @@ Registro:
 - 2026-11-07: Creada con el plan (T07).
 - 2026-11-15: Deja de depender de T08: el código de la rebanada ya está hecho, y a T08 solo le falta la medición (T20). Pasa a Para empezar.
 - 2026-11-16: Hechos el contrato, el código, las pruebas y la página: el analista le pide al modelo qué dice, por qué importa y qué mirar, copia el grado del refutador y no usa un campo con una cifra que no está en la evidencia (ADR 0015). La página de la mañana muestra el análisis aparte. Falta medirlo contra el banco, junto con T39: se estima que la medición de las 78 noches cuesta unos 16 USD. Pasa a En curso.
+- 2026-11-16: La medición 2026-11-16-1, con 2 USD y 400 llamadas por noche, se quedó sin crédito de la API en la noche del 2026-09-24, después de 22 noches y 6,11 USD, y no se usa. Se mide de nuevo cuando haya crédito.
 
 ### T22 · Implementar el presupuesto que corta
 - Tipo: Componente
@@ -190,6 +192,7 @@ Registro:
 - 2026-11-07: Creada con el plan (T07).
 - 2026-11-15: Deja de depender de T08: el código de la rebanada ya está hecho, y a T08 solo le falta la medición (T20). Pasa a Para empezar.
 - 2026-11-16: Hechos el contrato, el código, las pruebas y la página: un advisor en el ChatClient reserva el peor caso de cada llamada en el libro de la corrida, con un solo update que solo pasa si alcanza, y la rechaza si no; el rechazo se graba, y el cierre corta la corrida con el límite. La tabla de precios y el corte por tiempo ya estaban desde la primera rebanada. Se va el tope de 60 candidatos: los de la fecha objetivo pasan primero. Falta medirlo contra el banco y fijar sus valores. Pasa a En curso.
+- 2026-11-16: La medición 2026-11-16-1, con 2 USD y 400 llamadas por noche, se quedó sin crédito de la API en la noche del 2026-09-24, después de 22 noches y 6,11 USD, y no se usa. Se mide de nuevo cuando haya crédito.
 
 ## Para empezar
 

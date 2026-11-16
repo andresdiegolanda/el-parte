@@ -72,6 +72,7 @@ Mientras corre:
 
 - **Cómo va:** `docker compose -p el-parte-banco-2026-11-21-1 logs -f aplicacion` muestra cada noche que termina y, al final, dónde quedó la salida. La sala de máquinas de la medición está en http://localhost:8081/corridas.
 - **Si se corta:** se vuelve a levantar con el mismo comando y sigue donde quedó: saltea las noches que ya terminaron.
+- **Si el modelo falla:** la medición se detiene en la primera noche con llamadas al modelo con error, por ejemplo sin crédito en la API, y no escribe la salida. El registro dice el primer error. Esa noche no se puede volver a correr en la misma base: se corrige la causa y se mide de nuevo con otro nombre.
 - **Lo que pide a ARCE:** espera 250 ms antes de cada pedido, y no vuelve a pedir lo que la noche anterior ya leyó.
 
 Cuando termina, la medición se cuenta con el registro y su revisión ([banco-de-pruebas/metricas.md](../banco-de-pruebas/metricas.md)):

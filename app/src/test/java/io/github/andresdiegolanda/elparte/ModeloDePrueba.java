@@ -25,10 +25,14 @@ public class ModeloDePrueba implements ChatModel {
     private static final Pattern HECHO = Pattern.compile("Hecho graduado \\((\\w+), (\\w+)\\):\\n(.*)\\n");
 
     private final List<String> modelosPedidos = new CopyOnWriteArrayList<>();
+    private volatile boolean sinCredito;
 
     @Override
     public ChatResponse call(Prompt pedido) {
         modelosPedidos.add(pedido.getOptions() == null ? "" : String.valueOf(pedido.getOptions().getModel()));
+        if (sinCredito) {
+            throw new IllegalStateException("400: Your credit balance is too low to access the Anthropic API (prueba)");
+        }
         Matcher hecho = HECHO.matcher(pedido.getUserMessage().getText());
         if (hecho.find()) {
             return respuesta("""
@@ -54,6 +58,11 @@ public class ModeloDePrueba implements ChatModel {
     private static ChatResponse respuesta(String texto) {
         return new ChatResponse(List.of(new Generation(new AssistantMessage(texto))),
                 ChatResponseMetadata.builder().usage(new DefaultUsage(1000, 200)).build());
+    }
+
+    /** Mientras está prendido, cada llamada falla como falla la API sin crédito. */
+    public void sinCredito(boolean sinCredito) {
+        this.sinCredito = sinCredito;
     }
 
     public int llamadas() {
