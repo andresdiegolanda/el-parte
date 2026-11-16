@@ -72,5 +72,5 @@ Las pruebas que ya estaban siguen pasando, con dos cambios: la de la primera reb
 ## Qué falta
 
 - **El correo real.** En local el enlace llega a Mailpit. Para los invitados hace falta un servicio de correo, Resend con el dominio del responsable, y la dirección pública del túnel (T27).
-- **La página del perfil** (T34), para elegir qué seguir y si se quiere el aviso diario. Hasta entonces, un invitado sigue lo mismo que la demostración.
+- **La página del perfil** (T34), para elegir qué seguir y si se quiere el aviso diario: hecha, en [docs/como-se-hizo/perfil.md](perfil.md).
 - **El aviso diario** (T35).

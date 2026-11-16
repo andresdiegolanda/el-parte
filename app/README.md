@@ -19,6 +19,7 @@ La primera vez baja las imágenes y compila la aplicación dentro de Docker, con
 | La sala de máquinas: las corridas, y el botón para correr una noche o repetir una corrida | http://localhost:8080/corridas |
 | La cola de revisión humana de los hechos INFERRED (D6), solo para el responsable | http://localhost:8080/revision |
 | Entrar con un enlace de correo | http://localhost:8080/entrar |
+| El perfil: qué organismos seguir y si se quiere el aviso diario | http://localhost:8080/perfil |
 | Su estado, el de la base, Kafka y el correo | http://localhost:8080/actuator/health |
 | El buzón de prueba, donde llegan en local los enlaces para entrar | http://localhost:8025 |
 | PostgreSQL | `localhost:5432`, base `elparte`. El dueño es `elparte`; la aplicación entra con `elparte_agentes`. |
@@ -40,7 +41,7 @@ ELPARTE_INVITADOS_1_CORREO=correo-de-la-primera-persona
 ELPARTE_INVITADOS_1_ALIAS=Cliente 1
 ```
 
-Y así con 2, 3 y 4. Al arrancar, la aplicación da de alta a los nuevos, actualiza el alias de los que ya estaban y desactiva a los que ya no están en la lista. Un invitado nuevo empieza siguiendo lo mismo que la cuenta de demostración.
+Y así con 2, 3 y 4. Al arrancar, la aplicación da de alta a los nuevos, actualiza el alias de los que ya estaban y desactiva a los que ya no están en la lista. Un invitado nuevo empieza siguiendo lo mismo que la cuenta de demostración, con el aviso diario prendido, y lo cambia en su perfil, `/perfil` ([docs/como-se-hizo/perfil.md](../docs/como-se-hizo/perfil.md)).
 
 Para entrar se va a `/entrar`, se pone el correo y llega un enlace que sirve una vez y vence a los 5 minutos; en local llega a Mailpit, en http://localhost:8025. Al abrirlo hay que apretar "Entrar", y la aplicación recuerda la sesión 30 días. Sin entrar se ve la página de la mañana de la cuenta de demostración y la sala de máquinas; correr o repetir una corrida y la cola de revisión son solo del responsable. Cómo se hizo: [docs/como-se-hizo/login.md](../docs/como-se-hizo/login.md).
 
@@ -200,6 +201,7 @@ mvn test
 | `PrimeraRebanadaTest` | Una noche de punta a punta con el refutador y el analista, su repetición sin red ni modelo con mensajes idénticos, la revisión humana del hecho INFERRED, la misma noche otra vez con todo conocido, que ningún dato personal llegue a la base, y las páginas. Deja una copia de cada página en `target/paginas/`. |
 | `banco.MedicionContraElBancoTest` | La medición contra el banco sobre tres noches de octubre: en orden, sin volver a pedir a ARCE lo que la noche anterior ya leyó, la salida con la forma del formato, el salteo de lo ya medido, el tope de gasto y la repetición de una noche del banco. Deja la salida en `target/banco/`. |
 | `PermisosDeLaBaseTest` | Cada rol ve solo su esquema y ninguno cambia el esquema. |
+| `web.PerfilTest` | El catálogo, el perfil de la demostración sin botones, y una invitada que sigue, deja de seguir y apaga el aviso. Deja una copia de su perfil en `target/paginas/`. |
 | `web.SaludEnElMenuTest` | El enlace a la salud se muestra en local y no publicada, donde la salud va en otro puerto. |
 | `ElParteAplicacionTest` | La salud de Kafka y los tópicos: uno por tipo de mensaje, con una partición y sin vencimiento. |
 | `fuentes.arce.*Test` | La lectura de ARCE con su pausa, el enmascarado y el armado de los candidatos. |
@@ -226,7 +228,7 @@ El verificador de la documentación (`python3 herramientas/verificar_docs.py`, d
 | `...grabaciones` | Lo que cada corrida leyó de afuera, para repetirla ([ADR 0011](../adrs/0011-grabacion-y-repeticion-de-corridas.md)). |
 | `...observador` | Copia cada mensaje al registro de la base. |
 | `...infraestructura` | Los tópicos, el reloj, el manejo de errores de los consumidores, las huellas, el registro de lo procesado y `SaludDeKafka`, que agrega la salud de Kafka a `/actuator/health`. |
-| `...web` | Las páginas: inicio, mañana, corridas, sala de máquinas y cola de revisión, con plantillas Thymeleaf. |
+| `...web` | Las páginas: inicio, mañana, perfil, corridas, sala de máquinas y cola de revisión, con plantillas Thymeleaf. |
 | `...acceso` | El login por enlace de correo, el alta de invitados y quién puede hacer qué, con Spring Security ([ADR 0013](../adrs/0013-acceso-perfil-y-parte-diario.md)). |
 
 Las migraciones están en `src/main/resources/db/migration/`: `V1__base.sql` es el DDL de [docs/base-de-afirmaciones.md](../docs/base-de-afirmaciones.md), `V2__roles.sql` crea los dos roles y reparte los permisos, y `V3__datos_iniciales.sql` carga la fuente, el organismo, la cuenta de demostración, los modelos y los precios.

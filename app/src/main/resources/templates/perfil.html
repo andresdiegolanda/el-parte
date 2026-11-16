@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabeza('Perfil')}"></head>
+<body>
+<header th:replace="~{fragmentos :: menu}"></header>
+<main>
+    <h1>Perfil</h1>
+    <p class="sub" th:if="${soloLectura}">Cuenta de demostración: se ve, pero no se cambia.
+        <a href="/entrar">Entrá</a> para elegir lo tuyo.</p>
+    <p class="sub" th:if="${!soloLectura}">El perfil de <span th:text="${usuario.alias}">Invitado</span>.
+        Los cambios valen desde la corrida siguiente.</p>
+
+    <div class="tarjeta" th:if="${!soloLectura}">
+        <strong>Aviso diario por correo.</strong>
+        <th:block th:if="${aviso}">Cada mañana te llega un aviso corto, con la noche, cuántos hechos hay y el enlace a tu página.</th:block>
+        <th:block th:if="${!aviso}">No te llega ningún aviso: tu parte está igual en tu página de la mañana.</th:block>
+        <form method="post" th:action="@{/perfil/aviso}" class="en-linea">
+            <input type="hidden" name="quiere" th:value="${!aviso}">
+            <button type="submit" th:text="${aviso} ? 'No quiero el aviso' : 'Quiero el aviso'">No quiero el aviso</button>
+        </form>
+    </div>
+
+    <h2>Qué se puede seguir</h2>
+    <p class="sub">Organismos que compran en compras estatales (ARCE). Cada noche, El Parte lee lo que publicó cada
+        organismo que alguien sigue. <span th:text="${siguiendo == 1} ? 'Sigue a 1.' : 'Sigue a ' + ${siguiendo} + '.'">Sigue a 1.</span></p>
+    <table>
+        <tr><th>Organismo</th><th></th></tr>
+        <tr th:each="e : ${catalogo}">
+            <td><span th:text="${e.nombre}">Banco de Previsión Social</span>
+                <span th:if="${e.sigue}" class="ok"> · lo sigue</span></td>
+            <td>
+                <th:block th:if="${!soloLectura}">
+                    <form th:if="${!e.sigue}" method="post" th:action="@{/perfil/seguir}" class="en-linea">
+                        <input type="hidden" name="entidad" th:value="${e.id}"><button type="submit">Seguir</button>
+                    </form>
+                    <form th:if="${e.sigue}" method="post" th:action="@{/perfil/dejar}" class="en-linea">
+                        <input type="hidden" name="entidad" th:value="${e.id}"><button type="submit">Dejar de seguir</button>
+                    </form>
+                </th:block>
+            </td>
+        </tr>
+    </table>
+</main>
+</body>
+</html>

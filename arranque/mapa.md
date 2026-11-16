@@ -84,6 +84,7 @@ flowchart TD
 | [`docs/como-se-hizo/presupuesto.md`](../docs/como-se-hizo/presupuesto.md) | Cómo se hizo el presupuesto que corta: el advisor, el libro de la corrida y qué se probó (T22). |
 | [`docs/como-se-hizo/revision.md`](../docs/como-se-hizo/revision.md) | Cómo se hizo la cola de revisión humana y lo que cambia en la página de la mañana (T23). |
 | [`docs/como-se-hizo/login.md`](../docs/como-se-hizo/login.md) | Cómo se hizo el login por enlace de correo, el alta de invitados y quién puede hacer qué (T25). |
+| [`docs/como-se-hizo/perfil.md`](../docs/como-se-hizo/perfil.md) | Cómo se hizo el perfil: el catálogo de organismos con su código en ARCE, seguir y dejar de seguir, y el aviso diario sí o no (T34). |
 | [`docs/como-se-hizo/despliegue.md`](../docs/como-se-hizo/despliegue.md) | Cómo se hizo El Parte publicado: el túnel, el correo, la salud fuera del túnel y las copias de la base (T27, T40). |
 
 ## Lo que va a haber

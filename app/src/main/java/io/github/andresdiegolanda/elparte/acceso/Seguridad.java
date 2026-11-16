@@ -28,7 +28,7 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
  * corrida gasta crédito, y una revisión cambia lo que se publica. La sala de máquinas se puede mirar
  * sin entrar: muestra cómo trabaja El Parte, y en el esquema {@code parte} no hay datos personales.</li>
  * <li>La página de la mañana muestra, con sesión, el parte de quien entró; sin sesión, el de la cuenta
- * de demostración.</li>
+ * de demostración. El perfil también: sin sesión se ve el de la demostración, y cambiarlo pide entrar.</li>
  * </ul>
  */
 @Configuration
@@ -56,7 +56,7 @@ public class Seguridad {
         http.authorizeHttpRequests(a -> a
                         .requestMatchers(HttpMethod.POST, "/corridas", "/corridas/**").hasRole(UsuarioDeElParte.RESPONSABLE)
                         .requestMatchers("/revision", "/revision/**").hasRole(UsuarioDeElParte.RESPONSABLE)
-                        .requestMatchers("/perfil", "/perfil/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/perfil/**").authenticated()
                         .anyRequest().permitAll())
                 .userDetailsService(cuentas)
                 .oneTimeTokenLogin(ott -> ott

@@ -1781,15 +1781,28 @@ var S = {
    "sub": "GET y POST /perfil",
    "col": 10,
    "fila": 17,
-   "estado": "disenado",
+   "estado": "construido",
    "tarjetas": [
     "T34"
    ],
    "docs": [
-    "adrs/0013-acceso-perfil-y-parte-diario.md"
+    "adrs/0013-acceso-perfil-y-parte-diario.md",
+    "docs/como-se-hizo/perfil.md"
    ],
-   "que_es": "La página donde cada invitado ve las entidades que sigue y el catálogo de las que se pueden seguir, sigue o deja de seguir con un botón, y elige si quiere el aviso diario por correo. La cuenta de demostración la ve pero no la cambia.",
-   "para_que": "Que cada persona decida qué le llega. Los cambios valen desde la corrida siguiente, que arma la lista de entidades seguidas al empezar."
+   "que_es": "La página donde cada invitado ve el catálogo de organismos que se pueden seguir, sigue o deja de seguir con un botón, y elige si quiere el aviso diario por correo. Sin entrar se ve el de la cuenta de demostración, sin botones.",
+   "para_que": "Que cada persona decida qué le llega. Los cambios valen desde la corrida siguiente, que arma la lista de entidades seguidas al empezar.",
+   "rutas": [
+    "GET /perfil",
+    "POST /perfil/aviso",
+    "POST /perfil/dejar",
+    "POST /perfil/seguir"
+   ],
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/web/PerfilControlador.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/web/Seguimientos.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/acceso/AvisoDiario.java",
+    "app/src/main/resources/templates/perfil.html"
+   ]
   },
   {
    "id": "base/tokens",
@@ -3173,7 +3186,7 @@ var S = {
    "de": "afuera/persona",
    "a": "web/perfil",
    "tipo": "usa",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "camino",
    "etiqueta": "elige qué seguir",
    "detalle": "Entra a /perfil.",
@@ -3186,7 +3199,7 @@ var S = {
    "de": "base/entidades",
    "a": "web/perfil",
    "tipo": "lee",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "el catálogo",
    "detalle": "Las entidades que se pueden seguir: las que tienen su identificador en alguna fuente.",
@@ -3199,10 +3212,23 @@ var S = {
    "de": "base/suscripciones",
    "a": "web/perfil",
    "tipo": "lee",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "lo que ya sigue",
    "detalle": "Las suscripciones del cliente de la sesión.",
+   "tarjetas": [
+    "T34"
+   ]
+  },
+  {
+   "id": "base/clientes>web/perfil",
+   "de": "base/clientes",
+   "a": "web/perfil",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "la demostración",
+   "detalle": "Sin sesión, busca la cuenta de demostración para mostrar su perfil, sin botones.",
    "tarjetas": [
     "T34"
    ]
@@ -3212,7 +3238,7 @@ var S = {
    "de": "web/perfil",
    "a": "base/suscripciones",
    "tipo": "escribe",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "camino",
    "etiqueta": "sigue o deja de seguir",
    "detalle": "Inserta o borra la suscripción del cliente de la sesión. Vale desde la corrida siguiente.",
@@ -3225,7 +3251,7 @@ var S = {
    "de": "web/perfil",
    "a": "base/usuarios",
    "tipo": "escribe",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "aviso diario sí o no",
    "detalle": "Guarda si quiere el aviso por correo, con el rol de cuentas.",
@@ -3859,10 +3885,6 @@ var S = {
      "texto": "Los exploradores del BID, el Banco Mundial y Presidencia (T24)."
     },
     {
-     "en": "web/perfil",
-     "texto": "La página del perfil, para elegir qué seguir (T34)."
-    },
-    {
      "en": "envio-del-parte",
      "texto": "El aviso diario del parte por correo (T35)."
     },
@@ -4035,6 +4057,19 @@ var S = {
     "afuera/persona>afuera/tunel",
     "afuera/mailpit",
     "respaldo"
+   ]
+  },
+  {
+   "fecha": "2026-11-16",
+   "texto": "El perfil: el catálogo de organismos con su código en ARCE, seguir y dejar de seguir, y el aviso diario sí o no (T34).",
+   "objetos": [
+    "web/perfil",
+    "afuera/persona>web/perfil",
+    "base/entidades>web/perfil",
+    "base/suscripciones>web/perfil",
+    "web/perfil>base/suscripciones",
+    "web/perfil>base/usuarios",
+    "base/clientes>web/perfil"
    ]
   }
  ],

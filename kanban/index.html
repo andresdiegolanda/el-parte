@@ -227,7 +227,7 @@
 <script type="application/json" id="datos">{
  "meta": {
   "actualizado": "2026-11-16",
-  "nota": "La primera rebanada (T08) anda de punta a punta y ya corrió contra el banco las 78 noches del registro (T20): 12,71 USD, 5 de 5 publicables encontrados, 0 de 1 hallazgo y una precisión estimada del 95 %. Falta que el responsable confirme la revisión. Lo que la medición mostró del explorador de ARCE se arregla en T39. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). El analista completo (T21) y el presupuesto que corta (T22) están hechos, sin el tope de 60 candidatos, y falta medirlos contra el banco junto con T39, en una sola corrida. La cola de revisión humana (T23) y el login por enlace (T25) están hechos: correr y revisar son solo del responsable. El Parte está publicado desde la máquina del responsable, con un túnel de Cloudflare y el correo por Resend (T40), y el responsable ya entró desde afuera (ADR 0016, aceptado). Sigue el perfil (T34). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.",
+  "nota": "La primera rebanada (T08) anda de punta a punta y ya corrió contra el banco las 78 noches del registro (T20): 12,71 USD, 5 de 5 publicables encontrados, 0 de 1 hallazgo y una precisión estimada del 95 %. Falta que el responsable confirme la revisión. Lo que la medición mostró del explorador de ARCE se arregla en T39. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). El analista completo (T21) y el presupuesto que corta (T22) están hechos, sin el tope de 60 candidatos, y falta medirlos contra el banco junto con T39, en una sola corrida. La cola de revisión humana (T23) y el login por enlace (T25) están hechos: correr y revisar son solo del responsable. El Parte está publicado desde la máquina del responsable, con un túnel de Cloudflare y el correo por Resend (T40), y el responsable ya entró desde afuera (ADR 0016, aceptado). En su perfil, cada invitado elige qué organismos seguir y si quiere el aviso diario (T34); sigue el aviso (T35). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.",
   "calendario": [
    "2026-11-07",
    "2026-11-14",
@@ -717,80 +717,10 @@
    ]
   },
   {
-   "id": "T34",
-   "titulo": "Armar la página del perfil",
-   "columna": "para-empezar",
-   "orden": 1,
-   "tipo": "web",
-   "dueno": "desarrollo",
-   "dependeDe": "T25",
-   "esperaA": "",
-   "fecha": "",
-   "detalle": [
-    {
-     "texto": "adrs/0013-acceso-perfil-y-parte-diario.md",
-     "ruta": "adrs/0013-acceso-perfil-y-parte-diario.md"
-    }
-   ],
-   "etapas": [
-    {
-     "texto": "Diseño",
-     "hecho": true
-    },
-    {
-     "texto": "Código",
-     "hecho": false
-    },
-    {
-     "texto": "Pruebas",
-     "hecho": false
-    },
-    {
-     "texto": "Página cómo se hizo",
-     "hecho": false
-    }
-   ],
-   "lista": [
-    {
-     "texto": "Lo que sigue y el catálogo de lo que se puede seguir: las entidades con su identificador en alguna fuente",
-     "hecho": false
-    },
-    {
-     "texto": "Seguir y dejar de seguir, en parte.suscripciones",
-     "hecho": false
-    },
-    {
-     "texto": "Aviso diario sí o no, en cuentas.usuarios, con el rol de cuentas",
-     "hecho": false
-    },
-    {
-     "texto": "La cuenta de demostración lo ve pero no lo cambia",
-     "hecho": false
-    },
-    {
-     "texto": "Catálogo inicial: organismos con su código de comprador en ARCE, verificado",
-     "hecho": false
-    }
-   ],
-   "notas": [
-    "Donde cada invitado elige qué entidades seguir y si quiere el aviso diario por correo. Los cambios valen desde la corrida siguiente."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-14",
-     "texto": "Creada con el diseño del acceso y el perfil (ADR 0013)."
-    },
-    {
-     "fecha": "2026-11-16",
-     "texto": "Pasa a Para empezar: T25 está hecha."
-    }
-   ]
-  },
-  {
    "id": "T35",
    "titulo": "Mandar el aviso diario del parte",
    "columna": "para-empezar",
-   "orden": 2,
+   "orden": 1,
    "tipo": "componente",
    "dueno": "desarrollo",
    "dependeDe": "T25",
@@ -1299,10 +1229,88 @@
    ]
   },
   {
+   "id": "T34",
+   "titulo": "Armar la página del perfil",
+   "columna": "hecho",
+   "orden": 1,
+   "tipo": "web",
+   "dueno": "desarrollo",
+   "dependeDe": "T25",
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "adrs/0013-acceso-perfil-y-parte-diario.md",
+     "ruta": "adrs/0013-acceso-perfil-y-parte-diario.md"
+    },
+    {
+     "texto": "docs/como-se-hizo/perfil.md",
+     "ruta": "docs/como-se-hizo/perfil.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Diseño",
+     "hecho": true
+    },
+    {
+     "texto": "Código",
+     "hecho": true
+    },
+    {
+     "texto": "Pruebas",
+     "hecho": true
+    },
+    {
+     "texto": "Página cómo se hizo",
+     "hecho": true
+    }
+   ],
+   "lista": [
+    {
+     "texto": "Lo que sigue y el catálogo de lo que se puede seguir: las entidades con su identificador en alguna fuente",
+     "hecho": true
+    },
+    {
+     "texto": "Seguir y dejar de seguir, en parte.suscripciones",
+     "hecho": true
+    },
+    {
+     "texto": "Aviso diario sí o no, en cuentas.usuarios, con el rol de cuentas",
+     "hecho": true
+    },
+    {
+     "texto": "La cuenta de demostración lo ve pero no lo cambia",
+     "hecho": true
+    },
+    {
+     "texto": "Catálogo inicial: organismos con su código de comprador en ARCE, verificado",
+     "hecho": true
+    }
+   ],
+   "notas": [
+    "Donde cada invitado elige qué entidades seguir y si quiere el aviso diario por correo. Los cambios valen desde la corrida siguiente."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-14",
+     "texto": "Creada con el diseño del acceso y el perfil (ADR 0013)."
+    },
+    {
+     "fecha": "2026-11-16",
+     "texto": "Pasa a Para empezar: T25 está hecha."
+    },
+    {
+     "fecha": "2026-11-16",
+     "texto": "Hecha: el catálogo, con trece organismos y su código de comprador en ARCE, leído en una publicación de cada uno; seguir y dejar de seguir; el aviso diario sí o no, prendido de entrada; y el perfil de la demostración, que se ve sin entrar y no se cambia. Pasa a Hecho."
+    }
+   ]
+  },
+  {
    "id": "T41",
    "titulo": "Aceptar o corregir el ADR 0016",
    "columna": "hecho",
-   "orden": 1,
+   "orden": 2,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1339,7 +1347,7 @@
    "id": "T27",
    "titulo": "Escribir el ADR de despliegue",
    "columna": "hecho",
-   "orden": 2,
+   "orden": 3,
    "tipo": "adr",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -1433,7 +1441,7 @@
    "id": "T40",
    "titulo": "Publicar El Parte en la máquina del responsable",
    "columna": "hecho",
-   "orden": 3,
+   "orden": 4,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "T25, T27",
@@ -1531,7 +1539,7 @@
    "id": "T25",
    "titulo": "Armar el login por enlace, los cuatro usuarios y la cuenta de demostración",
    "columna": "hecho",
-   "orden": 4,
+   "orden": 5,
    "tipo": "web",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1637,7 +1645,7 @@
    "id": "T23",
    "titulo": "Armar la cola de revisión humana",
    "columna": "hecho",
-   "orden": 5,
+   "orden": 6,
    "tipo": "web",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1694,7 +1702,7 @@
    "id": "T38",
    "titulo": "Armar una presentación para quien no conoce el proyecto",
    "columna": "hecho",
-   "orden": 6,
+   "orden": 7,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1764,7 +1772,7 @@
    "id": "T37",
    "titulo": "Aceptar o corregir el ADR 0014",
    "columna": "hecho",
-   "orden": 7,
+   "orden": 8,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1801,7 +1809,7 @@
    "id": "T12",
    "titulo": "Escribir el formato, la muestra sintética y las métricas del banco de pruebas",
    "columna": "hecho",
-   "orden": 8,
+   "orden": 9,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T11",
@@ -1883,7 +1891,7 @@
    "id": "T36",
    "titulo": "Aceptar o corregir el ADR 0013",
    "columna": "hecho",
-   "orden": 9,
+   "orden": 10,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1924,7 +1932,7 @@
    "id": "T32",
    "titulo": "Armar el tablero de arquitectura",
    "columna": "hecho",
-   "orden": 10,
+   "orden": 11,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1998,7 +2006,7 @@
    "id": "T31",
    "titulo": "Aceptar o corregir el ADR 0011",
    "columna": "hecho",
-   "orden": 11,
+   "orden": 12,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -2035,7 +2043,7 @@
    "id": "T18",
    "titulo": "Pedir a IMPO que aclare si su JSON de normas se puede reutilizar",
    "columna": "hecho",
-   "orden": 12,
+   "orden": 13,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -2067,7 +2075,7 @@
    "id": "T11",
    "titulo": "Entregar el registro completo del banco de pruebas",
    "columna": "hecho",
-   "orden": 13,
+   "orden": 14,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -2099,7 +2107,7 @@
    "id": "T14",
    "titulo": "Dejar la clave del proveedor de modelos fuera del repositorio",
    "columna": "hecho",
-   "orden": 14,
+   "orden": 15,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "T05",
@@ -2152,7 +2160,7 @@
    "id": "T19",
    "titulo": "Aceptar o corregir los ADRs propuestos",
    "columna": "hecho",
-   "orden": 15,
+   "orden": 16,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -2229,7 +2237,7 @@
    "id": "T05",
    "titulo": "Escribir los primeros ADRs",
    "columna": "hecho",
-   "orden": 16,
+   "orden": 17,
    "tipo": "adr",
    "dueno": "desarrollo",
    "dependeDe": "T09",
@@ -2331,7 +2339,7 @@
    "id": "T06",
    "titulo": "Escribir los ADRs de las decisiones D2 y D3",
    "columna": "hecho",
-   "orden": 17,
+   "orden": 18,
    "tipo": "adr",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -2397,7 +2405,7 @@
    "id": "T28",
    "titulo": "Hacer editable el kanban y sincronizarlo con el tablero",
    "columna": "hecho",
-   "orden": 18,
+   "orden": 19,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -2454,7 +2462,7 @@
    "id": "T07",
    "titulo": "Escribir docs/plan.md",
    "columna": "hecho",
-   "orden": 19,
+   "orden": 20,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T02",
@@ -2516,7 +2524,7 @@
    "id": "T04",
    "titulo": "Escribir docs/base-de-afirmaciones.md",
    "columna": "hecho",
-   "orden": 20,
+   "orden": 21,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T03",
@@ -2586,7 +2594,7 @@
    "id": "T03",
    "titulo": "Escribir docs/contratos.md",
    "columna": "hecho",
-   "orden": 21,
+   "orden": 22,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T02",
@@ -2656,7 +2664,7 @@
    "id": "T15",
    "titulo": "Comprobar en el verificador que los diagramas Mermaid se dibujan",
    "columna": "hecho",
-   "orden": 22,
+   "orden": 23,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -2701,7 +2709,7 @@
    "id": "T02",
    "titulo": "Escribir docs/arquitectura.md",
    "columna": "hecho",
-   "orden": 23,
+   "orden": 24,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T09",
@@ -2787,7 +2795,7 @@
    "id": "T10",
    "titulo": "Verificar las fuentes candidatas",
    "columna": "hecho",
-   "orden": 24,
+   "orden": 25,
    "tipo": "verificacion",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -2860,7 +2868,7 @@
    "id": "T09",
    "titulo": "Verificar Spring AI y sus patrones de orquestación",
    "columna": "hecho",
-   "orden": 25,
+   "orden": 26,
    "tipo": "verificacion",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -2913,7 +2921,7 @@
    "id": "T13",
    "titulo": "Elegir la licencia del repositorio",
    "columna": "hecho",
-   "orden": 26,
+   "orden": 27,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -2949,7 +2957,7 @@
    "id": "T17",
    "titulo": "Dar acceso de escritura al repositorio a las sesiones en la nube",
    "columna": "hecho",
-   "orden": 27,
+   "orden": 28,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -2976,7 +2984,7 @@
    "id": "T16",
    "titulo": "Armar el kanban generado desde el tablero",
    "columna": "hecho",
-   "orden": 28,
+   "orden": 29,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -3025,7 +3033,7 @@
    "id": "T01",
    "titulo": "Armar la base documental",
    "columna": "hecho",
-   "orden": 29,
+   "orden": 30,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "",

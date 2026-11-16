@@ -3,7 +3,7 @@
 Todo pendiente de El Parte vive acá, con dueño (regla 8). Este archivo es lo que manda. El kanban publicado es editable y se sincroniza con este archivo cada vez que una sesión de desarrollo lee o escribe el repositorio, o cuando se le pide; su copia sin conexión, [`kanban/index.html`](kanban/index.html), se genera desde acá con `python3 herramientas/generar_kanban.py` y no se edita a mano ([ADR 0009](adrs/0009-kanban-editable-sincronizado.md)).
 
 - Actualizado: 2026-11-16
-- Nota: La primera rebanada (T08) anda de punta a punta y ya corrió contra el banco las 78 noches del registro (T20): 12,71 USD, 5 de 5 publicables encontrados, 0 de 1 hallazgo y una precisión estimada del 95 %. Falta que el responsable confirme la revisión. Lo que la medición mostró del explorador de ARCE se arregla en T39. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). El analista completo (T21) y el presupuesto que corta (T22) están hechos, sin el tope de 60 candidatos, y falta medirlos contra el banco junto con T39, en una sola corrida. La cola de revisión humana (T23) y el login por enlace (T25) están hechos: correr y revisar son solo del responsable. El Parte está publicado desde la máquina del responsable, con un túnel de Cloudflare y el correo por Resend (T40), y el responsable ya entró desde afuera (ADR 0016, aceptado). Sigue el perfil (T34). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.
+- Nota: La primera rebanada (T08) anda de punta a punta y ya corrió contra el banco las 78 noches del registro (T20): 12,71 USD, 5 de 5 publicables encontrados, 0 de 1 hallazgo y una precisión estimada del 95 %. Falta que el responsable confirme la revisión. Lo que la medición mostró del explorador de ARCE se arregla en T39. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). El analista completo (T21) y el presupuesto que corta (T22) están hechos, sin el tope de 60 candidatos, y falta medirlos contra el banco junto con T39, en una sola corrida. La cola de revisión humana (T23) y el login por enlace (T25) están hechos: correr y revisar son solo del responsable. El Parte está publicado desde la máquina del responsable, con un túnel de Cloudflare y el correo por Resend (T40), y el responsable ya entró desde afuera (ADR 0016, aceptado). En su perfil, cada invitado elige qué organismos seguir y si quiere el aviso diario (T34); sigue el aviso (T35). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.
 - Calendario: 2026-11-07, 2026-11-14, 2026-11-21, 2026-11-28
 - Repositorio: https://github.com/andresdiegolanda/el-parte
 
@@ -196,31 +196,6 @@ Registro:
 
 ## Para empezar
 
-### T34 · Armar la página del perfil
-- Tipo: Web
-- Dueño: desarrollo
-- Depende de: T25
-- Detalle: [adrs/0013-acceso-perfil-y-parte-diario.md](adrs/0013-acceso-perfil-y-parte-diario.md)
-
-Donde cada invitado elige qué entidades seguir y si quiere el aviso diario por correo. Los cambios valen desde la corrida siguiente.
-
-Etapas:
-- [x] Diseño
-- [ ] Código
-- [ ] Pruebas
-- [ ] Página cómo se hizo
-
-Lista:
-- [ ] Lo que sigue y el catálogo de lo que se puede seguir: las entidades con su identificador en alguna fuente
-- [ ] Seguir y dejar de seguir, en parte.suscripciones
-- [ ] Aviso diario sí o no, en cuentas.usuarios, con el rol de cuentas
-- [ ] La cuenta de demostración lo ve pero no lo cambia
-- [ ] Catálogo inicial: organismos con su código de comprador en ARCE, verificado
-
-Registro:
-- 2026-11-14: Creada con el diseño del acceso y el perfil (ADR 0013).
-- 2026-11-16: Pasa a Para empezar: T25 está hecha.
-
 ### T35 · Mandar el aviso diario del parte
 - Tipo: Componente
 - Dueño: desarrollo
@@ -396,6 +371,32 @@ Registro:
 - 2026-11-14: Creada con el ADR 0010.
 
 ## Hecho
+
+### T34 · Armar la página del perfil
+- Tipo: Web
+- Dueño: desarrollo
+- Depende de: T25
+- Detalle: [adrs/0013-acceso-perfil-y-parte-diario.md](adrs/0013-acceso-perfil-y-parte-diario.md), [docs/como-se-hizo/perfil.md](docs/como-se-hizo/perfil.md)
+
+Donde cada invitado elige qué entidades seguir y si quiere el aviso diario por correo. Los cambios valen desde la corrida siguiente.
+
+Etapas:
+- [x] Diseño
+- [x] Código
+- [x] Pruebas
+- [x] Página cómo se hizo
+
+Lista:
+- [x] Lo que sigue y el catálogo de lo que se puede seguir: las entidades con su identificador en alguna fuente
+- [x] Seguir y dejar de seguir, en parte.suscripciones
+- [x] Aviso diario sí o no, en cuentas.usuarios, con el rol de cuentas
+- [x] La cuenta de demostración lo ve pero no lo cambia
+- [x] Catálogo inicial: organismos con su código de comprador en ARCE, verificado
+
+Registro:
+- 2026-11-14: Creada con el diseño del acceso y el perfil (ADR 0013).
+- 2026-11-16: Pasa a Para empezar: T25 está hecha.
+- 2026-11-16: Hecha: el catálogo, con trece organismos y su código de comprador en ARCE, leído en una publicación de cada uno; seguir y dejar de seguir; el aviso diario sí o no, prendido de entrada; y el perfil de la demostración, que se ve sin entrar y no se cambia. Pasa a Hecho.
 
 ### T41 · Aceptar o corregir el ADR 0016
 - Tipo: Gestión
