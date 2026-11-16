@@ -33,6 +33,13 @@
             </div>
             <p th:text="${h.afirmacion}">La afirmación.</p>
             <p th:if="${h.razonamiento != null}" class="sub">Se deduce de: <span th:text="${h.razonamiento}"></span></p>
+            <div th:if="${h.conAnalisis}" class="analisis">
+                <p class="sub">Análisis: lo escribe el analista sobre lo que ya graduó el refutador, y no cambia el grado.</p>
+                <p th:if="${h.queDice != h.afirmacion}"><strong>En pocas palabras:</strong> <span th:text="${h.queDice}"></span></p>
+                <p><strong>Por qué importa:</strong> <span th:text="${h.porQueImporta}"></span></p>
+                <p><strong>Qué mirar:</strong> <span th:text="${h.queMirar}"></span></p>
+            </div>
+            <p th:unless="${h.conAnalisis}" class="sub" th:text="${h.porQueImporta}">Sin análisis.</p>
             <p class="sub">Publicado el <span th:text="${#strings.replace(#strings.substring(h.fechaPublicacion, 0, 16), 'T', ' ')}"></span>
                 (hora de Uruguay<th:block th:if="${!h.fechaConfirmada}">; no es de la noche leída: ARCE lo publicó con atraso</th:block>).
                 <a th:href="@{/corridas/{id}(id=${informe.corridaId})} + '#' + ${h.mensajeCandidato}">Ver su traza en la sala de máquinas</a>.</p>

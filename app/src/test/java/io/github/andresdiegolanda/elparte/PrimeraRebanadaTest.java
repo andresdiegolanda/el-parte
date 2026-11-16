@@ -30,6 +30,7 @@ import io.github.andresdiegolanda.elparte.mensajes.Contenidos.CandidatoCotejado;
 import io.github.andresdiegolanda.elparte.mensajes.Contenidos.CandidatoGraduado;
 import io.github.andresdiegolanda.elparte.mensajes.Contenidos.CorridaTerminada;
 import io.github.andresdiegolanda.elparte.mensajes.Contenidos.ExploracionTerminada;
+import io.github.andresdiegolanda.elparte.mensajes.Contenidos.HechoAnalizado;
 import io.github.andresdiegolanda.elparte.mensajes.Contenidos.UsoModelo;
 import io.github.andresdiegolanda.elparte.mensajes.RegistroDeMensajes;
 import io.github.andresdiegolanda.elparte.mensajes.Sobre;
@@ -80,15 +81,25 @@ class PrimeraRebanadaTest extends ConServicios {
                 Map.entry("arce:ocds-yfs5dr-1200002:adjudicacion", "PROVEN"),
                 Map.entry("arce:ocds-yfs5dr-1200004:aclaracion", "INFERRED"));
 
+        // El refutador y el analista llaman al modelo una vez por candidato, los dos con Sonnet.
         List<UsoModelo> usos = usos(original);
-        assertThat(usos).hasSize(3).allSatisfy(uso -> {
-            assertThat(uso.agenteQueLlama()).isEqualTo("refutador");
+        assertThat(usos).hasSize(6).allSatisfy(uso -> {
             assertThat(uso.modelo()).isEqualTo("claude-sonnet-5-5");
             assertThat(uso.resultado()).isEqualTo("hecha");
         });
+        assertThat(usos).extracting(UsoModelo::agenteQueLlama).containsOnly("refutador", "analista")
+                .filteredOn("analista"::equals).hasSize(3);
         assertThat(modelo.modelosPedidos()).containsOnly("claude-sonnet-5-5");
         CorridaTerminada terminada = unico(original, Tipos.CORRIDA_TERMINADA, CorridaTerminada.class);
-        assertThat(terminada.costoUsd()).isEqualByComparingTo(new BigDecimal("0.012"));
+        assertThat(terminada.costoUsd()).isEqualByComparingTo(new BigDecimal("0.024"));
+
+        // El analista copió el grado del refutador y escribió por qué importa y qué mirar.
+        assertThat(registro.deCorridaYTipo(original, Tipos.HECHOS_ANALIZADOS)).hasSize(3)
+                .extracting(s -> registro.contenido(s, HechoAnalizado.class)).allSatisfy(hecho -> {
+                    assertThat(hecho.grado()).isEqualTo(grados.get(hecho.claveDeHecho()));
+                    assertThat(hecho.porQueImporta()).startsWith("Es una compra de una entidad que seguís");
+                    assertThat(hecho.queMirar()).doesNotStartWith("Sin análisis");
+                });
         assertThat(terminada.conteos()).containsEntry("candidatos", 3).containsEntry("nuevos", 3)
                 .containsEntry("PROVEN", 2).containsEntry("INFERRED", 1).containsEntry("sinProcesar", 1);
 
@@ -128,7 +139,7 @@ class PrimeraRebanadaTest extends ConServicios {
                 .isTrue();
         assertThat(ARCE.pedidos()).isEqualTo(pedidosAArce);
         assertThat(modelo.llamadas()).isEqualTo(llamadasAlModelo);
-        assertThat(usos(repeticion)).hasSize(3).allSatisfy(uso -> assertThat(uso.resultado()).isEqualTo("reproducida"));
+        assertThat(usos(repeticion)).hasSize(6).allSatisfy(uso -> assertThat(uso.resultado()).isEqualTo("reproducida"));
         assertThat(contar(VERSIONES_DE_ESTA_NOCHE)).isEqualTo(3);
         assertThat(contar("select count(*) from parte.informes where corrida_id in ('" + original + "', '" + repeticion + "')"))
                 .isEqualTo(1);
@@ -138,7 +149,8 @@ class PrimeraRebanadaTest extends ConServicios {
         assertThat(manana).contains("Banco de Previsión Social publicó el llamado Compra Directa 900/2026",
                 "PROVEN", "INFERRED", "pendiente de revisión", "ARCE lo publicó con atraso",
                 "https://www.comprasestatales.gub.uy/ocds/release/llamado-1200001",
-                "lectura de la fuente falló", "puede faltar algo");
+                "lectura de la fuente falló", "puede faltar algo",
+                "Por qué importa:", "Es una compra de una entidad que seguís (adjudicacion).", "Qué mirar:");
         assertThat(manana).doesNotContain("Fulana");
         assertThat(pagina("/corridas")).contains(original, repeticion);
         assertThat(pagina("/corridas/" + original)).contains("k-arce-0001", "k-arce-0003", "fuente.fallida", "refutador");

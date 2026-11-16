@@ -20,3 +20,4 @@ Cada decisión significativa del proyecto es un ADR, un registro de decisión de
 | [0012](0012-tablero-de-arquitectura.md) | El tablero de arquitectura refleja el sistema y es la referencia de los pedidos | aceptado | 2026-11-14 |
 | [0013](0013-acceso-perfil-y-parte-diario.md) | Cómo entra cada usuario, dónde queda su perfil y cómo lee su parte cada mañana | aceptado | 2026-11-14 |
 | [0014](0014-medicion-contra-el-banco.md) | La medición contra el banco corre en un Compose aparte, noche por noche | aceptado | 2026-11-15 |
+| [0015](0015-que-puede-escribir-el-analista.md) | Qué puede escribir el analista | aceptado | 2026-11-16 |

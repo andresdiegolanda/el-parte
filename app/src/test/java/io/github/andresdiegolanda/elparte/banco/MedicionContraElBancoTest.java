@@ -62,10 +62,11 @@ class MedicionContraElBancoTest extends ConServicios {
         assertThat(primera.corridas()).containsExactly(DESDE, DESDE.plusDays(1), HASTA);
         assertThat(primera.salteadas()).isEmpty();
         assertThat(primera.cortadaPorTope()).isFalse();
-        assertThat(primera.gastadoUsd()).isEqualByComparingTo("0.012");
+        assertThat(primera.gastadoUsd()).isEqualByComparingTo("0.024");
         assertThat(jdbc.sql("select id from parte.corridas where modo = 'banco' order by iniciada_en").query(String.class).list())
                 .containsExactly("c-2026-10-14-banco", "c-2026-10-15-banco", "c-2026-10-16-banco");
-        assertThat(modelo.llamadas() - llamadasAntes).isEqualTo(3);
+        // El refutador y el analista, una vez por cada uno de los tres candidatos.
+        assertThat(modelo.llamadas() - llamadasAntes).isEqualTo(6);
         // Tres feeds; la primera noche lee tres publicaciones, la segunda una y la tercera dos, porque lo
         // del día de margen ya lo leyó la noche anterior; el refutador relee las tres nuevas; y la
         // publicación que falla se intenta tres veces. Sin reusar lo de la noche anterior serían 17.
@@ -88,7 +89,7 @@ class MedicionContraElBancoTest extends ConServicios {
         assertThat(corridas).extracting(c -> c.path("estado").asString()).containsOnly("completa");
         assertThat(corridas).extracting(c -> c.path("costoUsd").decimalValue())
                 .usingElementComparator(BigDecimal::compareTo)
-                .containsExactly(new BigDecimal("0.008"), new BigDecimal("0.004"), BigDecimal.ZERO);
+                .containsExactly(new BigDecimal("0.016"), new BigDecimal("0.008"), BigDecimal.ZERO);
         assertThat(corridas).extracting(c -> c.path("lecturasFallidas").asInt()).containsExactly(0, 0, 1);
         assertThat(corridas).allSatisfy(c -> assertThat(c.path("noRepetibles").isEmpty()).isTrue());
         assertThat(lista(salida.path("hechos"))).extracting(h -> h.path("clave").asString() + " " + h.path("noche").asString()
@@ -115,7 +116,7 @@ class MedicionContraElBancoTest extends ConServicios {
 
         // 4. El tope: con lo gastado ya en el tope, no se inicia ninguna noche más.
         MedicionContraElBanco.Resultado topada = medicion.medir(new MedicionContraElBanco.Parametros("2026-10-20-2",
-                HASTA.plusDays(1), HASTA.plusDays(2), "organismo:bps", new BigDecimal("0.012"), CARPETA, "prueba"));
+                HASTA.plusDays(1), HASTA.plusDays(2), "organismo:bps", new BigDecimal("0.024"), CARPETA, "prueba"));
         assertThat(topada.cortadaPorTope()).isTrue();
         assertThat(topada.corridas()).isEmpty();
         assertThat(jdbc.sql("select count(*) from parte.corridas where modo = 'banco'").query(Long.class).single()).isEqualTo(3);

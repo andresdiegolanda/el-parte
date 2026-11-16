@@ -3,7 +3,7 @@
 Todo pendiente de El Parte vive acá, con dueño (regla 8). Este archivo es lo que manda. El kanban publicado es editable y se sincroniza con este archivo cada vez que una sesión de desarrollo lee o escribe el repositorio, o cuando se le pide; su copia sin conexión, [`kanban/index.html`](kanban/index.html), se genera desde acá con `python3 herramientas/generar_kanban.py` y no se edita a mano ([ADR 0009](adrs/0009-kanban-editable-sincronizado.md)).
 
 - Actualizado: 2026-11-14
-- Nota: La primera rebanada (T08) anda de punta a punta y ya corrió contra el banco las 78 noches del registro (T20): 12,71 USD, 5 de 5 publicables encontrados, 0 de 1 hallazgo y una precisión estimada del 95 %. Falta que el responsable confirme la revisión. Lo que la medición mostró del explorador de ARCE se arregla en T39, y el tope de candidatos se revisa en T22. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). El analista, el presupuesto, la cola de revisión y el login (T21, T22, T23 y T25) se pueden empezar. El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.
+- Nota: La primera rebanada (T08) anda de punta a punta y ya corrió contra el banco las 78 noches del registro (T20): 12,71 USD, 5 de 5 publicables encontrados, 0 de 1 hallazgo y una precisión estimada del 95 %. Falta que el responsable confirme la revisión. Lo que la medición mostró del explorador de ARCE se arregla en T39, y el tope de candidatos se revisa en T22. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). El analista escribe qué dice, por qué importa y qué mirar, y falta medirlo contra el banco junto con T39 (T21). El presupuesto, la cola de revisión y el login (T22, T23 y T25) se pueden empezar. El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.
 - Calendario: 2026-11-07, 2026-11-14, 2026-11-21, 2026-11-28
 - Repositorio: https://github.com/andresdiegolanda/el-parte
 
@@ -145,25 +145,26 @@ Registro:
 - 2026-11-16: Creada a partir de la medición de las 78 noches (T20). Pasa a En curso.
 - 2026-11-16: Hecho el código: fuente.fallida de tipo sinPublicaciones cuando la fecha objetivo es un día hábil y el feed no trae nada de ese día, y el resumen de una adjudicación repartida nombra a todos los proveedores (docs/contratos.md, docs/como-se-hizo/primera-rebanada.md). La medición espera a la próxima corrida del banco, con T21.
 
-## Para empezar
-
 ### T21 · Completar el analista
 - Tipo: Componente
 - Dueño: desarrollo
-- Detalle: [docs/contratos.md](docs/contratos.md)
+- Detalle: [docs/contratos.md](docs/contratos.md), [adrs/0015-que-puede-escribir-el-analista.md](adrs/0015-que-puede-escribir-el-analista.md), [docs/como-se-hizo/analista.md](docs/como-se-hizo/analista.md)
 
 En la primera rebanada el analista solo pasa la afirmación. Acá escribe qué dice, por qué importa y qué mirar.
 
 Etapas:
-- [ ] Contrato
-- [ ] Código
-- [ ] Pruebas
+- [x] Contrato
+- [x] Código
+- [x] Pruebas
 - [ ] Medido contra el banco
-- [ ] Página cómo se hizo
+- [x] Página cómo se hizo
 
 Registro:
 - 2026-11-07: Creada con el plan (T07).
 - 2026-11-15: Deja de depender de T08: el código de la rebanada ya está hecho, y a T08 solo le falta la medición (T20). Pasa a Para empezar.
+- 2026-11-16: Hechos el contrato, el código, las pruebas y la página: el analista le pide al modelo qué dice, por qué importa y qué mirar, copia el grado del refutador y no usa un campo con una cifra que no está en la evidencia (ADR 0015). La página de la mañana muestra el análisis aparte. Falta medirlo contra el banco, junto con T39: se estima que la medición de las 78 noches cuesta unos 16 USD. Pasa a En curso.
+
+## Para empezar
 
 ### T22 · Implementar el presupuesto que corta
 - Tipo: Componente

@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import io.github.andresdiegolanda.elparte.analista.Analista;
+
 /**
  * La página de la mañana de la cuenta de demostración: el último informe, con cada hecho, su grado, su
  * evidencia y un enlace a su traza en la sala de máquinas (docs/base-de-afirmaciones.md, "Cómo salen
@@ -30,8 +32,13 @@ public class MananaControlador {
     }
 
     public record Hecho(String clave, String tipo, int version, String afirmacion, String grado, String razonamiento,
-            String fechaPublicacion, boolean fechaConfirmada, String queDice, String estadoRevision,
-            String mensajeCandidato, List<Evidencia> evidencias) {
+            String fechaPublicacion, boolean fechaConfirmada, String queDice, String porQueImporta, String queMirar,
+            String estadoRevision, String mensajeCandidato, List<Evidencia> evidencias) {
+
+        /** Si el analista escribió algo: sin análisis, los dos campos empiezan con {@link Analista#SIN_ANALISIS}. */
+        public boolean conAnalisis() {
+            return !porQueImporta.startsWith(Analista.SIN_ANALISIS) || !queMirar.startsWith(Analista.SIN_ANALISIS);
+        }
     }
 
     @GetMapping("/manana")
@@ -62,7 +69,8 @@ public class MananaControlador {
     private List<Hecho> hechos(long informeId) {
         List<Map<String, Object>> filas = jdbc.sql("""
                 select h.clave_de_hecho, h.tipo_de_hecho, v.id as version_id, v.numero, v.afirmacion, v.grado,
-                       v.razonamiento, v.fecha_publicacion, v.fecha_confirmada, v.que_dice, v.estado_revision,
+                       v.razonamiento, v.fecha_publicacion, v.fecha_confirmada, v.que_dice, v.por_que_importa,
+                       v.que_mirar, v.estado_revision,
                        v.mensaje_candidato
                 from parte.informe_hechos ih
                 join parte.versiones_de_hecho v on v.id = ih.version_id
@@ -80,6 +88,8 @@ public class MananaControlador {
                 (String) f.get("fecha_publicacion"),
                 (Boolean) f.get("fecha_confirmada"),
                 (String) f.get("que_dice"),
+                (String) f.get("por_que_importa"),
+                (String) f.get("que_mirar"),
                 (String) f.get("estado_revision"),
                 (String) f.get("mensaje_candidato"),
                 jdbc.sql("select url, fragmento from parte.evidencias where version_id = :v order by id")

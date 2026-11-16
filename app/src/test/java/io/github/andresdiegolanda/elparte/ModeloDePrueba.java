@@ -14,19 +14,28 @@ import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
 
 /**
- * Un modelo de mentira para las pruebas: responde como respondería el refutador, sin red ni costo, y
- * guarda qué modelo le pidieron en cada llamada. Las llamadas y adjudicaciones salen PROVEN, las
- * aclaraciones salen INFERRED, y cada respuesta cuenta 1000 tokens de entrada y 200 de salida.
+ * Un modelo de mentira para las pruebas: responde como responderían el refutador y el analista, sin red
+ * ni costo, y guarda qué modelo le pidieron en cada llamada. Para el refutador, las llamadas y
+ * adjudicaciones salen PROVEN y las aclaraciones salen INFERRED; el analista repite la afirmación y
+ * agrega por qué importa y qué mirar. Cada respuesta cuenta 1000 tokens de entrada y 200 de salida.
  */
 public class ModeloDePrueba implements ChatModel {
 
     private static final Pattern CANDIDATO = Pattern.compile("Candidato \\((\\w+)\\):\\n(.*)\\n");
+    private static final Pattern HECHO = Pattern.compile("Hecho graduado \\((\\w+), (\\w+)\\):\\n(.*)\\n");
 
     private final List<String> modelosPedidos = new CopyOnWriteArrayList<>();
 
     @Override
     public ChatResponse call(Prompt pedido) {
         modelosPedidos.add(pedido.getOptions() == null ? "" : String.valueOf(pedido.getOptions().getModel()));
+        Matcher hecho = HECHO.matcher(pedido.getUserMessage().getText());
+        if (hecho.find()) {
+            return respuesta("""
+                    {"queDice": "%s", "porQueImporta": "Es una compra de una entidad que seguís (%s).",
+                     "queMirar": "Si aparece una actualización de esta misma compra."}""".formatted(
+                    hecho.group(3).replace("\"", "'"), hecho.group(1)));
+        }
         Matcher candidato = CANDIDATO.matcher(pedido.getUserMessage().getText());
         String tipo = candidato.find() ? candidato.group(1) : "";
         String resumen = candidato.group(2).replace("\"", "'");
@@ -39,7 +48,11 @@ public class ModeloDePrueba implements ChatModel {
                   {"grado": "PROVEN", "afirmacion": "%s", "fragmentos": ["buyer.name = Banco de Previsión Social"],
                    "razonamiento": null, "busqueda": null, "fuenteDice": "La publicación dice lo mismo."}"""
                         .formatted(resumen);
-        return new ChatResponse(List.of(new Generation(new AssistantMessage(respuesta))),
+        return respuesta(respuesta);
+    }
+
+    private static ChatResponse respuesta(String texto) {
+        return new ChatResponse(List.of(new Generation(new AssistantMessage(texto))),
                 ChatResponseMetadata.builder().usage(new DefaultUsage(1000, 200)).build());
     }
 

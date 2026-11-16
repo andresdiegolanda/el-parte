@@ -30,7 +30,7 @@ sequenceDiagram
 2. **El explorador de ARCE** lee el feed del mes, se queda con la noche y un día de margen, lee cada publicación para saber quién compra, tapa los datos personales de las del BPS y arma un candidato por cada una, sin el modelo ([docs/fuentes/compras-estatales.md](../fuentes/compras-estatales.md)).
 3. **El archivista** coteja cada candidato contra los hechos que ya están, por su clave (`arce:<ocid>:<tipo>`) y por la huella del contenido leído.
 4. **El refutador** vuelve a leer la publicación por su cuenta y le pide al modelo que la compare con la afirmación. Es el único que pone el grado ([ADR 0004](../../adrs/0004-grados-de-evidencia.md)).
-5. **El analista** pasa la afirmación tal cual; el análisis de verdad llega con T21.
+5. **El analista** pasa la afirmación tal cual. El análisis con el modelo llegó después, con T21: [docs/como-se-hizo/analista.md](analista.md).
 6. **El editor** guarda cada hecho PROVEN o INFERRED, con su versión, su evidencia y las entidades, y manda a revisión los INFERRED.
 7. **El cierre** ve cuándo todos los candidatos llegaron a un final, y el editor arma el informe de cada cliente y cierra la corrida.
 

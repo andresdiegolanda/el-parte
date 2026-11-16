@@ -66,6 +66,7 @@ flowchart TD
 | [`adrs/0012-tablero-de-arquitectura.md`](../adrs/0012-tablero-de-arquitectura.md) | El tablero de arquitectura refleja el sistema y es la referencia de los pedidos (T32). |
 | [`adrs/0013-acceso-perfil-y-parte-diario.md`](../adrs/0013-acceso-perfil-y-parte-diario.md) | Cómo entra cada usuario, dónde queda su perfil y cómo lee su parte cada mañana (T36). |
 | [`adrs/0014-medicion-contra-el-banco.md`](../adrs/0014-medicion-contra-el-banco.md) | La medición contra el banco corre en un Compose aparte, noche por noche (T20, T37). |
+| [`adrs/0015-que-puede-escribir-el-analista.md`](../adrs/0015-que-puede-escribir-el-analista.md) | Qué puede escribir el analista: el grado se copia y una cifra que no está en la evidencia no se usa (T21). |
 | [`app/`](../app/README.md) | El código: una aplicación Spring Boot con un paquete por agente ([ADR 0003](../adrs/0003-eleccion-del-stack.md)), sus migraciones, sus páginas y sus pruebas. Cómo se levanta y qué hay adentro, en [app/README.md](../app/README.md). |
 | [`compose.yaml`](../compose.yaml) | Levanta en local la aplicación, PostgreSQL, Kafka y el buzón de correo de prueba. Con `compose.banco.yaml`, una medición contra el banco. |
 | [`obsoletos/README.md`](../obsoletos/README.md) | Índice de lo que se movió a obsoletos. |
@@ -78,10 +79,11 @@ flowchart TD
 | [`banco-de-pruebas/mediciones/README.md`](../banco-de-pruebas/mediciones/README.md) | Qué hay en cada carpeta de medición, y qué mediciones hay: una prueba de tres noches y las 78 noches del registro (T20). |
 | [`compose.banco.yaml`](../compose.banco.yaml) | Lo que cambia del Compose de todos los días para una medición contra el banco: sin puertos de la base, de Kafka ni del correo, la aplicación en el 8081 con el perfil `banco` (ADR 0014, T20). |
 | [`docs/como-se-hizo/medicion-contra-el-banco.md`](../docs/como-se-hizo/medicion-contra-el-banco.md) | Cómo se hizo la medición contra el banco: qué hace, cómo se construyó, qué se probó y qué falló (T20). |
+| [`docs/como-se-hizo/analista.md`](../docs/como-se-hizo/analista.md) | Cómo se hizo el analista: qué le pide al modelo, el control de cifras y qué se probó (T21). |
 
 ## Lo que va a haber
 
 | Ruta | Qué va a tener | Tarea |
 |---|---|---|
 | `banco-de-pruebas/mediciones/<medición>/` | La primera medición real: la salida de El Parte y la medición, sin texto del registro. El registro real está en `banco-de-pruebas/privado/`, que no se versiona. | T20 |
-| `docs/como-se-hizo/` | Las páginas de los componentes que faltan. | T21 en adelante, T26 |
+| `docs/como-se-hizo/` | Las páginas de los componentes que faltan. | T22 en adelante, T26 |

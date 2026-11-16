@@ -223,7 +223,7 @@
 "use strict";
 var S = {
  "titulo": "El Parte · tablero de arquitectura",
- "actualizado": "2026-11-15",
+ "actualizado": "2026-11-16",
  "repositorio": "https://github.com/andresdiegolanda/el-parte/blob/main/",
  "tablero": "https://github.com/andresdiegolanda/el-parte/blob/main/tablero.md",
  "kanban": "https://claude.ai/artifact/4wQ9LjW4H98WnjUWpcFsf3",
@@ -919,21 +919,24 @@ var S = {
    "id": "analista",
    "tipo": "agente",
    "titulo": "Analista",
-   "sub": "Analista · por ahora pasa la afirmación",
+   "sub": "Analista · qué dice, por qué importa, qué mirar",
    "col": 8,
    "fila": 1,
    "estado": "construido",
-   "que_es": "Recibe lo graduado PROVEN o INFERRED y escribe qué dice, por qué importa y qué mirar. En la primera rebanada solo pasa la afirmación.",
-   "para_que": "Que el hecho se entienda sin leer la fuente. El análisis con el modelo llega con T21.",
+   "que_es": "Recibe lo graduado PROVEN o INFERRED y le pide al modelo qué dice, por qué importa y qué mirar. Copia el grado del refutador, y un campo con una cifra que no está en la evidencia no se usa.",
+   "para_que": "Que el hecho se entienda sin leer la fuente, sin que la interpretación suba el grado (ADR 0004, ADR 0015).",
    "codigo": [
     "app/src/main/java/io/github/andresdiegolanda/elparte/analista/Analista.java"
    ],
    "docs": [
-    "docs/contratos.md"
+    "docs/contratos.md",
+    "adrs/0015-que-puede-escribir-el-analista.md",
+    "docs/como-se-hizo/analista.md"
    ],
    "tarjetas": [
     "T21"
-   ]
+   ],
+   "nota": "Falta medirlo contra el banco (T21)."
   },
   {
    "id": "editor",
@@ -1526,7 +1529,7 @@ var S = {
    "col": 11,
    "fila": 17,
    "estado": "construido",
-   "que_es": "El último informe de la cuenta de demostración: cada hecho con su grado, su evidencia, su estado de revisión y el enlace a su traza. Avisa si una fuente falló.",
+   "que_es": "El último informe de la cuenta de demostración: cada hecho con su grado, su evidencia, el análisis marcado como análisis, su estado de revisión y el enlace a su traza. Avisa si una fuente falló.",
    "para_que": "Es lo que El Parte le da a quien sigue una entidad.",
    "codigo": [
     "app/src/main/java/io/github/andresdiegolanda/elparte/web/MananaControlador.java",
@@ -1992,7 +1995,7 @@ var S = {
    "estado": "construido",
    "papel": "camino",
    "etiqueta": "el hecho, listo para publicar",
-   "detalle": "Emite el hecho analizado con el mismo grado. Por ahora, qué dice es la afirmación y lo demás dice 'Sin análisis'."
+   "detalle": "Emite el hecho analizado con el grado del refutador. Si el modelo no respondió, o un campo cita una cifra que no está en la evidencia, ese campo dice 'Sin análisis' y por qué (ADR 0015)."
   },
   {
    "id": "kafka/hechos.analizados>editor",
@@ -2753,10 +2756,10 @@ var S = {
    "de": "analista",
    "a": "modelo",
    "tipo": "usa",
-   "estado": "disenado",
-   "papel": "auxiliar",
+   "estado": "construido",
+   "papel": "camino",
    "etiqueta": "escribe el análisis",
-   "detalle": "Le pedirá al modelo qué dice, por qué importa y qué mirar.",
+   "detalle": "Le pide al modelo un Analisis (qué dice, por qué importa, qué mirar) con la afirmación, el grado, las entidades, lo que cambió si es una actualización y los fragmentos de la evidencia.",
    "tarjetas": [
     "T21"
    ]
@@ -3330,7 +3333,7 @@ var S = {
     },
     {
      "en": "analista>kafka/hechos.analizados",
-     "texto": "Lo pasa al editor. El análisis con el modelo llega con T21."
+     "texto": "Escribe con el modelo qué dice, por qué importa y qué mirar, y lo pasa al editor con el mismo grado."
     },
     {
      "en": "kafka/hechos.analizados>editor",
@@ -3697,10 +3700,6 @@ var S = {
      "texto": "La revisión del registro, que hacen personas leyéndolo, y la medición de las 78 noches (T20)."
     },
     {
-     "en": "analista>modelo",
-     "texto": "El análisis con el modelo (T21)."
-    },
-    {
      "en": "presupuesto",
      "texto": "El presupuesto que corta, por costo y por pasos (T22)."
     },
@@ -3832,6 +3831,14 @@ var S = {
    "texto": "El explorador de ARCE avisa cuando un día hábil viene sin publicaciones, y nombra a todos los proveedores de una adjudicación repartida (T39).",
    "objetos": [
     "explorador-arce"
+   ]
+  },
+  {
+   "fecha": "2026-11-16",
+   "texto": "El analista escribe con el modelo qué dice, por qué importa y qué mirar, y la página de la mañana lo muestra aparte, como análisis (T21, ADR 0015).",
+   "objetos": [
+    "analista",
+    "web/manana"
    ]
   }
  ],

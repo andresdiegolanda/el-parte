@@ -225,7 +225,7 @@ Si el refutador no puede volver a leer la fuente, o el modelo no responde o resp
 
 ### `hechos.analizados`
 
-Lo emite el analista, uno por candidato con grado `PROVEN` o `INFERRED`. El grado se copia tal cual: el analista no lo puede cambiar. En la primera rebanada el analista solo pasa la afirmación: `queDice` es la afirmación del refutador, y `porQueImporta` y `queMirar` dicen "Sin análisis". El análisis de verdad llega con T21.
+Lo emite el analista, uno por candidato con grado `PROVEN` o `INFERRED`. El grado se copia tal cual: el analista no lo puede cambiar. Los tres campos de texto los escribe el modelo y pasan por un control en código: un campo vacío, o con una cifra que no está en la afirmación, en la evidencia, en el razonamiento ni en las fechas, no se usa ([ADR 0015](../adrs/0015-que-puede-escribir-el-analista.md)). Entonces `queDice` es la afirmación del refutador, y `porQueImporta` o `queMirar` empiezan con "Sin análisis" y dicen por qué. Si el modelo no responde, salen así los tres, y el hecho se publica igual.
 
 | Campo | Qué es |
 |---|---|
@@ -233,6 +233,8 @@ Lo emite el analista, uno por candidato con grado `PROVEN` o `INFERRED`. El grad
 | `queDice` | La afirmación en lenguaje llano. |
 | `porQueImporta` | Por qué le importa a quien sigue esa entidad. |
 | `queMirar` | Qué conviene seguir de cerca después. |
+
+En la primera rebanada el analista solo pasaba la afirmación, y los dos últimos campos decían "Sin análisis" en todos los hechos; el análisis con el modelo llegó con T21.
 
 ```json
 {
