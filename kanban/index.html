@@ -396,30 +396,42 @@
     },
     {
      "texto": "Avisar al responsable para que suba el tope de gasto del espacio de trabajo y de la organización, antes de las 78 noches",
-     "hecho": false
+     "hecho": true
     },
     {
      "texto": "Correr la rebanada sobre cada noche del registro",
-     "hecho": false
+     "hecho": true
     },
     {
      "texto": "Revisar el registro: la fuente y la etiqueta de cada entrada, y después las correspondencias y los extras",
      "hecho": false
     },
     {
-     "texto": "Decidir cómo se juzgan los extras: en las tres noches de prueba salieron 93 hechos PROVEN o INFERRED sin nada del registro que les corresponda, y en 78 noches serían unos 2.400",
+     "texto": "Decidir cómo se juzgan los extras: en las 78 noches salieron 800 hechos PROVEN o INFERRED, y 789 no corresponden a nada del registro",
      "hecho": false
     },
     {
      "texto": "Contar con las reglas de banco-de-pruebas/metricas.md; con la muestra tiene que dar banco-de-pruebas/muestra/medicion-esperada.json",
-     "hecho": false
+     "hecho": true
     },
     {
      "texto": "Costo y duración por noche",
-     "hecho": false
+     "hecho": true
     },
     {
      "texto": "Versionar las métricas con la huella del registro usado (ADR 0007)",
+     "hecho": true
+    },
+    {
+     "texto": "Saber si ARCE publicó la compra directa del BPS a ATOS, el único hallazgo que esta medición podía encontrar",
+     "hecho": false
+    },
+    {
+     "texto": "Que el explorador avise cuando un día hábil viene sin publicaciones: el feed de ARCE no trae nada del 2026-10-23 al 2026-10-29",
+     "hecho": false
+    },
+    {
+     "texto": "Decidir qué hacer con el tope de 60 candidatos, que dejó 196 compras del BPS sin procesar",
      "hecho": false
     }
    ],
@@ -458,6 +470,10 @@
     {
      "fecha": "2026-11-15",
      "texto": "Borrador de la fuente y la etiqueta de las 84 entradas, en banco-de-pruebas/privado/revision/entradas.jsonl, fuera del repositorio, para que lo confirme el responsable. Valida sin errores. De ARCE, la única fuente que lee esta medición, son 8: 1 hallazgo, 5 publicables, 1 no-nuevo y 1 otra-entidad; las demás son de otras fuentes o de ninguna."
+    },
+    {
+     "fecha": "2026-11-16",
+     "texto": "Las 78 noches, en banco-de-pruebas/mediciones/2026-11-15-2/: 12,71 USD y 3 horas y 23 minutos, sin fallas. Con el borrador de la revisión y las correspondencias de seis entradas: 5 de 5 publicables encontrados, con 26 días de adelanto, y 0 de 1 hallazgo, la compra directa a ATOS. Faltan juzgar 789 extras. A la vista: el feed de ARCE no trae nada del 23 al 29 de octubre, y el tope de candidatos dejó 196 compras sin procesar (docs/como-se-hizo/medicion-contra-el-banco.md)."
     }
    ]
   },

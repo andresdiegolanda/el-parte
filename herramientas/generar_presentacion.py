@@ -167,7 +167,7 @@ hitos = (200, 600, 1000, 1400)
 c = [f'<line x1="200" y1="130" x2="800" y2="130" stroke="{TINTA}" stroke-width="6" stroke-linecap="round"/>',
      '<line x1="800" y1="130" x2="1400" y2="130" stroke="#8C96A3" stroke-width="6" stroke-linecap="round" stroke-dasharray="14 12"/>',
      f'<line x1="800" y1="52" x2="800" y2="110" stroke="{NARANJA}" stroke-width="3" stroke-dasharray="6 6"/>',
-     texto(800, 36, "Hoy, 15 de noviembre", 26, "#8A3415", "middle", "bold")]
+     texto(800, 36, "Hoy, 16 de noviembre", 26, "#8A3415", "middle", "bold")]
 for x in hitos[:2]:
     c += [f'<circle cx="{x}" cy="130" r="40" fill="{TINTA}"/>',
           f'<path d="M {x - 18} 132 L {x - 5} 145 L {x + 20} 116" fill="none" stroke="{PAPEL}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>']
@@ -176,7 +176,7 @@ c += [f'<circle cx="1000" cy="130" r="40" fill="#FBE9DD" stroke="{NARANJA}" stro
       f'<circle cx="1400" cy="130" r="40" fill="{PAPEL}" stroke="#8C96A3" stroke-width="6"/>']
 etapas = (("7 y 8 de noviembre", ("Documentación: el plan,", "las decisiones y cómo", "se hablan los agentes"), ("Hecho", TINTA)),
           ("14 y 15 de noviembre", ("La primera rebanada:", "una fuente, de la red", "a la página de la mañana"), ("Hecho", TINTA)),
-          ("21 y 22 de noviembre", ("La medición contra la", "vigilancia anterior y", "el analista completo"), ("Empezado: corre hoy", "#8A3415")),
+          ("21 y 22 de noviembre", ("La medición contra la", "vigilancia anterior y", "el analista completo"), ("Empezado: medición corrida", "#8A3415")),
           ("28 y 29 de noviembre", ("Las otras cuatro fuentes,", "los usuarios y la", "demostración"), ("Pendiente", GRIS)))
 for x, (fecha, lineas, (estado, color)) in zip(hitos, etapas):
     c.append(texto(x, 215, fecha, 26, TINTA, "middle", "bold"))

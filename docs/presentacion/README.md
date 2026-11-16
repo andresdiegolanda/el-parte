@@ -42,8 +42,7 @@ Para cambiar un dibujo, se cambia `herramientas/generar_presentacion.py` y se co
 | El llamado del ejemplo: lo que publicó compras estatales, lo que escribió El Parte y su grado | https://www.comprasestatales.gub.uy/ocds/release/llamado-1367309 y la base de la medición `2026-11-15-2`, corrida `c-2026-08-29-banco`. [PROVEN: consulta a la base, 2026-11-15] |
 | Esa noche: 571 publicaciones leídas, 25 del BPS, 0,22 USD; 22 PROVEN, 1 INFERRED y 2 NOT_MENTIONED | El registro de la aplicación y la base de la misma corrida. [PROVEN: 2026-11-15] |
 | 78 noches, del 2026-08-29 al 2026-11-14, y 19 hallazgos con sus noches | [`banco-de-pruebas/formato.md`](../../banco-de-pruebas/formato.md) y la lista de hallazgos del registro, que no se versiona (ADR 0007). [PROVEN: lectura del registro, 2026-11-15] |
-| Tres noches de prueba: 1,20 USD y 18 minutos | [`docs/como-se-hizo/medicion-contra-el-banco.md`](../como-se-hizo/medicion-contra-el-banco.md). [PROVEN: corrida del 2026-11-15] |
-| Las 78 noches: unos 31 USD y unas 8 horas | La misma página. [INFERRED: de tres noches] |
+| Las 78 noches: 12,71 USD y 3 horas y 23 minutos; 5 de 5 compras encontradas, 26 días antes; 1 de las 5 fuentes | [`banco-de-pruebas/mediciones/2026-11-15-2/medicion.json`](../../banco-de-pruebas/mediciones/2026-11-15-2/medicion.json) y [`docs/como-se-hizo/medicion-contra-el-banco.md`](../como-se-hizo/medicion-contra-el-banco.md). [PROVEN: medición del 2026-11-15, contada el 2026-11-16] |
 | Los cuatro fines de semana y qué entra en cada uno | [`docs/plan.md`](../plan.md) y el tablero, [`tablero.md`](../../tablero.md). [PROVEN: 2026-11-15] |
 
-La presentación es una foto del 15 de noviembre de 2026: la diapositiva "Dónde estamos" y las cifras de la medición se actualizan cuando cambian.
+La presentación es una foto del 16 de noviembre de 2026: la diapositiva "Dónde estamos" y las cifras de la medición se actualizan cuando cambian.

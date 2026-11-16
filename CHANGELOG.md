@@ -2,6 +2,10 @@
 
 Cada entrada dice qué cambió, dónde, y enlaza al documento que tiene el porqué. Las más nuevas van arriba.
 
+## 2026-11-16
+
+- La medición contra el banco de las 78 noches del registro, en `banco-de-pruebas/mediciones/2026-11-15-2/`: 12,71 USD y 3 horas y 23 minutos, sin fallas. Con el borrador de la revisión, El Parte encontró las 5 compras del BPS que la vigilancia había descartado, con una mediana de 26 días de adelanto, y no encontró el único hallazgo que podía encontrar, la compra directa a ATOS. Quedan 789 hechos sin juzgar. La medición dejó a la vista que el feed de ARCE no trae nada del 23 al 29 de octubre y que el tope de 60 candidatos dejó 196 compras sin procesar. La presentación (`docs/presentacion/el-parte.md`) pasa a las cifras reales. Detalle: [docs/como-se-hizo/medicion-contra-el-banco.md](docs/como-se-hizo/medicion-contra-el-banco.md).
+
 ## 2026-11-15
 
 - Una presentación de El Parte para quien no conoce el proyecto (T38), en `docs/presentacion/el-parte.md`: siete diapositivas en Marp, con notas del orador, su tema en `docs/presentacion/tema-el-parte.css` y los dibujos en `docs/presentacion/imagenes/`, que genera `herramientas/generar_presentacion.py`, y exportada a PDF en `docs/presentacion/el-parte.pdf`. Se eligió Marp para que viva en el repositorio y se compare en GitHub; lo que se resigna, cómo se exporta y de dónde sale cada cifra: [docs/presentacion/README.md](docs/presentacion/README.md).

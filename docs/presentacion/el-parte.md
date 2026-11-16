@@ -110,12 +110,12 @@ Otra vigilancia siguió al BPS durante 78 noches. El Parte repite esas noches y 
 
 ![w:1130](imagenes/medicion.svg)
 
-| 1,20 USD | 31 USD | 1 de 5 |
+| 5 de 5 | 12,71 USD | 1 de 5 |
 |---|---|---|
-| tres noches de prueba, en 18 minutos | estimado para las 78 noches, unas 8 horas | fuentes en esta primera medición: compras estatales |
+| compras del BPS que la vigilancia descartó y El Parte publicó, 26 días antes | las 78 noches, en 3 horas y 23 minutos | fuentes en esta primera medición: compras estatales |
 
 <!--
-Para saber si El Parte sirve hace falta compararlo con algo. Entre el 29 de agosto y el 14 de noviembre, otra vigilancia siguió al BPS todas las noches con un solo agente y anotó lo que encontró y lo que descartó: 84 entradas, de las que 19 son hallazgos. El Parte vuelve a correr esas mismas 78 noches, una por una, pidiéndole a cada fuente lo que publicó esa fecha, y después se cuenta: cuánto de lo que encontró la vigilancia encontró también El Parte, cuánto de lo que publica El Parte está bien, y cuánto cuesta. Una prueba de tres noches costó 1,20 dólares y tardó 18 minutos; las 78 se estiman en unos 31 dólares y 8 horas. Esta primera medición lee una sola de las cinco fuentes, así que sobre todo mide si lo que publica está bien y cuánto cuesta.
+Para saber si El Parte sirve hace falta compararlo con algo. Entre el 29 de agosto y el 14 de noviembre, otra vigilancia siguió al BPS todas las noches con un solo agente y anotó lo que encontró y lo que descartó: 84 entradas, de las que 19 son hallazgos. El Parte vuelve a correr esas mismas 78 noches, una por una, pidiéndole a cada fuente lo que publicó esa fecha, y después se cuenta: cuánto de lo que encontró la vigilancia encontró también El Parte, cuánto de lo que publica El Parte está bien, y cuánto cuesta. Las 78 noches costaron 12,71 dólares y tardaron 3 horas y 23 minutos. El Parte encontró las cinco compras del BPS que la vigilancia había visto y descartado porque no eran de su tema, y las vio la noche en que se publicaron: una mediana de 26 días antes. Esta primera medición lee una sola de las cinco fuentes, así que de los 19 hallazgos solo uno estaba a su alcance, una compra directa, y no la encontró; falta saber si esa compra se publicó en compras estatales. También falta juzgar los casi 800 hechos que El Parte publicó y que la vigilancia no tenía.
 -->
 
 ---
@@ -127,5 +127,5 @@ Para saber si El Parte sirve hace falta compararlo con algo. Entre el 29 de agos
 Es un proyecto didáctico: cada decisión, cada prueba y cada error quedan escritos en el repositorio, para que cualquiera entienda cómo se hizo. [github.com/andresdiegolanda/el-parte](https://github.com/andresdiegolanda/el-parte)
 
 <!--
-El plan de la versión 0 son cuatro fines de semana. El primero fue de documentación: antes de escribir código se decidió qué fuentes entran, cómo se hablan los agentes y cómo se guarda cada hecho. El segundo construyó la primera rebanada, chica pero completa: una sola fuente, compras estatales, desde la red hasta la página de la mañana. El tercero es medirse contra la vigilancia anterior, y ya empezó. El cuarto suma las otras cuatro fuentes, los usuarios y una cuenta de demostración. Todo queda documentado en el repositorio, incluido lo que salió mal, porque mostrar cómo se hizo es tan importante como el resultado.
+El plan de la versión 0 son cuatro fines de semana. El primero fue de documentación: antes de escribir código se decidió qué fuentes entran, cómo se hablan los agentes y cómo se guarda cada hecho. El segundo construyó la primera rebanada, chica pero completa: una sola fuente, compras estatales, desde la red hasta la página de la mañana. El tercero es medirse contra la vigilancia anterior: las 78 noches ya corrieron, y falta revisar lo que salió. El cuarto suma las otras cuatro fuentes, los usuarios y una cuenta de demostración. Todo queda documentado en el repositorio, incluido lo que salió mal, porque mostrar cómo se hizo es tan importante como el resultado.
 -->

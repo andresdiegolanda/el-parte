@@ -364,7 +364,7 @@
    "col": 2,
    "fila": 6,
    "estado": "construido",
-   "que_es": "Una carpeta por medición, con la salida de El Parte y la medición que da el conteo. Se versionan: llevan claves de hechos, fechas, conteos y huellas, y nada del registro. Por ahora hay una prueba de tres noches, sin medición porque el registro no está revisado.",
+   "que_es": "Una carpeta por medición, con la salida de El Parte y la medición que da el conteo. Se versionan: llevan claves de hechos, fechas, conteos y huellas, y nada del registro. Hay una prueba de tres noches y la medición de las 78 noches del registro.",
    "para_que": "Deja cada medición en el repositorio, para compararla con las siguientes y volver a contarla sin volver a correr.",
    "docs": [
     "banco-de-pruebas/metricas.md",
@@ -3594,6 +3594,13 @@
    "texto": "Las primeras tres noches reales del banco: 1,20 USD y 18 minutos. El explorador pone primero, en el tope de candidatos, las compras de la fecha objetivo.",
    "objetos": [
     "explorador-arce",
+    "afuera/mediciones-banco"
+   ]
+  },
+  {
+   "fecha": "2026-11-16",
+   "texto": "La medición de las 78 noches del registro: 12,71 USD, 5 de 5 publicables encontrados y 0 de 1 hallazgo.",
+   "objetos": [
     "afuera/mediciones-banco"
    ]
   }

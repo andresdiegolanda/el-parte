@@ -90,7 +90,34 @@ Corrieron en la máquina del responsable, con la clave, del 2026-11-11 al 2026-1
 - **Las 78 noches costarían unos 31 USD** con ese promedio de 0,40 USD por noche, y tardarían unas 8 horas. [INFERRED: de tres noches] Es más que el tope mensual del espacio de trabajo de la clave, de 20 USD (T14).
 - **El conteo en PowerShell.** Guardar la medición con `>` en Windows PowerShell 5.1 la dejaba en UTF-16. El conteo ahora escribe el archivo él mismo, en UTF-8.
 
+## Las 78 noches
+
+Corrieron en la máquina del responsable, del 2026-08-29 al 2026-11-14, con un tope de 35 USD, después de subir los topes de gasto de la clave. La salida y el conteo están en `banco-de-pruebas/mediciones/2026-11-15-2/`. [PROVEN: medición del 2026-11-15, de las 20:16 a las 23:41]
+
+| Qué | Cuánto |
+|---|---|
+| Noches | 78 completas, ninguna cortada ni fallida |
+| Costo | 12,71 USD, 0,16 USD por noche |
+| Duración | 2,6 minutos por noche, 3 horas y 23 minutos en total |
+| Publicaciones de ARCE leídas | 64.700 |
+| Candidatos del BPS | 2.139, de los que 196 quedaron sin procesar |
+| Llamadas al modelo | 1.333 |
+| Hechos que salieron | 800: 725 PROVEN y 75 INFERRED; 51 descartados |
+
+El conteo, con el borrador de la revisión: [PROVEN: `banco-de-pruebas/mediciones/2026-11-15-2/medicion.json`]
+
+- **Publicables: 5 de 5.** Las cinco compras del BPS que la vigilancia vio el 2026-11-01 y descartó por tema salieron en El Parte la noche en que se publicaron, con una mediana de 26 días de adelanto. Las cinco tienen su llamado y su aclaración, y una también su adjudicación.
+- **Hallazgos: 0 de 1.** De los 19 hallazgos, el único que esta medición podía encontrar es la compra directa del BPS a ATOS (`2026-09-29-1`), y no está. Ningún hecho ni ninguna publicación grabada la menciona; si ARCE la publicó, no se sabe todavía. [INFERRED: búsqueda en la base, 2026-11-16] Los otros 18 son de fuentes que esta medición no lee, o de ninguna.
+- **Precisión: sin decir todavía.** Los 11 hechos con correspondencia están bien; los otros 789 no corresponden a nada del registro y falta juzgarlos.
+- **Más barata que lo estimado.** Las tres noches de prueba hacían esperar unos 31 USD; costó 12,71, porque muchas noches son fines de semana con pocas compras.
+
+Dos problemas que la medición dejó a la vista:
+
+- **Una semana sin datos en ARCE.** El feed de octubre no trae nada publicado del 2026-10-23 al 2026-10-29, cinco días hábiles; el resto del mes trae entre 550 y 670 publicaciones por día hábil. [PROVEN: feed de 2026-10 bajado el 2026-11-15 a las 23:05] Las noches del 24 al 29 terminaron completas y sin leer nada: El Parte no avisa cuando una fuente viene vacía un día hábil.
+- **El tope de 60 candidatos.** Dejó 196 compras del BPS sin procesar, casi todas en noviembre; la noche del 2026-11-04, 60.
+
 ## Qué falta
 
-- Subir el tope de gasto del espacio de trabajo y el de la organización, y correr las 78 noches (T20).
-- La revisión del registro, que hacen personas leyéndolo, para que el conteo pueda decir algo (T20).
+- Juzgar los extras, o decidir cómo juzgarlos: 789 hechos sin correspondencia (T20).
+- Saber si ARCE publicó la compra directa a ATOS.
+- Que el explorador avise cuando un día hábil viene sin publicaciones, y qué hacer con el tope de candidatos (T20).

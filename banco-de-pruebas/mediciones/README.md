@@ -5,6 +5,7 @@ Una carpeta por cada medición de El Parte contra el banco de pruebas, con el no
 | Medición | Qué es |
 |---|---|
 | `banco-de-pruebas/mediciones/2026-11-15-1/` | Una prueba de tres noches, del 2026-11-11 al 2026-11-13, para conocer el costo y la duración antes de correr todas: 1,20 USD y 18 minutos (tablero, T20). No tiene `medicion.json` porque el registro todavía no está revisado. |
+| `banco-de-pruebas/mediciones/2026-11-15-2/` | Las 78 noches del registro, del 2026-08-29 al 2026-11-14: 12,71 USD y 3 horas y 23 minutos. El conteo es con el borrador de la revisión: 5 de 5 publicables encontrados, 0 de 1 hallazgo, y 789 extras sin juzgar (T20). |
 
 | Archivo | Qué es | Quién lo escribe |
 |---|---|---|
