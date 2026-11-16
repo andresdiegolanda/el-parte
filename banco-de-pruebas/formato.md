@@ -141,7 +141,9 @@ Las fuentes salen de [docs/fuentes/README.md](../docs/fuentes/README.md) y del A
 
 **`extras.jsonl`**, una línea por hecho de El Parte que no corresponde a nada del registro y que una persona juzgó: `hecho` (la clave) y `juicio`: `correcto`, `otra-entidad`, `no-nuevo` o `contenido-equivocado`.
 
-El control da error si un `id` o una clave no existen o no tienen la forma, si un valor no es de las listas o si una línea se repite. Da aviso si una correspondencia une una entrada de una fuente con un hecho de otra, o si un extra también tiene correspondencia.
+**`sorteo.json`**, opcional: los extras elegidos al azar para juzgar a mano cuando son demasiados para juzgarlos todos. Lo escribe `python3 herramientas/banco_de_pruebas.py sortear carpeta salida.json tamaño semilla`, y tiene `salida` (la huella de la salida de la que se sortearon), `semilla`, `tamano`, `poblacion` (cuántos extras había) y `claves` (las de los sorteados). Con la misma salida, las mismas correspondencias y la misma semilla, el sorteo da lo mismo. Cuando hay sorteo, se juzgan en `extras.jsonl` los sorteados; cómo se cuenta está en [banco-de-pruebas/metricas.md](metricas.md).
+
+El control da error si un `id` o una clave no existen o no tienen la forma, si un valor no es de las listas, si una línea se repite o si el sorteo no tiene sus campos. Da aviso si una correspondencia une una entrada de una fuente con un hecho de otra, si un extra también tiene correspondencia o si hay extras juzgados fuera del sorteo.
 
 ## La salida de El Parte
 

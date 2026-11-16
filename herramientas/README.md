@@ -18,7 +18,7 @@ Lo que generan no se edita a mano: se cambia la fuente y se vuelve a generar.
 | Script | Qué hace |
 |---|---|
 | [`herramientas/verificar_docs.py`](verificar_docs.py) | El verificador. Se corre antes de cada entrega: guiones largos, enlaces, tablero, kanban, láminas, diagramas Mermaid, referencias a tarjetas y decisiones, la primera migración igual al documento de la base, el tablero de arquitectura igual al código y la muestra del banco de pruebas con su medición esperada. Sale con 1 si encuentra algo. |
-| [`herramientas/banco_de_pruebas.py`](banco_de_pruebas.py) | Valida un registro del banco de pruebas y su revisión, y cuenta una medición: `validar [carpeta]` y `contar [carpeta salida.json [medicion.json]]`, por omisión sobre la muestra. Qué controla y qué cuenta está en [banco-de-pruebas/formato.md](../banco-de-pruebas/formato.md) y [banco-de-pruebas/metricas.md](../banco-de-pruebas/metricas.md). |
+| [`herramientas/banco_de_pruebas.py`](banco_de_pruebas.py) | Valida un registro del banco de pruebas y su revisión, y cuenta una medición: `validar [carpeta]` y `contar [carpeta salida.json [medicion.json]]`, por omisión sobre la muestra, y `sortear carpeta salida.json tamaño semilla`, que elige los extras a juzgar cuando son demasiados. Qué controla y qué cuenta está en [banco-de-pruebas/formato.md](../banco-de-pruebas/formato.md) y [banco-de-pruebas/metricas.md](../banco-de-pruebas/metricas.md). |
 | [`herramientas/sincronizar_tablero.py`](sincronizar_tablero.py) | Sincroniza el kanban publicado con `tablero.md` ([ADR 0009](../adrs/0009-kanban-editable-sincronizado.md)). El procedimiento está en [arranque/como-se-trabaja.md](../arranque/como-se-trabaja.md), "Sincronizar el kanban". |
 
 ## Módulos

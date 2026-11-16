@@ -21,6 +21,7 @@ Desde la raíz del repositorio:
 ```
 python3 herramientas/banco_de_pruebas.py validar banco-de-pruebas/privado
 python3 herramientas/banco_de_pruebas.py contar banco-de-pruebas/privado <salida de El Parte> <medicion.json>
+python3 herramientas/banco_de_pruebas.py sortear banco-de-pruebas/privado <salida de El Parte> <tamaño> <semilla>
 ```
 
-Sin argumentos, los dos usan la muestra. La salida de El Parte la producen las corridas en modo banco: cómo se corre una medición está en [app/README.md](../app/README.md), "Medir contra el banco". `validar` dice si el registro y su revisión cumplen el formato, con los avisos donde el registro se contradice, y su huella. `contar` escribe la medición en el archivo que se le da, en UTF-8, o si no se le da, en la pantalla. El verificador del repositorio controla que la muestra cumpla el formato sin avisos y que dé la medición esperada.
+Sin argumentos, `validar` y `contar` usan la muestra. La salida de El Parte la producen las corridas en modo banco: cómo se corre una medición está en [app/README.md](../app/README.md), "Medir contra el banco". `validar` dice si el registro y su revisión cumplen el formato, con los avisos donde el registro se contradice, y su huella. `contar` escribe la medición en el archivo que se le da, en UTF-8, o si no se le da, en la pantalla. `sortear` elige al azar, con la semilla, los extras que se juzgan a mano cuando son demasiados, y los deja en `revision/sorteo.json` ([banco-de-pruebas/metricas.md](metricas.md)). El verificador del repositorio controla que la muestra cumpla el formato sin avisos y que dé la medición esperada.

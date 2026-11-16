@@ -208,6 +208,37 @@ escrito = destino.read_bytes()
 comprobar(codigo == 0 and json.loads(escrito.decode("utf-8")) == bp.medir(registro, salida) and not escrito.startswith(b"\xff\xfe"),
           "contar con destino escribe la medición en UTF-8")
 
+# El sorteo de extras: el mismo con la misma semilla, y la estimación con su intervalo.
+registro, salida = copia()
+primero = bp.sortear(registro, salida, 3, 7)
+comprobar(primero == bp.sortear(registro, salida, 3, 7) and primero["poblacion"] == 3 and primero["tamano"] == 3,
+          "el sorteo da los mismos extras con la misma semilla")
+comprobar(len({tuple(bp.sortear(registro, salida, 2, semilla)["claves"]) for semilla in range(10)}) > 1,
+          "otra semilla puede dar otros extras")
+codigo = bp.main(["sortear", str(registro), str(salida), "3", "7"])
+sorteo = json.loads((registro / "revision" / "sorteo.json").read_text(encoding="utf-8"))
+comprobar(codigo == 0 and sorteo == primero, "sortear escribe revision/sorteo.json")
+escribir_lineas(registro / "revision" / "extras.jsonl",
+                [{"hecho": k, "juicio": j} for k, j in zip(sorteo["claves"], ("correcto", "correcto", "no-nuevo"))])
+errores, avisos = bp.validar(registro)
+estimacion = bp.medir(registro, salida)["hechos"]["sorteoDeExtras"]
+comprobar(not errores and not avisos and estimacion["juzgados"] == 3 and estimacion["correctos"] == 2
+          and estimacion["precision"] == 0.6667 and estimacion["falsos"]["noNuevo"] == 1
+          and estimacion["intervalo95"] == [0.2077, 0.9385],
+          "con el sorteo juzgado, la medición estima la precisión de los extras con su intervalo de Wilson")
+comprobar(estimacion["intervaloDeTodo95"][0] <= estimacion["precisionDeTodo"] <= estimacion["intervaloDeTodo95"][1],
+          "y estima la de todo lo publicado, dentro de su intervalo")
+escribir_lineas(registro / "revision" / "extras.jsonl",
+                [{"hecho": k, "juicio": "correcto"} for k in sorteo["claves"]]
+                + [{"hecho": "arce:ocds-ejemplo-9999:llamado", "juicio": "correcto"}])
+comprobar(any("fuera del sorteo" in a for a in bp.validar(registro)[1]), "un extra juzgado fuera del sorteo es un aviso")
+reemplazar(salida, '"entidad"', ' "entidad"')
+try:
+    bp.medir(registro, salida)
+    comprobar(False, "un sorteo de otra salida es un error")
+except bp.ErrorDeFormato as e:
+    comprobar("es de otra salida" in str(e), "un sorteo de otra salida es un error")
+
 # La huella depende de cada byte de los archivos del registro, y no de la revisión.
 registro, _ = copia()
 antes = bp.leer_registro(registro)[0]["huella"]

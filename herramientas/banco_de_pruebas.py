@@ -9,6 +9,7 @@ Uso, desde la raíz del repositorio:
 
     python3 herramientas/banco_de_pruebas.py validar [carpeta]
     python3 herramientas/banco_de_pruebas.py contar [carpeta salida.json [medicion.json]]
+    python3 herramientas/banco_de_pruebas.py sortear carpeta salida.json tamaño semilla
 
 La carpeta es la del registro, con su revisión en revision/, y salida.json es
 lo que produjeron las corridas en modo banco. Por omisión son los de la
@@ -18,6 +19,10 @@ si hay errores; los avisos no cambian el código. "contar" escribe la medición
 en medicion.json, en UTF-8, o si no se le da, en la salida estándar. Conviene
 darle el archivo: en Windows PowerShell 5.1, redirigir con ">" lo guarda en
 UTF-16.
+
+"sortear" elige al azar, con la semilla, los extras que se juzgan a mano cuando
+son demasiados para juzgarlos todos, y los escribe en revision/sorteo.json.
+Con la misma salida, la misma revisión y la misma semilla, elige los mismos.
 
 El registro tiene datos personales y es material de otro proyecto (ADR 0007 y
 ADR 0008). Nada de lo que este programa escribe copia su contenido: solo
@@ -29,6 +34,8 @@ Solo usa la biblioteca estándar de Python.
 import datetime
 import hashlib
 import json
+import math
+import random
 import re
 import statistics
 import sys
@@ -365,7 +372,7 @@ def leer_registro(carpeta):
 def leer_revision(carpeta, registro):
     """(revision, errores, avisos). Sin carpeta revision/, una revisión vacía y un aviso."""
     errores, avisos = [], []
-    revision = {"entradas": {}, "correspondencias": [], "extras": {}, "huella": None}
+    revision = {"entradas": {}, "correspondencias": [], "extras": {}, "sorteo": None, "huella": None}
     if not carpeta.is_dir():
         avisos.append("No hay revisión (revision/): todas las entradas quedan sin revisar.")
         return revision, errores, avisos
@@ -441,6 +448,28 @@ def leer_revision(carpeta, registro):
             avisos.append(f"{donde}: {fila['hecho']} tiene una correspondencia con el registro y no es un extra.")
         revision["extras"][fila["hecho"]] = fila
 
+    ruta = carpeta / "sorteo.json"
+    if ruta.is_file():
+        try:
+            sorteo = json.loads(ruta.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as e:
+            errores.append(f"revision/sorteo.json: no es JSON ({e.msg}).")
+            sorteo = None
+        if sorteo is not None:
+            claves = sorteo.get("claves") if isinstance(sorteo, dict) else None
+            if (not isinstance(sorteo, dict) or set(sorteo) != {"salida", "semilla", "tamano", "poblacion", "claves"}
+                    or not isinstance(claves, list) or len(claves) != sorteo["tamano"] or len(set(claves)) != len(claves)
+                    or any(not isinstance(k, str) or not CLAVE_DE_HECHO.match(k) for k in claves)
+                    or not isinstance(sorteo["poblacion"], int) or sorteo["poblacion"] < sorteo["tamano"]):
+                errores.append("revision/sorteo.json: los campos son salida, semilla, tamano, poblacion y claves, "
+                               "con tantas claves de hecho distintas como dice tamano.")
+            else:
+                revision["sorteo"] = sorteo
+                fuera = [k for k in revision["extras"] if k not in set(claves)]
+                if fuera:
+                    avisos.append(f"revision/extras.jsonl: {len(fuera)} extras juzgados fuera del sorteo; "
+                                  "cuentan en la precisión pero no en la estimación del sorteo.")
+
     archivos = [p.name for p in carpeta.iterdir() if p.is_file()]
     revision["huella"] = huella(carpeta, archivos)
     return revision, errores, avisos
@@ -484,6 +513,7 @@ def leer_salida(ruta):
             problemas.append(f"hecho {clave}: grado {hecho.get('grado')!r} no es uno de {', '.join(GRADOS)}.")
     if problemas:
         raise ErrorDeFormato(f"{ruta.name}: " + " ".join(problemas))
+    salida["huella"] = "sha256:" + hashlib.sha256(ruta.read_bytes()).hexdigest()
     return salida
 
 
@@ -491,6 +521,38 @@ def leer_salida(ruta):
 
 def proporcion(a, b):
     return round(a / b, 4) if b else None
+
+
+def wilson(aciertos, total, z=1.96):
+    """El intervalo de Wilson al 95 % de una proporción, o None si no hay nada juzgado."""
+    if not total:
+        return None
+    p = aciertos / total
+    centro = (p + z * z / (2 * total)) / (1 + z * z / total)
+    margen = z * math.sqrt(p * (1 - p) / total + z * z / (4 * total * total)) / (1 + z * z / total)
+    return [round(max(0.0, centro - margen), 4), round(min(1.0, centro + margen), 4)]
+
+
+def poblacion_de_extras(revision, salida):
+    """Las claves de los hechos PROVEN o INFERRED de la salida que no corresponden a nada del registro."""
+    con_registro = {c["hecho"] for c in revision["correspondencias"]}
+    return sorted(h["clave"] for h in salida["hechos"]
+                  if h["grado"] in ("PROVEN", "INFERRED") and h["clave"] not in con_registro)
+
+
+def sortear(carpeta, ruta_salida, tamano, semilla):
+    """El sorteo de extras para juzgar a mano. ErrorDeFormato si el registro, la revisión o la salida tienen errores."""
+    errores, _ = validar(carpeta)
+    if errores:
+        raise ErrorDeFormato(" ".join(errores))
+    registro, _, _ = leer_registro(carpeta)
+    revision, _, _ = leer_revision(carpeta / "revision", registro)
+    salida = leer_salida(ruta_salida)
+    poblacion = poblacion_de_extras(revision, salida)
+    if not 0 < tamano <= len(poblacion):
+        raise ErrorDeFormato(f"el tamaño tiene que estar entre 1 y {len(poblacion)}, los extras de la salida.")
+    claves = sorted(random.Random(semilla).sample(poblacion, tamano))
+    return {"salida": salida["huella"], "semilla": semilla, "tamano": tamano, "poblacion": len(poblacion), "claves": claves}
 
 
 def contar(registro, revision, salida):
@@ -618,6 +680,33 @@ def contar(registro, revision, salida):
         if de_la_vigilancia and de_la_vigilancia["duracion"] is not None:
             fila["duracionDeLaVigilancia"] = de_la_vigilancia["duracion"]
         detalle_noches.append(fila)
+    sorteo_de_extras = None
+    sorteo = revision.get("sorteo")
+    if sorteo is not None:
+        if sorteo["salida"] != salida.get("huella"):
+            raise ErrorDeFormato("revision/sorteo.json es de otra salida: hay que sortear de nuevo.")
+        juicios = [revision["extras"][k]["juicio"] for k in sorteo["claves"] if k in revision["extras"]]
+        juzgados, correctos = len(juicios), juicios.count("correcto")
+        de_registro = [f["resultado"] for f in detalle_hechos if "coincideCon" in f]
+        v_registro = sum(1 for r in de_registro if r in verdaderos)
+        j_registro = v_registro + sum(1 for r in de_registro if r in falsos)
+        n = sorteo["poblacion"]
+
+        def de_todo(p):
+            return round((v_registro + p * n) / (j_registro + n), 4) if p is not None and j_registro + n else None
+
+        intervalo = wilson(correctos, juzgados)
+        sorteo_de_extras = {
+            "poblacion": n, "tamano": sorteo["tamano"], "semilla": sorteo["semilla"],
+            "juzgados": juzgados, "correctos": correctos,
+            "falsos": {nombre: juicios.count(juicio) for juicio, nombre in
+                       (("otra-entidad", "otraEntidad"), ("no-nuevo", "noNuevo"), ("contenido-equivocado", "contenidoEquivocado"))},
+            "precision": proporcion(correctos, juzgados),
+            "intervalo95": intervalo,
+            "precisionDeTodo": de_todo(correctos / juzgados if juzgados else None),
+            "intervaloDeTodo95": [de_todo(intervalo[0]), de_todo(intervalo[1])] if intervalo else None,
+        }
+
     costos = [c["costoUsd"] for c in corridas.values() if c.get("costoUsd") is not None]
     duraciones = [c["duracionSegundos"] for c in corridas.values() if c.get("duracionSegundos") is not None]
     indice = registro["indice"]
@@ -648,6 +737,7 @@ def contar(registro, revision, salida):
             "INFERRED": precision(por_grado["INFERRED"]),
             "todos": precision(por_grado["PROVEN"] + por_grado["INFERRED"]),
             "descartadosPorElParte": sum(1 for h in hechos.values() if h["grado"] == "NOT_MENTIONED"),
+            **({"sorteoDeExtras": sorteo_de_extras} if sorteo_de_extras is not None else {}),
         },
         "detalle": {
             "hallazgos": detalle_hallazgos,
@@ -701,9 +791,26 @@ def verificar_muestra():
 
 
 def main(argumentos):
-    if not argumentos or argumentos[0] not in ("validar", "contar"):
+    if not argumentos or argumentos[0] not in ("validar", "contar", "sortear"):
         print(__doc__)
         return 2
+    if argumentos[0] == "sortear":
+        if len(argumentos) != 5 or not argumentos[3].isdigit() or not argumentos[4].isdigit():
+            print(__doc__)
+            return 2
+        carpeta = Path(argumentos[1])
+        try:
+            sorteo = sortear(carpeta, Path(argumentos[2]), int(argumentos[3]), int(argumentos[4]))
+        except ErrorDeFormato as e:
+            print(f"Error: {e}", file=sys.stderr)
+            return 1
+        destino = carpeta / "revision" / "sorteo.json"
+        destino.parent.mkdir(parents=True, exist_ok=True)
+        destino.write_text(json.dumps(sorteo, ensure_ascii=False, indent=1) + "\n", encoding="utf-8", newline="\n")
+        print(f"Sorteo de {sorteo['tamano']} de {sorteo['poblacion']} extras, con la semilla {sorteo['semilla']}, en {destino}:")
+        for clave in sorteo["claves"]:
+            print(clave)
+        return 0
     if argumentos[0] == "validar":
         carpeta = Path(argumentos[1]) if len(argumentos) > 1 else REGISTRO_DE_MUESTRA
         errores, avisos = validar(carpeta)
