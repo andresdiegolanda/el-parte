@@ -87,6 +87,16 @@ Mientras haga falta repetir alguna noche, el Compose de la medición se deja; pa
 
 La aplicación de la medición corre como root dentro de su contenedor, para poder escribir la salida en la carpeta del clon también en Linux; la de todos los días sigue con un usuario sin privilegios.
 
+### Crédito de la API
+
+La API de Claude se paga con crédito prepago de la organización de la clave. Sin crédito, cada llamada al modelo falla, y la medición se detiene en la primera noche con errores. Para cargarlo [PROVEN: [centro de ayuda de Claude, "How do I pay for my Claude API usage?"](https://support.claude.com/en/articles/8977456-how-do-i-pay-for-my-claude-api-usage), 2026-11-16]:
+
+1. Entrar a la consola de Claude, <https://platform.claude.com>, con un usuario que tenga el rol Admin o Billing.
+2. Abrir la página de facturación, <https://platform.claude.com/settings/billing>.
+3. `Buy credits`, poner el monto y confirmar. El crédito queda disponible enseguida, y el saldo se ve en la misma página.
+
+En la misma página, `Set up auto-reload` compra crédito solo cuando el saldo baja de un umbral. El crédito vence un año después de la compra y no se devuelve. Las 78 noches del registro, con el analista y 2 USD por noche, cuestan unos 21 USD. [INFERRED: [docs/como-se-hizo/presupuesto.md](../docs/como-se-hizo/presupuesto.md)] Los mismos pasos están en el botón "Cargar crédito de la API" del kanban.
+
 ## Las versiones
 
 Todas fijas, para que dos máquinas levanten lo mismo:

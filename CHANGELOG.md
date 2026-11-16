@@ -4,6 +4,7 @@ Cada entrada dice qué cambió, dónde, y enlaza al documento que tiene el porqu
 
 ## 2026-11-16
 
+- El kanban tiene un botón, "Cargar crédito de la API", que abre los pasos para cargar crédito en la consola de Claude; los mismos pasos están en `app/README.md`, "Crédito de la API".
 - La medición contra el banco se detiene en la primera noche con errores del modelo y no escribe la salida. La medición `2026-11-16-1` se quedó sin crédito de la API en la noche del 2026-09-24, después de 22 noches y 6,11 USD, y siguió con noches completas y sin hechos, porque el refutador gradúa NOT_MENTIONED lo que no puede verificar; se paró a mano y no se usa. Detalle: [docs/como-se-hizo/medicion-contra-el-banco.md](docs/como-se-hizo/medicion-contra-el-banco.md).
 - La medición contra el banco acepta el presupuesto de cada noche por el entorno, `ELPARTE_CORRIDA_COSTO_MAXIMO_USD` y `ELPARTE_CORRIDA_PASOS_MAXIMOS` (`compose.banco.yaml`, `app/README.md`), para medir con los valores que se decidan para T22.
 - La cola de revisión humana (T23): en `/revision`, las versiones INFERRED pendientes, con su razonamiento, su evidencia y su traza; quien revisa dice si la deducción se sostiene, y un no pide una nota. La página de la mañana muestra el resultado enseguida: un hecho que no se sostiene sigue, tachado y con la nota, como pide D6. T25 suma que la sala de máquinas y la cola sean solo del responsable. Cómo se hizo: [docs/como-se-hizo/revision.md](docs/como-se-hizo/revision.md).

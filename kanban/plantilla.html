@@ -147,6 +147,7 @@
   .log { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
   .log li { display: grid; grid-template-columns: 58px minmax(0, 1fr); gap: 8px; font-size: 13px; }
   .log .d { font-family: var(--mono); font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .pasos { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; max-width: 65ch; }
   .pfoot { border-top: 1px solid var(--line); padding-top: 12px; margin-top: auto; font-size: 12.5px; color: var(--muted); }
 
   footer { margin-top: 26px; color: var(--muted); font-size: 13px; max-width: 110ch; display: grid; gap: 6px; }
@@ -201,6 +202,7 @@
     <div class="tools">
       <div class="seg" role="group" aria-label="De quién mostrar" id="filtros"></div>
       <a class="rw" id="rw" target="_blank" rel="noopener noreferrer"></a>
+      <button class="btn" type="button" id="btn-credito">Cargar crédito de la API</button>
     </div>
   </header>
 
@@ -560,7 +562,7 @@
       board.appendChild(sec);
     });
     renderEncabezado(); renderFranja(); renderNotas();
-    if (abierta) { if (tarjetas[abierta]) { refrescarPanel(); } else { cerrar(true); } }
+    if (abierta && abierta !== CREDITO) { if (tarjetas[abierta]) { refrescarPanel(); } else { cerrar(true); } }
   }
   function renderPie() {
     Object.keys(meta.tipos).filter(function (k) { return meta.tipos[k].etapas.length; }).forEach(function (k) {
@@ -699,15 +701,60 @@
       : ["Esta tarjeta es el bloque ", el("code", { text: "### " + t.id }), " de ", el("a", { href: meta.tablero, target: "_blank", rel: "noopener noreferrer", text: "tablero.md" }), "."]));
   }
   function cerrar(sinHash) {
+    var eraCredito = abierta === CREDITO;
     abierta = null;
     $("overlay").hidden = true;
     $("panel").textContent = "";
     if (!sinHash && location.hash) { try { history.replaceState(null, "", location.pathname + location.search); } catch (e) { /* sin historial */ } }
+    if (eraCredito) { $("btn-credito").focus(); return; }
     var c = document.querySelector('.card[data-id="' + (abrir.ultima || "") + '"]'); if (c) { c.focus(); }
   }
+  // ---------- crédito de la API: los pasos para cargarlo, en el mismo panel que las tarjetas.
+  // Salen de app/README.md, "Crédito de la API", que sigue al centro de ayuda de Claude.
+  var CREDITO = "credito";
+  var AYUDA_CREDITO = "https://support.claude.com/en/articles/8977456-how-do-i-pay-for-my-claude-api-usage";
+  function abrirCredito(sinHash) {
+    abierta = CREDITO;
+    var p = $("panel");
+    p.textContent = "";
+    var parrafos = function (lineas) { var d = el("div", { cls: "notes" }); lineas.forEach(function (l) { var par = el("p"); par.appendChild(enLinea(l)); d.appendChild(par); }); return d; };
+    var pasos = el("ol", { cls: "pasos" });
+    [
+      "Entrá a la consola de Claude, [platform.claude.com](https://platform.claude.com), con un usuario que tenga el rol Admin o Billing en la organización de la clave.",
+      "Abrí la página de facturación: [platform.claude.com/settings/billing](https://platform.claude.com/settings/billing).",
+      "Hacé clic en `Buy credits`.",
+      "Poné el monto y confirmá. El crédito queda disponible enseguida, y el saldo se ve en la misma página.",
+      "Avisale a una sesión de desarrollo que ya hay crédito, para volver a lanzar la medición."
+    ].forEach(function (l) { var li = el("li"); li.appendChild(enLinea(l)); pasos.appendChild(li); });
+    p.appendChild(el("div", { cls: "phead" }, [el("div", { cls: "grow" }, [
+      el("div", { cls: "kicker", text: "Antes de una medición paga" }),
+      el("h2", { id: "p-title", tabindex: "-1", text: "Cargar crédito de la API" })]),
+      el("button", { cls: "btn", type: "button", text: "Cerrar", "aria-label": "Cerrar los pasos", onclick: function () { cerrar(); } })]));
+    p.appendChild(parrafos(["La API de Claude se paga con crédito prepago. Sin crédito, cada llamada al modelo falla, y la medición contra el banco se detiene en la primera noche con errores."]));
+    p.appendChild(seccion("Pasos", pasos));
+    p.appendChild(seccion("Cuánto", parrafos([
+      "Las 78 noches del registro, con el analista y 2 USD por noche, cuestan unos 21 USD: con 25 alcanza con margen.",
+      "La medición `2026-11-16-1` se quedó sin crédito en la noche del 2026-09-24, después de gastar 6,11 USD."
+    ])));
+    p.appendChild(seccion("Para que no se corte otra vez", parrafos([
+      "Opcional: en la misma página, en la sección `Credit balance`, `Set up auto-reload`. En `When credit balance reaches` va el saldo que dispara una compra, y en `Bring credit balance back up to`, hasta cuánto recargar. Después, `Turn on`. Si el saldo ya está por debajo, el botón dice `Turn on and purchase` y cobra en el momento."
+    ])));
+    p.appendChild(seccion("A tener en cuenta", parrafos([
+      "El crédito vence un año después de la compra y no se devuelve.",
+      "El crédito es el saldo de la organización. El tope de gasto del espacio de trabajo es otra cosa, y también tiene que alcanzar para la medición."
+    ])));
+    var pie = el("div", { cls: "pfoot" });
+    pie.appendChild(enLinea("Pasos del centro de ayuda de Claude, [How do I pay for my Claude API usage?](" + AYUDA_CREDITO + "), revisado el 2026-11-16. En el repositorio: [app/README.md](app/README.md), \"Crédito de la API\"."));
+    p.appendChild(pie);
+    $("overlay").hidden = false;
+    $("p-title").focus();
+    if (!sinHash && location.hash !== "#" + CREDITO) { try { location.hash = CREDITO; } catch (e) { /* sin hash */ } }
+  }
+  $("btn-credito").addEventListener("click", function () { abrirCredito(); });
   function seguirHash() {
     var m = /^#([A-Za-z0-9-]+)$/.exec(location.hash);
-    if (m && tarjetas[m[1]]) { if (abierta !== m[1]) { abrir(m[1], true); } }
+    if (m && m[1] === CREDITO) { if (abierta !== CREDITO) { abrirCredito(true); } }
+    else if (m && tarjetas[m[1]]) { if (abierta !== m[1]) { abrir(m[1], true); } }
     else if (abierta) { cerrar(true); }
   }
   $("overlay").addEventListener("click", function (e) { if (e.target === $("overlay")) { cerrar(); } });

@@ -123,6 +123,20 @@ await espera(300);
 const nuevas = await pagina.evaluate(() => Object.keys(window.__docs).filter((p) => p.startsWith("tarjetas/N-")));
 comprobar(nuevas.length === 1, "la tarjeta nueva queda en la base con un identificador temporal");
 
+// 6. El botón del crédito abre los pasos en el panel, sin escribir nada, y Escape lo cierra.
+antes = await escrituras();
+await pagina.click("#btn-credito");
+await pagina.waitForSelector("ol.pasos");
+const pasos = await pagina.$eval("#panel", (e) => e.textContent);
+comprobar(pasos.includes("Buy credits") && pasos.includes("platform.claude.com/settings/billing"), "el botón del crédito muestra los pasos");
+comprobar(await pagina.evaluate(() => location.hash === "#credito"), "y el enlace a los pasos termina en #credito");
+await espera(300);
+comprobar(await pagina.evaluate(() => !document.getElementById("overlay").hidden), "los pasos siguen abiertos cuando la base avisa cambios");
+await pagina.keyboard.press("Escape");
+await espera(150);
+comprobar(await pagina.evaluate(() => document.getElementById("overlay").hidden && document.activeElement.id === "btn-credito"), "Escape cierra los pasos y vuelve al botón");
+comprobar((await escrituras()) === antes, "mirar los pasos no escribe en la base");
+
 // Volcado para la prueba de sincronización.
 const volcado = await pagina.evaluate(() => {
   const d = window.__docs;
