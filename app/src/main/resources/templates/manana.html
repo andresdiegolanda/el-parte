@@ -10,8 +10,15 @@
         <th:block th:if="${seguidas.isEmpty()}">Todavía no sigue a ninguna entidad.</th:block>
         <a th:if="${usuario == null}" href="/entrar">Entrar</a></p>
 
-    <div th:if="${informe == null}" class="tarjeta vacio">
+    <p th:if="${noches.size() > 1 or nocheElegida != null}" class="sub">Noches con parte:
+        <th:block th:each="n, estado : ${noches}"><a th:href="@{/manana(noche=${n})}" th:text="${n}"
+            th:style="${informe != null and n == informe.fecha} ? 'font-weight: 700; text-decoration: none'">2026-11-12</a><th:block th:if="${!estado.last}"> · </th:block></th:block></p>
+
+    <div th:if="${informe == null and nocheElegida == null}" class="tarjeta vacio">
         Todavía no hay un parte para esta cuenta: el primero sale después de la próxima corrida de la noche.
+    </div>
+    <div th:if="${informe == null and nocheElegida != null}" class="tarjeta vacio">
+        No hay un parte de la noche del <span th:text="${nocheElegida}">2026-11-12</span> para esta cuenta.
     </div>
 
     <th:block th:if="${informe != null}">
@@ -29,7 +36,9 @@
             El detalle está en la <a th:href="@{/corridas/{id}(id=${informe.corridaId})}">sala de máquinas</a>.
         </div>
 
-        <div th:if="${informe.sinNovedades and fallas == 0}" class="tarjeta">No hubo nada nuevo.</div>
+        <div th:if="${informe.sinNovedades and fallas == 0 and leidas == 0}" class="tarjeta vacio">ARCE no publicó nada esa noche
+            ni el día anterior: pasa los fines de semana y los feriados.</div>
+        <div th:if="${informe.sinNovedades and fallas == 0 and leidas > 0}" class="tarjeta">No hubo nada nuevo.</div>
         <div th:if="${informe.sinNovedades and fallas > 0}" class="tarjeta vacio">No se encontró nada nuevo en lo que sí se pudo leer.</div>
 
         <div th:each="h : ${hechos}" class="tarjeta">

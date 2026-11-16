@@ -15,7 +15,7 @@ La primera vez baja las imágenes y compila la aplicación dentro de Docker, con
 | Qué | Dónde |
 |---|---|
 | La aplicación | http://localhost:8080 |
-| La página de la mañana de la cuenta de demostración | http://localhost:8080/manana |
+| La página de la mañana de la cuenta de demostración, o de quien entró; la de otra noche, con `?noche=AAAA-MM-DD` | http://localhost:8080/manana |
 | La sala de máquinas: las corridas, y el botón para correr una noche o repetir una corrida | http://localhost:8080/corridas |
 | La cola de revisión humana de los hechos INFERRED (D6), solo para el responsable | http://localhost:8080/revision |
 | Entrar con un enlace de correo | http://localhost:8080/entrar |

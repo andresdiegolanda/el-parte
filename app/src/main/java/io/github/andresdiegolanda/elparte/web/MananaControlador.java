@@ -1,5 +1,7 @@
 package io.github.andresdiegolanda.elparte.web;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import io.github.andresdiegolanda.elparte.acceso.UsuarioDeElParte;
 import io.github.andresdiegolanda.elparte.analista.Analista;
@@ -57,21 +60,43 @@ public class MananaControlador {
         }
     }
 
-    /** Con sesión, el parte de quien entró; sin sesión, el de la cuenta de demostración (ADR 0013). */
+    /**
+     * Con sesión, el parte de quien entró; sin sesión, el de la cuenta de demostración (ADR 0013). Por
+     * omisión, el de la noche más reciente; con {@code ?noche=AAAA-MM-DD}, el de esa noche, porque una noche
+     * vieja corrida a mano no es la más reciente.
+     */
     @GetMapping("/manana")
-    public String manana(@AuthenticationPrincipal UsuarioDeElParte usuario, Model modelo) {
+    public String manana(@AuthenticationPrincipal UsuarioDeElParte usuario,
+            @RequestParam(name = "noche", required = false) String noche, Model modelo) {
         UUID cliente = usuario != null ? usuario.clienteId()
                 : jdbc.sql("select cliente_id from parte.clientes where es_demo order by alias limit 1")
                         .query(UUID.class).single();
+        LocalDate elegida = null;
+        try {
+            elegida = noche == null || noche.isBlank() ? null : LocalDate.parse(noche);
+        } catch (DateTimeParseException e) {
+            // Una fecha que no se entiende muestra la noche más reciente.
+        }
         Optional<Informe> informe = jdbc.sql("""
                 select i.id, i.fecha_objetivo, i.corrida_id, i.sin_novedades, i.corrida_cortada
                 from parte.informes i
-                where i.cliente_id = :cliente
+                where i.cliente_id = :cliente and (cast(:noche as date) is null or i.fecha_objetivo = cast(:noche as date))
                 order by i.fecha_objetivo desc, i.creado_en desc limit 1
                 """)
-                .param("cliente", cliente)
+                .param("cliente", cliente).param("noche", elegida)
                 .query((f, n) -> new Informe(f.getLong(1), f.getString(2), f.getString(3), f.getBoolean(4), f.getBoolean(5)))
                 .optional();
+        modelo.addAttribute("nocheElegida", elegida == null ? null : elegida.toString());
+        // Las noches con parte de este cliente, para elegir otra.
+        modelo.addAttribute("noches", jdbc.sql("""
+                select distinct fecha_objetivo from parte.informes where cliente_id = :cliente
+                order by fecha_objetivo desc limit 30
+                """).param("cliente", cliente).query(String.class).list());
+        // Si la fuente no publicó nada esa noche ni el día anterior, como los fines de semana, la página lo dice.
+        modelo.addAttribute("leidas", informe.map(i -> jdbc.sql("""
+                select coalesce(sum((contenido->>'publicacionesLeidas')::int), 0) from parte.mensajes
+                where corrida_id = :c and tipo = 'exploracion.terminada'
+                """).param("c", i.corridaId()).query(Long.class).single()).orElse(0L));
         modelo.addAttribute("informe", informe.orElse(null));
         modelo.addAttribute("hechos", informe.map(i -> hechos(i.id())).orElse(List.of()));
         modelo.addAttribute("corte", informe.filter(Informe::corridaCortada).flatMap(i -> jdbc.sql("""

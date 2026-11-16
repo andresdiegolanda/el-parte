@@ -193,8 +193,25 @@ class PrimeraRebanadaTest extends ConServicios {
         assertThat(modelo.llamadas()).isEqualTo(llamadasAlModelo);
         assertThat(contar(VERSIONES_DE_ESTA_NOCHE)).isEqualTo(3);
         // Un informe por cliente que sigue al BPS: la demostración y los dos invitados de las pruebas.
-        assertThat(jdbc.sql("select sin_novedades from parte.informes where corrida_id = :c").param("c", otraVez)
-                .query(Boolean.class).list()).hasSize(3).containsOnly(true);
+        // Los informes se arman después de que la corrida termina: se los espera.
+        assertThat(esperar(() -> jdbc.sql("select sin_novedades from parte.informes where corrida_id = :c").param("c", otraVez)
+                .query(Boolean.class).list(), lista -> lista.size() == 3)).hasSize(3).containsOnly(true);
+
+        // 6. Una noche en la que ARCE no publicó nada, como un domingo: la página lo dice, y como es la más
+        // reciente, es la que muestra. La de antes se elige en la lista de noches.
+        String domingo = inicio.iniciarNormal(LocalDate.parse("2026-11-22"));
+        assertThat(esperarFin(domingo)).isEqualTo("completa");
+        assertThat(unico(domingo, Tipos.EXPLORACION_TERMINADA, ExploracionTerminada.class).publicacionesLeidas()).isZero();
+        esperar(() -> jdbc.sql("select count(*) from parte.informes where corrida_id = :c").param("c", domingo)
+                .query(Long.class).single(), n -> n == 3);
+        String vacia = pagina("/manana");
+        assertThat(vacia).contains("2026-11-22", "ARCE no publicó nada esa noche", "Noches con parte:",
+                "href=\"/manana?noche=" + ArceDePrueba.NOCHE + "\"");
+        // De esa noche muestra su corrida más reciente: la del paso 5, que no encontró nada nuevo.
+        assertThat(pagina("/manana?noche=" + ArceDePrueba.NOCHE)).contains("Noche del <strong>" + ArceDePrueba.NOCHE, otraVez)
+                .doesNotContain("ARCE no publicó nada");
+        assertThat(pagina("/manana?noche=2020-01-01")).contains("No hay un parte de la noche del <span>2020-01-01</span>");
+        assertThat(pagina("/manana?noche=cualquiera")).contains("2026-11-22");
     }
 
     private static int revisar(Navegador navegador, long version, String estado, String nota) {
