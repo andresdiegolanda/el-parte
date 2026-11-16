@@ -3,7 +3,7 @@
 Todo pendiente de El Parte vive acá, con dueño (regla 8). Este archivo es lo que manda. El kanban publicado es editable y se sincroniza con este archivo cada vez que una sesión de desarrollo lee o escribe el repositorio, o cuando se le pide; su copia sin conexión, [`kanban/index.html`](kanban/index.html), se genera desde acá con `python3 herramientas/generar_kanban.py` y no se edita a mano ([ADR 0009](adrs/0009-kanban-editable-sincronizado.md)).
 
 - Actualizado: 2026-11-16
-- Nota: La primera rebanada (T08) anda de punta a punta y ya corrió contra el banco las 78 noches del registro (T20): 12,71 USD, 5 de 5 publicables encontrados, 0 de 1 hallazgo y una precisión estimada del 95 %. Falta que el responsable confirme la revisión. Lo que la medición mostró del explorador de ARCE se arregla en T39. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). El analista completo (T21) y el presupuesto que corta (T22) están hechos, sin el tope de 60 candidatos, y falta medirlos contra el banco junto con T39, en una sola corrida. La cola de revisión humana (T23) y el login por enlace (T25) están hechos: correr y revisar son solo del responsable. El despliegue en la máquina del responsable, con un túnel de Cloudflare y el correo por Resend, está decidido y armado (ADR 0016, T27); falta probarlo con las claves reales (T40). Sigue el perfil (T34). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.
+- Nota: La primera rebanada (T08) anda de punta a punta y ya corrió contra el banco las 78 noches del registro (T20): 12,71 USD, 5 de 5 publicables encontrados, 0 de 1 hallazgo y una precisión estimada del 95 %. Falta que el responsable confirme la revisión. Lo que la medición mostró del explorador de ARCE se arregla en T39. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). El analista completo (T21) y el presupuesto que corta (T22) están hechos, sin el tope de 60 candidatos, y falta medirlos contra el banco junto con T39, en una sola corrida. La cola de revisión humana (T23) y el login por enlace (T25) están hechos: correr y revisar son solo del responsable. El Parte está publicado desde la máquina del responsable, con un túnel de Cloudflare y el correo por Resend (T40), y el responsable ya entró desde afuera (ADR 0016, aceptado). Sigue el perfil (T34). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.
 - Calendario: 2026-11-07, 2026-11-14, 2026-11-21, 2026-11-28
 - Repositorio: https://github.com/andresdiegolanda/el-parte
 
@@ -196,19 +196,6 @@ Registro:
 
 ## Para empezar
 
-### T41 · Aceptar o corregir el ADR 0016
-- Tipo: Gestión
-- Dueño: Andrés
-- Detalle: [adrs/0016-despliegue-en-la-maquina-del-responsable.md](adrs/0016-despliegue-en-la-maquina-del-responsable.md)
-
-Dónde se publica El Parte: la máquina del responsable, un túnel de Cloudflare, el correo por Resend, la salud fuera del túnel y una copia de la base cada 24 horas. Al aceptarlo, su estado pasa a "aceptado" en el archivo y en el índice.
-
-Lista:
-- [ ] 0016: despliegue en la máquina del responsable
-
-Registro:
-- 2026-11-16: Creada con el ADR 0016.
-
 ### T34 · Armar la página del perfil
 - Tipo: Web
 - Dueño: desarrollo
@@ -262,63 +249,6 @@ Registro:
 - 2026-11-16: El servicio de correo quedó decidido en el ADR 0016: Resend por SMTP, con la misma configuración que el enlace para entrar.
 
 ## Esperando
-
-### T40 · Publicar El Parte en la máquina del responsable
-- Tipo: Herramienta
-- Dueño: desarrollo
-- Depende de: T25, T27
-- Espera a: que el responsable entre desde afuera con el enlace de un correo real (Andrés)
-- Detalle: [compose.publicado.yaml](compose.publicado.yaml), [app/README.md](app/README.md), [docs/como-se-hizo/despliegue.md](docs/como-se-hizo/despliegue.md), [adrs/0016-despliegue-en-la-maquina-del-responsable.md](adrs/0016-despliegue-en-la-maquina-del-responsable.md)
-
-Lo que el ADR 0016 decide, armado: el conector del túnel, el correo por Resend, la corrida de cada noche, los servicios que vuelven solos, la salud fuera del túnel y la copia diaria de la base. Probado en local con un correo de prueba que exige SSL y usuario; falta con el túnel y Resend reales.
-
-Etapas:
-- [x] Escrita
-- [ ] Probada
-- [x] Documentada
-
-Lista:
-- [x] compose.publicado.yaml, que se suma a compose.yaml con su propio proyecto
-- [x] Los puertos, solo en la máquina, también en local
-- [x] La salud en un puerto al que el túnel no llega
-- [x] La copia diaria de la base, y cómo se vuelve a una copia, probado
-- [x] Las mediciones, sin los invitados del .env
-- [x] El túnel creado en Cloudflare, con la ruta del subdominio a http://aplicacion:8080 (Andrés)
-- [x] El dominio del correo verificado en Resend y su clave (Andrés)
-- [x] Las claves, la dirección, el remitente y los invitados en el .env (Andrés)
-- [ ] Levantarla publicada y entrar desde afuera con el enlace de un correo real
-
-Registro:
-- 2026-11-16: Creada con el ADR 0016. Armada y probada en local; espera las claves del túnel y del correo.
-- 2026-11-16: Levantada en la máquina del responsable con las claves reales: el túnel conecta y las páginas responden desde afuera. El correo pasa al puerto 2465 de Resend, porque el antivirus de la máquina interceptaba el 465.
-
-### T27 · Escribir el ADR de despliegue
-- Tipo: ADR
-- Dueño: desarrollo
-- Depende de: T08
-- Espera a: que Andrés acepte o corrija el ADR 0016 (T41)
-- Detalle: [adrs/0016-despliegue-en-la-maquina-del-responsable.md](adrs/0016-despliegue-en-la-maquina-del-responsable.md), [arranque/decisiones-iniciales.md](arranque/decisiones-iniciales.md), [compose.publicado.yaml](compose.publicado.yaml), [app/README.md](app/README.md)
-
-Dónde se publica el servicio para los usuarios invitados, con qué dominio y con qué servicio de correo (D9). Hoy todo corre en una máquina con Docker (`compose.yaml`); el ADR resuelve lo que falta para que los invitados lo usen cada mañana.
-
-Etapas:
-- [x] Contexto y alternativas
-- [x] Fuentes verificadas
-- [x] Escrito
-- [ ] Aceptado
-
-Lista:
-- [x] Una máquina siempre prendida, para la corrida de cada noche (`ELPARTE_CORRIDA_CRON`) y las páginas de cada mañana. La del responsable, con la corrida a las 6 de Uruguay y los servicios que vuelven solos; si está apagada, esa noche se corre a mano
-- [x] Un dominio público con HTTPS, al que apuntan el enlace para entrar y el aviso diario. El subdominio del responsable, por un túnel de Cloudflare
-- [x] Un servicio de correo real en lugar de Mailpit, con la configuración de envío que pida en el dominio, verificada en su documentación. Resend por SMTP, con SSL
-- [x] La base y Kafka en almacenamiento persistente, y copias de seguridad de la base. Volúmenes de Docker y una copia de la base cada 24 horas, en respaldos/
-- [x] Las claves del modelo y de la base en el servidor, fuera del repositorio. En el .env, con el token del túnel y la clave del correo
-- [x] El tamaño de la máquina, con el costo y la duración por noche medidos en T20. 1,7 GB de memoria y unos 0,28 USD por noche; la duración no se midió aparte
-
-Registro:
-- 2026-11-07: Creada con el plan (T07).
-- 2026-11-14: Suma la lista de lo que el despliegue tiene que resolver.
-- 2026-11-16: ADR 0016 escrito, propuesto: El Parte se publica desde la máquina del responsable, con un túnel de Cloudflare y el correo por Resend. Lo que lo levanta está en compose.publicado.yaml y se termina de probar con las claves reales en T40. Pasa a Esperando, hasta que se acepte (T41).
 
 ### T08 · Construir la primera rebanada de punta a punta
 - Tipo: Componente
@@ -466,6 +396,77 @@ Registro:
 - 2026-11-14: Creada con el ADR 0010.
 
 ## Hecho
+
+### T41 · Aceptar o corregir el ADR 0016
+- Tipo: Gestión
+- Dueño: Andrés
+- Detalle: [adrs/0016-despliegue-en-la-maquina-del-responsable.md](adrs/0016-despliegue-en-la-maquina-del-responsable.md)
+
+Dónde se publica El Parte: la máquina del responsable, un túnel de Cloudflare, el correo por Resend, la salud fuera del túnel y una copia de la base cada 24 horas. Al aceptarlo, su estado pasa a "aceptado" en el archivo y en el índice.
+
+Lista:
+- [x] 0016: despliegue en la máquina del responsable
+
+Registro:
+- 2026-11-16: Creada con el ADR 0016.
+- 2026-11-16: Aceptado el 0016, sin cambios, para esta etapa. Pasa a Hecho.
+
+### T27 · Escribir el ADR de despliegue
+- Tipo: ADR
+- Dueño: desarrollo
+- Depende de: T08
+- Detalle: [adrs/0016-despliegue-en-la-maquina-del-responsable.md](adrs/0016-despliegue-en-la-maquina-del-responsable.md), [arranque/decisiones-iniciales.md](arranque/decisiones-iniciales.md), [compose.publicado.yaml](compose.publicado.yaml), [app/README.md](app/README.md)
+
+Dónde se publica el servicio para los usuarios invitados, con qué dominio y con qué servicio de correo (D9). Hoy todo corre en una máquina con Docker (`compose.yaml`); el ADR resuelve lo que falta para que los invitados lo usen cada mañana.
+
+Etapas:
+- [x] Contexto y alternativas
+- [x] Fuentes verificadas
+- [x] Escrito
+- [x] Aceptado
+
+Lista:
+- [x] Una máquina siempre prendida, para la corrida de cada noche (`ELPARTE_CORRIDA_CRON`) y las páginas de cada mañana. La del responsable, con la corrida a las 6 de Uruguay y los servicios que vuelven solos; si está apagada, esa noche se corre a mano
+- [x] Un dominio público con HTTPS, al que apuntan el enlace para entrar y el aviso diario. El subdominio del responsable, por un túnel de Cloudflare
+- [x] Un servicio de correo real en lugar de Mailpit, con la configuración de envío que pida en el dominio, verificada en su documentación. Resend por SMTP, con SSL
+- [x] La base y Kafka en almacenamiento persistente, y copias de seguridad de la base. Volúmenes de Docker y una copia de la base cada 24 horas, en respaldos/
+- [x] Las claves del modelo y de la base en el servidor, fuera del repositorio. En el .env, con el token del túnel y la clave del correo
+- [x] El tamaño de la máquina, con el costo y la duración por noche medidos en T20. 1,7 GB de memoria y unos 0,28 USD por noche; la duración no se midió aparte
+
+Registro:
+- 2026-11-07: Creada con el plan (T07).
+- 2026-11-14: Suma la lista de lo que el despliegue tiene que resolver.
+- 2026-11-16: ADR 0016 escrito, propuesto: El Parte se publica desde la máquina del responsable, con un túnel de Cloudflare y el correo por Resend. Lo que lo levanta está en compose.publicado.yaml y se termina de probar con las claves reales en T40. Pasa a Esperando, hasta que se acepte (T41).
+- 2026-11-16: ADR 0016 aceptado (T41). Pasa a Hecho.
+
+### T40 · Publicar El Parte en la máquina del responsable
+- Tipo: Herramienta
+- Dueño: desarrollo
+- Depende de: T25, T27
+- Detalle: [compose.publicado.yaml](compose.publicado.yaml), [app/README.md](app/README.md), [docs/como-se-hizo/despliegue.md](docs/como-se-hizo/despliegue.md), [adrs/0016-despliegue-en-la-maquina-del-responsable.md](adrs/0016-despliegue-en-la-maquina-del-responsable.md)
+
+Lo que el ADR 0016 decide, armado: el conector del túnel, el correo por Resend, la corrida de cada noche, los servicios que vuelven solos, la salud fuera del túnel y la copia diaria de la base. Probado en local con un correo de prueba que exige SSL y usuario, y en la máquina del responsable con el túnel y Resend reales.
+
+Etapas:
+- [x] Escrita
+- [x] Probada
+- [x] Documentada
+
+Lista:
+- [x] compose.publicado.yaml, que se suma a compose.yaml con su propio proyecto
+- [x] Los puertos, solo en la máquina, también en local
+- [x] La salud en un puerto al que el túnel no llega
+- [x] La copia diaria de la base, y cómo se vuelve a una copia, probado
+- [x] Las mediciones, sin los invitados del .env
+- [x] El túnel creado en Cloudflare, con la ruta del subdominio a http://aplicacion:8080 (Andrés)
+- [x] El dominio del correo verificado en Resend y su clave (Andrés)
+- [x] Las claves, la dirección, el remitente y los invitados en el .env (Andrés)
+- [x] Levantarla publicada y entrar desde afuera con el enlace de un correo real
+
+Registro:
+- 2026-11-16: Creada con el ADR 0016. Armada y probada en local; espera las claves del túnel y del correo.
+- 2026-11-16: Levantada en la máquina del responsable con las claves reales: el túnel conecta y las páginas responden desde afuera. El correo pasa al puerto 2465 de Resend, porque el antivirus de la máquina interceptaba el 465.
+- 2026-11-16: El responsable entró desde afuera con el enlace que le llegó por Resend. El enlace Estado del menú, que publicada daba error, se muestra solo en local. Pasa a Hecho.
 
 ### T25 · Armar el login por enlace, los cuatro usuarios y la cuenta de demostración
 - Tipo: Web

@@ -50,6 +50,7 @@ Todo en un Docker local, con un Mailpit que exige SSL y usuario en lugar de Rese
 - La aplicación levanta, y su indicador de salud del correo se conecta con SSL y usuario.
 - Un invitado del `.env` pide el enlace y le llega desde el remitente del `.env`, con la dirección pública.
 - `/actuator/health` no responde por el 8080 y sí por el 8090.
+- En la máquina del responsable, con el túnel y Resend reales: las páginas responden desde afuera, y el responsable entró con el enlace que le llegó por correo.
 - La copia tiene los datos de las 22 tablas, también las tres del esquema `cuentas`. Se recuperó en una base nueva y en la misma base, donde lo agregado después de la copia desapareció.
 - El conector lee el token y rechaza uno falso.
 - Las pruebas de la aplicación siguen pasando.
@@ -63,5 +64,4 @@ Todo en un Docker local, con un Mailpit que exige SSL y usuario en lugar de Rese
 
 ## Qué falta
 
-- **Probarlo con el túnel y Resend reales** (T40): el túnel creado, el dominio del correo verificado y sus claves en el `.env`.
 - **Copiar las copias a otro disco.** Hoy quedan en la misma máquina.

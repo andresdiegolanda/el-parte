@@ -1,6 +1,6 @@
 # 0016. El Parte se publica desde la máquina del responsable, con un túnel de Cloudflare y el correo por Resend
 
-- Estado: propuesto
+- Estado: aceptado
 - Fecha: 2026-11-16
 
 ## Contexto
@@ -71,7 +71,7 @@ Con un Mailpit que exige SSL y usuario en lugar de Resend, y un token falso en l
 - La copia de la base tiene los datos de todas sus tablas, también las del esquema `cuentas`. Se recuperó dos veces: en una base nueva, después de que la aplicación arrancó una vez para crear los roles y las tablas, y en la misma base, donde un cliente agregado después de la copia desapareció. En las dos, con la aplicación apagada y `pg_restore --clean --if-exists`, y la aplicación volvió a arrancar sana.
 - El conector del túnel lee el token del `.env` y rechaza uno falso.
 
-Falta probarlo con el túnel y Resend reales, con las claves del responsable (T40).
+Después, en la máquina del responsable, con el túnel y Resend reales: las páginas responden desde afuera por el subdominio, y el responsable entró con el enlace que le llegó por correo [PROVEN: entrada del responsable, 2026-11-16].
 
 ## Costo
 
