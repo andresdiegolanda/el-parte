@@ -143,7 +143,7 @@ flowchart LR
 
 ## Despliegue
 
-Todo corre con `docker compose up`: la aplicación, Kafka, PostgreSQL y Mailpit. El diagrama está en el [ADR 0003](../adrs/0003-eleccion-del-stack.md). Dónde se publica el servicio para los usuarios invitados se decide con un ADR en el cuarto fin de semana (D9).
+En local, todo corre con `docker compose up`: la aplicación, Kafka, PostgreSQL y Mailpit. El diagrama está en el [ADR 0003](../adrs/0003-eleccion-del-stack.md). Para los invitados, El Parte se publica desde la máquina del responsable con los mismos archivos y `compose.publicado.yaml`: un túnel de Cloudflare hasta el subdominio del responsable, el correo por Resend, la corrida de cada noche prendida y una copia diaria de la base ([ADR 0016](../adrs/0016-despliegue-en-la-maquina-del-responsable.md), [docs/como-se-hizo/despliegue.md](como-se-hizo/despliegue.md)).
 
 ## Dónde sigue
 

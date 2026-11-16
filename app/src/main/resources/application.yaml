@@ -20,10 +20,20 @@ spring:
       rol_cuentas: elparte_cuentas
       clave_cuentas: ${BASE_CLAVE_CUENTAS:cuentas-local}
 
-  # El correo del enlace para entrar (ADR 0013): en local, Mailpit; con el despliegue, el servicio real.
+  # El correo del enlace para entrar (ADR 0013): en local, Mailpit, sin usuario ni SSL; publicada,
+  # Resend, con su usuario, la clave del .env y SSL (compose.publicado.yaml, ADR 0016).
   mail:
     host: ${CORREO_HOST:localhost}
     port: ${CORREO_PUERTO:1025}
+    username: ${CORREO_USUARIO:}
+    password: ${CORREO_CLAVE:}
+    properties:
+      "[mail.smtp.auth]": ${CORREO_AUTENTICA:false}
+      "[mail.smtp.ssl.enable]": ${CORREO_SSL:false}
+      # El enlace se manda mientras la persona espera la página: si el servidor no contesta, se corta.
+      "[mail.smtp.connectiontimeout]": 10000
+      "[mail.smtp.timeout]": 10000
+      "[mail.smtp.writetimeout]": 10000
 
   kafka:
     bootstrap-servers: ${KAFKA_SERVIDORES:localhost:9092}

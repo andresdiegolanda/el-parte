@@ -77,12 +77,14 @@ flowchart TD
 | [`banco-de-pruebas/metricas.md`](../banco-de-pruebas/metricas.md) | Cómo se mide El Parte contra el registro: resultados, descartes, cuentas y la forma de una medición (T12). |
 | `banco-de-pruebas/muestra/` | Un registro inventado con su revisión, una salida de El Parte inventada y la medición que tienen que dar (T12). |
 | [`banco-de-pruebas/mediciones/README.md`](../banco-de-pruebas/mediciones/README.md) | Qué hay en cada carpeta de medición, y qué mediciones hay: una prueba de tres noches y las 78 noches del registro (T20). |
-| [`compose.banco.yaml`](../compose.banco.yaml) | Lo que cambia del Compose de todos los días para una medición contra el banco: sin puertos de la base, de Kafka ni del correo, la aplicación en el 8081 con el perfil `banco` (ADR 0014, T20). |
+| [`compose.banco.yaml`](../compose.banco.yaml) | Lo que cambia del Compose de todos los días para una medición contra el banco: sin puertos de la base, de Kafka ni del correo, la aplicación en el 8081 con el perfil `banco` y sin los invitados del `.env` (ADR 0014, T20). |
+| [`compose.publicado.yaml`](../compose.publicado.yaml) | Lo que cambia para publicar El Parte desde la máquina del responsable: el túnel de Cloudflare, el correo por Resend, la corrida de cada noche, la salud fuera del túnel y la copia diaria de la base (ADR 0016, T40). |
 | [`docs/como-se-hizo/medicion-contra-el-banco.md`](../docs/como-se-hizo/medicion-contra-el-banco.md) | Cómo se hizo la medición contra el banco: qué hace, cómo se construyó, qué se probó y qué falló (T20). |
 | [`docs/como-se-hizo/analista.md`](../docs/como-se-hizo/analista.md) | Cómo se hizo el analista: qué le pide al modelo, el control de cifras y qué se probó (T21). |
 | [`docs/como-se-hizo/presupuesto.md`](../docs/como-se-hizo/presupuesto.md) | Cómo se hizo el presupuesto que corta: el advisor, el libro de la corrida y qué se probó (T22). |
 | [`docs/como-se-hizo/revision.md`](../docs/como-se-hizo/revision.md) | Cómo se hizo la cola de revisión humana y lo que cambia en la página de la mañana (T23). |
 | [`docs/como-se-hizo/login.md`](../docs/como-se-hizo/login.md) | Cómo se hizo el login por enlace de correo, el alta de invitados y quién puede hacer qué (T25). |
+| [`docs/como-se-hizo/despliegue.md`](../docs/como-se-hizo/despliegue.md) | Cómo se hizo El Parte publicado: el túnel, el correo, la salud fuera del túnel y las copias de la base (T27, T40). |
 
 ## Lo que va a haber
 

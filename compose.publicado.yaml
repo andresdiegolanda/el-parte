@@ -1,0 +1,83 @@
+# El Parte publicado en la máquina del responsable (ADR 0016). Se suma a compose.yaml, con un nombre de
+# proyecto propio, así su base y su Kafka no son los de las pruebas en local:
+#
+#   docker compose -p el-parte-publicado -f compose.yaml -f compose.publicado.yaml up --build -d
+#
+# Lo que es de cada máquina va en el .env de la raíz, que no se versiona: el token del túnel, la clave
+# del correo, la dirección pública, el remitente y los invitados. Si falta uno de los cuatro primeros,
+# Docker Compose no arranca y dice cuál. Cómo se hace: app/README.md, "Publicarla".
+#
+# Nada abre un puerto hacia afuera: las personas llegan por el túnel de Cloudflare, que sale desde acá.
+
+services:
+  base:
+    restart: unless-stopped
+  kafka:
+    restart: unless-stopped
+
+  # Mailpit no hace falta: el correo sale por Resend. Este perfil no se prende nunca.
+  correo:
+    profiles: ["solo-local"]
+
+  aplicacion:
+    restart: unless-stopped
+    environment:
+      # Resend por SMTP, con SSL en el puerto 465; el usuario es siempre "resend" y la clave es la de la API.
+      CORREO_HOST: smtp.resend.com
+      CORREO_PUERTO: 465
+      CORREO_USUARIO: resend
+      CORREO_CLAVE: ${CORREO_CLAVE:?falta CORREO_CLAVE en el .env}
+      CORREO_AUTENTICA: "true"
+      CORREO_SSL: "true"
+      ELPARTE_URL_PUBLICA: ${ELPARTE_URL_PUBLICA:?falta ELPARTE_URL_PUBLICA en el .env}
+      ELPARTE_REMITENTE: ${ELPARTE_REMITENTE:?falta ELPARTE_REMITENTE en el .env}
+      # La noche de ayer, todos los días a las 6 de la mañana en Uruguay.
+      ELPARTE_CORRIDA_CRON: ${ELPARTE_CORRIDA_CRON:-0 0 6 * * *}
+      # La salud va en otro puerto, al que el túnel no lleva: desde afuera no se ve, y nadie puede hacer
+      # que la aplicación se conecte a Resend o a Kafka cada vez que la consulta. En esta máquina queda
+      # en http://localhost:8090/actuator/health.
+      MANAGEMENT_SERVER_PORT: 8081
+    ports: !override
+      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:8090:8081"
+
+  # El conector del túnel: sale hacia Cloudflare y le trae las visitas del subdominio. Adónde las manda
+  # (http://aplicacion:8080) se configura en el panel de Cloudflare, en la ruta del túnel.
+  tunel:
+    image: cloudflare/cloudflared:2026.11.0
+    command: tunnel --no-autoupdate run
+    environment:
+      TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN:?falta CLOUDFLARE_TUNNEL_TOKEN en el .env}
+    restart: unless-stopped
+    depends_on:
+      - aplicacion
+
+  # Una copia de la base al arrancar, en cuanto la aplicación terminó de crear sus tablas, y después cada
+  # 24 horas, en respaldos/ (que no se versiona: tiene los correos de los invitados). Se guardan las de
+  # los últimos 14 días. Se recupera con pg_restore (app/README.md, "Publicarla").
+  respaldo:
+    image: postgres:18.7
+    environment:
+      PGPASSWORD: ${BASE_DUENO_CLAVE:-elparte}
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        until psql -h base -U elparte -d elparte -tAc "select 1 from parte.corridas limit 1" > /dev/null 2>&1; do
+          sleep 10
+        done
+        while true; do
+          archivo=/respaldos/elparte-$$(date +%Y-%m-%d).dump
+          if pg_dump -h base -U elparte -d elparte -Fc -f "$$archivo.parcial"; then
+            mv "$$archivo.parcial" "$$archivo" && echo "Respaldo: $$archivo"
+          else
+            rm -f "$$archivo.parcial"; echo "Respaldo: falló"
+          fi
+          find /respaldos -name 'elparte-*.dump' -mtime +14 -delete
+          sleep 86400
+        done
+    volumes:
+      - ./respaldos:/respaldos
+    restart: unless-stopped
+    depends_on:
+      base:
+        condition: service_healthy

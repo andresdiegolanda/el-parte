@@ -22,6 +22,8 @@ services:
     # de la imagen no puede escribir ahí en Linux, donde la carpeta es de otro usuario; esta
     # aplicación, que corre solo para medir, lo hace como root.
     user: root
+    # Los invitados del .env no entran a la medición: su base tiene solo la cuenta de demostración.
+    env_file: !reset []
     ports: !override
       - "8081:8080"
     environment:

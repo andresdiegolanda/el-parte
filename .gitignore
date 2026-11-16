@@ -6,6 +6,9 @@ banco-de-pruebas/privado/
 .env.*
 *.local.*
 
+# Las copias de la base publicada: tienen los correos de los invitados (ADR 0008, ADR 0016)
+respaldos/
+
 # Archivos de trabajo que no se versionan
 tmp/
 

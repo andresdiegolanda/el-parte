@@ -1,6 +1,8 @@
 # El Parte, versión 0, levantado en local: docker compose up --build
 # La aplicación queda en http://localhost:8080 y los correos de prueba en http://localhost:8025.
 # La clave del modelo se lee del archivo .env de esta carpeta, que no se versiona (T14).
+# Los puertos solo se abren en esta máquina (127.0.0.1): nada de esto se ve desde la red. Para
+# publicarla se suma compose.publicado.yaml (ADR 0016).
 
 name: el-parte
 
@@ -12,7 +14,7 @@ services:
       POSTGRES_USER: elparte
       POSTGRES_PASSWORD: ${BASE_DUENO_CLAVE:-elparte}
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - datos-de-la-base:/var/lib/postgresql
     healthcheck:
@@ -43,7 +45,7 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_LOG_DIRS: "/var/lib/kafka/data"
     ports:
-      - "9092:9092"
+      - "127.0.0.1:9092:9092"
     volumes:
       - datos-de-kafka:/var/lib/kafka/data
     healthcheck:
@@ -56,8 +58,8 @@ services:
   correo:
     image: axllent/mailpit:v1.33.1
     ports:
-      - "8025:8025"
-      - "1025:1025"
+      - "127.0.0.1:8025:8025"
+      - "127.0.0.1:1025:1025"
 
   aplicacion:
     build: ./app
@@ -76,14 +78,17 @@ services:
       ELPARTE_CORRIDA_CRON: ${ELPARTE_CORRIDA_CRON:--}
       CORREO_HOST: correo
       CORREO_PUERTO: 1025
-      ELPARTE_URL_PUBLICA: ${ELPARTE_URL_PUBLICA:-http://localhost:8080}
+      # En local, el enlace del correo apunta a esta máquina aunque el .env tenga la dirección pública,
+      # que es solo de compose.publicado.yaml.
+      ELPARTE_URL_PUBLICA: http://localhost:8080
+      ELPARTE_REMITENTE: "El Parte <parte@localhost>"
     # La lista de invitados (ELPARTE_INVITADOS_0_CORREO y las demás) va en el .env, que no se versiona,
     # y llega así a la aplicación; si no hay .env, no hay invitados y solo se ve la cuenta de demostración.
     env_file:
       - path: .env
         required: false
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
     depends_on:
       base:
         condition: service_healthy

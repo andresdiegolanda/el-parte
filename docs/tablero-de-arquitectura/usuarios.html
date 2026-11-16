@@ -314,15 +314,35 @@ var S = {
    "id": "afuera/mailpit",
    "tipo": "infra",
    "titulo": "Buzón de correo",
-   "sub": "Mailpit en local · SMTP real: T27",
+   "sub": "Mailpit en local · Resend publicada",
    "col": 0,
    "fila": 1,
    "estado": "construido",
-   "que_es": "Por donde salen los correos. En local es Mailpit, un buzón de prueba que levanta Docker Compose y que captura los correos sin mandarlos; para los invitados de verdad hace falta un servicio de correo real, que se decide con el despliegue (T27).",
-   "para_que": "Llevar el enlace para entrar y el aviso de cada mañana. Hoy nada le escribe.",
+   "que_es": "Por donde salen los correos. En local es Mailpit, un buzón de prueba que levanta Docker Compose y que captura los correos sin mandarlos. Publicada, es Resend, por SMTP con SSL, con un remitente de un subdominio del responsable verificado ahí (ADR 0016).",
+   "para_que": "Llevar el enlace para entrar y, con T35, el aviso de cada mañana.",
    "docs": [
-    "app/README.md"
+    "app/README.md",
+    "adrs/0016-despliegue-en-la-maquina-del-responsable.md"
    ]
+  },
+  {
+   "id": "afuera/tunel",
+   "tipo": "infra",
+   "titulo": "Túnel de Cloudflare",
+   "sub": "solo publicada · ADR 0016",
+   "col": 1,
+   "fila": 1,
+   "estado": "construido",
+   "tarjetas": [
+    "T40"
+   ],
+   "docs": [
+    "compose.publicado.yaml",
+    "adrs/0016-despliegue-en-la-maquina-del-responsable.md",
+    "docs/como-se-hizo/despliegue.md"
+   ],
+   "que_es": "Cómo llegan los invitados a las páginas cuando El Parte está publicado. Un conector de Cloudflare corre como un servicio más del Compose y sale hacia Cloudflare, que le trae las visitas del subdominio del responsable, con HTTPS, y las lleva a la web. No se abre ningún puerto en la máquina.",
+   "para_que": "Que los invitados abran desde cualquier lado el enlace para entrar y su página de la mañana, sin un servidor aparte."
   },
   {
    "id": "inicio",
@@ -789,6 +809,19 @@ var S = {
    "papel": "auxiliar",
    "etiqueta": "lo que sigue al empezar",
    "detalle": "Un invitado nuevo empieza siguiendo lo mismo que la cuenta de demostración, así su primera página no sale vacía; lo cambia en su perfil (T34)."
+  },
+  {
+   "id": "afuera/persona>afuera/tunel",
+   "de": "afuera/persona",
+   "a": "afuera/tunel",
+   "tipo": "usa",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "entra por el subdominio",
+   "detalle": "Publicada, cada visita a las páginas llega por el túnel; en local, directo a la máquina.",
+   "tarjetas": [
+    "T40"
+   ]
   },
   {
    "id": "afuera/persona>web/login",
@@ -1258,6 +1291,15 @@ var S = {
     "web/manana",
     "base/clientes>web/login",
     "afuera/persona>web/manana"
+   ]
+  },
+  {
+   "fecha": "2026-11-16",
+   "texto": "El Parte publicado desde la máquina del responsable: el túnel de Cloudflare por donde llegan los invitados, el correo por Resend en lugar de Mailpit y una copia de la base cada 24 horas (ADR 0016, T40).",
+   "objetos": [
+    "afuera/tunel",
+    "afuera/persona>afuera/tunel",
+    "afuera/mailpit"
    ]
   }
  ],
@@ -2017,7 +2059,7 @@ function ayuda() {
        "<li>La dirección de la página lleva el objeto o la parada elegidos: se puede compartir.</li></ul>";
   h += "<h3>Qué controla el verificador</h3><ul class='lista'>" +
        "<li>Cada clase de la aplicación y cada plantilla web está en un objeto.</li>" +
-       "<li>Los tópicos y las tablas construidos son los del código y de la primera migración.</li>" +
+       "<li>Los tópicos y las tablas construidos son los del código y de las migraciones.</li>" +
        "<li>Quién emite y quién escucha cada tópico, quién escribe y quién lee cada tabla, qué usa cada objeto y qué rutas atiende cada página: igual en el tablero y en el código, en los dos sentidos.</li>" +
        "<li>Lo diseñado cita una tarjeta que existe y no está hecha.</li>" +
        "<li>Esta página es exactamente lo que se genera desde sistema.json.</li></ul>" +

@@ -227,7 +227,7 @@
 <script type="application/json" id="datos">{
  "meta": {
   "actualizado": "2026-11-16",
-  "nota": "La primera rebanada (T08) anda de punta a punta y ya corrió contra el banco las 78 noches del registro (T20): 12,71 USD, 5 de 5 publicables encontrados, 0 de 1 hallazgo y una precisión estimada del 95 %. Falta que el responsable confirme la revisión. Lo que la medición mostró del explorador de ARCE se arregla en T39. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). El analista completo (T21) y el presupuesto que corta (T22) están hechos, sin el tope de 60 candidatos, y falta medirlos contra el banco junto con T39, en una sola corrida. La cola de revisión humana (T23) y el login por enlace (T25) están hechos: correr y revisar son solo del responsable. Siguen el perfil (T34) y el despliegue en la máquina del responsable con un túnel (T27). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.",
+  "nota": "La primera rebanada (T08) anda de punta a punta y ya corrió contra el banco las 78 noches del registro (T20): 12,71 USD, 5 de 5 publicables encontrados, 0 de 1 hallazgo y una precisión estimada del 95 %. Falta que el responsable confirme la revisión. Lo que la medición mostró del explorador de ARCE se arregla en T39. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). El analista completo (T21) y el presupuesto que corta (T22) están hechos, sin el tope de 60 candidatos, y falta medirlos contra el banco junto con T39, en una sola corrida. La cola de revisión humana (T23) y el login por enlace (T25) están hechos: correr y revisar son solo del responsable. El despliegue en la máquina del responsable, con un túnel de Cloudflare y el correo por Resend, está decidido y armado (ADR 0016, T27); falta probarlo con las claves reales (T40). Sigue el perfil (T34). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.",
   "calendario": [
    "2026-11-07",
    "2026-11-14",
@@ -717,10 +717,43 @@
    ]
   },
   {
+   "id": "T41",
+   "titulo": "Aceptar o corregir el ADR 0016",
+   "columna": "para-empezar",
+   "orden": 1,
+   "tipo": "gestion",
+   "dueno": "Andrés",
+   "dependeDe": "",
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "adrs/0016-despliegue-en-la-maquina-del-responsable.md",
+     "ruta": "adrs/0016-despliegue-en-la-maquina-del-responsable.md"
+    }
+   ],
+   "etapas": [],
+   "lista": [
+    {
+     "texto": "0016: despliegue en la máquina del responsable",
+     "hecho": false
+    }
+   ],
+   "notas": [
+    "Dónde se publica El Parte: la máquina del responsable, un túnel de Cloudflare, el correo por Resend, la salud fuera del túnel y una copia de la base cada 24 horas. Al aceptarlo, su estado pasa a \"aceptado\" en el archivo y en el índice."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-16",
+     "texto": "Creada con el ADR 0016."
+    }
+   ]
+  },
+  {
    "id": "T34",
    "titulo": "Armar la página del perfil",
    "columna": "para-empezar",
-   "orden": 1,
+   "orden": 2,
    "tipo": "web",
    "dueno": "desarrollo",
    "dependeDe": "T25",
@@ -790,7 +823,7 @@
    "id": "T35",
    "titulo": "Mandar el aviso diario del parte",
    "columna": "para-empezar",
-   "orden": 2,
+   "orden": 3,
    "tipo": "componente",
    "dueno": "desarrollo",
    "dependeDe": "T25",
@@ -861,6 +894,190 @@
     {
      "fecha": "2026-11-16",
      "texto": "Pasa a Para empezar: T25 está hecha."
+    },
+    {
+     "fecha": "2026-11-16",
+     "texto": "El servicio de correo quedó decidido en el ADR 0016: Resend por SMTP, con la misma configuración que el enlace para entrar."
+    }
+   ]
+  },
+  {
+   "id": "T40",
+   "titulo": "Publicar El Parte en la máquina del responsable",
+   "columna": "esperando",
+   "orden": 1,
+   "tipo": "herramienta",
+   "dueno": "desarrollo",
+   "dependeDe": "T25, T27",
+   "esperaA": "el túnel de Cloudflare, el dominio del correo verificado en Resend y sus claves en el .env (Andrés)",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "compose.publicado.yaml",
+     "ruta": "compose.publicado.yaml"
+    },
+    {
+     "texto": "app/README.md",
+     "ruta": "app/README.md"
+    },
+    {
+     "texto": "docs/como-se-hizo/despliegue.md",
+     "ruta": "docs/como-se-hizo/despliegue.md"
+    },
+    {
+     "texto": "adrs/0016-despliegue-en-la-maquina-del-responsable.md",
+     "ruta": "adrs/0016-despliegue-en-la-maquina-del-responsable.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Escrita",
+     "hecho": true
+    },
+    {
+     "texto": "Probada",
+     "hecho": false
+    },
+    {
+     "texto": "Documentada",
+     "hecho": true
+    }
+   ],
+   "lista": [
+    {
+     "texto": "compose.publicado.yaml, que se suma a compose.yaml con su propio proyecto",
+     "hecho": true
+    },
+    {
+     "texto": "Los puertos, solo en la máquina, también en local",
+     "hecho": true
+    },
+    {
+     "texto": "La salud en un puerto al que el túnel no llega",
+     "hecho": true
+    },
+    {
+     "texto": "La copia diaria de la base, y cómo se vuelve a una copia, probado",
+     "hecho": true
+    },
+    {
+     "texto": "Las mediciones, sin los invitados del .env",
+     "hecho": true
+    },
+    {
+     "texto": "El túnel creado en Cloudflare, con la ruta del subdominio a http://aplicacion:8080 (Andrés)",
+     "hecho": false
+    },
+    {
+     "texto": "El dominio del correo verificado en Resend y su clave (Andrés)",
+     "hecho": false
+    },
+    {
+     "texto": "Las claves, la dirección, el remitente y los invitados en el .env (Andrés)",
+     "hecho": false
+    },
+    {
+     "texto": "Levantarla publicada y entrar desde afuera con el enlace de un correo real",
+     "hecho": false
+    }
+   ],
+   "notas": [
+    "Lo que el ADR 0016 decide, armado: el conector del túnel, el correo por Resend, la corrida de cada noche, los servicios que vuelven solos, la salud fuera del túnel y la copia diaria de la base. Probado en local con un correo de prueba que exige SSL y usuario; falta con el túnel y Resend reales."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-16",
+     "texto": "Creada con el ADR 0016. Armada y probada en local; espera las claves del túnel y del correo."
+    }
+   ]
+  },
+  {
+   "id": "T27",
+   "titulo": "Escribir el ADR de despliegue",
+   "columna": "esperando",
+   "orden": 2,
+   "tipo": "adr",
+   "dueno": "desarrollo",
+   "dependeDe": "T08",
+   "esperaA": "que Andrés acepte o corrija el ADR 0016 (T41)",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "adrs/0016-despliegue-en-la-maquina-del-responsable.md",
+     "ruta": "adrs/0016-despliegue-en-la-maquina-del-responsable.md"
+    },
+    {
+     "texto": "arranque/decisiones-iniciales.md",
+     "ruta": "arranque/decisiones-iniciales.md"
+    },
+    {
+     "texto": "compose.publicado.yaml",
+     "ruta": "compose.publicado.yaml"
+    },
+    {
+     "texto": "app/README.md",
+     "ruta": "app/README.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Contexto y alternativas",
+     "hecho": true
+    },
+    {
+     "texto": "Fuentes verificadas",
+     "hecho": true
+    },
+    {
+     "texto": "Escrito",
+     "hecho": true
+    },
+    {
+     "texto": "Aceptado",
+     "hecho": false
+    }
+   ],
+   "lista": [
+    {
+     "texto": "Una máquina siempre prendida, para la corrida de cada noche (`ELPARTE_CORRIDA_CRON`) y las páginas de cada mañana. La del responsable, con la corrida a las 6 de Uruguay y los servicios que vuelven solos; si está apagada, esa noche se corre a mano",
+     "hecho": true
+    },
+    {
+     "texto": "Un dominio público con HTTPS, al que apuntan el enlace para entrar y el aviso diario. El subdominio del responsable, por un túnel de Cloudflare",
+     "hecho": true
+    },
+    {
+     "texto": "Un servicio de correo real en lugar de Mailpit, con la configuración de envío que pida en el dominio, verificada en su documentación. Resend por SMTP, con SSL",
+     "hecho": true
+    },
+    {
+     "texto": "La base y Kafka en almacenamiento persistente, y copias de seguridad de la base. Volúmenes de Docker y una copia de la base cada 24 horas, en respaldos/",
+     "hecho": true
+    },
+    {
+     "texto": "Las claves del modelo y de la base en el servidor, fuera del repositorio. En el .env, con el token del túnel y la clave del correo",
+     "hecho": true
+    },
+    {
+     "texto": "El tamaño de la máquina, con el costo y la duración por noche medidos en T20. 1,7 GB de memoria y unos 0,28 USD por noche; la duración no se midió aparte",
+     "hecho": true
+    }
+   ],
+   "notas": [
+    "Dónde se publica el servicio para los usuarios invitados, con qué dominio y con qué servicio de correo (D9). Hoy todo corre en una máquina con Docker (`compose.yaml`); el ADR resuelve lo que falta para que los invitados lo usen cada mañana."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada con el plan (T07)."
+    },
+    {
+     "fecha": "2026-11-14",
+     "texto": "Suma la lista de lo que el despliegue tiene que resolver."
+    },
+    {
+     "fecha": "2026-11-16",
+     "texto": "ADR 0016 escrito, propuesto: El Parte se publica desde la máquina del responsable, con un túnel de Cloudflare y el correo por Resend. Lo que lo levanta está en compose.publicado.yaml y se termina de probar con las claves reales en T40. Pasa a Esperando, hasta que se acepte (T41)."
     }
    ]
   },
@@ -868,7 +1085,7 @@
    "id": "T08",
    "titulo": "Construir la primera rebanada de punta a punta",
    "columna": "esperando",
-   "orden": 1,
+   "orden": 3,
    "tipo": "componente",
    "dueno": "desarrollo",
    "dependeDe": "T02 a T07, T10, T14",
@@ -1094,92 +1311,10 @@
    ]
   },
   {
-   "id": "T27",
-   "titulo": "Escribir el ADR de despliegue",
-   "columna": "pendiente",
-   "orden": 3,
-   "tipo": "adr",
-   "dueno": "desarrollo",
-   "dependeDe": "T08",
-   "esperaA": "",
-   "fecha": "",
-   "detalle": [
-    {
-     "texto": "arranque/decisiones-iniciales.md",
-     "ruta": "arranque/decisiones-iniciales.md"
-    },
-    {
-     "texto": "compose.yaml",
-     "ruta": "compose.yaml"
-    },
-    {
-     "texto": "app/README.md",
-     "ruta": "app/README.md"
-    }
-   ],
-   "etapas": [
-    {
-     "texto": "Contexto y alternativas",
-     "hecho": false
-    },
-    {
-     "texto": "Fuentes verificadas",
-     "hecho": false
-    },
-    {
-     "texto": "Escrito",
-     "hecho": false
-    },
-    {
-     "texto": "Aceptado",
-     "hecho": false
-    }
-   ],
-   "lista": [
-    {
-     "texto": "Una máquina siempre prendida, para la corrida de cada noche (`ELPARTE_CORRIDA_CRON`) y las páginas de cada mañana",
-     "hecho": false
-    },
-    {
-     "texto": "Un dominio público con HTTPS, al que apuntan el enlace para entrar y el aviso diario",
-     "hecho": false
-    },
-    {
-     "texto": "Un servicio de correo real en lugar de Mailpit, con la configuración de envío que pida en el dominio, verificada en su documentación",
-     "hecho": false
-    },
-    {
-     "texto": "La base y Kafka en almacenamiento persistente, y copias de seguridad de la base",
-     "hecho": false
-    },
-    {
-     "texto": "Las claves del modelo y de la base en el servidor, fuera del repositorio",
-     "hecho": false
-    },
-    {
-     "texto": "El tamaño de la máquina, con el costo y la duración por noche medidos en T20",
-     "hecho": false
-    }
-   ],
-   "notas": [
-    "Dónde se publica el servicio para los usuarios invitados, con qué dominio y con qué servicio de correo (D9). Hoy todo corre en una máquina con Docker (`compose.yaml`); el ADR resuelve lo que falta para que los invitados lo usen cada mañana."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-07",
-     "texto": "Creada con el plan (T07)."
-    },
-    {
-     "fecha": "2026-11-14",
-     "texto": "Suma la lista de lo que el despliegue tiene que resolver."
-    }
-   ]
-  },
-  {
    "id": "T33",
    "titulo": "Armar el expediente de cada entidad",
    "columna": "pendiente",
-   "orden": 4,
+   "orden": 3,
    "tipo": "web",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -1228,7 +1363,7 @@
    "id": "T29",
    "titulo": "Cambiar el modelo de cada agente sin reiniciar la aplicación",
    "columna": "pendiente",
-   "orden": 5,
+   "orden": 4,
    "tipo": "web",
    "dueno": "desarrollo",
    "dependeDe": "T22, T25",
@@ -1306,7 +1441,7 @@
    "id": "T30",
    "titulo": "Sumar el explorador de IMPO",
    "columna": "pendiente",
-   "orden": 6,
+   "orden": 5,
    "tipo": "componente",
    "dueno": "desarrollo",
    "dependeDe": "T08",

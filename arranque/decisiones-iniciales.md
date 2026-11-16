@@ -77,7 +77,7 @@ Cada decisión dice qué se decidió, por qué, qué cuesta y qué la haría cam
 
 ## D9. Dónde corre el servicio
 
-- **Decisión.** La versión 0 se levanta en una máquina local con un solo comando, y los correos del login caen en un buzón de prueba local (Mailpit, [ADR 0003](../adrs/0003-eleccion-del-stack.md)). Dónde se publica el servicio, con qué dominio y con qué servicio de correo, se decide con un ADR en el cuarto fin de semana.
+- **Decisión.** La versión 0 se levanta en una máquina local con un solo comando, y los correos del login caen en un buzón de prueba local (Mailpit, [ADR 0003](../adrs/0003-eleccion-del-stack.md)). Dónde se publica el servicio, con qué dominio y con qué servicio de correo, se decide con un ADR en el cuarto fin de semana. Se decidió en el [ADR 0016](../adrs/0016-despliegue-en-la-maquina-del-responsable.md): la máquina del responsable, un túnel de Cloudflare y Resend.
 - **Por qué.** Publicar no aporta nada a las primeras rebanadas, y elegir hosting antes de medir costos es adivinar.
 - **Costo.** Los usuarios invitados recién pueden entrar al final.
 - **Qué la haría cambiar.** Necesitar mostrar el servicio en línea antes.

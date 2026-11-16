@@ -19,7 +19,7 @@ La primera vez baja las imágenes y compila la aplicación dentro de Docker, con
 | La sala de máquinas: las corridas, y el botón para correr una noche o repetir una corrida | http://localhost:8080/corridas |
 | La cola de revisión humana de los hechos INFERRED (D6), solo para el responsable | http://localhost:8080/revision |
 | Entrar con un enlace de correo | http://localhost:8080/entrar |
-| Su estado, el de la base y el de Kafka | http://localhost:8080/actuator/health |
+| Su estado, el de la base, Kafka y el correo | http://localhost:8080/actuator/health |
 | El buzón de prueba, donde llegan en local los enlaces para entrar | http://localhost:8025 |
 | PostgreSQL | `localhost:5432`, base `elparte`. El dueño es `elparte`; la aplicación entra con `elparte_agentes`. |
 | Kafka | `localhost:9092` |
@@ -48,9 +48,11 @@ Para entrar se va a `/entrar`, se pone el correo y llega un enlace que sirve una
 
 En `/corridas`, el responsable, ya adentro, elige la noche (por omisión, ayer en hora de Uruguay) y se aprieta "Correr". La corrida lee todas las publicaciones de la noche y del día de margen (unas 700 por día hábil), llama al modelo en el refutador y en el analista, una vez cada uno por compra nueva del BPS, y tarda unos minutos; la página de la corrida muestra cómo avanza al recargarla. Lo que limita el gasto es el presupuesto de cada corrida (`elparte.corrida.costo-maximo-usd`, `pasos-maximos` y `minutos-maximos`, [ADR 0005](../adrs/0005-presupuesto-por-corrida.md)): antes de cada llamada se reserva el peor caso, y si no alcanza la llamada no se hace y la corrida termina cortada. Las compras de la fecha objetivo pasan primero, así lo que queda sin procesar es del día de margen. Por encima está el tope de gasto del espacio de trabajo de la clave (T14). Cuando termina, la página de la mañana muestra lo encontrado. "Repetir" vuelve a correr una corrida terminada desde sus grabaciones, sin red ni costo, y su página dice si los mensajes son idénticos a los de la original ([ADR 0011](../adrs/0011-grabacion-y-repeticion-de-corridas.md)).
 
-Para que corra sola todas las noches se fija `ELPARTE_CORRIDA_CRON` (por ejemplo `0 0 6 * * *`, las 6 de la mañana en Uruguay). Viene apagado hasta que se decida dónde corre la aplicación (T27).
+Para que corra sola todas las noches se fija `ELPARTE_CORRIDA_CRON` (por ejemplo `0 0 6 * * *`, las 6 de la mañana en Uruguay). En local viene apagado; publicada, prendido a esa hora ("Publicarla", abajo).
 
 Para apagar todo: `docker compose down`. Para apagar y además borrar los datos de la base y de Kafka: `docker compose down -v`.
+
+Todos los puertos se abren solo en la máquina (`127.0.0.1`): ni la aplicación ni la base ni Kafka se ven desde la red.
 
 ```mermaid
 flowchart LR
@@ -59,6 +61,58 @@ flowchart LR
     APP -->|kafka:19092| K[(kafka<br/>Kafka 4.4.0, un nodo KRaft)]
     APP -->|1025| M[correo<br/>Mailpit]
     APP -->|llamadas, con la clave del .env| ANT[API de Anthropic]
+```
+
+## Publicarla
+
+El Parte se publica desde la máquina del responsable, con un túnel de Cloudflare hasta el subdominio del responsable y el correo por Resend ([adrs/0016-despliegue-en-la-maquina-del-responsable.md](../adrs/0016-despliegue-en-la-maquina-del-responsable.md)). No se abre ningún puerto: el túnel sale desde la máquina. Cómo se hizo: [docs/como-se-hizo/despliegue.md](../docs/como-se-hizo/despliegue.md).
+
+### Lo que se prepara una vez
+
+1. **El túnel.** En el panel de Cloudflare, en Networking > Tunnels > Create Tunnel, se crea un túnel, se elige Docker y se copia solo el token: el texto largo que va después de `--token`. En la pestaña Routes del túnel, Add route > Published application: el subdominio, el dominio y, como Service URL, `http://aplicacion:8080`.
+2. **El correo.** En Resend se crea la cuenta y, en Domains > Add domain, se agrega un subdominio del dominio del responsable, solo para el correo de El Parte. Los registros DNS que pide se cargan en Cloudflare, y se espera a que diga Verified. En API Keys se crea una clave con permiso de envío para ese dominio.
+3. **El `.env`** de la raíz, que no se versiona, suma:
+
+```
+CLOUDFLARE_TUNNEL_TOKEN=el token del túnel
+CORREO_CLAVE=la clave de Resend
+ELPARTE_URL_PUBLICA=https://el-subdominio-del-responsable
+ELPARTE_REMITENTE="El Parte <parte@el-subdominio-del-correo>"
+```
+
+y los invitados, como en "Los invitados", arriba. Si falta una de las cuatro primeras, Docker Compose no arranca y dice cuál.
+
+4. **Docker Desktop** arranca con la sesión (en su configuración, General > Start Docker Desktop when you sign in), así El Parte vuelve solo si la máquina se reinicia.
+
+### Levantarla publicada
+
+Desde la raíz:
+
+```
+docker compose -p el-parte-publicado -f compose.yaml -f compose.publicado.yaml up --build -d
+```
+
+Es un proyecto aparte, con su propia base y su propio Kafka: no son los de `docker compose up` en local ni los de las mediciones. Puede correr a la vez que una medición, pero no a la vez que El Parte en local, porque los dos usan el puerto 8080.
+
+| Qué | Dónde |
+|---|---|
+| Las páginas, para los invitados | el subdominio del responsable, por el túnel |
+| Las mismas páginas, desde la máquina | http://localhost:8080 |
+| Su estado, el de la base, Kafka y el correo: no se ve desde afuera | http://localhost:8090/actuator/health |
+| El registro del túnel | `docker compose -p el-parte-publicado logs tunel` |
+
+La noche de ayer corre sola todos los días a las 6 de la mañana de Uruguay. Si la máquina estaba apagada o dormida, se corre a mano desde `/corridas`.
+
+### Las copias de la base
+
+El servicio `respaldo` copia la base entera en `respaldos/` al arrancar y después cada 24 horas, y guarda las de los últimos 14 días. La carpeta no se versiona: tiene los correos de los invitados. Está en el mismo disco, así que conviene copiarla a otro lado cada tanto.
+
+Para volver a una copia: se apaga la aplicación, el servicio `respaldo`, que ve la carpeta, aplica la copia, y se prende la aplicación. En una base nueva, antes se levanta El Parte publicado una vez, para que cree los roles y las tablas.
+
+```
+docker compose -p el-parte-publicado -f compose.yaml -f compose.publicado.yaml stop aplicacion
+docker compose -p el-parte-publicado -f compose.yaml -f compose.publicado.yaml exec respaldo pg_restore -h base -U elparte -d elparte --clean --if-exists /respaldos/elparte-AAAA-MM-DD.dump
+docker compose -p el-parte-publicado -f compose.yaml -f compose.publicado.yaml start aplicacion
 ```
 
 ## Medir contra el banco
