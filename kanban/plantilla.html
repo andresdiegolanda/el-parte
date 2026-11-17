@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Tablero de El Parte</title>
+<title>Tablero del proyecto</title>
 <!--GENERADO-->
 <!-- Plantilla del kanban. Esta sí se edita a mano; los datos entran desde tablero.md
      con herramientas/generar_kanban.py, que escribe kanban/index.html. -->
@@ -169,9 +169,9 @@
 <div class="wrap">
   <header class="top">
     <div class="id">
-      <div class="kicker">El Parte · tablero del proyecto</div>
-      <h1>Tablero de El Parte</h1>
-      <p class="story"><b>Lo que falta para la versión 0.</b> <span id="count"></span></p>
+      <div class="kicker" id="kicker">Tablero del proyecto</div>
+      <h1 id="titulo">Tablero del proyecto</h1>
+      <p class="story"><b id="objetivo">Lo que falta.</b> <span id="count"></span></p>
     </div>
     <div class="tools">
       <div class="seg" role="group" aria-label="De quién mostrar" id="filtros"></div>
@@ -187,7 +187,7 @@
 
   <footer id="pie">
     <div><b>Cómo se lee.</b> Cada columna dice arriba qué quiere decir. Abrí una tarjeta para ver sus etapas, su lista, sus notas y su registro. El enlace a una tarjeta termina en su número, por ejemplo <code>#T09</code>.</div>
-    <div><b>Cómo se cambia.</b> Esta página es de solo lectura. Las tarjetas se cambian en <code>tablero.md</code>, en el repositorio, y la página se vuelve a generar y a publicar en cada push a <code>main</code> (ADR 0017).</div>
+    <div><b>Cómo se cambia.</b> Esta página es de solo lectura. Las tarjetas se cambian en <code>tablero.md</code>, en el repositorio, y la página se vuelve a generar y a publicar en cada push a <code>main</code>.</div>
     <div><b>En una sesión.</b> <code>python3 herramientas/generar_kanban.py</code> la genera en <code>kanban/index.html</code>, que no se versiona: se abre en cualquier navegador.</div>
   </footer>
 </div>
@@ -278,6 +278,13 @@
     var txt = abiertas.length + (abiertas.length === 1 ? " tarjeta abierta" : " tarjetas abiertas");
     if (partes.length) { txt += ": " + partes.slice(0, -1).join(", ") + (partes.length > 1 ? " y " : "") + partes[partes.length - 1]; }
     $("count").textContent = txt + ".";
+    // El nombre y el objetivo salen del encabezado de tablero.md (Proyecto, Objetivo).
+    if (meta.proyecto) {
+      $("kicker").textContent = meta.proyecto + " · tablero del proyecto";
+      $("titulo").textContent = "Tablero de " + meta.proyecto;
+      document.title = "Tablero de " + meta.proyecto;
+    }
+    if (meta.objetivo) { $("objetivo").textContent = "Lo que falta para " + meta.objetivo + "."; }
     var rw = $("rw"); rw.href = meta.tablero;
     rw.textContent = "Generado desde tablero.md del " + fecha(meta.actualizado) + " · solo lectura";
   }
@@ -440,7 +447,7 @@
     $("overlay").hidden = true;
     $("panel").textContent = "";
     if (!sinHash && location.hash) { try { history.replaceState(null, "", location.pathname + location.search); } catch (e) { /* sin historial */ } }
-    if (eraCredito) { $("btn-credito").focus(); return; }
+    if (eraCredito && $("btn-credito")) { $("btn-credito").focus(); return; }
     var c = document.querySelector('.card[data-id="' + (abrir.ultima || "") + '"]'); if (c) { c.focus(); }
   }
   // ---------- crédito de la API: los pasos para cargarlo, en el mismo panel que las tarjetas.
@@ -484,10 +491,11 @@
     $("p-title").focus();
     if (!sinHash && location.hash !== "#" + CREDITO) { try { location.hash = CREDITO; } catch (e) { /* sin hash */ } }
   }
-  $("btn-credito").addEventListener("click", function () { abrirCredito(); });
+  // El botón del crédito es propio de El Parte: sin él en la página, esto no hace nada.
+  if ($("btn-credito")) { $("btn-credito").addEventListener("click", function () { abrirCredito(); }); }
   function seguirHash() {
     var m = /^#([A-Za-z0-9-]+)$/.exec(location.hash);
-    if (m && m[1] === CREDITO) { if (abierta !== CREDITO) { abrirCredito(true); } }
+    if (m && m[1] === CREDITO && $("btn-credito")) { if (abierta !== CREDITO) { abrirCredito(true); } }
     else if (m && tarjetas[m[1]]) { if (abierta !== m[1]) { abrir(m[1], true); } }
     else if (abierta) { cerrar(true); }
   }

@@ -14,6 +14,8 @@ Es un proyecto didáctico y de portafolio. Su objetivo es mostrar cómo se const
 
 Si llegás por primera vez, seas persona o asistente, leé la carpeta [`arranque/`](arranque/README.md). Alcanza con eso para entender el proyecto y ponerte a trabajar.
 
+La forma de trabajar del proyecto, separada de El Parte para usarla en otro, está en [`metodologia/`](metodologia/README.md).
+
 ## Estado
 
 En construcción: la primera rebanada anda de punta a punta, con una fuente. Cómo es el sistema, objeto por objeto, está en el [tablero de arquitectura](docs/tablero-de-arquitectura/README.md). Lo que está en curso y lo que falta está en el [tablero](tablero.md), que también se ve como kanban en <https://andresdiegolanda.github.io/el-parte/kanban/>. Los dos tableros se publican en <https://andresdiegolanda.github.io/el-parte/> en cada push. Lo que cambió, en el [CHANGELOG](CHANGELOG.md).

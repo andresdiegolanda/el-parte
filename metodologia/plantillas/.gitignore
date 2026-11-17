@@ -1,0 +1,12 @@
+# Secretos y configuración local: no se versionan (regla 11)
+.env
+.env.*
+
+# Lo temporal de cada sesión (regla 14)
+tmp/
+
+# La página generada del kanban: se publica en GitHub Pages
+kanban/index.html
+
+# Caché de Python
+__pycache__/

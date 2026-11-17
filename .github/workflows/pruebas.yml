@@ -1,4 +1,5 @@
 # Corre todas las pruebas del repositorio: de noche, si main cambió en el último día, y a demanda (ADR 0017).
+# Corre cada prueba de herramientas/pruebas/, así que se copia tal cual a otro proyecto (metodologia/README.md).
 # No usa secretos: las pruebas no llaman al modelo.
 name: Pruebas
 
@@ -50,14 +51,11 @@ jobs:
           EXIGIR_MERMAID: "1"
         run: MMDC="$HERRAMIENTAS/node_modules/.bin/mmdc" python3 herramientas/verificar_docs.py
       - name: Pruebas de Python
-        run: |
-          python3 herramientas/pruebas/prueba_tablero_arquitectura.py
-          python3 herramientas/pruebas/prueba_banco_de_pruebas.py
+        run: for prueba in herramientas/pruebas/*.py; do echo "== $prueba"; python3 "$prueba"; done
       - name: Pruebas en Chrome
         run: |
           export NODE_PATH="$HERRAMIENTAS/node_modules" CAPTURAS="$RUNNER_TEMP/capturas"
-          node herramientas/pruebas/prueba_kanban.mjs
-          node herramientas/pruebas/prueba_tablero_arquitectura.mjs
+          for prueba in herramientas/pruebas/*.mjs; do echo "== $prueba"; node "$prueba"; done
       - name: Guardar las capturas del tablero de arquitectura
         if: always()
         uses: actions/upload-artifact@v6
@@ -72,11 +70,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+      # La aplicación es propia de El Parte: en un proyecto sin app/pom.xml, estos pasos se saltean.
       - uses: actions/setup-java@v5
+        if: hashFiles('app/pom.xml') != ''
         with:
           distribution: temurin
           java-version: "25"
           cache: maven
       - name: Pruebas de la aplicación, con Testcontainers
+        if: hashFiles('app/pom.xml') != ''
         working-directory: app
         run: mvn -B test

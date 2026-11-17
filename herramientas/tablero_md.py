@@ -7,7 +7,8 @@ generador del kanban y el verificador. No escribe nada.
 Formato, en resumen (el detalle esta en el propio tablero.md):
 
 - Antes del primer "##", una lista "- Clave: valor" con los datos generales
-  (Actualizado, Nota, Calendario, Repositorio).
+  (Actualizado, Nota, Calendario, Repositorio, y opcionales Proyecto y
+  Objetivo, que el kanban muestra en su encabezado).
 - Una tabla "Columna | Qué quiere decir", otra "Tipo | Etapas" y otra
   "Dueño | Quién es" definen columnas, tipos y dueños.
 - Cada "##" cuyo nombre es una columna agrupa tarjetas. Cada tarjeta empieza
@@ -214,6 +215,8 @@ def leer(ruta):
             "nota": meta.get("Nota", ""),
             "calendario": calendario,
             "repositorio": meta.get("Repositorio", ""),
+            "proyecto": meta.get("Proyecto", ""),
+            "objetivo": meta.get("Objetivo", ""),
         },
         "columnas": columnas,
         "tipos": tipos,

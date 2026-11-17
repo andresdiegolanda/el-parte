@@ -6,8 +6,8 @@ Controla, sobre todo el repositorio:
 1. Que ningun archivo de texto tenga guiones largos (regla 7).
 2. Que los enlaces relativos de los Markdown apunten a archivos que existen.
 3. Que tablero.md respete su formato y sus reglas (regla 8), y que esté en
-   formato canónico: leerlo y volver a escribirlo da el mismo archivo, que es
-   lo que necesita la sincronización con el kanban. Ver herramientas/tablero_md.py.
+   formato canónico: leerlo y volver a escribirlo da el mismo archivo. Ver
+   herramientas/tablero_md.py.
 4. Que el kanban se pueda generar desde tablero.md. La página generada no se
    versiona: se publica en GitHub Pages (adrs/0017-forma-de-trabajo-mas-liviana.md).
 5. Que cada lámina SVG de docs/laminas/ sea exactamente lo que genera su
@@ -37,6 +37,10 @@ Controla, sobre todo el repositorio:
     decisiones iniciales, obsoletos/, el registro y las tarjetas hechas de
     tablero.md) ni lo que está entre comillas invertidas.
 
+Los puntos 5, 9, 10 y 11 son piezas propias de El Parte: si su módulo o su
+archivo no está, se saltean. Así este archivo se puede copiar tal cual a otro
+proyecto que use la metodología (metodologia/README.md).
+
 Uso:  python3 herramientas/verificar_docs.py
 Sale con codigo 0 si todo esta bien y 1 si encuentra algun problema.
 Solo usa la biblioteca estandar de Python.
@@ -53,11 +57,22 @@ import tempfile
 from pathlib import Path
 from urllib.parse import unquote
 
-import banco_de_pruebas
 import generar_kanban
-import generar_laminas
-import tablero_arquitectura
 import tablero_md
+
+# Piezas propias de El Parte: en otro proyecto pueden no estar (metodologia/README.md).
+try:
+    import banco_de_pruebas
+except ImportError:
+    banco_de_pruebas = None
+try:
+    import generar_laminas
+except ImportError:
+    generar_laminas = None
+try:
+    import tablero_arquitectura
+except ImportError:
+    tablero_arquitectura = None
 
 RAIZ = Path(__file__).resolve().parent.parent
 
@@ -161,6 +176,8 @@ def verificar_kanban(errores):
 
 
 def verificar_laminas(errores):
+    if generar_laminas is None:
+        return
     for ruta, contenido in generar_laminas.generar_todas().items():
         relativa = ruta.relative_to(RAIZ)
         if not ruta.exists() or ruta.read_text(encoding="utf-8") != contenido:
@@ -296,8 +313,10 @@ def main():
     verificar_referencias(markdowns, ids, decisiones_definidas(), errores)
     verificar_cifras(markdowns, avisos)
     verificar_migracion(errores)
-    errores.extend(tablero_arquitectura.verificar())
-    errores.extend(banco_de_pruebas.verificar_muestra())
+    if tablero_arquitectura is not None:
+        errores.extend(tablero_arquitectura.verificar())
+    if banco_de_pruebas is not None:
+        errores.extend(banco_de_pruebas.verificar_muestra())
 
     for aviso in avisos:
         print(f"Aviso: {aviso}")

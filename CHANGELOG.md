@@ -4,6 +4,7 @@ Cada entrada dice qué cambió, dónde, y enlaza al documento que tiene el porqu
 
 ## 2026-11-17
 
+- La metodología, separada del proyecto para usarla en otro: [metodologia/README.md](metodologia/README.md) y las plantillas de `metodologia/plantillas/` (T46). Para que las herramientas se copien sin tocarlas, `herramientas/verificar_docs.py` y `herramientas/armar_sitio.py` saltean lo propio de El Parte si no está, el kanban toma el nombre y el objetivo de los campos nuevos `Proyecto` y `Objetivo` de `tablero.md`, su botón del crédito es opcional, y `.github/workflows/pruebas.yml` corre cada prueba de `herramientas/pruebas/`.
 - Una forma de trabajo más liviana (ADR 0017, aceptado; reemplaza al 0009; T45):
   - **Un solo lugar por dato**, con un aviso nuevo del verificador cuando una cifra se repite en más de un documento vigente, y la limpieza de las cifras de la medición repetidas en el tablero, los README y el plan.
   - **Un ritual según el tamaño** del cambio, chico, mediano o grande, y **commits autorizados por tarea**, en `arranque/como-se-trabaja.md`.

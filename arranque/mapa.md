@@ -12,6 +12,7 @@ flowchart TD
     R --> HE[herramientas/<br/>verificadores y generadores]
     R --> BP[banco-de-pruebas/<br/>formato, muestra y métricas]
     R --> OB[obsoletos/<br/>lo que sobra]
+    R --> ME[metodologia/<br/>la forma de trabajo, para otro proyecto]
     DO --> DV[verificaciones/]
     DO --> DF[fuentes/]
     DO --> DC[como-se-hizo/]
@@ -23,7 +24,7 @@ flowchart TD
 
 | Ruta | Qué tiene |
 |---|---|
-| [`README.md`](../README.md) | Qué es el proyecto, sus etiquetas y sus trece reglas. |
+| [`README.md`](../README.md) | Qué es el proyecto, sus etiquetas y sus catorce reglas. |
 | [`LICENSE`](../LICENSE) | Licencia MIT (D13). |
 | [`CHANGELOG.md`](../CHANGELOG.md) | Cada cambio, corto, con enlace al porqué. |
 | [`tablero.md`](../tablero.md) | Todo lo pendiente, en tarjetas con dueño, etapas y registro. Es la única fuente del kanban. |
@@ -33,6 +34,8 @@ flowchart TD
 | [`arranque/decisiones-iniciales.md`](decisiones-iniciales.md) | Las decisiones de arranque vigentes hasta que tengan su ADR. |
 | [`arranque/mapa.md`](mapa.md) | Este archivo. |
 | [`arranque/glosario.md`](glosario.md) | Los términos técnicos. |
+| [`metodologia/README.md`](../metodologia/README.md) | La forma de trabajar de El Parte, separada del proyecto para usarla en otro: la idea, las piezas, los pasos para adoptarla y lo que se aprendió. |
+| [`metodologia/plantillas/`](../metodologia/plantillas/README.md) | Los archivos que se copian a un proyecto nuevo: el README con las reglas, `arranque/`, el tablero, el CHANGELOG y los índices. |
 | [`adrs/README.md`](../adrs/README.md) | Índice de los ADRs. |
 | [`adrs/0001-tablero-fuente-unica-kanban-generado.md`](../adrs/0001-tablero-fuente-unica-kanban-generado.md) | Kanban generado de solo lectura; reemplazado por el 0009. |
 | [`adrs/0009-kanban-editable-sincronizado.md`](../adrs/0009-kanban-editable-sincronizado.md) | Kanban editable, sincronizado con el tablero por las sesiones. Reemplazado por el 0017. |

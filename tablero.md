@@ -6,12 +6,14 @@ Todo pendiente de El Parte vive acá, con dueño (regla 8). Este archivo es lo q
 - Nota: La primera rebanada (T08) anda de punta a punta y se mide contra el banco las 78 noches del registro (T20); los resultados están en docs/como-se-hizo/medicion-contra-el-banco.md. Falta que el responsable confirme la fuente y la etiqueta de las entradas y las correspondencias. El analista (T21), el presupuesto (T22, con el tope de cada noche en el ADR 0005) y el explorador arreglado (T39) están hechos y medidos. La cola de revisión humana (T23) y el login por enlace (T25) están hechos: correr y revisar son solo del responsable. El Parte está publicado desde la máquina del responsable, con un túnel de Cloudflare y el correo por Resend (T40, ADR 0016). En su perfil, cada invitado elige qué organismos seguir y si quiere el aviso diario (T34); sigue el aviso (T35). La forma de trabajo se alivianó con el ADR 0017 (T45). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.
 - Calendario: 2026-11-07, 2026-11-14, 2026-11-21, 2026-11-28
 - Repositorio: https://github.com/andresdiegolanda/el-parte
+- Proyecto: El Parte
+- Objetivo: la versión 0
 
 ## Cómo se usa
 
 Cada `##` con nombre de columna agrupa tarjetas, y cada `###` adentro es una tarjeta. Mover una tarjeta es mover su bloque a otra columna. Dentro de una columna, el orden es la prioridad: la primera de "Para empezar" es la próxima. En este archivo las columnas van en el orden en que conviene leerlas (lo que se está haciendo primero); el kanban las muestra en el orden de la tabla de columnas.
 
-Después de cada cambio se vuelve a generar el kanban y se corre el verificador, que controla el formato canónico de las tarjetas y estas reglas, las mismas que aplica el kanban al editarlo:
+Después de cada cambio se corre el verificador, que controla el formato canónico de las tarjetas y estas reglas:
 
 - Una tarjeta en "Para empezar" o "En curso" tiene todas sus dependencias en "Hecho".
 - Una tarjeta en "Pendiente" tiene al menos una dependencia que no está hecha. Si no, va en "Para empezar".
@@ -374,6 +376,30 @@ Registro:
 - 2026-11-14: Creada con el ADR 0010.
 
 ## Hecho
+
+### T46 · Separar la metodología para usarla en otro proyecto
+- Tipo: Documento
+- Dueño: desarrollo
+- Detalle: [metodologia/README.md](metodologia/README.md), [metodologia/plantillas/README.md](metodologia/plantillas/README.md)
+
+La forma de trabajar de El Parte, escrita aparte y con plantillas, para que otro proyecto la adopte siguiendo pasos.
+
+Etapas:
+- [x] Borrador
+- [x] Grados y fuentes
+- [x] Diagramas
+- [x] Releído y verificado
+
+Lista:
+- [x] metodologia/README.md: la idea, las piezas, los pasos para adoptarla y lo que se aprendió
+- [x] metodologia/plantillas/: el README con las reglas, arranque/, el tablero, el CHANGELOG, los índices y el .gitignore
+- [x] Que las herramientas se copien sin tocarlas: el verificador y el sitio saltean lo propio de El Parte, el kanban toma el nombre y el objetivo del tablero, y las pruebas de noche corren cada prueba de herramientas/pruebas/
+- [x] Probar los pasos en un repositorio de prueba
+
+Registro:
+- 2026-11-17: Creada. Tamaño mediano. Sin autorización de commit: se pide al terminar.
+- 2026-11-17: Escrita y probada: siguiendo los pasos en un repositorio de prueba en tmp/, el verificador, el kanban, el sitio y la prueba en Chrome pasaron. Pasa a Hecho.
+- 2026-11-17: Commit y push pedidos al terminar.
 
 ### T45 · Aplicar el ADR 0017: una forma de trabajo más liviana
 - Tipo: Herramienta

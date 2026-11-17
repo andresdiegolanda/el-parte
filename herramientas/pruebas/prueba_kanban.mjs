@@ -63,10 +63,12 @@ await pagina.goto(pathToFileURL(archivo).href + "#" + conDependencias.id, { wait
 comprobar((await texto$("#p-title")) === conDependencias.titulo, `#${conDependencias.id} abre esa tarjeta`);
 comprobar((await texto$("#panel")).includes("Depende de"), "y muestra de qué depende");
 
-// Los pasos del crédito de la API.
+// Los pasos del crédito de la API: el botón es propio de El Parte, y en otro proyecto puede no estar.
 await pagina.keyboard.press("Escape");
-await pagina.click("#btn-credito");
-comprobar((await texto$("#panel")).includes("Buy credits"), "el botón del crédito muestra los pasos");
+if (await pagina.$("#btn-credito")) {
+  await pagina.click("#btn-credito");
+  comprobar((await texto$("#panel")).includes("Buy credits"), "el botón del crédito muestra los pasos");
+}
 
 comprobar(errores.length === 0, "sin errores en la consola" + (errores.length ? ": " + errores.join(" | ") : ""));
 await navegador.close();
