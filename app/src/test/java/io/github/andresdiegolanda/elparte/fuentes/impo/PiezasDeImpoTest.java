@@ -1,5 +1,6 @@
 package io.github.andresdiegolanda.elparte.fuentes.impo;
 
+import io.github.andresdiegolanda.elparte.fuentes.NombresDeEntidad;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;

@@ -74,6 +74,7 @@ class PrimeraRebanadaTest extends ConServicios {
         assertThat(exploracion).isEqualTo(new ExploracionTerminada("arce", 5, 3, 1));
         // IMPO no tuvo edición esa noche: nada que leer, y ninguna falla.
         assertThat(exploracion(original, "impo")).isEqualTo(new ExploracionTerminada("impo", 0, 0, 0));
+        assertThat(exploracion(original, "bid")).isEqualTo(new ExploracionTerminada("bid", 0, 0, 0));
         assertThat(registro.deCorridaYTipo(original, Tipos.FUENTE_FALLIDA)).hasSize(1)
                 .first().satisfies(s -> assertThat(s.contenido().path("url").asString()).endsWith("/release/llamado-1200006"));
 

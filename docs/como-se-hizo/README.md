@@ -14,5 +14,6 @@ Una página por componente, con qué hace, por qué existe, cómo se construyó,
 | [docs/como-se-hizo/expediente.md](expediente.md) | El expediente de cada entidad: cada hecho con todas sus versiones, mes por mes. | T33 |
 | [docs/como-se-hizo/impo.md](impo.md) | El explorador de IMPO: las leyes y los decretos del Diario Oficial que nombran a una entidad seguida, con las personas tapadas. | T30 |
 | [docs/como-se-hizo/modelos.md](modelos.md) | La página de modelos y precios del responsable. | T29 |
+| [docs/como-se-hizo/bid.md](bid.md) | El explorador del BID: las operaciones para Uruguay aprobadas cada noche que nombran a una entidad seguida. | T24 |
 | [docs/como-se-hizo/despliegue.md](despliegue.md) | El Parte publicado desde la máquina del responsable, y la corrida de la noche que se pone al día. | T40, T43 |
 | [docs/como-se-hizo/medicion-contra-el-banco.md](medicion-contra-el-banco.md) | La medición contra el banco de pruebas y sus resultados. | T20 |

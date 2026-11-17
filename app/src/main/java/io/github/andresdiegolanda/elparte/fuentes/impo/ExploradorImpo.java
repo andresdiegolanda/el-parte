@@ -1,5 +1,6 @@
 package io.github.andresdiegolanda.elparte.fuentes.impo;
 
+import io.github.andresdiegolanda.elparte.fuentes.NombresDeEntidad;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

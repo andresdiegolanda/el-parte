@@ -8,6 +8,7 @@ import org.testcontainers.kafka.KafkaContainer;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 
 import io.github.andresdiegolanda.elparte.fuentes.arce.ArceDePrueba;
+import io.github.andresdiegolanda.elparte.fuentes.bid.BidDePrueba;
 import io.github.andresdiegolanda.elparte.fuentes.impo.ImpoDePrueba;
 
 /**
@@ -38,6 +39,7 @@ public abstract class ConServicios {
     protected static final KafkaContainer KAFKA = new KafkaContainer("apache/kafka:4.4.0");
     protected static final ArceDePrueba ARCE = new ArceDePrueba();
     protected static final ImpoDePrueba IMPO = new ImpoDePrueba();
+    protected static final BidDePrueba BID = new BidDePrueba();
 
     static {
         POSTGRES.start();
@@ -54,5 +56,7 @@ public abstract class ConServicios {
         propiedades.add("elparte.arce.url-base", ARCE::urlBase);
         propiedades.add("elparte.impo.url-base", IMPO::urlBase);
         propiedades.add("elparte.impo.pausa-ms", () -> "0");
+        propiedades.add("elparte.bid.url-base", BID::urlBase);
+        propiedades.add("elparte.bid.pausa-ms", () -> "0");
     }
 }

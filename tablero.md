@@ -82,13 +82,11 @@ Los campos van pegados al título, sin línea en blanco. Los que no aplican se o
 
 ## En curso
 
-## Para empezar
-
 ### T24 · Sumar los exploradores del BID, el Banco Mundial y Presidencia
 - Tipo: Componente
 - Dueño: desarrollo
 - Depende de: T08
-- Detalle: [adrs/0006-fuentes-de-la-version-0.md](adrs/0006-fuentes-de-la-version-0.md), [adrs/0008-datos-personales.md](adrs/0008-datos-personales.md)
+- Detalle: [docs/como-se-hizo/bid.md](docs/como-se-hizo/bid.md), [adrs/0006-fuentes-de-la-version-0.md](adrs/0006-fuentes-de-la-version-0.md), [adrs/0008-datos-personales.md](adrs/0008-datos-personales.md)
 
 Las otras tres fuentes de la versión 0, cada una con sus descartes de datos personales.
 
@@ -100,13 +98,16 @@ Etapas:
 - [ ] Página cómo se hizo
 
 Lista:
-- [ ] Explorador del BID
+- [x] Explorador del BID
 - [ ] Explorador del Banco Mundial (API v3, campos acotados)
 - [ ] Explorador de la normativa de Presidencia, a ritmo bajo
 
 Registro:
 - 2026-11-07: Creada con el plan (T07).
 - 2026-11-17: Pasa a Para empezar: T08 está hecha. Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
+- 2026-11-17: Pasa a En curso. El explorador del BID anda: las operaciones para Uruguay aprobadas cada noche que nombran a una entidad seguida, probado con un BID de mentira y con el filtro por fecha contra la API real. La operación del hallazgo del BID en el registro no está en la tabla de proyectos, así que por fecha no se puede ver (docs/como-se-hizo/bid.md). Siguen el Banco Mundial y Presidencia, que no tienen entradas en el registro, después del material para la demo; medir espera crédito en la API.
+
+## Para empezar
 
 ### T42 · Comparar El Parte con una sesión de la Claude Console sobre el banco
 - Tipo: Verificación

@@ -14,10 +14,12 @@ import io.github.andresdiegolanda.elparte.fuentes.arce.Enmascarador;
 import io.github.andresdiegolanda.elparte.fuentes.arce.LectorArce;
 import io.github.andresdiegolanda.elparte.fuentes.arce.LectorArce.FallaDeArce;
 import io.github.andresdiegolanda.elparte.fuentes.arce.LectorArce.Leida;
+import io.github.andresdiegolanda.elparte.fuentes.bid.LectorBid;
+import io.github.andresdiegolanda.elparte.fuentes.bid.LectorBid.FallaDelBid;
 import io.github.andresdiegolanda.elparte.fuentes.impo.EnmascaradorImpo;
 import io.github.andresdiegolanda.elparte.fuentes.impo.LectorImpo;
 import io.github.andresdiegolanda.elparte.fuentes.impo.LectorImpo.FallaDeImpo;
-import io.github.andresdiegolanda.elparte.fuentes.impo.NombresDeEntidad;
+import io.github.andresdiegolanda.elparte.fuentes.NombresDeEntidad;
 import io.github.andresdiegolanda.elparte.fuentes.impo.NormaRecortada;
 import io.github.andresdiegolanda.elparte.grabaciones.Grabaciones;
 import io.github.andresdiegolanda.elparte.infraestructura.Procesados;
@@ -43,8 +45,8 @@ import tools.jackson.databind.node.ObjectNode;
  * el único que pone el grado (ADR 0004).
  *
  * <p>Vuelve a leer la fuente por su cuenta, sin confiar en lo que leyó el explorador, y le pide al
- * modelo que compare la afirmación con la publicación: una publicación de ARCE en OCDS, o una norma de
- * IMPO, recortada a los artículos que nombran a las entidades del candidato. Las pruebas de fecha y de duplicado no
+ * modelo que compare la afirmación con la publicación: una publicación de ARCE en OCDS, una norma de
+ * IMPO, recortada a los artículos que nombran a las entidades del candidato, o una operación del BID. Las pruebas de fecha y de duplicado no
  * necesitan el modelo: salen de la publicación y del cotejo del archivista.
  */
 @Component
@@ -80,18 +82,20 @@ public class Refutador {
     private final Grabaciones grabaciones;
     private final LectorArce lector;
     private final LectorImpo lectorImpo;
+    private final LectorBid lectorBid;
     private final Modelo modelo;
     private final Emisor emisor;
     private final Procesados procesados;
     private final JsonMapper json;
 
     public Refutador(RegistroDeMensajes registro, Corridas corridas, Grabaciones grabaciones, LectorArce lector,
-            LectorImpo lectorImpo, Modelo modelo, Emisor emisor, Procesados procesados, JsonMapper json) {
+            LectorImpo lectorImpo, LectorBid lectorBid, Modelo modelo, Emisor emisor, Procesados procesados, JsonMapper json) {
         this.registro = registro;
         this.corridas = corridas;
         this.grabaciones = grabaciones;
         this.lector = lector;
         this.lectorImpo = lectorImpo;
+        this.lectorBid = lectorBid;
         this.modelo = modelo;
         this.emisor = emisor;
         this.procesados = procesados;
@@ -120,8 +124,11 @@ public class Refutador {
                 : new Prueba("duplicado", "pasa", "Es una actualización del hecho " + cotejo.hechoRelacionadoId()
                         + ": " + String.join(" ", cotejo.diferencias()));
 
-        JsonNode releida = LectorImpo.FUENTE.equals(candidato.fuente()) ? releerNorma(sobre.corridaId(), candidato)
-                : releer(sobre.corridaId(), candidato.identificadorEnFuente());
+        JsonNode releida = switch (candidato.fuente()) {
+            case LectorImpo.FUENTE -> releerNorma(sobre.corridaId(), candidato);
+            case LectorBid.FUENTE -> releerOperacion(sobre.corridaId(), candidato);
+            default -> releer(sobre.corridaId(), candidato.identificadorEnFuente());
+        };
         CandidatoGraduado graduado;
         if (releida.has("falla")) {
             graduado = new CandidatoGraduado(candidato.candidatoId(), cotejo.claveDeHecho(), candidato.resumen(),
@@ -218,6 +225,26 @@ public class Refutador {
         });
     }
 
+    /** Vuelve a leer una operación del BID. No tiene datos de personas: no hay nada que tapar. */
+    private JsonNode releerOperacion(String corridaId, Candidato candidato) {
+        return grabaciones.conGrabacion(corridaId, "refutador:bid:operacion:" + candidato.identificadorEnFuente(), "fuente", () -> {
+            try {
+                LectorBid.Leido leido = lectorBid.operacion(candidato.identificadorEnFuente());
+                ObjectNode publicacion = (ObjectNode) leido.proyecto().deepCopy();
+                String objetivo = publicacion.path("objtv").asString("");
+                if (objetivo.length() > 4000) {
+                    publicacion.put("objtv", objetivo.substring(0, 4000) + " [...]");
+                }
+                ObjectNode nueva = json.createObjectNode();
+                nueva.set("publicacion", publicacion);
+                nueva.put("hashContenido", leido.hashContenido());
+                return nueva;
+            } catch (FallaDelBid falla) {
+                return json.createObjectNode().put("falla", falla.tipoDeFalla()).put("detalle", falla.getMessage());
+            }
+        });
+    }
+
     private static Prueba pruebaDeFecha(Candidato candidato, CorridaIniciada corrida) {
         String dia = candidato.fechaPublicacion().length() >= 10 ? candidato.fechaPublicacion().substring(0, 10) : "";
         if (dia.equals(corrida.fechaObjetivo())) {
@@ -232,10 +259,13 @@ public class Refutador {
     }
 
     private String pedidoAlModelo(Candidato candidato, CorridaIniciada corrida, JsonNode publicacion) {
-        String fuente = LectorImpo.FUENTE.equals(candidato.fuente())
-                ? "Norma del Diario Oficial, en el JSON de IMPO, con los artículos que nombran a la entidad (" + candidato.url() + "):\n"
-                        + json.writeValueAsString(publicacion)
-                : "Publicación de la fuente, en OCDS (" + candidato.url() + "):\n" + json.writeValueAsString(recortar(publicacion));
+        String fuente = switch (candidato.fuente()) {
+            case LectorImpo.FUENTE -> "Norma del Diario Oficial, en el JSON de IMPO, con los artículos que nombran a la entidad ("
+                    + candidato.url() + "):\n" + json.writeValueAsString(publicacion);
+            case LectorBid.FUENTE -> "Operación del BID, en el JSON de su portal de datos abiertos (" + candidato.url() + "):\n"
+                    + json.writeValueAsString(publicacion);
+            default -> "Publicación de la fuente, en OCDS (" + candidato.url() + "):\n" + json.writeValueAsString(recortar(publicacion));
+        };
         return "Noche leída: " + corrida.fechaObjetivo() + "\n\n"
                 + "Candidato (" + candidato.tipoDeHecho() + "):\n" + candidato.resumen() + "\n\n"
                 + "Campos que citó el explorador:\n" + candidato.evidencia().fragmento() + "\n\n"

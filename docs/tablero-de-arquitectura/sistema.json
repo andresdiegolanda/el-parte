@@ -143,10 +143,10 @@
    "id": "afuera/bid",
    "tipo": "externo",
    "titulo": "BID",
-   "sub": "proyectos y operaciones",
+   "sub": "portal de datos abiertos · CKAN",
    "col": 0,
    "fila": 2,
-   "estado": "disenado",
+   "estado": "construido",
    "que_es": "Una de las cinco fuentes de la versión 0 (BID). Todavía no se lee.",
    "para_que": "Suma hechos de otra fuente pública sobre las mismas entidades.",
    "docs": [
@@ -414,20 +414,47 @@
    ]
   },
   {
-   "id": "explorador-bid",
-   "tipo": "agente",
-   "titulo": "Explorador de BID",
-   "sub": "",
-   "col": 2,
+   "id": "lector-bid",
+   "tipo": "servicio",
+   "titulo": "Lector del BID",
+   "sub": "LectorBid · tabla de proyectos",
+   "col": 1,
    "fila": 2,
-   "estado": "disenado",
-   "que_es": "El explorador de BID: leerá lo publicado la noche objetivo, tapará los datos personales y emitirá candidatos, como el de ARCE.",
-   "para_que": "Suma su fuente sin tocar a los demás agentes: el contrato de los candidatos es el mismo. También emitirá exploracion.terminada y fuente.fallida, y grabará lo que lea (ADR 0011).",
+   "estado": "construido",
+   "que_es": "Pide a la API del portal de datos abiertos del BID las operaciones de Uruguay (código UR) aprobadas un día, o una por su número.",
+   "para_que": "Que el explorador y el refutador lean el BID igual.",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/bid/LectorBid.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/NombresDeEntidad.java"
+   ],
    "docs": [
-    "adrs/0006-fuentes-de-la-version-0.md"
+    "docs/fuentes/bid.md",
+    "docs/como-se-hizo/bid.md"
    ],
    "tarjetas": [
     "T24"
+   ]
+  },
+  {
+   "id": "explorador-bid",
+   "tipo": "agente",
+   "titulo": "Explorador del BID",
+   "sub": "ExploradorBid",
+   "col": 2,
+   "fila": 2,
+   "estado": "construido",
+   "que_es": "Las operaciones del BID para Uruguay aprobadas la noche objetivo, y un candidato por cada una que nombra a una entidad seguida en su nombre o su objetivo. Sin el modelo.",
+   "para_que": "Suma su fuente sin tocar a los demás agentes: el contrato de los candidatos es el mismo. También emitirá exploracion.terminada y fuente.fallida, y grabará lo que lea (ADR 0011).",
+   "docs": [
+    "adrs/0006-fuentes-de-la-version-0.md",
+    "docs/como-se-hizo/bid.md",
+    "docs/fuentes/bid.md"
+   ],
+   "tarjetas": [
+    "T24"
+   ],
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/bid/ExploradorBid.java"
    ]
   },
   {
@@ -478,7 +505,6 @@
     "app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/impo/LectorImpo.java",
     "app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/impo/IndiceImpo.java",
     "app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/impo/EnmascaradorImpo.java",
-    "app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/impo/NombresDeEntidad.java",
     "app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/impo/NormaRecortada.java"
    ],
    "docs": [
@@ -2434,24 +2460,10 @@
    "de": "kafka/corrida.iniciada",
    "a": "explorador-bid",
    "tipo": "escucha",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "empieza a explorar",
    "detalle": "Escuchará corrida.iniciada como el de ARCE.",
-   "tarjetas": [
-    "T24"
-   ]
-  },
-  {
-   "id": "explorador-bid>afuera/bid",
-   "de": "explorador-bid",
-   "a": "afuera/bid",
-   "tipo": "llama",
-   "estado": "disenado",
-   "papel": "auxiliar",
-   "etiqueta": "lee la fuente",
-   "detalle": "Leerá lo publicado la noche objetivo.",
-   "fuente": "docs/fuentes/bid.md",
    "tarjetas": [
     "T24"
    ]
@@ -2461,7 +2473,7 @@
    "de": "explorador-bid",
    "a": "kafka/candidatos",
    "tipo": "emite",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "candidatos",
    "detalle": "Emitirá candidatos con el mismo contrato.",
@@ -2474,7 +2486,7 @@
    "de": "explorador-bid",
    "a": "kafka/exploracion.terminada",
    "tipo": "emite",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "terminé",
    "detalle": "Avisará cuándo terminó.",
@@ -2487,7 +2499,7 @@
    "de": "explorador-bid",
    "a": "kafka/fuente.fallida",
    "tipo": "emite",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "la fuente falló",
    "detalle": "Avisará si su fuente no respondió.",
@@ -3389,6 +3401,72 @@
    "tarjetas": [
     "T30"
    ]
+  },
+  {
+   "id": "explorador-bid>lector-bid",
+   "de": "explorador-bid",
+   "a": "lector-bid",
+   "tipo": "usa",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "pide las aprobadas del día",
+   "detalle": "Las operaciones de Uruguay aprobadas la noche objetivo.",
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "lector-bid>afuera/bid",
+   "de": "lector-bid",
+   "a": "afuera/bid",
+   "tipo": "llama",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "HTTPS, API de CKAN",
+   "detalle": "Un segundo antes de cada pedido; el robots.txt deja la API abierta.",
+   "fuente": "docs/fuentes/compras-estatales.md",
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "explorador-bid>grabaciones",
+   "de": "explorador-bid",
+   "a": "grabaciones",
+   "tipo": "usa",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "graba lo leído",
+   "detalle": "Las operaciones aprobadas de la noche, para repetirla sin red.",
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "refutador>lector-bid",
+   "de": "refutador",
+   "a": "lector-bid",
+   "tipo": "usa",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "vuelve a leer la operación",
+   "detalle": "La operación por su número, con el objetivo recortado.",
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "base/entidades>explorador-bid",
+   "de": "base/entidades",
+   "a": "explorador-bid",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "nombre y sigla",
+   "detalle": "Cómo se nombra a cada entidad seguida en los textos del BID, que están en inglés.",
+   "tarjetas": [
+    "T24"
+   ]
   }
  ],
  "recorridos": [
@@ -4121,6 +4199,20 @@
     "explorador-impo>grabaciones",
     "refutador>lector-impo",
     "base/entidades>explorador-impo"
+   ]
+  },
+  {
+   "fecha": "2026-11-17",
+   "texto": "El explorador del BID, construido (T24): las operaciones para Uruguay aprobadas cada noche que nombran a una entidad seguida.",
+   "objetos": [
+    "afuera/bid",
+    "lector-bid",
+    "explorador-bid",
+    "explorador-bid>lector-bid",
+    "lector-bid>afuera/bid",
+    "explorador-bid>grabaciones",
+    "refutador>lector-bid",
+    "base/entidades>explorador-bid"
    ]
   }
  ],

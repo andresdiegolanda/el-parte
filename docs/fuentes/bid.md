@@ -42,6 +42,13 @@ Límite: no hay fecha de última modificación por proyecto ni historia de estad
 - Los datos de proyectos no tienen campos de personas. [PROVEN: lista de campos, 2026-11-07]
 - Las adjudicaciones nombran al adjudicatario, y en Uruguay hay más de 2.700 contratos de consultores individuales, que son personas. [INFERRED: del tipo de contrato] El explorador no lee los adjudicatarios de consultorías individuales (D3).
 
+## Lo que se aprendió al construir el explorador
+
+- El filtro exacto por fecha de aprobación anda con la fecha como texto: `{"cntry_cd": "UR", "apprvl_dt": "2026-11-04 00:00:00.000000000"}` da la UR-L1222. [PROVEN: consulta a la API, 2026-11-17]
+- El robots.txt del portal cambió desde la verificación: ahora explica cómo usar la API y sigue dejándola abierta. [PROVEN: https://data.iadb.org/robots.txt, 2026-11-17]
+- La operación del hallazgo del registro, UR-L1191, no está en la tabla de proyectos. [PROVEN: consulta por número, 2026-11-17]
+- Los nombres y objetivos están en inglés: el BPS aparece como "Social Security Bank" o por su sigla. [INFERRED: de las operaciones de 2008 y 2011 que nombran al sistema de seguridad social]
+
 ## Riesgos
 
 - El portal es de 2025, y los identificadores de sus archivos pueden cambiar. [INFERRED]

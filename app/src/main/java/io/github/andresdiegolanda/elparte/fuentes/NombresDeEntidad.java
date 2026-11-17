@@ -1,4 +1,4 @@
-package io.github.andresdiegolanda.elparte.fuentes.impo;
+package io.github.andresdiegolanda.elparte.fuentes;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -8,10 +8,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Cómo se reconoce a una entidad en el texto de una norma: por su nombre, sin importar tildes ni
- * mayúsculas, y por su sigla, solo en mayúsculas y como palabra entera. El nombre sale de
- * {@code parte.entidades}: "Administración Nacional de Usinas y Trasmisiones Eléctricas (UTE)" da el
- * nombre sin la sigla y la sigla. Si la entidad tiene nombres para IMPO en sus identificadores, se usan esos.
+ * Cómo se reconoce a una entidad en el texto de una publicación, como una norma de IMPO o un proyecto del
+ * BID: por su nombre, sin importar tildes ni mayúsculas, y por su sigla, solo en mayúsculas y como palabra
+ * entera. El nombre sale de {@code parte.entidades}: "Administración Nacional de Usinas y Trasmisiones
+ * Eléctricas (UTE)" da el nombre sin la sigla y la sigla. Si la entidad tiene nombres para la fuente en
+ * sus identificadores, se usan esos.
  */
 public final class NombresDeEntidad {
 

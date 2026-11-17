@@ -20,7 +20,7 @@ class PermisosDeLaBaseTest extends ConServicios {
     @Test
     void losAgentesNoVenLasCuentas() throws SQLException {
         try (Connection agentes = DriverManager.getConnection(POSTGRES.getJdbcUrl(), "elparte_agentes", "agentes-local")) {
-            assertThat(contar(agentes, "select count(*) from parte.fuentes")).isEqualTo(2);
+            assertThat(contar(agentes, "select count(*) from parte.fuentes")).isEqualTo(3);
             assertThatThrownBy(() -> contar(agentes, "select count(*) from cuentas.usuarios"))
                     .hasMessageContaining("permission denied");
             assertThatThrownBy(() -> ejecutar(agentes, "create table parte.intrusa (id int)"))
