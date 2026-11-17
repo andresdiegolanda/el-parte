@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabeza('Expedientes')}"></head>
+<body>
+<header th:replace="~{fragmentos :: menu}"></header>
+<main>
+    <h1>Expedientes</h1>
+    <p class="sub">Todo lo que El Parte sabe de cada entidad: cada hecho con todas sus versiones, desde la primera noche.
+        La página de la mañana muestra lo de una noche; el expediente, lo de siempre.</p>
+    <table>
+        <tr><th>Entidad</th><th>Hechos</th><th>Última noche con un hecho</th></tr>
+        <tr th:each="e : ${entidades}">
+            <td><a th:href="@{/expediente/{id}(id=${e.id})}" th:text="${e.nombre}">Banco de Previsión Social</a></td>
+            <td th:text="${e.hechos}"></td>
+            <td th:text="${e.ultima} ?: '·'"></td>
+        </tr>
+    </table>
+</main>
+</body>
+</html>

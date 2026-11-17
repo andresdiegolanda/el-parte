@@ -84,27 +84,6 @@ Los campos van pegados al título, sin línea en blanco. Los que no aplican se o
 
 ## Para empezar
 
-### T33 · Armar el expediente de cada entidad
-- Tipo: Web
-- Dueño: desarrollo
-- Depende de: T08
-- Detalle: [docs/arquitectura.md](docs/arquitectura.md), [docs/base-de-afirmaciones.md](docs/base-de-afirmaciones.md)
-
-Todo lo que la base sabe de una entidad: cada hecho y cada versión, en orden, para consultar cuando se quiera y no solo lo de anoche.
-
-Es donde el sistema necesita contexto largo. Los agentes de la noche ven un candidato por vez, a propósito, para que el grado no se contamine con el resto (ADR 0004). El expediente mira a cada organismo a lo largo del tiempo, y ahí aparecen patrones que una publicación sola no muestra. El contexto largo no alcanza solo: lo que no se puede perder se escribe afuera del modelo, en la base y en el repositorio.
-
-Etapas:
-- [ ] Diseño
-- [ ] Código
-- [ ] Pruebas
-- [ ] Página cómo se hizo
-
-Registro:
-- 2026-11-14: Creada: el tablero de arquitectura mostró que el expediente estaba diseñado en la arquitectura y en la base, pero ninguna tarjeta lo construía.
-- 2026-11-16: Suma por qué el expediente es donde hace falta contexto largo, y los agentes de la noche, no.
-- 2026-11-17: Pasa a Para empezar: T08 está hecha. Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
-
 ### T30 · Sumar el explorador de IMPO
 - Tipo: Componente
 - Dueño: desarrollo
@@ -175,6 +154,28 @@ Registro:
 - 2026-11-16: Creada. Se hace después del material para la demo.
 - 2026-11-17: Pasa a Para empezar: T20 está hecha. Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
 
+### T47 · Leer el expediente con contexto largo
+- Tipo: Componente
+- Dueño: desarrollo
+- Depende de: T33
+- Detalle: [docs/como-se-hizo/expediente.md](docs/como-se-hizo/expediente.md)
+
+El expediente muestra cada hecho de una entidad a lo largo del tiempo, pero nadie lo lee entero. Con contexto largo, el modelo podría ver patrones que una publicación sola no muestra: compras que se repiten, prórrogas en cadena, proveedores que vuelven. Antes del código hace falta un ADR: qué puede escribir el modelo sobre muchos hechos juntos, cómo se gradúa una afirmación que sale de varios, y qué se guarda afuera del modelo, en la base y en el repositorio.
+
+Etapas:
+- [ ] Contrato
+- [ ] Código
+- [ ] Pruebas
+- [ ] Medido contra el banco
+- [ ] Página cómo se hizo
+
+Lista:
+- [ ] El ADR: qué puede escribir el modelo sobre un expediente y cómo se gradúa
+- [ ] Una lectura del expediente con su costo en el presupuesto
+
+Registro:
+- 2026-11-17: Creada al construir el expediente sin el modelo (T33). Va a Para empezar porque T33 está hecha; no entra en la tanda autorizada el 2026-11-17.
+
 ## Esperando
 
 ### T35 · Mandar el aviso diario del parte
@@ -211,6 +212,28 @@ Registro:
 ## Pendiente
 
 ## Hecho
+
+### T33 · Armar el expediente de cada entidad
+- Tipo: Web
+- Dueño: desarrollo
+- Depende de: T08
+- Detalle: [docs/como-se-hizo/expediente.md](docs/como-se-hizo/expediente.md), [docs/arquitectura.md](docs/arquitectura.md), [docs/base-de-afirmaciones.md](docs/base-de-afirmaciones.md)
+
+Todo lo que la base sabe de una entidad: cada hecho y cada versión, en orden, para consultar cuando se quiera y no solo lo de anoche.
+
+Es donde el sistema necesita contexto largo. Los agentes de la noche ven un candidato por vez, a propósito, para que el grado no se contamine con el resto (ADR 0004). El expediente mira a cada organismo a lo largo del tiempo, y ahí aparecen patrones que una publicación sola no muestra. El contexto largo no alcanza solo: lo que no se puede perder se escribe afuera del modelo, en la base y en el repositorio.
+
+Etapas:
+- [x] Diseño
+- [x] Código
+- [x] Pruebas
+- [x] Página cómo se hizo
+
+Registro:
+- 2026-11-14: Creada: el tablero de arquitectura mostró que el expediente estaba diseñado en la arquitectura y en la base, pero ninguna tarjeta lo construía.
+- 2026-11-16: Suma por qué el expediente es donde hace falta contexto largo, y los agentes de la noche, no.
+- 2026-11-17: Pasa a Para empezar: T08 está hecha. Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
+- 2026-11-17: Hecha, sin el modelo: /expediente lista las entidades y /expediente/<entidad> muestra cada hecho con todas sus versiones, ordenado por la noche en que apareció, con un resumen mes por mes. Leerlo con contexto largo pasa a T47, que necesita decidir qué puede escribir el modelo sobre muchos hechos juntos. Ver docs/como-se-hizo/expediente.md. Pasa a Hecho.
 
 ### T26 · Escribir la sección "Cómo funciona" y las páginas "cómo se hizo"
 - Tipo: Documento

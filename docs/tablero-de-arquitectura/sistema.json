@@ -1442,17 +1442,27 @@
    "id": "web/expediente",
    "tipo": "pagina",
    "titulo": "Expediente",
-   "sub": "",
+   "sub": "/expediente",
    "col": 9,
    "fila": 17,
-   "estado": "disenado",
-   "que_es": "Todo lo que la base sabe de una entidad: cada hecho y cada versión, en orden.",
+   "estado": "construido",
+   "que_es": "Todo lo que la base sabe de una entidad: cada hecho con todas sus versiones, ordenado por la noche en que apareció, con un resumen mes por mes.",
    "para_que": "Consultar una entidad cuando se quiera, no solo lo de anoche.",
    "docs": [
-    "docs/arquitectura.md"
+    "docs/arquitectura.md",
+    "docs/como-se-hizo/expediente.md"
    ],
    "tarjetas": [
     "T33"
+   ],
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/web/ExpedienteControlador.java",
+    "app/src/main/resources/templates/expedientes.html",
+    "app/src/main/resources/templates/expediente.html"
+   ],
+   "rutas": [
+    "GET /expediente",
+    "GET /expediente/{entidad}"
    ]
   },
   {
@@ -2794,7 +2804,7 @@
    "de": "base/hecho_entidades",
    "a": "web/expediente",
    "tipo": "lee",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "los hechos de la entidad",
    "detalle": "Los hechos que mencionan a la entidad.",
@@ -2807,7 +2817,7 @@
    "de": "base/versiones_de_hecho",
    "a": "web/expediente",
    "tipo": "lee",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "todas las versiones",
    "detalle": "Cada versión, en orden.",
@@ -3230,6 +3240,71 @@
    "papel": "auxiliar",
    "etiqueta": "errores del modelo",
    "detalle": "Después de cada noche busca llamadas al modelo grabadas con error; si hay, la medición se detiene sin escribir la salida."
+  },
+  {
+   "id": "base/hechos>web/expediente",
+   "de": "base/hechos",
+   "a": "web/expediente",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "clave y tipo",
+   "detalle": "La clave y el tipo de cada hecho de la entidad.",
+   "tarjetas": [
+    "T33"
+   ]
+  },
+  {
+   "id": "base/corridas>web/expediente",
+   "de": "base/corridas",
+   "a": "web/expediente",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "la noche de cada versión",
+   "detalle": "La noche de la corrida de cada versión: la más vieja es la noche en que apareció el hecho.",
+   "tarjetas": [
+    "T33"
+   ]
+  },
+  {
+   "id": "base/entidades>web/expediente",
+   "de": "base/entidades",
+   "a": "web/expediente",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "las entidades",
+   "detalle": "La lista de entidades y el nombre de cada una.",
+   "tarjetas": [
+    "T33"
+   ]
+  },
+  {
+   "id": "base/evidencias>web/expediente",
+   "de": "base/evidencias",
+   "a": "web/expediente",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "la evidencia",
+   "detalle": "Los fragmentos con su URL, de cada versión.",
+   "tarjetas": [
+    "T33"
+   ]
+  },
+  {
+   "id": "base/revisiones>web/expediente",
+   "de": "base/revisiones",
+   "a": "web/expediente",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "la nota de la revisión",
+   "detalle": "Si una versión no se sostuvo en la revisión, por qué.",
+   "tarjetas": [
+    "T33"
+   ]
   }
  ],
  "recorridos": [
@@ -3934,6 +4009,20 @@
    "texto": "La página Cómo funciona, construida (T26), con el índice de las páginas 'cómo se hizo'.",
    "objetos": [
     "web/como-funciona"
+   ]
+  },
+  {
+   "fecha": "2026-11-17",
+   "texto": "El expediente de cada entidad, construido (T33): cada hecho con todas sus versiones, mes por mes.",
+   "objetos": [
+    "web/expediente",
+    "base/hecho_entidades>web/expediente",
+    "base/versiones_de_hecho>web/expediente",
+    "base/hechos>web/expediente",
+    "base/corridas>web/expediente",
+    "base/entidades>web/expediente",
+    "base/evidencias>web/expediente",
+    "base/revisiones>web/expediente"
    ]
   }
  ],

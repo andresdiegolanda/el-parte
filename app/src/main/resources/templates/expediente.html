@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabeza(${nombre})}"></head>
+<body>
+<header th:replace="~{fragmentos :: menu}"></header>
+<main>
+    <h1 th:text="${nombre}">Banco de Previsión Social</h1>
+    <p class="sub">El expediente: cada hecho con todas sus versiones, ordenado por la noche en que apareció.
+        <a href="/expediente">Todos los expedientes</a>.</p>
+
+    <div th:if="${meses.isEmpty()}" class="tarjeta vacio">Todavía no hay hechos de esta entidad.</div>
+
+    <th:block th:if="${!meses.isEmpty()}">
+        <h2>Mes por mes</h2>
+        <table>
+            <tr><th>Mes</th><th>Hechos nuevos</th><th>Llamados</th><th>Adjudicaciones</th><th>Otros</th><th>Versiones</th><th>INFERRED</th></tr>
+            <tr th:each="m : ${meses}">
+                <td><a th:if="${m.mes != mes}" th:href="@{/expediente/{id}(id=${entidad}, mes=${m.mes})}" th:text="${m.mes}"></a>
+                    <strong th:if="${m.mes == mes}" th:text="${m.mes}"></strong></td>
+                <td th:text="${m.hechos}"></td>
+                <td th:text="${m.llamados}"></td>
+                <td th:text="${m.adjudicaciones}"></td>
+                <td th:text="${m.otros}"></td>
+                <td th:text="${m.versiones}"></td>
+                <td th:text="${m.inferidos}"></td>
+            </tr>
+        </table>
+
+        <h2>Los hechos de <span th:text="${mes}">2026-11</span></h2>
+        <div th:each="h : ${hechos}" class="tarjeta">
+            <div>
+                <span class="grado" th:classappend="${h.ultima.grado}" th:text="${h.ultima.grado}">PROVEN</span>
+                <span class="sub" th:text="${h.tipo} + ' · apareció la noche del ' + ${h.noche} + ' · ' + ${h.versiones.size()} + (${h.versiones.size() == 1} ? ' versión' : ' versiones')"></span>
+                <span class="sub" th:text="'· ' + ${h.clave}"></span>
+            </div>
+            <div th:each="v : ${h.versiones}" th:class="${v.numero > 1} ? 'analisis' : ''">
+                <p class="sub" th:if="${h.versiones.size() > 1}">
+                    <strong th:text="'Versión ' + ${v.numero}"></strong>, de la noche del <span th:text="${v.noche}"></span>
+                    <span th:if="${v.grado != h.ultima.grado or v.numero < h.versiones.size()}" class="grado" th:classappend="${v.grado}" th:text="${v.grado}"></span>
+                </p>
+                <p th:if="${v.estadoRevision != 'no_requiere'}">
+                    <span th:if="${v.estadoRevision == 'pendiente'}" class="marca">pendiente de revisión</span>
+                    <span th:if="${v.estadoRevision == 'aceptado'}" class="ok">revisado: se sostiene</span>
+                    <span th:if="${v.estadoRevision == 'rechazado'}" class="mal">revisado: no se sostiene: <span th:text="${v.notaDeRevision}"></span></span>
+                </p>
+                <p th:text="${v.afirmacion}" th:style="${v.estadoRevision == 'rechazado'} ? 'text-decoration: line-through'">La afirmación.</p>
+                <p th:if="${v.razonamiento != null}" class="sub">Se deduce de: <span th:text="${v.razonamiento}"></span></p>
+                <div th:if="${v.conAnalisis and v.estadoRevision != 'rechazado'}">
+                    <p><strong>Por qué importa:</strong> <span th:text="${v.porQueImporta}"></span></p>
+                    <p><strong>Qué mirar:</strong> <span th:text="${v.queMirar}"></span></p>
+                </div>
+                <p class="sub">Publicado el <span th:text="${#strings.length(v.fechaPublicacion) >= 16} ? ${#strings.replace(#strings.substring(v.fechaPublicacion, 0, 16), 'T', ' ')} : ${v.fechaPublicacion}"></span>.
+                    <a th:href="@{/corridas/{id}(id=${v.corridaId})} + '#' + ${v.mensajeCandidato}">Ver su traza en la sala de máquinas</a>.</p>
+                <div th:each="e : ${v.evidencias}" class="evidencia">
+                    <span th:text="${e.fragmento}"></span> · <a th:href="${e.url}">fuente</a>
+                </div>
+            </div>
+        </div>
+    </th:block>
+</main>
+</body>
+</html>
