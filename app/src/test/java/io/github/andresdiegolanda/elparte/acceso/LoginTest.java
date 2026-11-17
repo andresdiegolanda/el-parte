@@ -68,6 +68,19 @@ class LoginTest extends ConServicios {
     }
 
     @Test
+    void unInvitadoQueNoEsUnCorreoNoSeDaDeAlta() {
+        // El tercer invitado de las pruebas tiene el texto de ejemplo en lugar del correo (T44).
+        assertThat(parte.sql("select count(*) from parte.clientes where alias = 'Sin correo'").query(Long.class).single())
+                .isZero();
+        assertThat(Cuentas.esCorreo(ConServicios.NO_ES_UN_CORREO)).isFalse();
+        assertThat(Cuentas.esCorreo(ConServicios.INVITADA)).isTrue();
+        assertThat(Cuentas.esCorreo(" alguien@ejemplo.com.uy ")).isTrue();
+        for (String mal : new String[] {"alguien@", "@ejemplo.com", "alguien@ejemplo", "a b@ejemplo.com", "a@b@ejemplo.com", "alguien@ejemplo..com"}) {
+            assertThat(Cuentas.esCorreo(mal)).as(mal).isFalse();
+        }
+    }
+
+    @Test
     void unCorreoNoInvitadoVeLoMismoPeroNoLeLlegaNada() {
         Navegador extrano = new Navegador(puerto);
         int cartasAntes = buzon.cartas().size();

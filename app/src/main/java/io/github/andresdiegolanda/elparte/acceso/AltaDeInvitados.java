@@ -21,6 +21,11 @@ import org.springframework.stereotype.Component;
  *
  * <p>Un invitado nuevo empieza siguiendo lo mismo que la cuenta de demostración, así su primera página
  * de la mañana no sale vacía; lo cambia en su perfil (T34). Uno que ya existía conserva lo que sigue.
+ *
+ * <p>Un invitado cuyo correo no tiene forma de correo, por ejemplo el texto de ejemplo que quedó en el
+ * {@code .env}, no se da de alta y queda un aviso en el registro, con su número y sin el texto (T44). La
+ * aplicación arranca igual: los demás invitados y la demostración siguen andando. Si ya estaba dado de
+ * alta, queda desactivado, como uno que ya no está en la lista.
  */
 @Component
 public class AltaDeInvitados {
@@ -47,6 +52,12 @@ public class AltaDeInvitados {
                 log.warn("El invitado {} de la configuración no tiene correo: no se da de alta", numero);
                 continue;
             }
+            if (!Cuentas.esCorreo(invitado.correo())) {
+                // El texto no va al registro: puede ser un correo mal escrito, que es un dato personal.
+                log.warn("El invitado {} de la configuración (ELPARTE_INVITADOS_{}_CORREO) no es un correo: no se da de alta",
+                        numero, numero - 1);
+                continue;
+            }
             UUID id = cuenta(invitado.correo(), invitado.responsable());
             String alias = invitado.alias() == null || invitado.alias().isBlank() ? "Invitado " + numero : invitado.alias();
             int nuevo = parte.sql("""
@@ -66,7 +77,7 @@ public class AltaDeInvitados {
             }
         }
         int desactivados = desactivarLosQueNoEstan(invitados.invitados().stream()
-                .map(Invitados.Invitado::correo).filter(c -> c != null && !c.isBlank()).toList());
+                .map(Invitados.Invitado::correo).filter(Cuentas::esCorreo).toList());
         // Solo cuántos: los correos no van al registro de la aplicación.
         log.info("Invitados: {} en la configuración, {} desactivados por no estar", numero, desactivados);
     }

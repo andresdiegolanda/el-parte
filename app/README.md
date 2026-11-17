@@ -41,7 +41,7 @@ ELPARTE_INVITADOS_1_CORREO=correo-de-la-primera-persona
 ELPARTE_INVITADOS_1_ALIAS=Cliente 1
 ```
 
-Y así con 2, 3 y 4. Al arrancar, la aplicación da de alta a los nuevos, actualiza el alias de los que ya estaban y desactiva a los que ya no están en la lista. Un invitado nuevo empieza siguiendo lo mismo que la cuenta de demostración, con el aviso diario prendido, y lo cambia en su perfil, `/perfil` ([docs/como-se-hizo/perfil.md](../docs/como-se-hizo/perfil.md)).
+Y así con 2, 3 y 4. Al arrancar, la aplicación da de alta a los nuevos (si el correo no tiene forma de correo, no lo da de alta y lo avisa en su registro, sin el texto), actualiza el alias de los que ya estaban y desactiva a los que ya no están en la lista. Un invitado nuevo empieza siguiendo lo mismo que la cuenta de demostración, con el aviso diario prendido, y lo cambia en su perfil, `/perfil` ([docs/como-se-hizo/perfil.md](../docs/como-se-hizo/perfil.md)).
 
 Para entrar se va a `/entrar`, se pone el correo y llega un enlace que sirve una vez y vence a los 5 minutos; en local llega a Mailpit, en http://localhost:8025. Al abrirlo hay que apretar "Entrar", y la aplicación recuerda la sesión 30 días. Sin entrar se ve la página de la mañana de la cuenta de demostración y la sala de máquinas; correr o repetir una corrida y la cola de revisión son solo del responsable. Cómo se hizo: [docs/como-se-hizo/login.md](../docs/como-se-hizo/login.md).
 
@@ -81,7 +81,7 @@ ELPARTE_URL_PUBLICA=https://el-subdominio-del-responsable
 ELPARTE_REMITENTE="El Parte <parte@el-subdominio-del-correo>"
 ```
 
-y los invitados, como en "Los invitados", arriba, con su dirección de correo real: un texto que no es un correo no da error, porque un correo no invitado recibe la misma respuesta. Si falta una de las cuatro primeras, Docker Compose no arranca y dice cuál.
+y los invitados, como en "Los invitados", arriba, con su dirección de correo real. Un texto que no tiene forma de correo no se da de alta, y el registro de la aplicación lo avisa con el número del invitado (`El invitado 2 de la configuración (ELPARTE_INVITADOS_1_CORREO) no es un correo`); un correo bien escrito pero equivocado no se nota, porque un correo no invitado recibe la misma respuesta. Si falta una de las cuatro primeras, Docker Compose no arranca y dice cuál.
 
 4. **Docker Desktop** arranca con la sesión (en su configuración, General > Start Docker Desktop when you sign in), así El Parte vuelve solo si la máquina se reinicia.
 

@@ -84,29 +84,6 @@ Los campos van pegados al título, sin línea en blanco. Los que no aplican se o
 
 ## Para empezar
 
-### T44 · Que el alta avise cuando un invitado no es un correo
-- Tipo: Componente
-- Dueño: desarrollo
-- Detalle: [docs/como-se-hizo/despliegue.md](docs/como-se-hizo/despliegue.md), [app/src/main/java/io/github/andresdiegolanda/elparte/acceso/AltaDeInvitados.java](app/src/main/java/io/github/andresdiegolanda/elparte/acceso/AltaDeInvitados.java)
-
-Al arrancar, el alta de invitados da de alta cada correo de la configuración. Si uno no es un correo, por ejemplo un texto de ejemplo que quedó en el .env, hoy se da de alta igual y nunca recibe el enlace, sin ningún aviso.
-
-Etapas:
-- [ ] Contrato
-- [ ] Código
-- [ ] Pruebas
-- [ ] Medido contra el banco
-- [ ] Página cómo se hizo
-
-Lista:
-- [ ] Validar cada correo de la lista de invitados al arrancar
-- [ ] Decidir si un correo inválido se anota en el registro o si la aplicación no arranca
-- [ ] Probarlo con un invitado que no es un correo
-
-Registro:
-- 2026-11-17: Creada: salió de la lista de mejoras de la forma de trabajo, pero es un arreglo de este proyecto (ADR 0017).
-- 2026-11-17: Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
-
 ### T43 · Que la corrida de la noche se ponga al día
 - Tipo: Componente
 - Dueño: desarrollo
@@ -300,6 +277,30 @@ Registro:
 ## Pendiente
 
 ## Hecho
+
+### T44 · Que el alta avise cuando un invitado no es un correo
+- Tipo: Componente
+- Dueño: desarrollo
+- Detalle: [docs/como-se-hizo/despliegue.md](docs/como-se-hizo/despliegue.md), [app/src/main/java/io/github/andresdiegolanda/elparte/acceso/AltaDeInvitados.java](app/src/main/java/io/github/andresdiegolanda/elparte/acceso/AltaDeInvitados.java)
+
+Al arrancar, el alta de invitados da de alta cada correo de la configuración. Si uno no es un correo, por ejemplo un texto de ejemplo que quedó en el .env, hoy se da de alta igual y nunca recibe el enlace, sin ningún aviso.
+
+Etapas:
+- [x] Contrato
+- [x] Código
+- [x] Pruebas
+- [x] Medido contra el banco
+- [x] Página cómo se hizo
+
+Lista:
+- [x] Validar cada correo de la lista de invitados al arrancar
+- [x] Decidir si un correo inválido se anota en el registro o si la aplicación no arranca
+- [x] Probarlo con un invitado que no es un correo
+
+Registro:
+- 2026-11-17: Creada: salió de la lista de mejoras de la forma de trabajo, pero es un arreglo de este proyecto (ADR 0017).
+- 2026-11-17: Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
+- 2026-11-17: Hecha. Un invitado sin forma de correo no se da de alta y queda un aviso en el registro, con su número y sin el texto; la aplicación arranca igual, para no dejar sin El Parte a los demás. Si ya estaba dado de alta, queda desactivado. Lo prueba un tercer invitado de las pruebas con el texto de ejemplo. La etapa del banco se tilda sin medir: el banco no tiene invitados, y lo demás no cambia. Ver docs/como-se-hizo/despliegue.md y app/README.md. Pasa a Hecho.
 
 ### T08 · Construir la primera rebanada de punta a punta
 - Tipo: Componente

@@ -3,6 +3,7 @@ package io.github.andresdiegolanda.elparte.acceso;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import javax.sql.DataSource;
 
@@ -29,6 +30,14 @@ public class Cuentas implements UserDetailsService {
     /** Los correos se comparan sin mayúsculas ni espacios de más. */
     public static String normalizar(String correo) {
         return correo == null ? "" : correo.trim().toLowerCase(Locale.ROOT);
+    }
+
+    /** Algo antes de una sola arroba, un dominio con punto después, y nada de espacios: lo justo para ver un texto que quedó en lugar del correo. */
+    private static final Pattern CORREO = Pattern.compile("[^@\\s]+@[^@\\s.]+(\\.[^@\\s.]+)+");
+
+    /** Si el texto, normalizado, tiene forma de correo (T44). No dice si existe: eso lo sabe solo el que lo recibe. */
+    public static boolean esCorreo(String correo) {
+        return CORREO.matcher(normalizar(correo)).matches();
     }
 
     @Override

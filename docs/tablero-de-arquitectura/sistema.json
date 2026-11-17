@@ -1497,14 +1497,15 @@
    "fila": 11,
    "estado": "construido",
    "tarjetas": [
-    "T25"
+    "T25",
+    "T44"
    ],
    "docs": [
     "adrs/0013-acceso-perfil-y-parte-diario.md",
     "app/README.md",
     "docs/como-se-hizo/login.md"
    ],
-   "que_es": "La lista de invitados de la configuración, en el entorno y fuera del repositorio. Al arrancar, cada invitado tiene su cuenta en el esquema cuentas y su cliente en el esquema parte, con el mismo identificador; uno nuevo empieza siguiendo lo mismo que la cuenta de demostración, y el que ya no está en la lista no puede entrar.",
+   "que_es": "La lista de invitados de la configuración, en el entorno y fuera del repositorio. Al arrancar, cada invitado tiene su cuenta en el esquema cuentas y su cliente en el esquema parte, con el mismo identificador; uno nuevo empieza siguiendo lo mismo que la cuenta de demostración, y el que ya no está en la lista no puede entrar. Un texto sin forma de correo no se da de alta: queda un aviso en el registro, con el número del invitado y sin el texto.",
    "para_que": "Que nadie se registre solo: en la versión 0 entran cuatro personas invitadas. Sumar a alguien es sumar su correo a la lista.",
    "codigo": [
     "app/src/main/java/io/github/andresdiegolanda/elparte/acceso/Invitados.java",
@@ -3862,6 +3863,13 @@
    "objetos": [
     "afuera/revision-banco",
     "conteo-banco>afuera/revision-banco"
+   ]
+  },
+  {
+   "fecha": "2026-11-17",
+   "texto": "El alta de invitados no da de alta un texto sin forma de correo y lo avisa en el registro (T44).",
+   "objetos": [
+    "invitados"
    ]
   }
  ],
