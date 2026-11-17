@@ -1530,30 +1530,36 @@
    "docs": [
     "adrs/0013-acceso-perfil-y-parte-diario.md"
    ],
-   "que_es": "Manda correos por SMTP: hoy, el enlace para entrar; con T35, el aviso de cada mañana.",
+   "que_es": "Manda correos por SMTP: el enlace para entrar y el aviso de cada mañana.",
    "para_que": "Un solo lugar que sabe mandar correos, con el servidor que diga la configuración: Mailpit en local, uno real cuando se despliegue.",
    "codigo": [
     "app/src/main/java/io/github/andresdiegolanda/elparte/acceso/EnvioDelEnlace.java",
-    "app/src/main/java/io/github/andresdiegolanda/elparte/acceso/CorreoDelEnlace.java"
+    "app/src/main/java/io/github/andresdiegolanda/elparte/acceso/CorreoDelEnlace.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/acceso/EnvioDelAviso.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/acceso/CorreoDelAviso.java"
    ]
   },
   {
    "id": "envio-del-parte",
    "tipo": "servicio",
    "titulo": "Aviso del parte",
-   "sub": "escucha informes · cada mañana",
+   "sub": "escucha informes · apagado publicado",
    "col": 13,
    "fila": 11,
-   "estado": "disenado",
+   "estado": "construido",
    "tarjetas": [
     "T35"
    ],
    "docs": [
     "adrs/0013-acceso-perfil-y-parte-diario.md",
+    "docs/como-se-hizo/aviso-diario.md",
     "docs/contratos.md"
    ],
-   "que_es": "Escucha los informes de cada corrida normal y, a cada invitado que lo quiere, le manda un aviso corto: la noche, cuántos hechos hay, cuántos esperan revisión, si la corrida se cortó, y el enlace a su página. No manda el contenido de los hechos: el parte es la página.",
-   "para_que": "Que la persona se entere cada mañana sin tener que acordarse de entrar. Corre con el rol de cuentas: lee correos, nunca hechos."
+   "que_es": "Escucha los informes y, si la corrida es normal, a cada invitado activo que lo quiere le manda un aviso corto: la noche, cuántos hechos hay, cuántos esperan revisión, si la corrida se cortó, y el enlace a su página. No manda el contenido de los hechos: el parte es la página. Publicado, viene apagado hasta que el responsable lo prende.",
+   "para_que": "Que la persona se entere cada mañana sin tener que acordarse de entrar. Corre con el rol de cuentas: lee correos, nunca hechos.",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/acceso/AvisoDelParte.java"
+   ]
   },
   {
    "id": "web/perfil",
@@ -1647,16 +1653,17 @@
    "sub": "cuentas.envios_del_parte",
    "col": 13,
    "fila": 13,
-   "estado": "disenado",
+   "estado": "construido",
    "tarjetas": [
     "T35"
    ],
    "tabla": "cuentas.envios_del_parte",
    "docs": [
-    "adrs/0013-acceso-perfil-y-parte-diario.md"
+    "adrs/0013-acceso-perfil-y-parte-diario.md",
+    "docs/como-se-hizo/aviso-diario.md"
    ],
-   "que_es": "Un registro por aviso mandado: el cliente, la corrida y cuándo salió.",
-   "para_que": "Que un aviso no salga dos veces aunque el mensaje de informes llegue dos veces. Hace de registro de lo procesado para el aviso, que no puede escribir en el esquema parte."
+   "que_es": "Un registro por aviso mandado: el invitado, la noche, la corrida y cuándo salió.",
+   "para_que": "Que un aviso no salga dos veces de la misma noche, aunque el mensaje llegue dos veces o la noche se corra otra vez a mano."
   }
  ],
  "flechas": [
@@ -3045,10 +3052,10 @@
    "de": "kafka/informes",
    "a": "envio-del-parte",
    "tipo": "escucha",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "camino",
    "etiqueta": "un informe por cliente",
-   "detalle": "Escucha los informes; saltea los de las corridas que no son normales, por el modo que suma el mensaje (ADR 0013).",
+   "detalle": "Escucha los informes; saltea los de las corridas que no son normales, por el modo que trae el mensaje, y los de hace más de 36 horas.",
    "tarjetas": [
     "T35"
    ]
@@ -3058,7 +3065,7 @@
    "de": "base/usuarios",
    "a": "envio-del-parte",
    "tipo": "lee",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "correo y preferencia",
    "detalle": "El correo del cliente y si quiere el aviso. La cuenta de demostración no tiene correo: no recibe nada.",
@@ -3071,10 +3078,10 @@
    "de": "envio-del-parte",
    "a": "base/envios",
    "tipo": "escribe",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "anota el envío",
-   "detalle": "Una fila por cliente y corrida, antes de mandar: si ya estaba, no manda.",
+   "detalle": "Una fila por invitado y noche, antes de mandar: si ya estaba, no manda. Si el correo no sale, la borra.",
    "tarjetas": [
     "T35"
    ]
@@ -3084,7 +3091,7 @@
    "de": "envio-del-parte",
    "a": "correo",
    "tipo": "usa",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "camino",
    "etiqueta": "manda el aviso",
    "detalle": "El asunto dice la noche y cuántos hechos hay; el cuerpo, cuántos esperan revisión, si la corrida se cortó y el enlace a /manana.",
@@ -3881,6 +3888,18 @@
    "objetos": [
     "noche-por-reloj",
     "noche-por-reloj>inicio"
+   ]
+  },
+  {
+   "fecha": "2026-11-17",
+   "texto": "El aviso diario del parte, construido (T35): escucha los informes de las corridas normales, que ahora traen el modo, y manda un aviso por invitado y noche. Publicado, viene apagado.",
+   "objetos": [
+    "envio-del-parte",
+    "base/envios",
+    "kafka/informes>envio-del-parte",
+    "base/usuarios>envio-del-parte",
+    "envio-del-parte>base/envios",
+    "envio-del-parte>correo"
    ]
   }
  ],

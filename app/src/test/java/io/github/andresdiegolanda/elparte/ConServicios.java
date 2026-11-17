@@ -22,7 +22,8 @@ import io.github.andresdiegolanda.elparte.fuentes.arce.ArceDePrueba;
                 "elparte.invitados[0].correo=" + ConServicios.RESPONSABLE, "elparte.invitados[0].alias=Responsable",
                 "elparte.invitados[0].responsable=true",
                 "elparte.invitados[1].correo=" + ConServicios.INVITADA, "elparte.invitados[1].alias=Invitada uno",
-                "elparte.invitados[2].correo=" + ConServicios.NO_ES_UN_CORREO, "elparte.invitados[2].alias=Sin correo"})
+                "elparte.invitados[2].correo=" + ConServicios.NO_ES_UN_CORREO, "elparte.invitados[2].alias=Sin correo",
+                "elparte.aviso.prendido=true"})
 @Import(FalsosDePrueba.class)
 public abstract class ConServicios {
 

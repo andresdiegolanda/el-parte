@@ -94,7 +94,8 @@ public final class Contenidos {
             List<String> hechos,
             boolean sinNovedades,
             int pendientesDeRevision,
-            boolean corridaCortada) {
+            boolean corridaCortada,
+            String modo) {
     }
 
     public record RevisionPendiente(String claveDeHecho, String grado, String motivo) {

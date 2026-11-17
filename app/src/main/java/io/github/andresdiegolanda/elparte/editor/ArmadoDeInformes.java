@@ -84,7 +84,7 @@ public class ArmadoDeInformes {
                 }
             }
             Informe informe = new Informe(cliente.toString(), corrida.fechaObjetivo(), new ArrayList<>(claves),
-                    claves.isEmpty(), pendientes, cortada);
+                    claves.isEmpty(), pendientes, cortada, corrida.modo());
             emisor.emitir(corridaId, Tipos.INFORMES, Editor.AGENTE, Corridas.idDeInicio(corridaId), ++posicion, informe);
             if (!"reproduccion".equals(corrida.modo())) {
                 guardar(corridaId, cliente, corrida.fechaObjetivo(), informe);

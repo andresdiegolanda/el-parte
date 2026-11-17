@@ -3,7 +3,7 @@
 Todo pendiente de El Parte vive acá, con dueño (regla 8). Este archivo es lo que manda. El kanban es una vista de solo lectura de este archivo: se genera con `python3 herramientas/generar_kanban.py` y se publica en <https://andresdiegolanda.github.io/el-parte/kanban/> en cada push ([ADR 0017](adrs/0017-forma-de-trabajo-mas-liviana.md)).
 
 - Actualizado: 2026-11-17
-- Nota: La primera rebanada (T08) anda de punta a punta y se mide contra el banco las 78 noches del registro (T20); los resultados están en docs/como-se-hizo/medicion-contra-el-banco.md, con la revisión confirmada: T08 y T20 están hechas. El analista (T21), el presupuesto (T22, con el tope de cada noche en el ADR 0005) y el explorador arreglado (T39) están hechos y medidos. La cola de revisión humana (T23) y el login por enlace (T25) están hechos: correr y revisar son solo del responsable. El Parte está publicado desde la máquina del responsable, con un túnel de Cloudflare y el correo por Resend (T40, ADR 0016). En su perfil, cada invitado elige qué organismos seguir y si quiere el aviso diario (T34); sigue el aviso (T35). La forma de trabajo se alivianó con el ADR 0017 (T45). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.
+- Nota: La primera rebanada (T08) anda de punta a punta y se mide contra el banco las 78 noches del registro (T20); los resultados están en docs/como-se-hizo/medicion-contra-el-banco.md, con la revisión confirmada: T08 y T20 están hechas. El analista (T21), el presupuesto (T22, con el tope de cada noche en el ADR 0005) y el explorador arreglado (T39) están hechos y medidos. La cola de revisión humana (T23) y el login por enlace (T25) están hechos: correr y revisar son solo del responsable. El Parte está publicado desde la máquina del responsable, con un túnel de Cloudflare y el correo por Resend (T40, ADR 0016). En su perfil, cada invitado elige qué organismos seguir y si quiere el aviso diario (T34); el aviso anda y espera que el responsable lo prenda publicado (T35). La forma de trabajo se alivianó con el ADR 0017 (T45). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.
 - Calendario: 2026-11-07, 2026-11-14, 2026-11-21, 2026-11-28
 - Repositorio: https://github.com/andresdiegolanda/el-parte
 - Proyecto: El Parte
@@ -83,34 +83,6 @@ Los campos van pegados al título, sin línea en blanco. Los que no aplican se o
 ## En curso
 
 ## Para empezar
-
-### T35 · Mandar el aviso diario del parte
-- Tipo: Componente
-- Dueño: desarrollo
-- Depende de: T25
-- Detalle: [adrs/0013-acceso-perfil-y-parte-diario.md](adrs/0013-acceso-perfil-y-parte-diario.md), [docs/contratos.md](docs/contratos.md)
-
-Cada mañana, a cada invitado que lo quiere, un aviso corto con la noche, cuántos hechos hay y el enlace a su página. No manda el contenido de los hechos.
-
-Etapas:
-- [ ] Contrato
-- [ ] Código
-- [ ] Pruebas
-- [ ] Medido contra el banco
-- [ ] Página cómo se hizo
-
-Lista:
-- [ ] El mensaje informes suma el modo de la corrida, y el aviso saltea lo que no es normal
-- [ ] Correo y preferencia con el rol de cuentas
-- [ ] Registro de envíos en cuentas.envios_del_parte, para no mandar dos veces
-- [ ] El aviso: asunto con la noche y cuántos hechos; cuerpo con pendientes, corrida cortada y el enlace
-- [ ] El correo saliente por SMTP; el servicio real se decide en T27
-
-Registro:
-- 2026-11-14: Creada con el diseño del parte diario (ADR 0013).
-- 2026-11-16: Pasa a Para empezar: T25 está hecha.
-- 2026-11-16: El servicio de correo quedó decidido en el ADR 0016: Resend por SMTP, con la misma configuración que el enlace para entrar.
-- 2026-11-17: Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
 
 ### T29 · Cambiar el modelo de cada agente sin reiniciar la aplicación
 - Tipo: Web
@@ -249,6 +221,37 @@ Registro:
 - 2026-11-17: Pasa a Para empezar: T20 está hecha. Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
 
 ## Esperando
+
+### T35 · Mandar el aviso diario del parte
+- Tipo: Componente
+- Dueño: desarrollo
+- Depende de: T25
+- Espera a: que el responsable prenda el aviso en la aplicación publicada (ELPARTE_AVISO_PRENDIDO=true en el .env)
+- Detalle: [docs/como-se-hizo/aviso-diario.md](docs/como-se-hizo/aviso-diario.md), [adrs/0013-acceso-perfil-y-parte-diario.md](adrs/0013-acceso-perfil-y-parte-diario.md), [docs/contratos.md](docs/contratos.md)
+
+Cada mañana, a cada invitado que lo quiere, un aviso corto con la noche, cuántos hechos hay y el enlace a su página. No manda el contenido de los hechos.
+
+Etapas:
+- [x] Contrato
+- [x] Código
+- [x] Pruebas
+- [x] Medido contra el banco
+- [x] Página cómo se hizo
+
+Lista:
+- [x] El mensaje informes suma el modo de la corrida, y el aviso saltea lo que no es normal
+- [x] Correo y preferencia con el rol de cuentas
+- [x] Registro de envíos en cuentas.envios_del_parte, para no mandar dos veces
+- [x] El aviso: asunto con la noche y cuántos hechos; cuerpo con pendientes, corrida cortada y el enlace
+- [x] El correo saliente por SMTP; el servicio real se decide en T27
+- [ ] Prenderlo en la aplicación publicada
+
+Registro:
+- 2026-11-14: Creada con el diseño del parte diario (ADR 0013).
+- 2026-11-16: Pasa a Para empezar: T25 está hecha.
+- 2026-11-16: El servicio de correo quedó decidido en el ADR 0016: Resend por SMTP, con la misma configuración que el enlace para entrar.
+- 2026-11-17: Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
+- 2026-11-17: El aviso anda: escucha los informes de las corridas normales, que ahora traen el modo, y manda uno por invitado y noche, con el rol de cuentas solo. La etapa del banco se tilda sin medir: el banco no tiene invitados. Publicado viene apagado. Pasa a Esperando: falta que el responsable lo prenda. Ver docs/como-se-hizo/aviso-diario.md.
 
 ## Pendiente
 

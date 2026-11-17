@@ -76,6 +76,8 @@ services:
       KAFKA_SERVIDORES: kafka:19092
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-sin-clave}
       ELPARTE_CORRIDA_HORA: ${ELPARTE_CORRIDA_HORA:--}
+      # El aviso diario del parte (T35). En local sale a Mailpit, que no lo manda a nadie.
+      ELPARTE_AVISO_PRENDIDO: ${ELPARTE_AVISO_PRENDIDO:-true}
       CORREO_HOST: correo
       CORREO_PUERTO: 1025
       # En local, el enlace del correo apunta a esta máquina aunque el .env tenga la dirección pública,

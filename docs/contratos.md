@@ -254,7 +254,7 @@ En la primera rebanada el analista solo pasaba la afirmación, y los dos último
 
 ### `informes`
 
-Lo emite el editor, uno por cliente, cuando su informe de la mañana está listo. El informe en sí queda en la base.
+Lo emite el editor, uno por cliente, cuando su informe de la mañana está listo. El informe en sí queda en la base. Lo escucha el aviso del parte, que manda el aviso diario solo si la corrida es normal ([docs/como-se-hizo/aviso-diario.md](como-se-hizo/aviso-diario.md)).
 
 | Campo | Qué es |
 |---|---|
@@ -264,13 +264,14 @@ Lo emite el editor, uno por cliente, cuando su informe de la mañana está listo
 | `sinNovedades` | Verdadero si no hubo nada nuevo sobre sus suscripciones. |
 | `pendientesDeRevision` | Cuántos de sus hechos están marcados como pendientes de revisión. |
 | `corridaCortada` | Verdadero si la corrida se cortó por presupuesto. |
+| `modo` | El modo de la corrida: `normal`, `banco` o `reproduccion`. El aviso diario sale solo de las normales; la comparación de una repetición con su original lo deja afuera. |
 
 De acá en adelante, los ejemplos muestran solo el `contenido`: el sobre es igual al de los mensajes anteriores.
 
 ```json
 { "clienteId": "cl-7f2c", "fechaObjetivo": "2026-11-06",
   "hechos": ["arce:ocds-ejemplo-9990001:adjudicacion"],
-  "sinNovedades": false, "pendientesDeRevision": 0, "corridaCortada": false }
+  "sinNovedades": false, "pendientesDeRevision": 0, "corridaCortada": false, "modo": "normal" }
 ```
 
 ### `revision.pendiente`

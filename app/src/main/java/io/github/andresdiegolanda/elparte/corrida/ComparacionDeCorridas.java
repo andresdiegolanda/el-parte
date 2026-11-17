@@ -19,7 +19,7 @@ import tools.jackson.databind.node.ObjectNode;
  * produce mensajes idénticos a los de la original").
  *
  * <p>Se compara el tipo, el agente y el contenido de cada mensaje. Quedan afuera lo que por definición
- * cambia: los identificadores (llevan la corrida), las horas, {@code corrida.iniciada} (dice el modo),
+ * cambia: los identificadores (llevan la corrida), las horas, {@code corrida.iniciada} y el modo de {@code informes},
  * {@code uso.modelo} (la reproducción no llama al modelo) y el costo y la duración de
  * {@code corrida.terminada}.
  */
@@ -60,6 +60,9 @@ public class ComparacionDeCorridas {
             if (Tipos.CORRIDA_TERMINADA.equals(sobre.tipo()) && contenido instanceof ObjectNode objeto) {
                 objeto.remove("costoUsd");
                 objeto.remove("duracionSegundos");
+            }
+            if (Tipos.INFORMES.equals(sobre.tipo()) && contenido instanceof ObjectNode objeto) {
+                objeto.remove("modo");
             }
             if (Tipos.CORRIDA_CORTADA.equals(sobre.tipo()) && contenido instanceof ObjectNode objeto) {
                 objeto.remove("gastadoUsd");

@@ -16,7 +16,7 @@ flowchart LR
 
 - **El catálogo** son los organismos de `parte.entidades` que tienen su código de comprador en ARCE: lo que el explorador sabe filtrar. Cada uno tiene un botón para seguirlo o dejar de seguirlo.
 - **Seguir** escribe en `parte.suscripciones`, con el rol de los agentes. Vale desde la corrida siguiente, que arma al empezar la lista de entidades seguidas. Una entidad que no está en el catálogo no se puede seguir, aunque alguien mande el formulario a mano.
-- **El aviso diario** se prende y se apaga en `cuentas.usuarios`, con el rol de las cuentas, buscando por el identificador del cliente: el perfil no lee correos. El aviso en sí sale con T35.
+- **El aviso diario** se prende y se apaga en `cuentas.usuarios`, con el rol de las cuentas, buscando por el identificador del cliente: el perfil no lee correos. El aviso en sí está en [docs/como-se-hizo/aviso-diario.md](aviso-diario.md) (T35).
 - **Sin sesión** se ve el perfil de la cuenta de demostración, sin botones. Cambiar algo pide entrar.
 
 ## Por qué existe
@@ -64,6 +64,5 @@ Nada en el código. El encabezado decía "Lo que sigue Invitada uno", que se le�
 
 ## Qué falta
 
-- **El aviso diario** (T35), que usa la preferencia.
 - **Seguir empresas**, que pide que el explorador filtre también por proveedor (ADR 0013).
 - **Más organismos**, a medida que los pidan los invitados.

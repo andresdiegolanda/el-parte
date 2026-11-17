@@ -36,6 +36,9 @@ services:
       # La noche de ayer, apenas pasan las 6 de la mañana en Uruguay; si a esa hora la máquina estaba
       # apagada o dormida, apenas vuelve (T43).
       ELPARTE_CORRIDA_HORA: ${ELPARTE_CORRIDA_HORA:-06:00}
+      # El aviso diario del parte por correo a los invitados (T35). Apagado hasta que el responsable lo
+      # prenda en el .env con ELPARTE_AVISO_PRENDIDO=true.
+      ELPARTE_AVISO_PRENDIDO: ${ELPARTE_AVISO_PRENDIDO:-false}
       # La salud va en otro puerto, al que el túnel no lleva: desde afuera no se ve, y nadie puede hacer
       # que la aplicación se conecte a Resend o a Kafka cada vez que la consulta. En esta máquina queda
       # en http://localhost:8090/actuator/health.

@@ -80,6 +80,9 @@ elparte:
     # las 6. Se revisa cada revisar-cada-ms, así se pone al día después de una pausa o un apagón (T43).
     hora: "-"
     revisar-cada-ms: 300000
+  # El aviso diario del parte por correo (T35): apagado si no se prende. En local lo captura Mailpit.
+  aviso:
+    prendido: false
   # La medición contra el banco (ADR 0014). La arranca el perfil banco; ver application-banco.yaml.
   banco:
     entidad: organismo:bps
