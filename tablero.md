@@ -82,33 +82,6 @@ Los campos van pegados al título, sin línea en blanco. Los que no aplican se o
 
 ## En curso
 
-### T30 · Sumar el explorador de IMPO
-- Tipo: Componente
-- Dueño: desarrollo
-- Depende de: T08
-- Detalle: [adrs/0010-impo-como-quinta-fuente.md](adrs/0010-impo-como-quinta-fuente.md), [docs/fuentes/impo.md](docs/fuentes/impo.md)
-
-La quinta fuente de la versión 0: solo el JSON de las normas del Diario Oficial, sin avisos y con las personas tapadas.
-
-Etapas:
-- [ ] Contrato
-- [ ] Código
-- [ ] Pruebas
-- [ ] Medido contra el banco
-- [ ] Página cómo se hizo
-
-Lista:
-- [ ] Índice de cada edición: números de las normas del día
-- [ ] JSON de cada norma, en ISO-8859-1
-- [ ] Firmantes descartados y nombres de personas tapados en el texto
-- [ ] Diez segundos entre pedidos, sin búsqueda ni avisos
-- [ ] Probar la cadena con leyes y resoluciones, no solo con decretos
-
-Registro:
-- 2026-11-14: Creada con el ADR 0010.
-- 2026-11-17: Pasa a Para empezar: T08 está hecha. Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
-- 2026-11-17: Pasa a En curso. El explorador anda contra un IMPO de mentira y contra muestras reales del índice y de las normas, bajadas a diez segundos entre pedidos después de volver a leer el robots.txt. Sigue la medición contra el banco, solo con IMPO.
-
 ## Para empezar
 
 ### T24 · Sumar los exploradores del BID, el Banco Mundial y Presidencia
@@ -178,6 +151,35 @@ Registro:
 - 2026-11-17: Creada al construir el expediente sin el modelo (T33). Va a Para empezar porque T33 está hecha; no entra en la tanda autorizada el 2026-11-17.
 
 ## Esperando
+
+### T30 · Sumar el explorador de IMPO
+- Tipo: Componente
+- Dueño: desarrollo
+- Depende de: T08
+- Espera a: crédito en la API: la clave llegó al tope de gasto de su espacio de trabajo, y sin el modelo no se puede medir
+- Detalle: [docs/como-se-hizo/impo.md](docs/como-se-hizo/impo.md), [adrs/0010-impo-como-quinta-fuente.md](adrs/0010-impo-como-quinta-fuente.md), [docs/fuentes/impo.md](docs/fuentes/impo.md)
+
+La quinta fuente de la versión 0: solo el JSON de las normas del Diario Oficial, sin avisos y con las personas tapadas.
+
+Etapas:
+- [x] Contrato
+- [x] Código
+- [x] Pruebas
+- [ ] Medido contra el banco
+- [x] Página cómo se hizo
+
+Lista:
+- [x] Índice de cada edición: números de las normas del día
+- [x] JSON de cada norma, en ISO-8859-1
+- [x] Firmantes descartados y nombres de personas tapados en el texto
+- [x] Diez segundos entre pedidos, sin búsqueda ni avisos
+- [x] Probar la cadena con leyes y resoluciones, no solo con decretos
+
+Registro:
+- 2026-11-14: Creada con el ADR 0010.
+- 2026-11-17: Pasa a Para empezar: T08 está hecha. Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
+- 2026-11-17: Pasa a En curso. El explorador anda contra un IMPO de mentira y contra muestras reales del índice y de las normas, bajadas a diez segundos entre pedidos después de volver a leer el robots.txt. Sigue la medición contra el banco, solo con IMPO.
+- 2026-11-17: El explorador anda: probado con un IMPO de mentira y con las dos normas reales de los hallazgos; las resoluciones no se leen, a propósito. Contra IMPO de verdad, la medición 2026-11-17-1, de una noche y solo con IMPO, leyó los tres decretos del 24/09 y se quedó con el 223/026, el del hallazgo, pero se cortó sin gastar: la clave llegó al tope de gasto de su espacio de trabajo. Pasa a Esperando. Ver docs/como-se-hizo/impo.md.
 
 ### T35 · Mandar el aviso diario del parte
 - Tipo: Componente

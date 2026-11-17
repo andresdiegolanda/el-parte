@@ -91,6 +91,7 @@ flowchart TD
 | [`docs/como-se-hizo/README.md`](../docs/como-se-hizo/README.md) | El índice de las páginas "cómo se hizo", una por componente, que la aplicación enlaza desde `/como-funciona` (T26). |
 | [`docs/como-se-hizo/aviso-diario.md`](../docs/como-se-hizo/aviso-diario.md) | Cómo se hizo el aviso diario por correo: escucha los informes de las corridas normales, uno por invitado y noche, sin el contenido de los hechos (T35). |
 | [`docs/como-se-hizo/expediente.md`](../docs/como-se-hizo/expediente.md) | Cómo se hizo el expediente de cada entidad: cada hecho con todas sus versiones, mes por mes (T33). |
+| [`docs/como-se-hizo/impo.md`](../docs/como-se-hizo/impo.md) | Cómo se hizo el explorador de IMPO: el índice de cada edición, el JSON de cada ley y decreto, el tapado y el filtro por entidad (T30). |
 | [`docs/como-se-hizo/modelos.md`](../docs/como-se-hizo/modelos.md) | Cómo se hizo la página de modelos y precios: el responsable cambia el modelo de cada agente y carga precios sin reiniciar (T29). |
 | [`docs/como-se-hizo/perfil.md`](../docs/como-se-hizo/perfil.md) | Cómo se hizo el perfil: el catálogo de organismos con su código en ARCE, seguir y dejar de seguir, y el aviso diario sí o no (T34). |
 | [`docs/como-se-hizo/despliegue.md`](../docs/como-se-hizo/despliegue.md) | Cómo se hizo El Parte publicado: el túnel, el correo, la salud fuera del túnel y las copias de la base (T27, T40). |

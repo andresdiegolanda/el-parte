@@ -145,6 +145,7 @@ En bash es lo mismo con `export ELPARTE_BANCO_MEDICION=2026-11-21-1` y así con 
 | `ELPARTE_BANCO_COSTO_MAXIMO_USD` | El tope de gasto en el modelo para toda la medición. Por omisión, 5. Al llegar, no se inicia ninguna noche más. |
 | `ELPARTE_CORRIDA_COSTO_MAXIMO_USD` y `ELPARTE_CORRIDA_PASOS_MAXIMOS` | El presupuesto de cada noche ([ADR 0005](../adrs/0005-presupuesto-por-corrida.md)). Por omisión, los de `app/src/main/resources/application.yaml`, fijados con lo medido en el ADR 0005, "Valores calibrados". Una noche que no alcanza termina cortada. |
 | `ELPARTE_COMMIT` | El commit de El Parte que corre, para la salida. |
+| `ELPARTE_BANCO_FUENTES` | Opcional: medir solo con algunas de las fuentes activas, separadas por comas, por ejemplo `impo`. Vacía, con todas. |
 
 Mientras corre:
 
@@ -152,6 +153,7 @@ Mientras corre:
 - **Si se corta:** se vuelve a levantar con el mismo comando y sigue donde quedó: saltea las noches que ya terminaron.
 - **Si el modelo falla:** la medición se detiene en la primera noche con llamadas al modelo con error, por ejemplo sin crédito en la API, y no escribe la salida. El registro dice el primer error. Esa noche no se puede volver a correr en la misma base: se corrige la causa y se mide de nuevo con otro nombre.
 - **Lo que pide a ARCE:** espera 250 ms antes de cada pedido, y no vuelve a pedir lo que la noche anterior ya leyó.
+- **Lo que pide a IMPO:** diez segundos entre pedidos, como en las noches de todos los días: el índice de cada edición y cada ley y decreto ([docs/como-se-hizo/impo.md](../docs/como-se-hizo/impo.md)).
 
 Cuando termina, la medición se cuenta con el registro y su revisión ([banco-de-pruebas/metricas.md](../banco-de-pruebas/metricas.md)):
 

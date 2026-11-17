@@ -345,7 +345,7 @@ Una corrida en modo `reproduccion` repite otra sin red y sin costo, y produce lo
 
 La `claveDeHecho` dice cuándo dos candidatos son el mismo hecho. La calcula el archivista.
 
-1. **Si la fuente da un identificador estable, se usa ese.** La clave es `fuente:identificador:tipoDeHecho`. En ARCE, el identificador es el del proceso de compra en OCDS (`ocid`); en el BID, el número de operación; en el Banco Mundial, el identificador del proyecto; en la normativa de Presidencia, el número de la resolución. Ejemplo: `arce:ocds-ejemplo-9990001:adjudicacion`.
+1. **Si la fuente da un identificador estable, se usa ese.** La clave es `fuente:identificador:tipoDeHecho`. En ARCE, el identificador es el del proceso de compra en OCDS (`ocid`); en el BID, el número de operación; en el Banco Mundial, el identificador del proyecto; en la normativa de Presidencia, el número de la resolución; en IMPO, la norma en su banco, con el tipo de hecho `norma` (`impo:decretos-223-2026:norma`). Ejemplo: `arce:ocds-ejemplo-9990001:adjudicacion`.
 2. **El tipo de hecho es parte de la clave.** El llamado y la adjudicación de una misma compra son dos hechos distintos, relacionados por su proceso.
 3. **Si no hay identificador estable**, la clave es la fuente más la huella de la entidad, el tipo de hecho, la fecha del acto y el título normalizado. Las cinco fuentes de la versión 0 tienen identificadores estables ([docs/fuentes/](fuentes/README.md)), así que esta regla queda para fuentes futuras. [INFERRED]
 4. **Fuentes distintas no se fusionan en la versión 0.** Si una compra aparece en ARCE y su resolución en Presidencia, son dos hechos, que el archivista puede marcar como relacionados.

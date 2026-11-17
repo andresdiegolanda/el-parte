@@ -12,6 +12,7 @@ Una página por componente, con qué hace, por qué existe, cómo se construyó,
 | [docs/como-se-hizo/perfil.md](perfil.md) | El perfil: qué organismos sigue cada invitado y si quiere el aviso. | T34 |
 | [docs/como-se-hizo/aviso-diario.md](aviso-diario.md) | El aviso diario por correo. | T35 |
 | [docs/como-se-hizo/expediente.md](expediente.md) | El expediente de cada entidad: cada hecho con todas sus versiones, mes por mes. | T33 |
+| [docs/como-se-hizo/impo.md](impo.md) | El explorador de IMPO: las leyes y los decretos del Diario Oficial que nombran a una entidad seguida, con las personas tapadas. | T30 |
 | [docs/como-se-hizo/modelos.md](modelos.md) | La página de modelos y precios del responsable. | T29 |
 | [docs/como-se-hizo/despliegue.md](despliegue.md) | El Parte publicado desde la máquina del responsable, y la corrida de la noche que se pone al día. | T40, T43 |
 | [docs/como-se-hizo/medicion-contra-el-banco.md](medicion-contra-el-banco.md) | La medición contra el banco de pruebas y sus resultados. | T20 |

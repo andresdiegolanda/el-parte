@@ -483,6 +483,7 @@
    ],
    "docs": [
     "adrs/0010-impo-como-quinta-fuente.md",
+    "docs/como-se-hizo/impo.md",
     "docs/fuentes/impo.md"
    ],
    "tarjetas": [
@@ -502,6 +503,7 @@
    "docs": [
     "adrs/0006-fuentes-de-la-version-0.md",
     "adrs/0010-impo-como-quinta-fuente.md",
+    "docs/como-se-hizo/impo.md",
     "docs/fuentes/impo.md"
    ],
    "tarjetas": [

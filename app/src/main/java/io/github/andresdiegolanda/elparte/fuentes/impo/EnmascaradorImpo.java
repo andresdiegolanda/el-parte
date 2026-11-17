@@ -10,7 +10,8 @@ import tools.jackson.databind.node.ObjectNode;
 /**
  * Tapa los datos personales de una norma de IMPO antes de que la vea nadie (ADR 0008, ADR 0010): saca
  * los firmantes y cambia por {@code [persona]} los nombres que siguen a un título o a un tratamiento
- * ("Sra.", "Dr.", "Esc.", "señor", "ciudadana"). Un nombre sin título ni tratamiento no se ve: es el
+ * ("Sra.", "Dr. Mag.", "Esc.", "señor", "ciudadana") y los nombres en mayúsculas antes de un cargo, como
+ * en la firma de una ley ("NOMBRE APELLIDO, Presidenta"). Un nombre sin título ni tratamiento no se ve: es el
  * límite de tapar sin el modelo, y queda dicho en docs/fuentes/impo.md.
  */
 public final class EnmascaradorImpo {
@@ -22,9 +23,14 @@ public final class EnmascaradorImpo {
             + "|Secretari[oa]s?|Director(?:a|es)?|Intendente|Senador(?:a|es)?|Diputad[oa]s?|Fiscal|Juez|Jueza|Gerente|Jef[ea]"
             + "|Encargad[oa]|Representante|Delegad[oa]|Comisionad[oa])\\b)";
     private static final String NOMBRE = CARGO + PALABRA + "(?:\\s+(?:(?:de|del|la|las|los|da|das|do|dos|y|e)\\s+)?" + PALABRA + "){0,5}";
-    private static final Pattern CON_TITULO = Pattern.compile(
-            "\\b(?:Sr|Sra|Srta|Sres|Sras|Dr|Dra|Dres|Lic|Esc|Cr|Cra|Ing|Arq|Prof|Mtro|Mtra|Psic|Ec|Q\\.F|Tec|Téc|Gral|Cnel|Tte|My|Cap)\\.\\s*(?:en [\\p{L}.]+\\s+)?"
-                    + NOMBRE);
+    /** Uno o más títulos seguidos: "Sra.", "Dr. Mag.", "Lic. en Enf.". "Gral." no, que en las normas es casi siempre "Dirección Gral.". */
+    private static final String TITULOS = "(?:\\b(?:Sr|Sra|Srta|Sres|Sras|Dr|Dra|Dres|Lic|Esc|Cr|Cra|Ing|Arq|Prof|Mtro|Mtra|Mag|Msc|MSc|Psic|Ec"
+            + "|Q\\.F|Tec|Téc|Cnel|Tte|Cap)\\.\\s*(?:en [\\p{L}.]+\\s+)?)+";
+    private static final Pattern CON_TITULO = Pattern.compile(TITULOS + NOMBRE);
+    /** Un nombre en mayúsculas antes de su cargo, como en la firma de una ley: "NOMBRE APELLIDO, Presidenta". */
+    private static final Pattern FIRMA = Pattern.compile(
+            "\\b[A-ZÁÉÍÓÚÜÑ]{2,}(?:\\s+[A-ZÁÉÍÓÚÜÑ]{2,}){1,4}(?=,\\s*(?:Presidente|Presidenta|Vicepresidente|Vicepresidenta"
+                    + "|Secretari[oa]|Prosecretari[oa]|Ministr[oa])\\b)");
     private static final Pattern CON_TRATAMIENTO = Pattern.compile(
             "\\b((?:[Ss]eñor(?:a|ita|es)?|[Cc]iudadan[oa]s?|[Dd]oña|[Dd]on)\\s+)" + NOMBRE);
     private static final String[] CAMPOS = {"nombreNorma", "vistos", "tituloDiar", "referenciasNorma"};
@@ -68,6 +74,7 @@ public final class EnmascaradorImpo {
     public static Tapado tapar(String texto) {
         int[] cuenta = {0};
         String salida = reemplazar(CON_TITULO, texto, m -> PERSONA, cuenta);
+        salida = reemplazar(FIRMA, salida, m -> PERSONA, cuenta);
         salida = reemplazar(CON_TRATAMIENTO, salida, m -> m.group(1) + PERSONA, cuenta);
         return new Tapado(salida, cuenta[0]);
     }

@@ -28,8 +28,21 @@ Sí, por la URL de cada edición (`/diariooficial/AAAA/MM/DD/indice.pdf`). Para 
 
 Sí, y muchas: los firmantes de cada norma, y avisos sobre particulares (sucesiones, sociedades conyugales, edictos matrimoniales). [PROVEN: 2026-11-07] Es la fuente con más datos personales de las verificadas.
 
+## Lo que se aprendió al construir el explorador
+
+Del 2026-11-17, con el robots.txt leído de nuevo ese día (sigue pidiendo 10 segundos entre pedidos y no prohíbe las normas ni los índices) y tres ediciones reales, a diez segundos entre pedidos: la del 16/09/2026, la del 24/09/2026 y la del 16/10/2026. [PROVEN: pedidos a https://www.impo.com.uy/diariooficial/2026/09/24/indice.pdf y siguientes, 2026-11-17]
+
+- **El índice se lee con PDFBox sin ordenar por posición.** Así cada documento sale en una línea que empieza con su número de orden (`7 - Decreto 223/026.- Reglaméntase ...`) y su sumario sigue hasta `Pág. N`, aunque el PDF esté a dos columnas.
+- **Del índice salen las leyes y los decretos.** La edición del 24/09 trae tres decretos; la del 16/10, la Ley 20.531; la del 16/09, ninguno: sus documentos son resoluciones de organismos, casi todas designaciones de personas con nombre y apellido en el mismo índice.
+- **Las leyes están en `leyes-originales`** (`/bases/leyes-originales/20531-2026`), y los decretos, en `decretos`. El número de una ley no trae el año: es el de la edición.
+- **La fecha de publicación no es la de promulgación.** El Decreto 223/026 se promulgó el 16/09 y salió en la edición del 24/09; su JSON trae las dos. El hecho va con la de publicación.
+- **`urlVerImagen` no lleva a la norma.** `/diariooficial/2026/09/24/8` es el visor de la página 8 de la edición, en HTML, también con `?json=true`.
+- **Las leyes firman adentro del texto.** Además del campo de firmantes, el último artículo de una ley trae la firma de quien preside la cámara y de su secretario, en mayúsculas y con títulos encadenados (`Dr. Mag.`). El tapado los cubre; un nombre sin título, sin tratamiento y fuera de una firma no se ve.
+- **Una ley grande es grande.** El JSON de la Rendición de Cuentas 2025 pesa 393 KB, con 312 artículos; 8 nombran al BPS. El refutador le muestra al modelo solo esos.
+
 ## Riesgos
 
 - El permiso, como se explica arriba.
-- Leer el índice obliga a procesar un PDF a dos columnas.
+- Leer el índice obliga a procesar un PDF a dos columnas; si IMPO cambia el formato del índice, el explorador no encuentra normas y la noche sale sin nada de IMPO, sin error. [INFERRED]
+- El tapado de personas es por reglas, sin el modelo.
 - IMPO se reserva cambiar las condiciones de acceso. [PROVEN: 2026-11-07]

@@ -45,6 +45,13 @@ class PiezasDeImpoTest {
         assertThat(EnmascaradorImpo.tapar("Concédese a la señora Fulana de Tal una pensión.").texto())
                 .isEqualTo("Concédese a la señora [persona] una pensión.");
         assertThat(EnmascaradorImpo.tapar("Al Dr. Mengano de Tal, Téc. III Médico.").texto()).doesNotContain("Mengano");
+        // La firma de una ley, con títulos encadenados y nombres en mayúsculas.
+        assertThat(EnmascaradorImpo.tapar("Prof. FULANA DE TAL, Presidenta; Dr. Mag. MENGANO DE TAL, Secretario.").texto())
+                .isEqualTo("[persona], Presidenta; [persona], Secretario.");
+        assertThat(EnmascaradorImpo.tapar("FULANA DE TAL, Presidenta.").texto()).isEqualTo("[persona], Presidenta.");
+        // "Dirección Gral." no es un título de persona.
+        assertThat(EnmascaradorImpo.tapar("unidad ejecutora 001 \"Dir. Gral. Secretaría del Mrio. de Economía\"").texto())
+                .doesNotContain(EnmascaradorImpo.PERSONA);
         // Un cargo no es un nombre.
         assertThat(EnmascaradorImpo.tapar("Lo firma el señor Ministro de Economía y Finanzas.").texto())
                 .isEqualTo("Lo firma el señor Ministro de Economía y Finanzas.");
