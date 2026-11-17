@@ -84,24 +84,6 @@ Los campos van pegados al título, sin línea en blanco. Los que no aplican se o
 
 ## Para empezar
 
-### T26 · Escribir la sección "Cómo funciona" y las páginas "cómo se hizo"
-- Tipo: Documento
-- Dueño: desarrollo
-- Depende de: T08
-- Detalle: [docs/arquitectura.md](docs/arquitectura.md)
-
-La sección de la aplicación que enlaza a la documentación, y la página "cómo se hizo" de cada componente que todavía no la tenga (regla 6).
-
-Etapas:
-- [ ] Borrador
-- [ ] Grados y fuentes
-- [ ] Diagramas
-- [ ] Releído y verificado
-
-Registro:
-- 2026-11-07: Creada con el plan (T07).
-- 2026-11-17: Pasa a Para empezar: T08 está hecha. Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
-
 ### T33 · Armar el expediente de cada entidad
 - Tipo: Web
 - Dueño: desarrollo
@@ -229,6 +211,25 @@ Registro:
 ## Pendiente
 
 ## Hecho
+
+### T26 · Escribir la sección "Cómo funciona" y las páginas "cómo se hizo"
+- Tipo: Documento
+- Dueño: desarrollo
+- Depende de: T08
+- Detalle: [docs/como-se-hizo/README.md](docs/como-se-hizo/README.md), [docs/arquitectura.md](docs/arquitectura.md)
+
+La sección de la aplicación que enlaza a la documentación, y la página "cómo se hizo" de cada componente que todavía no la tenga (regla 6).
+
+Etapas:
+- [x] Borrador
+- [x] Grados y fuentes
+- [x] Diagramas
+- [x] Releído y verificado
+
+Registro:
+- 2026-11-07: Creada con el plan (T07).
+- 2026-11-17: Pasa a Para empezar: T08 está hecha. Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
+- 2026-11-17: Hecha. La aplicación tiene /como-funciona, en el menú: la noche agente por agente, los grados, el presupuesto y la medición, con enlaces al tablero de arquitectura publicado, a las páginas cómo se hizo y a los ADRs. Cada componente construido ya tenía su página; se suma su índice, docs/como-se-hizo/README.md. Los diagramas son los de cada página y el tablero de arquitectura, que la página enlaza. Una prueba comprueba que cada página de docs/como-se-hizo/ esté enlazada. Pasa a Hecho.
 
 ### T29 · Cambiar el modelo de cada agente sin reiniciar la aplicación
 - Tipo: Web

@@ -1362,17 +1362,25 @@
    "id": "web/como-funciona",
    "tipo": "pagina",
    "titulo": "Cómo funciona",
-   "sub": "",
+   "sub": "/como-funciona",
    "col": 0,
    "fila": 17,
-   "estado": "disenado",
-   "que_es": "La sección de la aplicación que enlaza a esta documentación y a las páginas 'cómo se hizo'.",
+   "estado": "construido",
+   "que_es": "La página de la aplicación que explica la noche, los grados, el presupuesto y la medición, y enlaza el tablero de arquitectura y cada página 'cómo se hizo'.",
    "para_que": "Que se entienda el sistema sin salir de la aplicación.",
    "docs": [
+    "docs/como-se-hizo/README.md",
     "docs/plan.md"
    ],
    "tarjetas": [
     "T26"
+   ],
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/web/ComoFuncionaControlador.java",
+    "app/src/main/resources/templates/como-funciona.html"
+   ],
+   "rutas": [
+    "GET /como-funciona"
    ]
   },
   {
@@ -3919,6 +3927,13 @@
     "web/responsable",
     "web/responsable>base/modelos_de_agente",
     "web/responsable>base/precios_de_modelo"
+   ]
+  },
+  {
+   "fecha": "2026-11-17",
+   "texto": "La página Cómo funciona, construida (T26), con el índice de las páginas 'cómo se hizo'.",
+   "objetos": [
+    "web/como-funciona"
    ]
   }
  ],

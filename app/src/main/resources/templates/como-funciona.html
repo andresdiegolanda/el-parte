@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabeza('Cómo funciona')}"></head>
+<body>
+<header th:replace="~{fragmentos :: menu}"></header>
+<main th:with="repo='https://github.com/andresdiegolanda/el-parte/blob/main/', sitio='https://andresdiegolanda.github.io/el-parte/'">
+    <h1>Cómo funciona</h1>
+    <p class="sub">Qué hace El Parte cada noche, cómo se sabe si lo que publica está bien, y dónde leer el detalle.</p>
+
+    <h2>Cada noche</h2>
+    <p>Un grupo de agentes, programas que se pasan el trabajo por mensajes en Kafka, lee lo que publicó el Estado
+        uruguayo la noche anterior y se queda con lo de las entidades que alguien sigue. Cada uno hace una sola cosa:</p>
+    <ol>
+        <li><strong>El inicio</strong> congela la corrida: la noche, las fuentes, lo que sigue cada invitado, el presupuesto y el modelo de cada agente.</li>
+        <li><strong>El explorador</strong> lee la fuente, hoy compras estatales (ARCE), se queda con las publicaciones de esas entidades,
+            tapa los datos personales y arma un candidato por cada una. No usa el modelo.</li>
+        <li><strong>El archivista</strong> se fija si el candidato es nuevo, si actualiza algo que ya estaba o si ya se conocía.</li>
+        <li><strong>El refutador</strong> vuelve a leer la publicación por su cuenta y le pide al modelo que la compare con lo que dice el candidato.
+            Es el único que pone el grado.</li>
+        <li><strong>El analista</strong> escribe con el modelo qué dice, por qué importa y qué mirar, sin agregar cifras que la fuente no tenga.</li>
+        <li><strong>El editor</strong> guarda cada hecho con su evidencia, manda a revisión humana lo que no está probado y arma el parte de cada invitado,
+            que le llega por correo con un aviso corto.</li>
+    </ol>
+    <p>Cada mensaje queda guardado. En la <a href="/corridas">sala de máquinas</a> se ve, corrida por corrida, qué hizo cada agente con cada candidato,
+        cuánto costó y por qué terminó como terminó. Una corrida se puede repetir sin red ni costo, desde lo que grabó, y da los mismos mensajes.</p>
+
+    <h2>Los grados</h2>
+    <table>
+        <tr><th>Grado</th><th>Qué quiere decir</th></tr>
+        <tr><td><span class="grado PROVEN">PROVEN</span></td><td>La fuente lo dice. Se publica.</td></tr>
+        <tr><td><span class="grado INFERRED">INFERRED</span></td><td>Se deduce de lo que dice la fuente, pero no lo dice. Se publica marcado y va a revisión humana.</td></tr>
+        <tr><td><span class="grado NOT_MENTIONED">NOT_MENTIONED</span></td><td>Las fuentes no respaldan lo que afirma el candidato. No se publica; queda en la sala de máquinas.</td></tr>
+    </table>
+
+    <h2>Lo que cuesta y lo que corta</h2>
+    <p>Antes de cada llamada al modelo, el presupuesto reserva lo peor que puede costar. Si no alcanza, la llamada no se hace y la corrida termina cortada,
+        con lo que llegó a hacer. El tope de cada noche y cómo se fijó están en el
+        <a th:href="${repo} + 'adrs/0005-presupuesto-por-corrida.md'">ADR 0005</a>; el modelo de cada agente y los precios, en
+        <a href="/modelos">modelos y precios</a>.</p>
+
+    <h2>Cómo se sabe si sirve</h2>
+    <p>Entre fines de agosto y mediados de noviembre de 2026, otra vigilancia siguió al BPS todas las noches y anotó lo que encontró. El Parte corre esas mismas noches y se compara:
+        qué encontró de lo que estaba, y si lo que publicó está bien. Los resultados, con sus cifras y lo que falló, están en
+        <a th:href="${repo} + 'docs/como-se-hizo/medicion-contra-el-banco.md'">la medición contra el banco de pruebas</a>.</p>
+
+    <h2>Para leer más</h2>
+    <ul>
+        <li><a th:href="${sitio} + 'docs/tablero-de-arquitectura/'">El tablero de arquitectura</a>: el sistema objeto por objeto, qué está construido y qué está diseñado.</li>
+        <li><a th:href="${repo} + 'docs/como-se-hizo/README.md'">Cómo se hizo cada parte</a>, con lo que se probó y lo que falló:
+            <a th:href="${repo} + 'docs/como-se-hizo/primera-rebanada.md'">la primera rebanada</a>,
+            <a th:href="${repo} + 'docs/como-se-hizo/analista.md'">el analista</a>,
+            <a th:href="${repo} + 'docs/como-se-hizo/presupuesto.md'">el presupuesto</a>,
+            <a th:href="${repo} + 'docs/como-se-hizo/revision.md'">la revisión humana</a>,
+            <a th:href="${repo} + 'docs/como-se-hizo/login.md'">el login</a>,
+            <a th:href="${repo} + 'docs/como-se-hizo/perfil.md'">el perfil</a>,
+            <a th:href="${repo} + 'docs/como-se-hizo/aviso-diario.md'">el aviso diario</a>,
+            <a th:href="${repo} + 'docs/como-se-hizo/modelos.md'">los modelos y los precios</a>,
+            <a th:href="${repo} + 'docs/como-se-hizo/despliegue.md'">el despliegue</a> y
+            <a th:href="${repo} + 'docs/como-se-hizo/medicion-contra-el-banco.md'">la medición</a>.</li>
+        <li><a th:href="${repo} + 'docs/arquitectura.md'">La arquitectura</a> y <a th:href="${repo} + 'docs/contratos.md'">los contratos entre agentes</a>.</li>
+        <li><a th:href="${repo} + 'adrs/README.md'">Las decisiones</a>, una por ADR, y <a th:href="${sitio} + 'kanban/'">el tablero de tareas</a>.</li>
+    </ul>
+</main>
+</body>
+</html>
