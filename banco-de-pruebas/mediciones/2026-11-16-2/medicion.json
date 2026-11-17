@@ -6,7 +6,7 @@
   "entradas": 84
  },
  "revision": {
-  "huella": "sha256:8eb810397c976d27440b147348b0ece1f7f5ef0890cf4a251068b4de3b72375b",
+  "huella": "sha256:374634579eb7e90e096d167cf994ac385d2514e146c746131e27f4c4bddd5f23",
   "sinRevisar": 0
  },
  "elParte": {
@@ -100,6 +100,7 @@
    "precision": 0.9837
   },
   "descartadosPorElParte": 45,
+  "juiciosViejos": 0,
   "sorteoDeExtras": {
    "poblacion": 796,
    "tamano": 60,
