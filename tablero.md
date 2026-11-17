@@ -109,26 +109,6 @@ Registro:
 
 ## Para empezar
 
-### T42 · Comparar El Parte con una sesión de la Claude Console sobre el banco
-- Tipo: Verificación
-- Dueño: desarrollo
-- Depende de: T20
-- Detalle: [banco-de-pruebas/README.md](banco-de-pruebas/README.md), [adrs/0014-medicion-contra-el-banco.md](adrs/0014-medicion-contra-el-banco.md), [adrs/0004-grados-de-evidencia.md](adrs/0004-grados-de-evidencia.md)
-
-Media hora con la Claude Console, con lo que ARCE publicó cada noche, puede dar un parte que se lee mejor que el de El Parte. Lo que no da es cuánto acierta, de dónde sale cada afirmación, la garantía de que no agrega cifras y lo que cuesta por noche. Esta comparación lo mide con el mismo banco y el mismo conteo.
-
-Lo que la plataforma vuelve gratis con cada versión es la orquestación y la infraestructura. Lo que no trae es el banco con lo que pasó de verdad, la evidencia de cada afirmación y la medición en el dominio. Si la sesión de la Console sale igual o mejor, lo que vale de El Parte es la medición y no la infraestructura, y se recorta. Va después del material para la demo.
-
-Lista:
-- [ ] Una muestra de 10 noches del registro, con lo que ARCE publicó del BPS en cada una
-- [ ] La misma consigna a la Console, noche por noche, con la salida en el formato del banco
-- [ ] El conteo con la misma herramienta, y el costo y el tiempo de cada lado
-- [ ] La conclusión escrita: qué se mantiene de El Parte y qué se recorta
-
-Registro:
-- 2026-11-16: Creada. Se hace después del material para la demo.
-- 2026-11-17: Pasa a Para empezar: T20 está hecha. Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
-
 ### T47 · Leer el expediente con contexto largo
 - Tipo: Componente
 - Dueño: desarrollo
@@ -152,6 +132,28 @@ Registro:
 - 2026-11-17: Creada al construir el expediente sin el modelo (T33). Va a Para empezar porque T33 está hecha; no entra en la tanda autorizada el 2026-11-17.
 
 ## Esperando
+
+### T42 · Comparar El Parte con una sesión de la Claude Console sobre el banco
+- Tipo: Verificación
+- Dueño: desarrollo
+- Depende de: T20
+- Espera a: crédito en la API: la clave llegó al tope de gasto de su espacio de trabajo, y una sesión de la Console usa la misma
+- Detalle: [banco-de-pruebas/README.md](banco-de-pruebas/README.md), [adrs/0014-medicion-contra-el-banco.md](adrs/0014-medicion-contra-el-banco.md), [adrs/0004-grados-de-evidencia.md](adrs/0004-grados-de-evidencia.md)
+
+Media hora con la Claude Console, con lo que ARCE publicó cada noche, puede dar un parte que se lee mejor que el de El Parte. Lo que no da es cuánto acierta, de dónde sale cada afirmación, la garantía de que no agrega cifras y lo que cuesta por noche. Esta comparación lo mide con el mismo banco y el mismo conteo.
+
+Lo que la plataforma vuelve gratis con cada versión es la orquestación y la infraestructura. Lo que no trae es el banco con lo que pasó de verdad, la evidencia de cada afirmación y la medición en el dominio. Si la sesión de la Console sale igual o mejor, lo que vale de El Parte es la medición y no la infraestructura, y se recorta. Va después del material para la demo.
+
+Lista:
+- [ ] Una muestra de 10 noches del registro, con lo que ARCE publicó del BPS en cada una
+- [ ] La misma consigna a la Console, noche por noche, con la salida en el formato del banco
+- [ ] El conteo con la misma herramienta, y el costo y el tiempo de cada lado
+- [ ] La conclusión escrita: qué se mantiene de El Parte y qué se recorta
+
+Registro:
+- 2026-11-16: Creada. Se hace después del material para la demo.
+- 2026-11-17: Pasa a Para empezar: T20 está hecha. Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
+- 2026-11-17: El material para la demo está hecho: dos videos con voz, uno de cómo funciona y otro de la arquitectura, armados con capturas de la aplicación publicada y los recorridos del tablero de arquitectura, fuera del repositorio. Pasa a Esperando: sin crédito en la API no hay sesión que comparar.
 
 ### T30 · Sumar el explorador de IMPO
 - Tipo: Componente
