@@ -139,7 +139,7 @@ Las fuentes salen de [docs/fuentes/README.md](../docs/fuentes/README.md) y del A
 
 **`correspondencias.jsonl`**, una línea por cada par de una entrada y un hecho de El Parte que hablan de la misma cosa: `registro` (el `id`), `hecho` (la clave del hecho, `fuente:identificador:tipoDeHecho`, de [docs/contratos.md](../docs/contratos.md)) y, opcional, `juicio`: `correcto`, que es lo que vale si falta, o `contenido-equivocado`, si El Parte encontró la cosa pero dice algo que la fuente no dice. Una entrada puede corresponder a varios hechos, por ejemplo el llamado y la adjudicación de la misma compra. Las claves de los hechos son deterministas, así que las correspondencias sirven para las mediciones siguientes.
 
-**`extras.jsonl`**, una línea por hecho de El Parte que no corresponde a nada del registro y que una persona juzgó: `hecho` (la clave) y `juicio`: `correcto`, `otra-entidad`, `no-nuevo` o `contenido-equivocado`.
+**`extras.jsonl`**, una línea por hecho de El Parte que no corresponde a nada del registro y que una persona juzgó: `hecho` (la clave), `juicio` (`correcto`, `otra-entidad`, `no-nuevo` o `contenido-equivocado`) y, opcional, `contenido`: la huella del contenido que se juzgó, la misma que trae la salida para ese hecho. Con la huella, un juicio sobre un contenido que después cambió se nota ([banco-de-pruebas/metricas.md](metricas.md)).
 
 **`sorteo.json`**, opcional: los extras elegidos al azar para juzgar a mano cuando son demasiados para juzgarlos todos. Lo escribe `python3 herramientas/banco_de_pruebas.py sortear carpeta salida.json tamaño semilla`, y tiene `salida` (la huella de la salida de la que se sortearon), `semilla`, `tamano`, `poblacion` (cuántos extras había) y `claves` (las de los sorteados). Con la misma salida, las mismas correspondencias y la misma semilla, el sorteo da lo mismo. Cuando hay sorteo, se juzgan en `extras.jsonl` los sorteados; cómo se cuenta está en [banco-de-pruebas/metricas.md](metricas.md).
 
@@ -156,6 +156,6 @@ Es lo que producen las corridas en modo banco (T20), un JSON con estos campos. S
 | `fuentes` | Las fuentes que leyó esta medición. |
 | `modelos` | Opcional: el modelo de cada agente. |
 | `corridas` | Una por noche: `noche`, `corrida` (su id), `estado` (`completa`, `cortada` o `fallida`), `noRepetibles` (las fuentes que no dejaron pedir esa fecha, D1), `costoUsd`, `duracionSegundos` y `lecturasFallidas`. |
-| `hechos` | Uno por clave de hecho de la entidad: `clave`, `noche` y `grado`. Son la primera noche en que salió PROVEN o INFERRED, con ese grado; si nunca salió así, la primera en que salió `NOT_MENTIONED`. |
+| `hechos` | Uno por clave de hecho de la entidad: `clave`, `noche`, `grado` y `contenido`. Son la primera noche en que salió PROVEN o INFERRED, con ese grado; si nunca salió así, la primera en que salió `NOT_MENTIONED`. `contenido` es la huella de la afirmación de esa noche: `sha256:` y las primeras 16 cifras hexadecimales del sha256 de su texto en UTF-8. Las salidas anteriores al 2026-11-17 no la traen. |
 
 Cada corrida en modo banco tiene como fecha objetivo la noche que repite ([docs/contratos.md](../docs/contratos.md), `corrida.iniciada`).

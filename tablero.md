@@ -3,7 +3,7 @@
 Todo pendiente de El Parte vive acá, con dueño (regla 8). Este archivo es lo que manda. El kanban es una vista de solo lectura de este archivo: se genera con `python3 herramientas/generar_kanban.py` y se publica en <https://andresdiegolanda.github.io/el-parte/kanban/> en cada push ([ADR 0017](adrs/0017-forma-de-trabajo-mas-liviana.md)).
 
 - Actualizado: 2026-11-17
-- Nota: La primera rebanada (T08) anda de punta a punta y se mide contra el banco las 78 noches del registro (T20); los resultados están en docs/como-se-hizo/medicion-contra-el-banco.md. Falta que el responsable confirme la fuente y la etiqueta de las entradas y las correspondencias. El analista (T21), el presupuesto (T22, con el tope de cada noche en el ADR 0005) y el explorador arreglado (T39) están hechos y medidos. La cola de revisión humana (T23) y el login por enlace (T25) están hechos: correr y revisar son solo del responsable. El Parte está publicado desde la máquina del responsable, con un túnel de Cloudflare y el correo por Resend (T40, ADR 0016). En su perfil, cada invitado elige qué organismos seguir y si quiere el aviso diario (T34); sigue el aviso (T35). La forma de trabajo se alivianó con el ADR 0017 (T45). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.
+- Nota: La primera rebanada (T08) anda de punta a punta y se mide contra el banco las 78 noches del registro (T20); los resultados están en docs/como-se-hizo/medicion-contra-el-banco.md, con la revisión confirmada: T08 y T20 están hechas. El analista (T21), el presupuesto (T22, con el tope de cada noche en el ADR 0005) y el explorador arreglado (T39) están hechos y medidos. La cola de revisión humana (T23) y el login por enlace (T25) están hechos: correr y revisar son solo del responsable. El Parte está publicado desde la máquina del responsable, con un túnel de Cloudflare y el correo por Resend (T40, ADR 0016). En su perfil, cada invitado elige qué organismos seguir y si quiere el aviso diario (T34); sigue el aviso (T35). La forma de trabajo se alivianó con el ADR 0017 (T45). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.
 - Calendario: 2026-11-07, 2026-11-14, 2026-11-21, 2026-11-28
 - Repositorio: https://github.com/andresdiegolanda/el-parte
 - Proyecto: El Parte
@@ -82,56 +82,30 @@ Los campos van pegados al título, sin línea en blanco. Los que no aplican se o
 
 ## En curso
 
-### T20 · Medir la primera rebanada contra el banco de pruebas
-- Tipo: Verificación
-- Dueño: desarrollo
-- Depende de: T12
-- Detalle: [adrs/0014-medicion-contra-el-banco.md](adrs/0014-medicion-contra-el-banco.md), [banco-de-pruebas/metricas.md](banco-de-pruebas/metricas.md), [banco-de-pruebas/formato.md](banco-de-pruebas/formato.md), [docs/plan.md](docs/plan.md)
+## Para empezar
 
-La medición es parte de la versión 0. Corre la rebanada sobre cada noche del registro y compara lo encontrado con lo que encontró la vigilancia anterior (D1). No espera a que T08 cierre: alcanza con que la rebanada corra de punta a punta, y con esta medición T08 tilda su etapa "Medido contra el banco".
+### T44 · Que el alta avise cuando un invitado no es un correo
+- Tipo: Componente
+- Dueño: desarrollo
+- Detalle: [docs/como-se-hizo/despliegue.md](docs/como-se-hizo/despliegue.md), [app/src/main/java/io/github/andresdiegolanda/elparte/acceso/AltaDeInvitados.java](app/src/main/java/io/github/andresdiegolanda/elparte/acceso/AltaDeInvitados.java)
+
+Al arrancar, el alta de invitados da de alta cada correo de la configuración. Si uno no es un correo, por ejemplo un texto de ejemplo que quedó en el .env, hoy se da de alta igual y nunca recibe el enlace, sin ningún aviso.
+
+Etapas:
+- [ ] Contrato
+- [ ] Código
+- [ ] Pruebas
+- [ ] Medido contra el banco
+- [ ] Página cómo se hizo
 
 Lista:
-- [x] Diseño del modo banco (ADR 0014)
-- [x] compose.banco.yaml y el perfil banco: las noches en orden, una por vez, en un Compose aparte
-- [x] La corrida en modo banco: fecha objetivo, solo la entidad medida, y la repetición que acepta una corrida del banco
-- [x] Cuidar a ARCE: pausa entre pedidos y sin releer compradores ya leídos en la medición
-- [x] El tope de gasto de toda la medición
-- [x] El tipo de falla sinFecha en fuente.fallida (docs/contratos.md)
-- [x] La salida al terminar, en banco-de-pruebas/mediciones/<medición>/
-- [x] Tres noches reales primero, en la máquina del responsable, para conocer costo, duración y pedidos
-- [x] Al tope de candidatos entran primero las compras de la fecha objetivo
-- [x] Avisar al responsable para que suba el tope de gasto del espacio de trabajo y de la organización, antes de las 78 noches
-- [x] Correr la rebanada sobre cada noche del registro
-- [ ] Revisar el registro: la fuente y la etiqueta de cada entrada, y después las correspondencias y los extras
-- [x] Decidir cómo se juzgan los extras: en las 78 noches salieron 800 hechos PROVEN o INFERRED, y 789 no corresponden a nada del registro
-- [x] Juzgar un sorteo de 60 extras: 57 bien y 3 con el contenido equivocado
-- [x] Confirmar los juicios de los dos sorteos, los 56 nuevos incluidos
-- [ ] Confirmar la revisión: la fuente y la etiqueta de cada entrada y las correspondencias, que están en borrador; entre ellas, si la compra a ATOS se cuenta como de ARCE
-- [x] Contar con las reglas de banco-de-pruebas/metricas.md; con la muestra tiene que dar banco-de-pruebas/muestra/medicion-esperada.json
-- [x] Costo y duración por noche
-- [x] Versionar las métricas con la huella del registro usado (ADR 0007)
-- [x] Buscar la compra directa del BPS a ATOS, el único hallazgo que esta medición podía encontrar: no está en ninguna publicación del BPS que trajo el feed en el período, pero el feed no trae nada del 23 al 29 de octubre
-- [x] Que el explorador avise cuando un día hábil viene sin publicaciones: el feed de ARCE no trae nada del 2026-10-23 al 2026-10-29 (pasa a T39, hecho)
-- [x] Decidir qué hacer con el tope de 60 candidatos, que dejó 196 compras del BPS sin procesar (pasa a T22: se va, y corta el presupuesto)
-- [x] Que la medición se detenga en la primera noche con errores del modelo: la 2026-11-16-1 se quedó sin crédito en la noche del 2026-09-24 y siguió con noches vacías
-- [x] Medir de nuevo con el analista, el presupuesto y el explorador arreglado (2026-11-16-2), con un sorteo nuevo de 60 extras
-- [ ] Que cada juicio de un extra guarde la huella del contenido juzgado: dos juicios viejos siguen marcando mal hechos que ahora están bien
+- [ ] Validar cada correo de la lista de invitados al arrancar
+- [ ] Decidir si un correo inválido se anota en el registro o si la aplicación no arranca
+- [ ] Probarlo con un invitado que no es un correo
 
 Registro:
-- 2026-11-07: Creada con el plan (T07).
-- 2026-11-14: Deja de depender de T08, que no podía cerrar sin esta medición.
-- 2026-11-14: Pasa a Para empezar: T12 está hecha. Suma la salida de las corridas y la revisión del registro, que pide el formato.
-- 2026-11-15: Pasa a En curso. Diseño del modo banco en el ADR 0014, propuesto (T37): un Compose aparte por medición, las noches en orden, cuidado con ARCE y un tope de gasto. El código espera a que se acepte.
-- 2026-11-15: Aceptado el ADR 0014. Sigue con el código del modo banco.
-- 2026-11-15: Modo banco construido y probado: diecinueve pruebas contra contenedores y dos mediciones de prueba en Docker Compose (docs/como-se-hizo/medicion-contra-el-banco.md). Sigue con tres noches reales en la máquina del responsable, que tiene la clave.
-- 2026-11-15: Tres noches reales, del 2026-11-11 al 13: 1,20 USD y 18 minutos, en banco-de-pruebas/mediciones/2026-11-15-1/. El tope de 60 candidatos se quedó corto en dos noches, y ahora entran primero las compras de la fecha objetivo. Las 78 noches costarían unos 31 USD: antes de correrlas hay que subir los topes de gasto. Sigue con el borrador de la revisión del registro.
-- 2026-11-15: Borrador de la fuente y la etiqueta de las 84 entradas, en banco-de-pruebas/privado/revision/entradas.jsonl, fuera del repositorio, para que lo confirme el responsable. Valida sin errores. De ARCE, la única fuente que lee esta medición, son 8: 1 hallazgo, 5 publicables, 1 no-nuevo y 1 otra-entidad; las demás son de otras fuentes o de ninguna.
-- 2026-11-16: Las 78 noches, en banco-de-pruebas/mediciones/2026-11-15-2/: 12,71 USD y 3 horas y 23 minutos, sin fallas. Con el borrador de la revisión y las correspondencias de seis entradas: 5 de 5 publicables encontrados, con 26 días de adelanto, y 0 de 1 hallazgo, la compra directa a ATOS. Faltan juzgar 789 extras. A la vista: el feed de ARCE no trae nada del 23 al 29 de octubre, y el tope de candidatos dejó 196 compras sin procesar (docs/como-se-hizo/medicion-contra-el-banco.md).
-- 2026-11-16: Los extras se juzgan por sorteo (banco-de-pruebas/metricas.md). Un sorteo de 60 de los 789, con la semilla 20261116: 57 bien y 3 con el contenido equivocado, adjudicaciones repartidas entre varios proveedores. Precisión estimada de los extras, 0,95 (de 0,86 a 0,98), y de todo lo publicado, 0,95. El arreglo del explorador y el aviso de día vacío pasan a T39; el tope de candidatos, a T22. Falta que el responsable confirme la revisión y saber lo de ATOS.
-- 2026-11-17: Las 78 noches con el analista, el presupuesto y el explorador arreglado, en banco-de-pruebas/mediciones/2026-11-16-2/: 19,11 USD, 0,245 por noche, ninguna cortada. 5 de 5 publicables y 0 de 1 hallazgo, como antes. Un sorteo nuevo de 60 de los 796 extras, con la semilla 20261117: los 60 bien, precisión estimada 1,0 (de 0,94 a 1,0). Los 56 juicios nuevos están en borrador, para que el responsable los confirme. Dos juicios del sorteo anterior quedaron viejos: los hechos cambiaron con T39 y ahora están bien (docs/como-se-hizo/medicion-contra-el-banco.md).
-- 2026-11-17: El responsable confirmó los juicios de los dos sorteos, los 56 nuevos incluidos; el conteo no cambia. Los dos juicios viejos quedan como estaban. Siguen en borrador la fuente y la etiqueta de las entradas y las correspondencias, con lo de ATOS.
-
-## Para empezar
+- 2026-11-17: Creada: salió de la lista de mejoras de la forma de trabajo, pero es un arreglo de este proyecto (ADR 0017).
+- 2026-11-17: Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
 
 ### T43 · Que la corrida de la noche se ponga al día
 - Tipo: Componente
@@ -155,6 +129,7 @@ Lista:
 Registro:
 - 2026-11-17: Creada: la primera corrida automática publicada no salió a las 6; el reloj monótono de la JVM iba unos 44 minutos atrás por una pausa de la máquina virtual de Docker (docs/como-se-hizo/despliegue.md).
 - 2026-11-17: La corrida de la noche del 2026-11-16 arrancó a las 6:47 de Uruguay, 47 minutos tarde. Al reiniciar, la aplicación vuelve a calcular la próxima corrida con la hora de verdad, pero una pausa posterior la vuelve a atrasar. [INFERRED]
+- 2026-11-17: Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
 
 ### T35 · Mandar el aviso diario del parte
 - Tipo: Componente
@@ -182,6 +157,7 @@ Registro:
 - 2026-11-14: Creada con el diseño del parte diario (ADR 0013).
 - 2026-11-16: Pasa a Para empezar: T25 está hecha.
 - 2026-11-16: El servicio de correo quedó decidido en el ADR 0016: Resend por SMTP, con la misma configuración que el enlace para entrar.
+- 2026-11-17: Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
 
 ### T29 · Cambiar el modelo de cada agente sin reiniciar la aplicación
 - Tipo: Web
@@ -208,110 +184,7 @@ Lista:
 Registro:
 - 2026-11-14: Creada al aceptar el ADR 0003.
 - 2026-11-17: Pasa a Para empezar: T22 y T25 están hechas.
-
-### T44 · Que el alta avise cuando un invitado no es un correo
-- Tipo: Componente
-- Dueño: desarrollo
-- Detalle: [docs/como-se-hizo/despliegue.md](docs/como-se-hizo/despliegue.md), [app/src/main/java/io/github/andresdiegolanda/elparte/acceso/AltaDeInvitados.java](app/src/main/java/io/github/andresdiegolanda/elparte/acceso/AltaDeInvitados.java)
-
-Al arrancar, el alta de invitados da de alta cada correo de la configuración. Si uno no es un correo, por ejemplo un texto de ejemplo que quedó en el .env, hoy se da de alta igual y nunca recibe el enlace, sin ningún aviso.
-
-Etapas:
-- [ ] Contrato
-- [ ] Código
-- [ ] Pruebas
-- [ ] Medido contra el banco
-- [ ] Página cómo se hizo
-
-Lista:
-- [ ] Validar cada correo de la lista de invitados al arrancar
-- [ ] Decidir si un correo inválido se anota en el registro o si la aplicación no arranca
-- [ ] Probarlo con un invitado que no es un correo
-
-Registro:
-- 2026-11-17: Creada: salió de la lista de mejoras de la forma de trabajo, pero es un arreglo de este proyecto (ADR 0017).
-
-## Esperando
-
-### T08 · Construir la primera rebanada de punta a punta
-- Tipo: Componente
-- Dueño: desarrollo
-- Depende de: T02 a T07, T10, T14
-- Espera a: la medición contra el banco de pruebas (T20), que tilda la etapa que falta
-- Detalle: [docs/como-se-hizo/primera-rebanada.md](docs/como-se-hizo/primera-rebanada.md), [app/README.md](app/README.md), [docs/fuentes/compras-estatales.md](docs/fuentes/compras-estatales.md)
-
-Chica y completa le gana a grande y a medias: una fuente, del explorador a la página de la mañana, con la sala de máquinas de esa corrida.
-
-Etapas:
-- [x] Contrato
-- [x] Código
-- [x] Pruebas
-- [ ] Medido contra el banco
-- [x] Página cómo se hizo
-
-Lista:
-- [x] Esqueleto: la aplicación, su imagen y Docker Compose
-- [x] Explorador de ARCE, filtrando por el BPS como comprador antes de llamar al modelo
-- [x] Zona horaria y publicaciones atrasadas de ARCE
-- [x] Migraciones de la base a partir de docs/base-de-afirmaciones.md, con el reparto de permisos por esquema
-- [x] Archivista
-- [x] Refutador
-- [x] Editor
-- [x] Página de la mañana
-- [x] Sala de máquinas de la corrida
-
-Registro:
-- 2026-11-07: Creada.
-- 2026-11-07: La fuente es ARCE (ADR 0006).
-- 2026-11-14: Pasa a Para empezar: T14 está hecha.
-- 2026-11-14: La etapa "Medido contra el banco" se tilda con la medición de T20.
-- 2026-11-14: Pasa a En curso: empieza por el esqueleto, la aplicación y Docker Compose.
-- 2026-11-14: Esqueleto hecho: la aplicación arranca en Docker Compose con PostgreSQL, Kafka y Mailpit, y su estado muestra la base y Kafka sanos. Ver app/README.md.
-- 2026-11-14: La rebanada anda de punta a punta: una noche de ARCE llega a la página de la mañana, con su traza en la sala de máquinas, y se repite sin red ni costo con los mismos mensajes. Diecisiete pruebas contra contenedores y una corrida en Docker Compose. Pasa a Esperando: falta medirla contra el banco (T20). La grabación de las corridas queda en un ADR propuesto, el 0011 (T31).
-
-## Pendiente
-
-### T42 · Comparar El Parte con una sesión de la Claude Console sobre el banco
-- Tipo: Verificación
-- Dueño: desarrollo
-- Depende de: T20
-- Detalle: [banco-de-pruebas/README.md](banco-de-pruebas/README.md), [adrs/0014-medicion-contra-el-banco.md](adrs/0014-medicion-contra-el-banco.md), [adrs/0004-grados-de-evidencia.md](adrs/0004-grados-de-evidencia.md)
-
-Media hora con la Claude Console, con lo que ARCE publicó cada noche, puede dar un parte que se lee mejor que el de El Parte. Lo que no da es cuánto acierta, de dónde sale cada afirmación, la garantía de que no agrega cifras y lo que cuesta por noche. Esta comparación lo mide con el mismo banco y el mismo conteo.
-
-Lo que la plataforma vuelve gratis con cada versión es la orquestación y la infraestructura. Lo que no trae es el banco con lo que pasó de verdad, la evidencia de cada afirmación y la medición en el dominio. Si la sesión de la Console sale igual o mejor, lo que vale de El Parte es la medición y no la infraestructura, y se recorta. Va después del material para la demo.
-
-Lista:
-- [ ] Una muestra de 10 noches del registro, con lo que ARCE publicó del BPS en cada una
-- [ ] La misma consigna a la Console, noche por noche, con la salida en el formato del banco
-- [ ] El conteo con la misma herramienta, y el costo y el tiempo de cada lado
-- [ ] La conclusión escrita: qué se mantiene de El Parte y qué se recorta
-
-Registro:
-- 2026-11-16: Creada. Se hace después del material para la demo.
-
-### T24 · Sumar los exploradores del BID, el Banco Mundial y Presidencia
-- Tipo: Componente
-- Dueño: desarrollo
-- Depende de: T08
-- Detalle: [adrs/0006-fuentes-de-la-version-0.md](adrs/0006-fuentes-de-la-version-0.md), [adrs/0008-datos-personales.md](adrs/0008-datos-personales.md)
-
-Las otras tres fuentes de la versión 0, cada una con sus descartes de datos personales.
-
-Etapas:
-- [ ] Contrato
-- [ ] Código
-- [ ] Pruebas
-- [ ] Medido contra el banco
-- [ ] Página cómo se hizo
-
-Lista:
-- [ ] Explorador del BID
-- [ ] Explorador del Banco Mundial (API v3, campos acotados)
-- [ ] Explorador de la normativa de Presidencia, a ritmo bajo
-
-Registro:
-- 2026-11-07: Creada con el plan (T07).
+- 2026-11-17: Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
 
 ### T26 · Escribir la sección "Cómo funciona" y las páginas "cómo se hizo"
 - Tipo: Documento
@@ -329,6 +202,7 @@ Etapas:
 
 Registro:
 - 2026-11-07: Creada con el plan (T07).
+- 2026-11-17: Pasa a Para empezar: T08 está hecha. Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
 
 ### T33 · Armar el expediente de cada entidad
 - Tipo: Web
@@ -349,6 +223,7 @@ Etapas:
 Registro:
 - 2026-11-14: Creada: el tablero de arquitectura mostró que el expediente estaba diseñado en la arquitectura y en la base, pero ninguna tarjeta lo construía.
 - 2026-11-16: Suma por qué el expediente es donde hace falta contexto largo, y los agentes de la noche, no.
+- 2026-11-17: Pasa a Para empezar: T08 está hecha. Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
 
 ### T30 · Sumar el explorador de IMPO
 - Tipo: Componente
@@ -374,8 +249,145 @@ Lista:
 
 Registro:
 - 2026-11-14: Creada con el ADR 0010.
+- 2026-11-17: Pasa a Para empezar: T08 está hecha. Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
+
+### T24 · Sumar los exploradores del BID, el Banco Mundial y Presidencia
+- Tipo: Componente
+- Dueño: desarrollo
+- Depende de: T08
+- Detalle: [adrs/0006-fuentes-de-la-version-0.md](adrs/0006-fuentes-de-la-version-0.md), [adrs/0008-datos-personales.md](adrs/0008-datos-personales.md)
+
+Las otras tres fuentes de la versión 0, cada una con sus descartes de datos personales.
+
+Etapas:
+- [ ] Contrato
+- [ ] Código
+- [ ] Pruebas
+- [ ] Medido contra el banco
+- [ ] Página cómo se hizo
+
+Lista:
+- [ ] Explorador del BID
+- [ ] Explorador del Banco Mundial (API v3, campos acotados)
+- [ ] Explorador de la normativa de Presidencia, a ritmo bajo
+
+Registro:
+- 2026-11-07: Creada con el plan (T07).
+- 2026-11-17: Pasa a Para empezar: T08 está hecha. Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
+
+### T42 · Comparar El Parte con una sesión de la Claude Console sobre el banco
+- Tipo: Verificación
+- Dueño: desarrollo
+- Depende de: T20
+- Detalle: [banco-de-pruebas/README.md](banco-de-pruebas/README.md), [adrs/0014-medicion-contra-el-banco.md](adrs/0014-medicion-contra-el-banco.md), [adrs/0004-grados-de-evidencia.md](adrs/0004-grados-de-evidencia.md)
+
+Media hora con la Claude Console, con lo que ARCE publicó cada noche, puede dar un parte que se lee mejor que el de El Parte. Lo que no da es cuánto acierta, de dónde sale cada afirmación, la garantía de que no agrega cifras y lo que cuesta por noche. Esta comparación lo mide con el mismo banco y el mismo conteo.
+
+Lo que la plataforma vuelve gratis con cada versión es la orquestación y la infraestructura. Lo que no trae es el banco con lo que pasó de verdad, la evidencia de cada afirmación y la medición en el dominio. Si la sesión de la Console sale igual o mejor, lo que vale de El Parte es la medición y no la infraestructura, y se recorta. Va después del material para la demo.
+
+Lista:
+- [ ] Una muestra de 10 noches del registro, con lo que ARCE publicó del BPS en cada una
+- [ ] La misma consigna a la Console, noche por noche, con la salida en el formato del banco
+- [ ] El conteo con la misma herramienta, y el costo y el tiempo de cada lado
+- [ ] La conclusión escrita: qué se mantiene de El Parte y qué se recorta
+
+Registro:
+- 2026-11-16: Creada. Se hace después del material para la demo.
+- 2026-11-17: Pasa a Para empezar: T20 está hecha. Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
+
+## Esperando
+
+## Pendiente
 
 ## Hecho
+
+### T08 · Construir la primera rebanada de punta a punta
+- Tipo: Componente
+- Dueño: desarrollo
+- Depende de: T02 a T07, T10, T14
+- Detalle: [docs/como-se-hizo/primera-rebanada.md](docs/como-se-hizo/primera-rebanada.md), [app/README.md](app/README.md), [docs/fuentes/compras-estatales.md](docs/fuentes/compras-estatales.md)
+
+Chica y completa le gana a grande y a medias: una fuente, del explorador a la página de la mañana, con la sala de máquinas de esa corrida.
+
+Etapas:
+- [x] Contrato
+- [x] Código
+- [x] Pruebas
+- [x] Medido contra el banco
+- [x] Página cómo se hizo
+
+Lista:
+- [x] Esqueleto: la aplicación, su imagen y Docker Compose
+- [x] Explorador de ARCE, filtrando por el BPS como comprador antes de llamar al modelo
+- [x] Zona horaria y publicaciones atrasadas de ARCE
+- [x] Migraciones de la base a partir de docs/base-de-afirmaciones.md, con el reparto de permisos por esquema
+- [x] Archivista
+- [x] Refutador
+- [x] Editor
+- [x] Página de la mañana
+- [x] Sala de máquinas de la corrida
+
+Registro:
+- 2026-11-07: Creada.
+- 2026-11-07: La fuente es ARCE (ADR 0006).
+- 2026-11-14: Pasa a Para empezar: T14 está hecha.
+- 2026-11-14: La etapa "Medido contra el banco" se tilda con la medición de T20.
+- 2026-11-14: Pasa a En curso: empieza por el esqueleto, la aplicación y Docker Compose.
+- 2026-11-14: Esqueleto hecho: la aplicación arranca en Docker Compose con PostgreSQL, Kafka y Mailpit, y su estado muestra la base y Kafka sanos. Ver app/README.md.
+- 2026-11-14: La rebanada anda de punta a punta: una noche de ARCE llega a la página de la mañana, con su traza en la sala de máquinas, y se repite sin red ni costo con los mismos mensajes. Diecisiete pruebas contra contenedores y una corrida en Docker Compose. Pasa a Esperando: falta medirla contra el banco (T20). La grabación de las corridas queda en un ADR propuesto, el 0011 (T31).
+- 2026-11-17: Medida contra el banco con T20, que pasa a Hecho. Pasa a Hecho.
+
+### T20 · Medir la primera rebanada contra el banco de pruebas
+- Tipo: Verificación
+- Dueño: desarrollo
+- Depende de: T12
+- Detalle: [adrs/0014-medicion-contra-el-banco.md](adrs/0014-medicion-contra-el-banco.md), [banco-de-pruebas/metricas.md](banco-de-pruebas/metricas.md), [banco-de-pruebas/formato.md](banco-de-pruebas/formato.md), [docs/plan.md](docs/plan.md)
+
+La medición es parte de la versión 0. Corre la rebanada sobre cada noche del registro y compara lo encontrado con lo que encontró la vigilancia anterior (D1). No espera a que T08 cierre: alcanza con que la rebanada corra de punta a punta, y con esta medición T08 tilda su etapa "Medido contra el banco".
+
+Lista:
+- [x] Diseño del modo banco (ADR 0014)
+- [x] compose.banco.yaml y el perfil banco: las noches en orden, una por vez, en un Compose aparte
+- [x] La corrida en modo banco: fecha objetivo, solo la entidad medida, y la repetición que acepta una corrida del banco
+- [x] Cuidar a ARCE: pausa entre pedidos y sin releer compradores ya leídos en la medición
+- [x] El tope de gasto de toda la medición
+- [x] El tipo de falla sinFecha en fuente.fallida (docs/contratos.md)
+- [x] La salida al terminar, en banco-de-pruebas/mediciones/<medición>/
+- [x] Tres noches reales primero, en la máquina del responsable, para conocer costo, duración y pedidos
+- [x] Al tope de candidatos entran primero las compras de la fecha objetivo
+- [x] Avisar al responsable para que suba el tope de gasto del espacio de trabajo y de la organización, antes de las 78 noches
+- [x] Correr la rebanada sobre cada noche del registro
+- [x] Revisar el registro: la fuente y la etiqueta de cada entrada, y después las correspondencias y los extras
+- [x] Decidir cómo se juzgan los extras: en las 78 noches salieron 800 hechos PROVEN o INFERRED, y 789 no corresponden a nada del registro
+- [x] Juzgar un sorteo de 60 extras: 57 bien y 3 con el contenido equivocado
+- [x] Confirmar los juicios de los dos sorteos, los 56 nuevos incluidos
+- [x] Confirmar la revisión: la fuente y la etiqueta de cada entrada y las correspondencias, que están en borrador; entre ellas, si la compra a ATOS se cuenta como de ARCE
+- [x] Contar con las reglas de banco-de-pruebas/metricas.md; con la muestra tiene que dar banco-de-pruebas/muestra/medicion-esperada.json
+- [x] Costo y duración por noche
+- [x] Versionar las métricas con la huella del registro usado (ADR 0007)
+- [x] Buscar la compra directa del BPS a ATOS, el único hallazgo que esta medición podía encontrar: no está en ninguna publicación del BPS que trajo el feed en el período, pero el feed no trae nada del 23 al 29 de octubre
+- [x] Que el explorador avise cuando un día hábil viene sin publicaciones: el feed de ARCE no trae nada del 2026-10-23 al 2026-10-29 (pasa a T39, hecho)
+- [x] Decidir qué hacer con el tope de 60 candidatos, que dejó 196 compras del BPS sin procesar (pasa a T22: se va, y corta el presupuesto)
+- [x] Que la medición se detenga en la primera noche con errores del modelo: la 2026-11-16-1 se quedó sin crédito en la noche del 2026-09-24 y siguió con noches vacías
+- [x] Medir de nuevo con el analista, el presupuesto y el explorador arreglado (2026-11-16-2), con un sorteo nuevo de 60 extras
+- [x] Que cada juicio de un extra guarde la huella del contenido juzgado: dos juicios viejos siguen marcando mal hechos que ahora están bien
+
+Registro:
+- 2026-11-07: Creada con el plan (T07).
+- 2026-11-14: Deja de depender de T08, que no podía cerrar sin esta medición.
+- 2026-11-14: Pasa a Para empezar: T12 está hecha. Suma la salida de las corridas y la revisión del registro, que pide el formato.
+- 2026-11-15: Pasa a En curso. Diseño del modo banco en el ADR 0014, propuesto (T37): un Compose aparte por medición, las noches en orden, cuidado con ARCE y un tope de gasto. El código espera a que se acepte.
+- 2026-11-15: Aceptado el ADR 0014. Sigue con el código del modo banco.
+- 2026-11-15: Modo banco construido y probado: diecinueve pruebas contra contenedores y dos mediciones de prueba en Docker Compose (docs/como-se-hizo/medicion-contra-el-banco.md). Sigue con tres noches reales en la máquina del responsable, que tiene la clave.
+- 2026-11-15: Tres noches reales, del 2026-11-11 al 13: 1,20 USD y 18 minutos, en banco-de-pruebas/mediciones/2026-11-15-1/. El tope de 60 candidatos se quedó corto en dos noches, y ahora entran primero las compras de la fecha objetivo. Las 78 noches costarían unos 31 USD: antes de correrlas hay que subir los topes de gasto. Sigue con el borrador de la revisión del registro.
+- 2026-11-15: Borrador de la fuente y la etiqueta de las 84 entradas, en banco-de-pruebas/privado/revision/entradas.jsonl, fuera del repositorio, para que lo confirme el responsable. Valida sin errores. De ARCE, la única fuente que lee esta medición, son 8: 1 hallazgo, 5 publicables, 1 no-nuevo y 1 otra-entidad; las demás son de otras fuentes o de ninguna.
+- 2026-11-16: Las 78 noches, en banco-de-pruebas/mediciones/2026-11-15-2/: 12,71 USD y 3 horas y 23 minutos, sin fallas. Con el borrador de la revisión y las correspondencias de seis entradas: 5 de 5 publicables encontrados, con 26 días de adelanto, y 0 de 1 hallazgo, la compra directa a ATOS. Faltan juzgar 789 extras. A la vista: el feed de ARCE no trae nada del 23 al 29 de octubre, y el tope de candidatos dejó 196 compras sin procesar (docs/como-se-hizo/medicion-contra-el-banco.md).
+- 2026-11-16: Los extras se juzgan por sorteo (banco-de-pruebas/metricas.md). Un sorteo de 60 de los 789, con la semilla 20261116: 57 bien y 3 con el contenido equivocado, adjudicaciones repartidas entre varios proveedores. Precisión estimada de los extras, 0,95 (de 0,86 a 0,98), y de todo lo publicado, 0,95. El arreglo del explorador y el aviso de día vacío pasan a T39; el tope de candidatos, a T22. Falta que el responsable confirme la revisión y saber lo de ATOS.
+- 2026-11-17: Las 78 noches con el analista, el presupuesto y el explorador arreglado, en banco-de-pruebas/mediciones/2026-11-16-2/: 19,11 USD, 0,245 por noche, ninguna cortada. 5 de 5 publicables y 0 de 1 hallazgo, como antes. Un sorteo nuevo de 60 de los 796 extras, con la semilla 20261117: los 60 bien, precisión estimada 1,0 (de 0,94 a 1,0). Los 56 juicios nuevos están en borrador, para que el responsable los confirme. Dos juicios del sorteo anterior quedaron viejos: los hechos cambiaron con T39 y ahora están bien (docs/como-se-hizo/medicion-contra-el-banco.md).
+- 2026-11-17: El responsable confirmó los juicios de los dos sorteos, los 56 nuevos incluidos; el conteo no cambia. Los dos juicios viejos quedan como estaban. Siguen en borrador la fuente y la etiqueta de las entradas y las correspondencias, con lo de ATOS.
+- 2026-11-17: Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
+- 2026-11-17: El responsable confirmó la revisión entera: la fuente y la etiqueta de cada entrada y las correspondencias. La compra a ATOS cuenta como de ARCE, como en el borrador, así que el conteo no cambia.
+- 2026-11-17: Cada hecho de la salida lleva la huella de su afirmación y cada juicio de un extra la del contenido juzgado; un juicio con otra huella cuenta como sin juzgar. Los 116 juicios recibieron la suya: 21 de los 60 primeros tienen otra redacción en la segunda medición (docs/como-se-hizo/medicion-contra-el-banco.md). Pasa a Hecho.
 
 ### T46 · Separar la metodología para usarla en otro proyecto
 - Tipo: Documento

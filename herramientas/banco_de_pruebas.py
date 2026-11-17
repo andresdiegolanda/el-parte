@@ -62,6 +62,13 @@ CLAVE_DE_HECHO = re.compile(r"^(%s):[^:\s]+:(%s)$" % ("|".join(FUENTES), "|".joi
 ETIQUETAS = ("publicable", "otra-entidad", "no-nuevo", "sin-decidir")
 JUICIOS_DE_CORRESPONDENCIA = ("correcto", "contenido-equivocado")
 JUICIOS_DE_EXTRA = ("correcto", "otra-entidad", "no-nuevo", "contenido-equivocado")
+# La huella del contenido de un hecho: sha256 de su afirmación en UTF-8, las primeras 16 cifras.
+# La escribe la salida de El Parte y la guarda cada juicio de un extra (formato.md).
+HUELLA_DE_CONTENIDO = re.compile(r"^sha256:[0-9a-f]{16}$")
+
+
+def huella_de_contenido(afirmacion):
+    return "sha256:" + hashlib.sha256(afirmacion.encode("utf-8")).hexdigest()[:16]
 GRADOS = ("PROVEN", "INFERRED", "NOT_MENTIONED")
 ESTADOS_DE_CORRIDA = ("completa", "cortada", "fallida")
 
@@ -433,8 +440,11 @@ def leer_revision(carpeta, registro):
     ruta = carpeta / "extras.jsonl"
     for numero, fila in leer_jsonl(ruta, errores) if ruta.is_file() else []:
         donde = f"revision/extras.jsonl, línea {numero}"
-        if set(fila) != {"hecho", "juicio"}:
-            errores.append(f"{donde}: los campos son hecho y juicio.")
+        if not {"hecho", "juicio"} <= set(fila) <= {"hecho", "juicio", "contenido"}:
+            errores.append(f"{donde}: los campos son hecho, juicio y contenido, que es opcional.")
+            continue
+        if "contenido" in fila and (not isinstance(fila["contenido"], str) or not HUELLA_DE_CONTENIDO.match(fila["contenido"])):
+            errores.append(f"{donde}: contenido {fila['contenido']!r} no es una huella sha256: de 16 cifras hexadecimales.")
             continue
         if not isinstance(fila["hecho"], str) or not CLAVE_DE_HECHO.match(fila["hecho"]):
             errores.append(f"{donde}: {fila['hecho']!r} no es una clave de hecho fuente:identificador:tipo.")
@@ -511,6 +521,8 @@ def leer_salida(ruta):
             problemas.append(f"hecho {clave}: su noche no es la de una corrida.")
         if hecho.get("grado") not in GRADOS:
             problemas.append(f"hecho {clave}: grado {hecho.get('grado')!r} no es uno de {', '.join(GRADOS)}.")
+        if "contenido" in hecho and (not isinstance(hecho["contenido"], str) or not HUELLA_DE_CONTENIDO.match(hecho["contenido"])):
+            problemas.append(f"hecho {clave}: contenido {hecho['contenido']!r} no es una huella sha256: de 16 cifras hexadecimales.")
     if problemas:
         raise ErrorDeFormato(f"{ruta.name}: " + " ".join(problemas))
     salida["huella"] = "sha256:" + hashlib.sha256(ruta.read_bytes()).hexdigest()
@@ -561,6 +573,20 @@ def contar(registro, revision, salida):
     corridas = {c["noche"]: c for c in salida["corridas"]}
     hechos = {h["clave"]: h for h in salida["hechos"]}
     a_la_vista = ("PROVEN", "INFERRED")
+
+    # Un juicio con la huella de otro contenido es viejo: el hecho cambió después de juzgarlo, y
+    # cuenta como sin juzgar. Sin huella de un lado o del otro, el juicio vale (metricas.md).
+    viejos = set()
+
+    def extra_vigente(clave):
+        extra = revision["extras"].get(clave)
+        if extra is None:
+            return None
+        actual = hechos.get(clave, {}).get("contenido")
+        if extra.get("contenido") and actual and extra["contenido"] != actual:
+            viejos.add(clave)
+            return None
+        return extra
     por_registro, por_hecho = {}, {}
     for c in revision["correspondencias"]:
         por_registro.setdefault(c["registro"], []).append(c)
@@ -641,7 +667,7 @@ def contar(registro, revision, salida):
             etiqueta = revision["entradas"].get(c["registro"], {}).get("etiqueta")
             return {"publicable": "coincide-con-publicable", "otra-entidad": "falso-positivo-otra-entidad",
                     "no-nuevo": "falso-positivo-no-nuevo"}.get(etiqueta, "sin-juzgar"), c["registro"]
-        extra = revision["extras"].get(clave)
+        extra = extra_vigente(clave)
         if extra is None:
             return "sin-juzgar", None
         return {"correcto": "extra-correcto", "otra-entidad": "falso-positivo-otra-entidad",
@@ -668,6 +694,8 @@ def contar(registro, revision, salida):
         fila = {"clave": clave, "grado": h["grado"], "noche": h["noche"], "resultado": res}
         if con:
             fila["coincideCon"] = con
+        if clave in viejos:
+            fila["juicioViejo"] = True
         detalle_hechos.append(fila)
 
     detalle_noches = []
@@ -685,7 +713,7 @@ def contar(registro, revision, salida):
     if sorteo is not None:
         if sorteo["salida"] != salida.get("huella"):
             raise ErrorDeFormato("revision/sorteo.json es de otra salida: hay que sortear de nuevo.")
-        juicios = [revision["extras"][k]["juicio"] for k in sorteo["claves"] if k in revision["extras"]]
+        juicios = [extra_vigente(k)["juicio"] for k in sorteo["claves"] if extra_vigente(k) is not None]
         juzgados, correctos = len(juicios), juicios.count("correcto")
         de_registro = [f["resultado"] for f in detalle_hechos if "coincideCon" in f]
         v_registro = sum(1 for r in de_registro if r in verdaderos)
@@ -737,6 +765,7 @@ def contar(registro, revision, salida):
             "INFERRED": precision(por_grado["INFERRED"]),
             "todos": precision(por_grado["PROVEN"] + por_grado["INFERRED"]),
             "descartadosPorElParte": sum(1 for h in hechos.values() if h["grado"] == "NOT_MENTIONED"),
+            "juiciosViejos": len(viejos),
             **({"sorteoDeExtras": sorteo_de_extras} if sorteo_de_extras is not None else {}),
         },
         "detalle": {

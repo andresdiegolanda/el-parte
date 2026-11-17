@@ -97,6 +97,9 @@ class MedicionContraElBancoTest extends ConServicios {
                         "arce:ocds-yfs5dr-1100001:llamado 2026-10-14 PROVEN",
                         "arce:ocds-yfs5dr-1100002:adjudicacion 2026-10-14 PROVEN",
                         "arce:ocds-yfs5dr-1100004:aclaracion 2026-10-15 INFERRED");
+        // Cada hecho lleva la huella de su afirmación, la misma que calcula herramientas/banco_de_pruebas.py.
+        assertThat(lista(salida.path("hechos"))).allSatisfy(h -> assertThat(h.path("contenido").asString()).matches("sha256:[0-9a-f]{16}"));
+        assertThat(SalidaDelBanco.huellaDeContenido("hola")).isEqualTo("sha256:b221d9dbb083a7f3");
 
         // 3. Medir otra vez saltea lo ya medido y no pide nada. Una fuente que no deja pedir la fecha
         // (que ARCE nunca da, así que se agrega a mano) sale como no repetible, no como lectura fallida.

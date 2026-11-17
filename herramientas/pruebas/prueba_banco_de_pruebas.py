@@ -174,6 +174,23 @@ medicion = bp.medir(registro, salida)
 comprobar(medicion["hechos"]["INFERRED"]["sinJuzgar"] == 0 and medicion["hechos"]["INFERRED"]["precision"] == 0.5,
           "juzgar un hecho sin juzgar cambia la precisión de su grado, sin volver a correr")
 
+# La huella del contenido juzgado (formato.md, metricas.md).
+medicion = bp.medir(*copia())
+viejo = [f for f in medicion["detalle"]["hechos"] if f.get("juicioViejo")]
+comprobar(medicion["hechos"]["juiciosViejos"] == 1 and [f["clave"] for f in viejo] == ["arce:ocds-ejemplo-0006:adjudicacion"]
+          and viejo[0]["resultado"] == "sin-juzgar",
+          "un juicio con la huella de otro contenido es viejo y cuenta como sin juzgar")
+fila_0007 = next(f for f in medicion["detalle"]["hechos"] if f["clave"] == "arce:ocds-ejemplo-0007:llamado")
+comprobar(fila_0007["resultado"] == "falso-positivo-otra-entidad" and "juicioViejo" not in fila_0007,
+          "un juicio con la misma huella que la salida vale")
+registro, salida = copia()
+reemplazar(salida, ', "contenido": "sha256:44b21400e539814c"', "")
+comprobar(bp.medir(registro, salida)["hechos"]["juiciosViejos"] == 0,
+          "si la salida no trae la huella, el juicio vale como antes")
+registro, salida = copia()
+reemplazar(registro / "revision" / "extras.jsonl", '"contenido": "sha256:86b815045c2d2d50"', '"contenido": "86b815045c2d2d50"')
+comprobar(any("no es una huella sha256:" in e for e in bp.validar(registro)[0]), "una huella de contenido con otra forma es un error")
+
 registro, salida = copia()
 datos = json.loads(salida.read_text(encoding="utf-8"))
 datos["fuentes"] = ["arce"]

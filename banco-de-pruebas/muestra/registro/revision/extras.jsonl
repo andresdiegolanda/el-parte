@@ -1,2 +1,2 @@
-{"hecho": "arce:ocds-ejemplo-0006:adjudicacion", "juicio": "correcto"}
-{"hecho": "arce:ocds-ejemplo-0007:llamado", "juicio": "otra-entidad"}
+{"hecho": "arce:ocds-ejemplo-0006:adjudicacion", "juicio": "correcto", "contenido": "sha256:86b815045c2d2d50"}
+{"hecho": "arce:ocds-ejemplo-0007:llamado", "juicio": "otra-entidad", "contenido": "sha256:5cc9507cb051192b"}

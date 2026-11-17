@@ -4,11 +4,15 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HexFormat;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +37,8 @@ import tools.jackson.databind.json.JsonMapper;
  * {@code sinFecha} o {@code sinPublicaciones}), que no se pueden repetir esa noche, y las demás
  * lecturas fallidas.</li>
  * <li>Cada clave de hecho de {@code candidatos.graduados}: la primera noche en que salió PROVEN o
- * INFERRED, con ese grado; si nunca salió así, la primera en que salió NOT_MENTIONED.</li>
+ * INFERRED, con ese grado; si nunca salió así, la primera en que salió NOT_MENTIONED. Con la huella
+ * de su afirmación de esa noche, para que un juicio hecho sobre otro contenido se note.</li>
  * </ul>
  *
  * <p>No lleva nada del registro del banco: solo claves de hechos de fuentes públicas, fechas y conteos.
@@ -55,7 +60,7 @@ public class SalidaDelBanco {
     private record Corrida(String id, LocalDate noche, String estado, Timestamp iniciada, Timestamp terminada) {
     }
 
-    private record Graduado(String clave, LocalDate noche, String grado) {
+    private record Graduado(String clave, LocalDate noche, String grado, String afirmacion) {
     }
 
     public void escribir(Path archivo, String entidad, String commit) {
@@ -135,16 +140,16 @@ public class SalidaDelBanco {
         corridas.forEach(c -> nochePorCorrida.put(c.id(), c.noche()));
         List<Graduado> graduados = new ArrayList<>();
         jdbc.sql("""
-                select m.corrida_id, m.contenido->>'claveDeHecho', m.contenido->>'grado'
+                select m.corrida_id, m.contenido->>'claveDeHecho', m.contenido->>'grado', m.contenido->>'afirmacion'
                 from parte.mensajes m join parte.corridas c on c.id = m.corrida_id
                 where c.modo = 'banco' and m.tipo = 'candidatos.graduados'
                 """)
-                .query((f, n) -> new String[] { f.getString(1), f.getString(2), f.getString(3) })
+                .query((f, n) -> new String[] { f.getString(1), f.getString(2), f.getString(3), f.getString(4) })
                 .list()
                 .forEach(g -> {
                     LocalDate noche = nochePorCorrida.get(g[0]);
                     if (noche != null && g[1] != null) {
-                        graduados.add(new Graduado(g[1], noche, g[2]));
+                        graduados.add(new Graduado(g[1], noche, g[2], g[3]));
                     }
                 });
         graduados.sort((a, b) -> a.noche().equals(b.noche()) ? a.clave().compareTo(b.clave()) : a.noche().compareTo(b.noche()));
@@ -164,9 +169,25 @@ public class SalidaDelBanco {
                     fila.put("clave", g.clave());
                     fila.put("noche", g.noche().toString());
                     fila.put("grado", g.grado());
+                    if (g.afirmacion() != null) {
+                        fila.put("contenido", huellaDeContenido(g.afirmacion()));
+                    }
                     return fila;
                 })
                 .toList();
+    }
+
+    /**
+     * La huella del contenido de un hecho: sha256 de su afirmación en UTF-8, las primeras 16 cifras
+     * hexadecimales. Es la misma que calcula herramientas/banco_de_pruebas.py (formato.md).
+     */
+    static String huellaDeContenido(String afirmacion) {
+        try {
+            byte[] digesto = MessageDigest.getInstance("SHA-256").digest(afirmacion.getBytes(StandardCharsets.UTF_8));
+            return "sha256:" + HexFormat.of().formatHex(digesto).substring(0, 16);
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException("La JVM no tiene SHA-256", e);
+        }
     }
 
     /** Sin ceros de más y sin notación científica: 0.0080 es 0.008, y 10 sigue siendo 10. */

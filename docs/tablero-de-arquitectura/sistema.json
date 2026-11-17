@@ -1,6 +1,6 @@
 {
  "titulo": "El Parte · tablero de arquitectura",
- "actualizado": "2026-11-16",
+ "actualizado": "2026-11-17",
  "repositorio": "https://github.com/andresdiegolanda/el-parte/blob/main/",
  "tablero": "https://github.com/andresdiegolanda/el-parte/blob/main/tablero.md",
  "kanban": "https://andresdiegolanda.github.io/el-parte/kanban/",
@@ -233,7 +233,7 @@
    "sub": "privada, la escriben personas",
    "col": 0,
    "fila": 7,
-   "estado": "disenado",
+   "estado": "construido",
    "que_es": "Lo que deciden las personas que leen el registro: qué fuente de El Parte publica cada entrada, qué etiqueta lleva cada descarte, qué hecho corresponde a qué entrada y si cada hecho que no corresponde a nada está bien. Vive en banco-de-pruebas/privado/revision/, junto al registro.",
    "para_que": "Sin ella la medición no puede decir qué estaba al alcance de El Parte ni si lo que publicó es un acierto o un error: lo deja sin revisar o sin juzgar.",
    "docs": [
@@ -3158,10 +3158,10 @@
    "de": "conteo-banco",
    "a": "afuera/revision-banco",
    "tipo": "llama",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "lee la revisión",
-   "detalle": "Leerá la fuente y la etiqueta de cada entrada, las correspondencias y los extras, cuando la revisión exista; el código que la lee ya está.",
+   "detalle": "Lee la fuente y la etiqueta de cada entrada, las correspondencias y los extras, con la huella del contenido que se juzgó en cada uno; un juicio con otra huella que la de la salida es viejo y no cuenta.",
    "tarjetas": [
     "T20"
    ]
@@ -3854,6 +3854,14 @@
    "texto": "La página de la mañana lista las noches con parte y muestra la elegida, y dice cuando la fuente no publicó nada esa noche.",
    "objetos": [
     "web/manana"
+   ]
+  },
+  {
+   "fecha": "2026-11-17",
+   "texto": "La revisión del banco está escrita y confirmada (T20): pasa a construida, y la salida de la medición lleva la huella del contenido de cada hecho.",
+   "objetos": [
+    "afuera/revision-banco",
+    "conteo-banco>afuera/revision-banco"
    ]
   }
  ],

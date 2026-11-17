@@ -130,7 +130,7 @@ Por eso la medición ahora se detiene en la primera noche con errores del modelo
 
 ## Las 78 noches con el analista, el presupuesto y el explorador arreglado
 
-La medición `2026-11-16-2` repitió las 78 noches con el commit `a3c8adc`: el analista completo (T21), el presupuesto que corta, con 2 USD y 400 llamadas por noche para no cortar ninguna (T22), y el explorador arreglado (T39). La salida y el conteo están en `banco-de-pruebas/mediciones/2026-11-16-2/`, contados con la revisión: los juicios de los sorteos, confirmados por el responsable el 2026-11-17, y la fuente y la etiqueta de las entradas y las correspondencias, todavía en borrador. [PROVEN: `banco-de-pruebas/mediciones/2026-11-16-2/medicion.json`, 2026-11-17]
+La medición `2026-11-16-2` repitió las 78 noches con el commit `a3c8adc`: el analista completo (T21), el presupuesto que corta, con 2 USD y 400 llamadas por noche para no cortar ninguna (T22), y el explorador arreglado (T39). La salida y el conteo están en `banco-de-pruebas/mediciones/2026-11-16-2/`, contados con la revisión que el responsable confirmó el 2026-11-17. [PROVEN: `banco-de-pruebas/mediciones/2026-11-16-2/medicion.json`, 2026-11-17]
 
 | | `2026-11-15-2` | `2026-11-16-2` |
 |---|---|---|
@@ -147,11 +147,16 @@ La medición `2026-11-16-2` repitió las 78 noches con el commit `a3c8adc`: el a
 - **Dos lecturas fallidas,** de la misma publicación: la adjudicación 1352991 respondió NotFound en las noches del 15 y el 16 de setiembre. [PROVEN: base de la medición]
 - **Lo que cuesta el analista:** 5,62 USD en 1.217 llamadas, 0,072 por noche. El refutador gastó 13,49 USD en 1.396 llamadas, algo más que en la medición anterior, porque ya no hay tope de candidatos. [PROVEN: mensajes `uso.modelo` de la medición] De las 1.217 versiones PROVEN o INFERRED, el control dejó "Sin análisis" el "por qué importa" en 7 y el "qué mirar" en 33, por una cifra que no está en la evidencia o porque el modelo no lo escribió; en 94, el "qué dice" quedó igual a la afirmación. [PROVEN: base de la medición] El banco no juzga los análisis: eso pide su propio sorteo.
 - **El costo por noche,** para fijar el presupuesto (T22): la mediana es 0,21 USD, el 90 % de las noches cuesta menos de 0,56, y la más cara, la del 2026-11-04, costó 1,14 USD en 618 segundos. 13 de las 78 noches pasaron los 0,50 USD del presupuesto por omisión, y se habrían cortado. La que más llamó al modelo hizo 159 llamadas, menos que las 200 por omisión. [PROVEN: salida y base de la medición] Con esto se fijó el tope de cada noche ([docs/como-se-hizo/presupuesto.md](presupuesto.md)).
-- **Un juicio que quedó viejo.** Los juicios de los extras se guardan por la clave del hecho, y la clave no cambia cuando cambia lo que el hecho dice. Los dos hechos que antes estaban mal y ahora están bien siguen juzgados como contenido equivocado, y por eso la precisión de todo lo juzgado da 0,98 y no 1,0. La estimación del sorteo no cambia: sus 60 se juzgaron sobre lo que dice esta medición. Para que no vuelva a pasar, cada juicio tendría que guardar la huella del contenido que se juzgó.
+- **Un juicio que quedó viejo.** Los juicios de los extras se guardan por la clave del hecho, y la clave no cambia cuando cambia lo que el hecho dice. Los dos hechos que antes estaban mal y ahora están bien siguen juzgados como contenido equivocado, y por eso la precisión de todo lo juzgado da 0,98 y no 1,0. Para que no vuelva a pasar, cada juicio guarda ahora la huella del contenido que se juzgó (ver la sección siguiente).
+
+## La revisión confirmada y la huella del contenido
+
+El 2026-11-17 el responsable confirmó la revisión entera: la fuente y la etiqueta de cada entrada, las correspondencias y los juicios de los dos sorteos. La compra directa del BPS a ATOS se cuenta como de ARCE, como estaba en el borrador, así que el conteo de la medición `2026-11-16-2` no cambia. [PROVEN: revisión en `banco-de-pruebas/privado/revision/`, 2026-11-17]
+
+Para que un juicio no cuente sobre un hecho que cambió, cada hecho de la salida lleva ahora la huella de su afirmación (`contenido`), y cada juicio de un extra guarda la del contenido que se juzgó. Si las dos están y no coinciden, el juicio es viejo y el hecho cuenta como sin juzgar ([banco-de-pruebas/formato.md](../../banco-de-pruebas/formato.md), [banco-de-pruebas/metricas.md](../../banco-de-pruebas/metricas.md)). La huella la escribe `app/src/main/java/io/github/andresdiegolanda/elparte/banco/SalidaDelBanco.java` y la compara `herramientas/banco_de_pruebas.py`.
+
+Los 116 juicios ya hechos recibieron la huella de lo que se juzgó: los 60 del primer sorteo, de la afirmación en la base de la medición `2026-11-15-2`, y los 56 nuevos, de la de la `2026-11-16-2`. Al compararlas apareció algo que no se veía: 21 de los 60 primeros tienen otra redacción en la segunda medición, no solo los dos que cambiaron por T39. El modelo escribe la afirmación de nuevo en cada corrida, así que un juicio vale para una redacción y no para la clave. Uno de esos 21 es parte del sorteo de la `2026-11-16-2`: de sus 60, 59 se juzgaron sobre lo que dice esa medición y uno sobre la redacción anterior. [PROVEN: huellas de las afirmaciones de las dos bases de medición, 2026-11-17] La salida de la `2026-11-16-2` es anterior a la huella y no la trae, así que su conteo queda como está; desde la medición que sigue, lo viejo se marca solo.
 
 ## Qué falta
 
-- Que el responsable confirme la fuente y la etiqueta de cada entrada y las correspondencias (T20). Los juicios de los dos sorteos ya están confirmados, desde el 2026-11-17; los dos juicios viejos quedaron como estaban.
-- Decidir, al confirmar la revisión, si la compra directa a ATOS se cuenta como de ARCE (T20).
-- Que cada juicio de un extra guarde la huella del contenido que se juzgó, para que un juicio viejo no cuente sobre un hecho que cambió (T20).
 - Un sorteo de análisis, para saber si dicen algo falso sin cifras (T21).

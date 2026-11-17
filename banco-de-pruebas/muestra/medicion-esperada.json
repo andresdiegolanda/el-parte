@@ -6,7 +6,7 @@
   "entradas": 16
  },
  "revision": {
-  "huella": "sha256:8de62b9ec2a84abc1a307a99b62ec41958be3787552b8eafe663676f5f13da15",
+  "huella": "sha256:f477a3290f42c14ea39ab98d890be82ba18e634455a75539269b89e48f6553ce",
   "sinRevisar": 0
  },
  "elParte": {
@@ -65,14 +65,14 @@
  "hechos": {
   "PROVEN": {
    "total": 5,
-   "verdaderos": 3,
+   "verdaderos": 2,
    "falsos": {
     "otraEntidad": 1,
     "noNuevo": 0,
     "contenidoEquivocado": 1
    },
-   "sinJuzgar": 0,
-   "precision": 0.6
+   "sinJuzgar": 1,
+   "precision": 0.5
   },
   "INFERRED": {
    "total": 4,
@@ -87,16 +87,17 @@
   },
   "todos": {
    "total": 9,
-   "verdaderos": 4,
+   "verdaderos": 3,
    "falsos": {
     "otraEntidad": 2,
     "noNuevo": 1,
     "contenidoEquivocado": 1
    },
-   "sinJuzgar": 1,
-   "precision": 0.5
+   "sinJuzgar": 2,
+   "precision": 0.4286
   },
-  "descartadosPorElParte": 2
+  "descartadosPorElParte": 2,
+  "juiciosViejos": 1
  },
  "detalle": {
   "hallazgos": [
@@ -215,7 +216,8 @@
     "clave": "arce:ocds-ejemplo-0006:adjudicacion",
     "grado": "PROVEN",
     "noche": "2026-01-07",
-    "resultado": "extra-correcto"
+    "resultado": "sin-juzgar",
+    "juicioViejo": true
    },
    {
     "clave": "arce:ocds-ejemplo-0007:llamado",

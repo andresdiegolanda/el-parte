@@ -98,6 +98,8 @@ flowchart TD
 
 Son **verdaderos** los que coinciden con un hallazgo o con un publicable y los extras correctos. Los **falsos positivos** son de tres clases: de entidad, de novedad y de contenido. Lo que queda **sin juzgar** se informa y no entra en la precisión.
 
+Un juicio de un extra es **viejo** si guarda la huella de un contenido y la salida trae otra para ese hecho: el hecho cambió después de juzgarlo. Un juicio viejo no cuenta, ni en la precisión ni en el sorteo, y el hecho queda sin juzgar hasta que se juzgue de nuevo. Si falta la huella de un lado o del otro, el juicio vale. La medición dice cuántos juicios viejos hubo en `hechos.juiciosViejos`, y marca cada uno con `juicioViejo` en el detalle.
+
 Los INFERRED se cuentan aparte de los PROVEN. Los INFERRED no llegan a la página de la mañana sin revisión humana (D6), y medir cuánto aciertan es lo que dice cuándo se puede aflojar el umbral ([docs/contratos.md](../docs/contratos.md), "Umbral de revisión").
 
 ## Las cuentas
@@ -129,7 +131,7 @@ Una medición es un JSON, el que escribe `herramientas/banco_de_pruebas.py conta
 | `elParte` | El commit, la entidad, las fuentes leídas y los modelos, copiados de la salida. |
 | `noches` | Cuántas se midieron, cuántas terminaron completas, cortadas o fallidas, cuántas tuvieron fuentes no repetibles, el costo total y por noche, y la duración por noche. |
 | `hallazgos` y `publicables` | Para cada bloque: el total, los encontrados (publicados y a revisión), los vistos y descartados, los no encontrados, los no repetibles, los que quedan fuera de las noches medidas, de esta medición y de El Parte, los sin revisar, la cobertura y la mediana de días de adelanto. |
-| `hechos` | Para `PROVEN`, `INFERRED` y `todos`: el total, los verdaderos, los falsos positivos por clase, los sin juzgar y la precisión; cuántos descartó El Parte; y, si hay sorteo, `sorteoDeExtras`: la población, el tamaño, la semilla, los juzgados, los correctos, los falsos por clase, la precisión de los extras y la de todo, cada una con su intervalo al 95 %. |
+| `hechos` | Para `PROVEN`, `INFERRED` y `todos`: el total, los verdaderos, los falsos positivos por clase, los sin juzgar y la precisión; cuántos descartó El Parte; cuántos juicios viejos hubo; y, si hay sorteo, `sorteoDeExtras`: la población, el tamaño, la semilla, los juzgados, los correctos, los falsos por clase, la precisión de los extras y la de todo, cada una con su intervalo al 95 %. |
 | `detalle` | El resultado de cada entrada evaluada, por `id`, con las claves de sus hechos; el de cada hecho, con el `id` con el que coincide; y cada noche, con su costo, su duración y la de la vigilancia si consta. |
 
 Una medición lleva solo huellas, identificadores, claves de hechos, fechas, clasificaciones y conteos. Nunca lleva texto del registro ni de la revisión: ni `organismo`, ni `que_dice`, ni `motivo`, ni `url`, ni `sitio`, ni las notas. Así se puede versionar sin publicar el registro ([adrs/0007-registro-del-banco-fuera-del-repositorio.md](../adrs/0007-registro-del-banco-fuera-del-repositorio.md)).
