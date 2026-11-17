@@ -1,6 +1,6 @@
 # 0005. Presupuesto por corrida
 
-- Estado: aceptado
+- Estado: aceptado; los valores, calibrados el 2026-11-17
 - Fecha: 2026-11-07
 
 ## Contexto
@@ -20,6 +20,27 @@ Cada corrida arranca con un presupuesto, que viaja en el mensaje `corrida.inicia
 | Tiempo | 45 minutos | Desde que arranca la corrida. |
 
 Los valores de pasos y tiempo son un punto de partida, y se calibran con la medición contra el banco de pruebas (T12). [ASSUMED]
+
+### Valores calibrados
+
+Desde el 2026-11-17 rigen estos valores, fijados con la medición `2026-11-16-2`: las 78 noches del registro, solo con el BPS seguido, con 2 USD y 400 llamadas por noche para que ninguna se cortara. [PROVEN: [docs/como-se-hizo/medicion-contra-el-banco.md](../docs/como-se-hizo/medicion-contra-el-banco.md), 2026-11-17]
+
+| Límite | Valor | Por qué |
+|---|---|---|
+| Costo | 1,25 USD | La noche más cara costó 1,14 USD. El margen cubre la reserva del peor caso de cada llamada, que corta un poco antes de llegar al gasto real. |
+| Pasos | 200 llamadas al modelo | La noche que más llamó hizo 159. |
+| Tiempo | 45 minutos | La noche más larga duró 618 segundos. |
+
+Cuántas de las 78 noches se habrían cortado con cada tope de costo [PROVEN: `banco-de-pruebas/mediciones/2026-11-16-2/salida-de-el-parte.json`]:
+
+| Tope | Noches cortadas |
+|---|---|
+| 0,50 USD | 13 |
+| 0,75 USD | 2 |
+| 1,00 USD | 1 |
+| 1,25 USD | 0 |
+
+Con 0,50 USD, en El Parte publicado, que sigue al BPS y al BCU, se cortaron por costo las corridas de las noches del 2026-11-11 y del 2026-11-16. [PROVEN: `parte.corridas` de la base publicada, 2026-11-17] Con 1,25 USD, el peor mes posible cuesta unos 38 USD; un mes como los medidos, unos 7. [INFERRED: 1,25 y 0,245 USD por noche, por 30] El tope es de la noche entera, no de cada organismo: si los invitados siguen organismos que publican mucho en ARCE, hay que medir de nuevo. [INFERRED]
 
 ### Cómo se controla
 

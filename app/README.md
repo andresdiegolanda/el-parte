@@ -137,7 +137,7 @@ En bash es lo mismo con `export ELPARTE_BANCO_MEDICION=2026-11-21-1` y así con 
 | `ELPARTE_BANCO_MEDICION` | El nombre de la medición, `AAAA-MM-DD-N`: la fecha en que se mide y un número de orden. Es también el nombre de su carpeta y va en el nombre del proyecto de Compose. |
 | `ELPARTE_BANCO_DESDE` y `ELPARTE_BANCO_HASTA` | La primera y la última noche, `AAAA-MM-DD`. El registro va del 2026-08-29 al 2026-11-14 ([banco-de-pruebas/formato.md](../banco-de-pruebas/formato.md)). |
 | `ELPARTE_BANCO_COSTO_MAXIMO_USD` | El tope de gasto en el modelo para toda la medición. Por omisión, 5. Al llegar, no se inicia ninguna noche más. |
-| `ELPARTE_CORRIDA_COSTO_MAXIMO_USD` y `ELPARTE_CORRIDA_PASOS_MAXIMOS` | El presupuesto de cada noche ([ADR 0005](../adrs/0005-presupuesto-por-corrida.md)). Por omisión, 0,50 USD y 200 llamadas al modelo, los de `app/src/main/resources/application.yaml`. Una noche que no alcanza termina cortada. |
+| `ELPARTE_CORRIDA_COSTO_MAXIMO_USD` y `ELPARTE_CORRIDA_PASOS_MAXIMOS` | El presupuesto de cada noche ([ADR 0005](../adrs/0005-presupuesto-por-corrida.md)). Por omisión, 1,25 USD y 200 llamadas al modelo, los de `app/src/main/resources/application.yaml`. Una noche que no alcanza termina cortada. |
 | `ELPARTE_COMMIT` | El commit de El Parte que corre, para la salida. |
 
 Mientras corre:

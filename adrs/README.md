@@ -10,7 +10,7 @@ Cada decisión significativa del proyecto es un ADR, un registro de decisión de
 | [0002](0002-orquestacion-por-mensajes.md) | Los agentes se coordinan por mensajes en tópicos | aceptado | 2026-11-07 |
 | [0003](0003-eleccion-del-stack.md) | Elección del stack | aceptado; respuestas grabadas, reemplazado por 0011 | 2026-11-07 |
 | [0004](0004-grados-de-evidencia.md) | Grados de evidencia | aceptado | 2026-11-07 |
-| [0005](0005-presupuesto-por-corrida.md) | Presupuesto por corrida | aceptado | 2026-11-07 |
+| [0005](0005-presupuesto-por-corrida.md) | Presupuesto por corrida | aceptado; valores calibrados el 2026-11-17 | 2026-11-07 |
 | [0006](0006-fuentes-de-la-version-0.md) | Fuentes de la versión 0 y de la primera rebanada | aceptado; IMPO, reemplazado por 0010 | 2026-11-07 |
 | [0007](0007-registro-del-banco-fuera-del-repositorio.md) | El registro del banco de pruebas no entra al repositorio | aceptado | 2026-11-07 |
 | [0008](0008-datos-personales.md) | Datos personales | aceptado | 2026-11-07 |

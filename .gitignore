@@ -9,7 +9,7 @@ banco-de-pruebas/privado/
 # Las copias de la base publicada: tienen los correos de los invitados (ADR 0008, ADR 0016)
 respaldos/
 
-# Archivos de trabajo que no se versionan
+# Lo temporal de cada sesión: no se versiona (regla 14, arranque/como-se-trabaja.md)
 tmp/
 
 # Lo que compila Maven

@@ -8,6 +8,7 @@ tiene que dar el error, el aviso o el resultado que corresponde.
 Uso:  python3 herramientas/pruebas/prueba_banco_de_pruebas.py
 """
 
+import atexit
 import json
 import shutil
 import sys
@@ -19,6 +20,11 @@ import banco_de_pruebas as bp  # noqa: E402
 
 fallas = []
 
+# Las copias de la muestra se borran al terminar, pase lo que pase (regla 14).
+CARPETA = Path(tempfile.mkdtemp(prefix="banco-"))
+atexit.register(shutil.rmtree, CARPETA, ignore_errors=True)
+copias = 0
+
 
 def comprobar(condicion, mensaje):
     if not condicion:
@@ -28,7 +34,9 @@ def comprobar(condicion, mensaje):
 
 def copia():
     """Una copia de la muestra: (carpeta del registro, ruta de la salida)."""
-    destino = Path(tempfile.mkdtemp(prefix="banco-")) / "muestra"
+    global copias
+    copias += 1
+    destino = CARPETA / str(copias) / "muestra"
     shutil.copytree(bp.MUESTRA, destino)
     return destino / "registro", destino / "salida-de-el-parte.json"
 

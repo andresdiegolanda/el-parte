@@ -2,8 +2,8 @@
 
 Todo pendiente de El Parte vive acá, con dueño (regla 8). Este archivo es lo que manda. El kanban publicado es editable y se sincroniza con este archivo cada vez que una sesión de desarrollo lee o escribe el repositorio, o cuando se le pide; su copia sin conexión, [`kanban/index.html`](kanban/index.html), se genera desde acá con `python3 herramientas/generar_kanban.py` y no se edita a mano ([ADR 0009](adrs/0009-kanban-editable-sincronizado.md)).
 
-- Actualizado: 2026-11-16
-- Nota: La primera rebanada (T08) anda de punta a punta y ya corrió contra el banco las 78 noches del registro (T20): 12,71 USD, 5 de 5 publicables encontrados, 0 de 1 hallazgo y una precisión estimada del 95 %. Falta que el responsable confirme la revisión. Lo que la medición mostró del explorador de ARCE se arregla en T39. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). La medición con el analista (T21), el presupuesto (T22) y el explorador arreglado (T39) dio 5 de 5 publicables y 60 de 60 extras bien en un sorteo, a 0,245 USD por noche; falta fijar el presupuesto por noche (T22). La cola de revisión humana (T23) y el login por enlace (T25) están hechos: correr y revisar son solo del responsable. El Parte está publicado desde la máquina del responsable, con un túnel de Cloudflare y el correo por Resend (T40), y el responsable ya entró desde afuera (ADR 0016, aceptado). En su perfil, cada invitado elige qué organismos seguir y si quiere el aviso diario (T34); sigue el aviso (T35). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.
+- Actualizado: 2026-11-17
+- Nota: La primera rebanada (T08) anda de punta a punta y ya corrió contra el banco las 78 noches del registro (T20): 12,71 USD, 5 de 5 publicables encontrados, 0 de 1 hallazgo y una precisión estimada del 95 %. El responsable confirmó los juicios de los sorteos; falta que confirme la fuente y la etiqueta de las entradas y las correspondencias. Lo que la medición mostró del explorador de ARCE se arregla en T39. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). La medición con el analista (T21), el presupuesto (T22) y el explorador arreglado (T39) dio 5 de 5 publicables y 60 de 60 extras bien en un sorteo, a 0,245 USD por noche; con eso, el presupuesto quedó en 1,25 USD por noche (T22, hecha). La cola de revisión humana (T23) y el login por enlace (T25) están hechos: correr y revisar son solo del responsable. El Parte está publicado desde la máquina del responsable, con un túnel de Cloudflare y el correo por Resend (T40), y el responsable ya entró desde afuera (ADR 0016, aceptado). En su perfil, cada invitado elige qué organismos seguir y si quiere el aviso diario (T34); sigue el aviso (T35). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.
 - Calendario: 2026-11-07, 2026-11-14, 2026-11-21, 2026-11-28
 - Repositorio: https://github.com/andresdiegolanda/el-parte
 
@@ -103,7 +103,8 @@ Lista:
 - [ ] Revisar el registro: la fuente y la etiqueta de cada entrada, y después las correspondencias y los extras
 - [x] Decidir cómo se juzgan los extras: en las 78 noches salieron 800 hechos PROVEN o INFERRED, y 789 no corresponden a nada del registro
 - [x] Juzgar un sorteo de 60 extras: 57 bien y 3 con el contenido equivocado
-- [ ] Confirmar la revisión: la fuente y la etiqueta de cada entrada, las correspondencias y el juicio del sorteo, que están en borrador; entre ellas, si la compra a ATOS se cuenta como de ARCE
+- [x] Confirmar los juicios de los dos sorteos, los 56 nuevos incluidos
+- [ ] Confirmar la revisión: la fuente y la etiqueta de cada entrada y las correspondencias, que están en borrador; entre ellas, si la compra a ATOS se cuenta como de ARCE
 - [x] Contar con las reglas de banco-de-pruebas/metricas.md; con la muestra tiene que dar banco-de-pruebas/muestra/medicion-esperada.json
 - [x] Costo y duración por noche
 - [x] Versionar las métricas con la huella del registro usado (ADR 0007)
@@ -126,35 +127,7 @@ Registro:
 - 2026-11-16: Las 78 noches, en banco-de-pruebas/mediciones/2026-11-15-2/: 12,71 USD y 3 horas y 23 minutos, sin fallas. Con el borrador de la revisión y las correspondencias de seis entradas: 5 de 5 publicables encontrados, con 26 días de adelanto, y 0 de 1 hallazgo, la compra directa a ATOS. Faltan juzgar 789 extras. A la vista: el feed de ARCE no trae nada del 23 al 29 de octubre, y el tope de candidatos dejó 196 compras sin procesar (docs/como-se-hizo/medicion-contra-el-banco.md).
 - 2026-11-16: Los extras se juzgan por sorteo (banco-de-pruebas/metricas.md). Un sorteo de 60 de los 789, con la semilla 20261116: 57 bien y 3 con el contenido equivocado, adjudicaciones repartidas entre varios proveedores. Precisión estimada de los extras, 0,95 (de 0,86 a 0,98), y de todo lo publicado, 0,95. El arreglo del explorador y el aviso de día vacío pasan a T39; el tope de candidatos, a T22. Falta que el responsable confirme la revisión y saber lo de ATOS.
 - 2026-11-17: Las 78 noches con el analista, el presupuesto y el explorador arreglado, en banco-de-pruebas/mediciones/2026-11-16-2/: 19,11 USD, 0,245 por noche, ninguna cortada. 5 de 5 publicables y 0 de 1 hallazgo, como antes. Un sorteo nuevo de 60 de los 796 extras, con la semilla 20261117: los 60 bien, precisión estimada 1,0 (de 0,94 a 1,0). Los 56 juicios nuevos están en borrador, para que el responsable los confirme. Dos juicios del sorteo anterior quedaron viejos: los hechos cambiaron con T39 y ahora están bien (docs/como-se-hizo/medicion-contra-el-banco.md).
-
-### T22 · Implementar el presupuesto que corta
-- Tipo: Componente
-- Dueño: desarrollo
-- Detalle: [adrs/0005-presupuesto-por-corrida.md](adrs/0005-presupuesto-por-corrida.md), [docs/como-se-hizo/presupuesto.md](docs/como-se-hizo/presupuesto.md)
-
-El advisor de presupuesto, el libro de la corrida y la tabla de precios del ADR 0005.
-
-Etapas:
-- [x] Contrato
-- [x] Código
-- [x] Pruebas
-- [x] Medido contra el banco
-- [x] Página cómo se hizo
-
-Lista:
-- [x] Advisor de presupuesto en todos los ChatClient
-- [x] Libro de la corrida con actualización atómica
-- [x] Tabla de precios en la base, con fuente y fecha, y sus valores iniciales en una migración
-- [x] Corte por tiempo y mensaje corrida.cortada
-- [x] Revisar el tope de 60 candidatos por corrida: en las 78 noches dejó 196 compras del BPS sin procesar (T20)
-- [ ] Fijar los valores del presupuesto con la medición: con 0,50 USD se habrían cortado 13 de las 78 noches; la más cara costó 1,14 USD y la que más llamó hizo 159 llamadas (docs/como-se-hizo/presupuesto.md)
-
-Registro:
-- 2026-11-07: Creada con el plan (T07).
-- 2026-11-15: Deja de depender de T08: el código de la rebanada ya está hecho, y a T08 solo le falta la medición (T20). Pasa a Para empezar.
-- 2026-11-16: Hechos el contrato, el código, las pruebas y la página: un advisor en el ChatClient reserva el peor caso de cada llamada en el libro de la corrida, con un solo update que solo pasa si alcanza, y la rechaza si no; el rechazo se graba, y el cierre corta la corrida con el límite. La tabla de precios y el corte por tiempo ya estaban desde la primera rebanada. Se va el tope de 60 candidatos: los de la fecha objetivo pasan primero. Falta medirlo contra el banco y fijar sus valores. Pasa a En curso.
-- 2026-11-16: La medición 2026-11-16-1, con 2 USD y 400 llamadas por noche, se quedó sin crédito de la API en la noche del 2026-09-24, después de 22 noches y 6,11 USD, y no se usa. Se mide de nuevo cuando haya crédito.
-- 2026-11-17: Medido en la medición 2026-11-16-2, con 2 USD y 400 llamadas por noche: ninguna noche se cortó. Mediana 0,21 USD, el 90 % por debajo de 0,56, la más cara 1,14 USD, y como mucho 159 llamadas. Con los 0,50 USD por omisión se habrían cortado 13 de las 78. Falta que el responsable fije los valores.
+- 2026-11-17: El responsable confirmó los juicios de los dos sorteos, los 56 nuevos incluidos; el conteo no cambia. Los dos juicios viejos quedan como estaban. Siguen en borrador la fuente y la etiqueta de las entradas y las correspondencias, con lo de ATOS.
 
 ## Para empezar
 
@@ -179,6 +152,7 @@ Lista:
 
 Registro:
 - 2026-11-17: Creada: la primera corrida automática publicada no salió a las 6; el reloj monótono de la JVM iba unos 44 minutos atrás por una pausa de la máquina virtual de Docker (docs/como-se-hizo/despliegue.md).
+- 2026-11-17: La corrida de la noche del 2026-11-16 arrancó a las 6:47 de Uruguay, 47 minutos tarde. Al reiniciar, la aplicación vuelve a calcular la próxima corrida con la hora de verdad, pero una pausa posterior la vuelve a atrasar. [INFERRED]
 
 ### T35 · Mandar el aviso diario del parte
 - Tipo: Componente
@@ -206,6 +180,32 @@ Registro:
 - 2026-11-14: Creada con el diseño del parte diario (ADR 0013).
 - 2026-11-16: Pasa a Para empezar: T25 está hecha.
 - 2026-11-16: El servicio de correo quedó decidido en el ADR 0016: Resend por SMTP, con la misma configuración que el enlace para entrar.
+
+### T29 · Cambiar el modelo de cada agente sin reiniciar la aplicación
+- Tipo: Web
+- Dueño: desarrollo
+- Depende de: T22, T25
+- Detalle: [adrs/0003-eleccion-del-stack.md](adrs/0003-eleccion-del-stack.md), [adrs/0005-presupuesto-por-corrida.md](adrs/0005-presupuesto-por-corrida.md), [docs/base-de-afirmaciones.md](docs/base-de-afirmaciones.md)
+
+El modelo de cada agente y los precios viven en la base, con historia, y el responsable los cambia desde la sala de máquinas. Cada cambio vale desde la corrida siguiente.
+
+Etapas:
+- [ ] Diseño
+- [ ] Código
+- [ ] Pruebas
+- [ ] Página cómo se hizo
+
+Lista:
+- [ ] Tablas de modelos y precios, con los valores iniciales en una migración
+- [ ] El inicio de la corrida congela los modelos en corrida.iniciada
+- [ ] Cada agente pasa su modelo en las opciones de cada pedido
+- [ ] Rol de responsable en la lista de invitados
+- [ ] Pantalla del responsable, que no deja elegir un modelo sin precio
+- [ ] La sala de máquinas muestra qué modelo usó cada agente
+
+Registro:
+- 2026-11-14: Creada al aceptar el ADR 0003.
+- 2026-11-17: Pasa a Para empezar: T22 y T25 están hechas.
 
 ## Esperando
 
@@ -326,31 +326,6 @@ Registro:
 - 2026-11-14: Creada: el tablero de arquitectura mostró que el expediente estaba diseñado en la arquitectura y en la base, pero ninguna tarjeta lo construía.
 - 2026-11-16: Suma por qué el expediente es donde hace falta contexto largo, y los agentes de la noche, no.
 
-### T29 · Cambiar el modelo de cada agente sin reiniciar la aplicación
-- Tipo: Web
-- Dueño: desarrollo
-- Depende de: T22, T25
-- Detalle: [adrs/0003-eleccion-del-stack.md](adrs/0003-eleccion-del-stack.md), [adrs/0005-presupuesto-por-corrida.md](adrs/0005-presupuesto-por-corrida.md), [docs/base-de-afirmaciones.md](docs/base-de-afirmaciones.md)
-
-El modelo de cada agente y los precios viven en la base, con historia, y el responsable los cambia desde la sala de máquinas. Cada cambio vale desde la corrida siguiente.
-
-Etapas:
-- [ ] Diseño
-- [ ] Código
-- [ ] Pruebas
-- [ ] Página cómo se hizo
-
-Lista:
-- [ ] Tablas de modelos y precios, con los valores iniciales en una migración
-- [ ] El inicio de la corrida congela los modelos en corrida.iniciada
-- [ ] Cada agente pasa su modelo en las opciones de cada pedido
-- [ ] Rol de responsable en la lista de invitados
-- [ ] Pantalla del responsable, que no deja elegir un modelo sin precio
-- [ ] La sala de máquinas muestra qué modelo usó cada agente
-
-Registro:
-- 2026-11-14: Creada al aceptar el ADR 0003.
-
 ### T30 · Sumar el explorador de IMPO
 - Tipo: Componente
 - Dueño: desarrollo
@@ -377,6 +352,36 @@ Registro:
 - 2026-11-14: Creada con el ADR 0010.
 
 ## Hecho
+
+### T22 · Implementar el presupuesto que corta
+- Tipo: Componente
+- Dueño: desarrollo
+- Detalle: [adrs/0005-presupuesto-por-corrida.md](adrs/0005-presupuesto-por-corrida.md), [docs/como-se-hizo/presupuesto.md](docs/como-se-hizo/presupuesto.md)
+
+El advisor de presupuesto, el libro de la corrida y la tabla de precios del ADR 0005.
+
+Etapas:
+- [x] Contrato
+- [x] Código
+- [x] Pruebas
+- [x] Medido contra el banco
+- [x] Página cómo se hizo
+
+Lista:
+- [x] Advisor de presupuesto en todos los ChatClient
+- [x] Libro de la corrida con actualización atómica
+- [x] Tabla de precios en la base, con fuente y fecha, y sus valores iniciales en una migración
+- [x] Corte por tiempo y mensaje corrida.cortada
+- [x] Revisar el tope de 60 candidatos por corrida: en las 78 noches dejó 196 compras del BPS sin procesar (T20)
+- [x] Fijar los valores del presupuesto con la medición: con 0,50 USD se habrían cortado 13 de las 78 noches; la más cara costó 1,14 USD y la que más llamó hizo 159 llamadas (docs/como-se-hizo/presupuesto.md)
+
+Registro:
+- 2026-11-07: Creada con el plan (T07).
+- 2026-11-15: Deja de depender de T08: el código de la rebanada ya está hecho, y a T08 solo le falta la medición (T20). Pasa a Para empezar.
+- 2026-11-16: Hechos el contrato, el código, las pruebas y la página: un advisor en el ChatClient reserva el peor caso de cada llamada en el libro de la corrida, con un solo update que solo pasa si alcanza, y la rechaza si no; el rechazo se graba, y el cierre corta la corrida con el límite. La tabla de precios y el corte por tiempo ya estaban desde la primera rebanada. Se va el tope de 60 candidatos: los de la fecha objetivo pasan primero. Falta medirlo contra el banco y fijar sus valores. Pasa a En curso.
+- 2026-11-16: La medición 2026-11-16-1, con 2 USD y 400 llamadas por noche, se quedó sin crédito de la API en la noche del 2026-09-24, después de 22 noches y 6,11 USD, y no se usa. Se mide de nuevo cuando haya crédito.
+- 2026-11-17: Medido en la medición 2026-11-16-2, con 2 USD y 400 llamadas por noche: ninguna noche se cortó. Mediana 0,21 USD, el 90 % por debajo de 0,56, la más cara 1,14 USD, y como mucho 159 llamadas. Con los 0,50 USD por omisión se habrían cortado 13 de las 78. Falta que el responsable fije los valores.
+- 2026-11-17: El responsable fijó el tope en 1,25 USD por noche; pasos y tiempo quedan en 200 llamadas y 45 minutos. Con 0,50 USD, El Parte publicado ya había cortado por costo las noches del 2026-11-11 y del 2026-11-16, con el BPS y el BCU seguidos. Valores en el ADR 0005, "Valores calibrados". Pasa a Hecho.
 
 ### T39 · Arreglar lo que la medición mostró del explorador de ARCE
 - Tipo: Componente

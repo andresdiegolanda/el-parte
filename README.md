@@ -33,6 +33,7 @@ En construcción: la primera rebanada anda de punta a punta, con una fuente. Có
 11. **Sin datos personales en la base ni en la demo;** solo fuentes públicas y datos sintéticos para las pruebas. El proyecto es independiente de cualquier trabajo para clientes y no incluye material de otros proyectos.
 12. **Después de cada escritura se relee el archivo y se comprueba el cambio.** Nada se da por hecho sin verlo.
 13. **El [tablero de arquitectura](docs/tablero-de-arquitectura/README.md) refleja el sistema con precisión y exactitud en todo momento.** Todo cambio de la arquitectura se hace en el tablero en el mismo momento, los pedidos se hacen citando sus objetos, y el verificador falla si el tablero y el código no coinciden ([ADR 0012](adrs/0012-tablero-de-arquitectura.md)).
+14. **Lo temporal va en `tmp/`,** en la raíz del clon, que no se versiona: volcados, parches, registros, capturas, copias de trabajo y listas para mirar. Lo que vale la pena guardar pasa al repositorio.
 
 Cómo se cumple cada regla en la práctica está en [`arranque/como-se-trabaja.md`](arranque/como-se-trabaja.md).
 

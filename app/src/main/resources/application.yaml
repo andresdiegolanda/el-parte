@@ -72,7 +72,8 @@ elparte:
     # el banco sí (application-banco.yaml, ADR 0014).
     pausa-ms: 0
   corrida:
-    costo-maximo-usd: 0.50
+    # Medido contra el banco: la noche más cara costó 1,14 USD (ADR 0005, valores calibrados).
+    costo-maximo-usd: 1.25
     pasos-maximos: 200
     minutos-maximos: 45
     # Corrida por reloj, en hora de Uruguay: "-" la apaga; "0 0 6 * * *" corre todos los días a las 6.

@@ -45,7 +45,7 @@ public class InicioDeCorrida {
     private final Presupuesto presupuesto;
 
     public InicioDeCorrida(JdbcClient jdbc, Emisor emisor, RegistroDeMensajes registro, JsonMapper json, Clock reloj,
-            @Value("${elparte.corrida.costo-maximo-usd:0.50}") BigDecimal costoMaximo,
+            @Value("${elparte.corrida.costo-maximo-usd:1.25}") BigDecimal costoMaximo,
             @Value("${elparte.corrida.pasos-maximos:200}") int pasosMaximos,
             @Value("${elparte.corrida.minutos-maximos:45}") int minutosMaximos) {
         this.jdbc = jdbc;

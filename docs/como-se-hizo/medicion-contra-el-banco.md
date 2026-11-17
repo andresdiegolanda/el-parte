@@ -130,7 +130,7 @@ Por eso la medición ahora se detiene en la primera noche con errores del modelo
 
 ## Las 78 noches con el analista, el presupuesto y el explorador arreglado
 
-La medición `2026-11-16-2` repitió las 78 noches con el commit `a3c8adc`: el analista completo (T21), el presupuesto que corta, con 2 USD y 400 llamadas por noche para no cortar ninguna (T22), y el explorador arreglado (T39). La salida y el conteo están en `banco-de-pruebas/mediciones/2026-11-16-2/`, contados con el borrador de la revisión. [PROVEN: `banco-de-pruebas/mediciones/2026-11-16-2/medicion.json`, 2026-11-17]
+La medición `2026-11-16-2` repitió las 78 noches con el commit `a3c8adc`: el analista completo (T21), el presupuesto que corta, con 2 USD y 400 llamadas por noche para no cortar ninguna (T22), y el explorador arreglado (T39). La salida y el conteo están en `banco-de-pruebas/mediciones/2026-11-16-2/`, contados con la revisión: los juicios de los sorteos, confirmados por el responsable el 2026-11-17, y la fuente y la etiqueta de las entradas y las correspondencias, todavía en borrador. [PROVEN: `banco-de-pruebas/mediciones/2026-11-16-2/medicion.json`, 2026-11-17]
 
 | | `2026-11-15-2` | `2026-11-16-2` |
 |---|---|---|
@@ -146,13 +146,12 @@ La medición `2026-11-16-2` repitió las 78 noches con el commit `a3c8adc`: el a
 - **El aviso de día vacío funciona.** Las noches del 23 y del 26 al 29 de octubre, días hábiles, terminaron con `fuente.fallida` de tipo `sinPublicaciones` y no como noches tranquilas: el feed de octubre de ARCE no trae nada de esos días, y sí del 22 y del 30. [PROVEN: `https://www.comprasestatales.gub.uy/ocds/rss/2026/10`, leído el 2026-11-17] En la salida figuran como noches con la fuente no repetible.
 - **Dos lecturas fallidas,** de la misma publicación: la adjudicación 1352991 respondió NotFound en las noches del 15 y el 16 de setiembre. [PROVEN: base de la medición]
 - **Lo que cuesta el analista:** 5,62 USD en 1.217 llamadas, 0,072 por noche. El refutador gastó 13,49 USD en 1.396 llamadas, algo más que en la medición anterior, porque ya no hay tope de candidatos. [PROVEN: mensajes `uso.modelo` de la medición] De las 1.217 versiones PROVEN o INFERRED, el control dejó "Sin análisis" el "por qué importa" en 7 y el "qué mirar" en 33, por una cifra que no está en la evidencia o porque el modelo no lo escribió; en 94, el "qué dice" quedó igual a la afirmación. [PROVEN: base de la medición] El banco no juzga los análisis: eso pide su propio sorteo.
-- **El costo por noche,** para fijar el presupuesto (T22): la mediana es 0,21 USD, el 90 % de las noches cuesta menos de 0,56, y la más cara, la del 2026-11-04, costó 1,14 USD en 618 segundos. 13 de las 78 noches pasaron los 0,50 USD del presupuesto por omisión, y se habrían cortado. La que más llamó al modelo hizo 159 llamadas, menos que las 200 por omisión. [PROVEN: salida y base de la medición]
+- **El costo por noche,** para fijar el presupuesto (T22): la mediana es 0,21 USD, el 90 % de las noches cuesta menos de 0,56, y la más cara, la del 2026-11-04, costó 1,14 USD en 618 segundos. 13 de las 78 noches pasaron los 0,50 USD del presupuesto por omisión, y se habrían cortado. La que más llamó al modelo hizo 159 llamadas, menos que las 200 por omisión. [PROVEN: salida y base de la medición] Con esto, el tope pasó a 1,25 USD por noche ([docs/como-se-hizo/presupuesto.md](presupuesto.md)).
 - **Un juicio que quedó viejo.** Los juicios de los extras se guardan por la clave del hecho, y la clave no cambia cuando cambia lo que el hecho dice. Los dos hechos que antes estaban mal y ahora están bien siguen juzgados como contenido equivocado, y por eso la precisión de todo lo juzgado da 0,98 y no 1,0. La estimación del sorteo no cambia: sus 60 se juzgaron sobre lo que dice esta medición. Para que no vuelva a pasar, cada juicio tendría que guardar la huella del contenido que se juzgó.
 
 ## Qué falta
 
-- Que el responsable confirme la revisión: la fuente y la etiqueta de cada entrada, las correspondencias y los juicios de los dos sorteos, los 56 nuevos incluidos; y si los dos juicios viejos pasan a correctos (T20).
+- Que el responsable confirme la fuente y la etiqueta de cada entrada y las correspondencias (T20). Los juicios de los dos sorteos ya están confirmados, desde el 2026-11-17; los dos juicios viejos quedaron como estaban.
 - Decidir, al confirmar la revisión, si la compra directa a ATOS se cuenta como de ARCE (T20).
 - Que cada juicio de un extra guarde la huella del contenido que se juzgó, para que un juicio viejo no cuente sobre un hecho que cambió (T20).
-- Fijar los valores del presupuesto con lo medido (T22).
 - Un sorteo de análisis, para saber si dicen algo falso sin cifras (T21).

@@ -65,8 +65,15 @@ Las pruebas de siempre siguen pasando con el presupuesto puesto: la noche de pun
 
 Nada que llegara a las pruebas. Una duda de diseño: el ADR 0005 dibuja al presupuesto emitiendo `corrida.cortada`. Quedó en el cierre, porque solo el cierre sabe cuándo terminaron los candidatos que ya estaban en camino; el presupuesto rechaza, y el cierre corta.
 
+## Los valores, con lo medido
+
+En la medición `2026-11-16-2`, con el analista, sin el tope de candidatos y con 2 USD y 400 llamadas por noche, ninguna noche se cortó. La mediana costó 0,21 USD, el 90 % menos de 0,56, y la más cara, la del 2026-11-04, 1,14 USD: menos que los 1,60 que se estimaban. 13 de las 78 noches pasaron los 0,50 USD de la decisión D4 ([arranque/decisiones-iniciales.md](../../arranque/decisiones-iniciales.md)) y se habrían cortado. La que más llamó al modelo hizo 159 llamadas, y la más larga duró 618 segundos. [PROVEN: [docs/como-se-hizo/medicion-contra-el-banco.md](medicion-contra-el-banco.md), 2026-11-17]
+
+El Parte publicado lo confirmó con 0,50 USD: las corridas de las noches del 2026-11-11 y del 2026-11-16, con el BPS y el BCU seguidos, se cortaron por costo, con 0,49 USD gastados y 62 y 65 llamadas. Lo gastado no pasó el tope. [PROVEN: `parte.corridas` y `parte.libros_de_corrida` de la base publicada, 2026-11-17]
+
+Desde el 2026-11-17 el tope es de 1,25 USD por noche, con 200 llamadas y 45 minutos, como antes (ADR 0005, "Valores calibrados"). Con 1,25 no se habría cortado ninguna de las 78 noches, y queda margen sobre la más cara para la reserva del peor caso, que corta un poco antes de llegar al gasto real. [INFERRED] El valor va en `app/src/main/resources/application.yaml` y se cambia sin tocar el código con `ELPARTE_CORRIDA_COSTO_MAXIMO_USD` en el `.env`. Seguir más organismos sube el costo de cada noche ([docs/como-se-hizo/perfil.md](perfil.md)): el tope es de la noche entera, así que si los invitados siguen organismos que publican mucho, hay que medir de nuevo.
+
 ## Qué falta
 
-- **Fijar los valores con lo medido.** En la medición `2026-11-16-2`, con el analista, sin el tope de candidatos y con 2 USD y 400 llamadas por noche, ninguna noche se cortó. La mediana costó 0,21 USD, el 90 % menos de 0,56, y la más cara, la del 2026-11-04, 1,14 USD: menos que los 1,60 que se estimaban. 13 de las 78 noches pasaron los 0,50 USD de la decisión D4 ([arranque/decisiones-iniciales.md](../../arranque/decisiones-iniciales.md)) y se habrían cortado. La que más llamó al modelo hizo 159 llamadas. [PROVEN: [docs/como-se-hizo/medicion-contra-el-banco.md](medicion-contra-el-banco.md), 2026-11-17] Con 1,20 USD y 200 llamadas no se habría cortado ninguna de las 78 [INFERRED]. Seguir más organismos sube el costo de cada noche ([docs/como-se-hizo/perfil.md](perfil.md)), así que el valor depende también de qué sigan los invitados.
 - **Que se procesen primero las entidades con suscriptores**, como dice el ADR 0005, cuando haya más de una entidad seguida. Hoy el explorador ya filtra por ellas antes de emitir.
 - **La repetición de una corrida cortada por tiempo** puede no dar los mismos mensajes: el corte depende del reloj, y la original se cierra a la hora, con lo que estuviera en camino. [INFERRED] Con el presupuesto no pasa, porque cada rechazo se graba.

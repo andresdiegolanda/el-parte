@@ -151,6 +151,15 @@ Las pruebas de estas piezas están en `herramientas/pruebas/`: `prueba_sincroniz
 
 Lo que sobra se mueve a [`obsoletos/`](../obsoletos/README.md), manteniendo su ruta relativa debajo de esa carpeta, y se anota en el índice de `obsoletos/README.md`: qué era, cuándo se movió, por qué y qué lo reemplaza.
 
+### Lo temporal (regla 14)
+
+Todo lo temporal de una sesión va en `tmp/`, en la raíz del clon, sea el de la máquina del responsable o el de un espacio de trabajo en la nube. La carpeta está en `.gitignore` y el verificador no la revisa.
+
+- **Va en `tmp/`:** el volcado y las operaciones del kanban, los parches, los registros de arranque de la aplicación y de las mediciones, las capturas de pantalla, las copias locales de una medición, los scripts de un solo uso y las listas o tablas para mirar, como `tmp/mejoras.md`.
+- **No va en `tmp/`, porque tiene su lugar:** los secretos, en `.env`; el registro del banco de pruebas, en `banco-de-pruebas/privado/` (D2); los respaldos de la base publicada, en `respaldos/` ([ADR 0016](../adrs/0016-despliegue-en-la-maquina-del-responsable.md)), y lo que las herramientas generan donde lo esperan, como `app/target/` y `__pycache__/`.
+- **Lo que está en `tmp/` se puede volver a armar o ya no hace falta.** Lo que se aprende o se decide pasa al repositorio. Por eso la regla 9 no alcanza a `tmp/`: se puede vaciar cuando lo que tiene ya no sirve.
+- **Una herramienta que necesita una carpeta temporal propia** usa la del sistema y la borra al terminar, como `herramientas/verificar_docs.py` y las pruebas de `herramientas/pruebas/`.
+
 ### Releer (regla 12)
 
 Después de cada escritura se relee el archivo y se comprueba que el cambio quedó como se quería. Antes de entregar se corre el verificador:

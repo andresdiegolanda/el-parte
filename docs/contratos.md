@@ -79,7 +79,7 @@ Lo emite el inicio de corrida. Arranca la noche.
     "fechaObjetivo": "2026-11-06",
     "fuentes": ["arce"],
     "entidadesSeguidas": ["organismo:bps"],
-    "presupuesto": { "costoMaximoUsd": 0.50, "pasosMaximos": 200, "minutosMaximos": 45 },
+    "presupuesto": { "costoMaximoUsd": 1.25, "pasosMaximos": 200, "minutosMaximos": 45 },
     "modelos": { "explorador-arce": "claude-haiku-5-5", "archivista": "claude-haiku-5-5",
                  "refutador": "claude-sonnet-5-5", "analista": "claude-sonnet-5-5", "editor": "claude-haiku-5-5" },
     "reproduceA": null
