@@ -16,7 +16,7 @@ Si llegás por primera vez, seas persona o asistente, leé la carpeta [`arranque
 
 ## Estado
 
-En construcción: la primera rebanada anda de punta a punta, con una fuente. Cómo es el sistema, objeto por objeto, está en el [tablero de arquitectura](docs/tablero-de-arquitectura/README.md). Lo que está en curso y lo que falta está en el [tablero](tablero.md), que también se ve como kanban en [`kanban/index.html`](kanban/index.html) (se abre en cualquier navegador). Lo que cambió, en el [CHANGELOG](CHANGELOG.md).
+En construcción: la primera rebanada anda de punta a punta, con una fuente. Cómo es el sistema, objeto por objeto, está en el [tablero de arquitectura](docs/tablero-de-arquitectura/README.md). Lo que está en curso y lo que falta está en el [tablero](tablero.md), que también se ve como kanban en <https://andresdiegolanda.github.io/el-parte/kanban/>. Los dos tableros se publican en <https://andresdiegolanda.github.io/el-parte/> en cada push. Lo que cambió, en el [CHANGELOG](CHANGELOG.md).
 
 ## Las reglas del proyecto
 

@@ -1,0 +1,38 @@
+# Publica el kanban y el tablero de arquitectura en GitHub Pages, en cada push a main (ADR 0017).
+# Solo genera las páginas desde tablero.md y sistema.json: no corre pruebas.
+name: Publicar los tableros
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: Armar el sitio
+        run: python3 herramientas/armar_sitio.py "$RUNNER_TEMP/sitio"
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: ${{ runner.temp }}/sitio
+      - name: Publicar en GitHub Pages
+        id: despliegue
+        uses: actions/deploy-pages@v4

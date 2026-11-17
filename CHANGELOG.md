@@ -4,6 +4,14 @@ Cada entrada dice qué cambió, dónde, y enlaza al documento que tiene el porqu
 
 ## 2026-11-17
 
+- Una forma de trabajo más liviana (ADR 0017, aceptado; reemplaza al 0009; T45):
+  - **Un solo lugar por dato**, con un aviso nuevo del verificador cuando una cifra se repite en más de un documento vigente, y la limpieza de las cifras de la medición repetidas en el tablero, los README y el plan.
+  - **Un ritual según el tamaño** del cambio, chico, mediano o grande, y **commits autorizados por tarea**, en `arranque/como-se-trabaja.md`.
+  - **El kanban, de solo lectura.** La sincronización, su prueba y la plantilla editable pasan a `obsoletos/`.
+  - **Las páginas generadas de los dos tableros dejan de versionarse.** `herramientas/armar_sitio.py` y `.github/workflows/publicar.yml` las publican en GitHub Pages en cada push a `main`.
+  - **Las pruebas corren de noche y a demanda** con `.github/workflows/pruebas.yml`.
+  - **El tablero de arquitectura se mide.** La prueba en Chrome falla si dos cajas se pisan, si una caja se sale de su franja, si un texto se sale de su caja o si un rótulo pisa otra cosa, y deja capturas de cada vista. Los rótulos buscan un lugar libre sobre su flecha y los textos se acortan para entrar en su caja.
+  - **Lo que no entra:** la validación de correos de invitados va como tarjeta común (T44), y copiar los respaldos fuera de la máquina se descarta (ADR 0016).
 - Regla 14: lo temporal de cada sesión va en `tmp/`, en la raíz del clon, que no se versiona; qué va ahí y qué no, en `arranque/como-se-trabaja.md`, "Lo temporal". `herramientas/pruebas/prueba_banco_de_pruebas.py` ahora borra sus copias de la muestra al terminar: dejaba una carpeta en la temporal del sistema cada vez que corría.
 - El tope por noche pasa de 0,50 a 1,25 USD, con lo medido en las 78 noches: con 0,50 se habrían cortado 13, y El Parte publicado ya había cortado por costo las noches del 2026-11-11 y del 2026-11-16. Pasos y tiempo quedan en 200 llamadas y 45 minutos. Cambian `app/src/main/resources/application.yaml`, `app/src/main/java/io/github/andresdiegolanda/elparte/corrida/InicioDeCorrida.java` y `compose.banco.yaml`. T22 pasa a Hecho y T29, que la esperaba, a Para empezar. Detalle: [adrs/0005-presupuesto-por-corrida.md](adrs/0005-presupuesto-por-corrida.md), "Valores calibrados", y [docs/como-se-hizo/presupuesto.md](docs/como-se-hizo/presupuesto.md).
 - El responsable confirmó los juicios de los dos sorteos de extras; el conteo de la medición `2026-11-16-2` no cambia. Siguen en borrador la fuente y la etiqueta de las entradas y las correspondencias (T20). Detalle: [docs/como-se-hizo/medicion-contra-el-banco.md](docs/como-se-hizo/medicion-contra-el-banco.md).

@@ -2,7 +2,7 @@
 
 El sistema de El Parte objeto por objeto, en una sola página: cada agente, servicio, tópico de Kafka, tabla, página y servicio de afuera, con lo que hace, para qué sirve, cómo se conecta con los demás y dónde está su código. Lo construido va en trazo lleno; lo diseñado y sin construir, en punteado violeta y con la tarjeta del [tablero](../../tablero.md) que lo construye.
 
-Se abre con [`index.html`](index.html) en cualquier navegador, desde un clon del repositorio. No necesita servidor ni conexión.
+Está publicado en <https://andresdiegolanda.github.io/el-parte/docs/tablero-de-arquitectura/>, y se vuelve a publicar en cada push a `main` ([ADR 0017](../../adrs/0017-forma-de-trabajo-mas-liviana.md)). En un clon, `python3 herramientas/generar_tablero_arquitectura.py` genera sus páginas en esta carpeta, donde git las ignora: se abren en cualquier navegador, sin servidor ni conexión.
 
 ## Las vistas
 
@@ -10,8 +10,8 @@ Además del tablero completo, hay vistas: una parte del sistema con su propia gr
 
 | Vista | Archivo | Qué muestra |
 |---|---|---|
-| Todo el sistema | [`docs/tablero-de-arquitectura/index.html`](index.html) | Todos los objetos y todas las flechas. |
-| El usuario | [`docs/tablero-de-arquitectura/usuarios.html`](usuarios.html) | Cómo entra cada persona, dónde queda su perfil y cómo lee su parte cada mañana ([ADR 0013](../../adrs/0013-acceso-perfil-y-parte-diario.md)). |
+| Todo el sistema | [`docs/tablero-de-arquitectura/index.html`](https://andresdiegolanda.github.io/el-parte/docs/tablero-de-arquitectura/) | Todos los objetos y todas las flechas. |
+| El usuario | [`docs/tablero-de-arquitectura/usuarios.html`](https://andresdiegolanda.github.io/el-parte/docs/tablero-de-arquitectura/usuarios.html) | Cómo entra cada persona, dónde queda su perfil y cómo lee su parte cada mañana ([ADR 0013](../../adrs/0013-acceso-perfil-y-parte-diario.md)). |
 
 ## La regla
 

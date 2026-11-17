@@ -1,13 +1,18 @@
 // Prueba de la página del tablero de arquitectura, en un Chrome sin ventana.
 //
-// Abre docs/tablero-de-arquitectura/index.html y comprueba que dibuje todo el modelo, que las fichas,
-// el menú, los enlaces con ?objeto= y los recorridos anden, y que no haya errores en la consola.
+// Genera las páginas desde sistema.json, abre docs/tablero-de-arquitectura/index.html y comprueba que
+// dibuje todo el modelo, que las fichas, el menú, los enlaces con ?objeto= y los recorridos anden, y
+// que no haya errores en la consola. En cada página, además, mide el dibujo: falla si dos cajas se
+// pisan, si una caja se sale de su franja, si un texto se sale de su caja o si un rótulo de los que se
+// ven sin pasar el mouse pisa una caja u otro rótulo, y avisa de los textos cortados. Deja una captura de cada vista para mirarla
+// (ADR 0017), en la carpeta de la variable CAPTURAS o en tmp/capturas/.
 //
 // Uso:  NODE_PATH=<carpeta con puppeteer> node herramientas/pruebas/prueba_tablero_arquitectura.mjs
 // Chrome: se toma de PUPPETEER_EXECUTABLE_PATH o de /usr/bin/google-chrome.
 
 import { createRequire } from "node:module";
-import { readFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
+import { mkdirSync, readFileSync } from "node:fs";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import path from "node:path";
 
@@ -17,6 +22,8 @@ const raiz = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..")
 const archivo = path.join(raiz, "docs", "tablero-de-arquitectura", "index.html");
 const url = pathToFileURL(archivo).href;
 const sistema = JSON.parse(readFileSync(path.join(raiz, "docs", "tablero-de-arquitectura", "sistema.json"), "utf8"));
+const capturas = process.env.CAPTURAS || path.join(raiz, "tmp", "capturas");
+execFileSync("python3", [path.join(raiz, "herramientas", "generar_tablero_arquitectura.py")], { stdio: "ignore" });
 
 const fallas = [];
 const comprobar = (condicion, mensaje) => { if (!condicion) fallas.push(mensaje); console.log((condicion ? "ok   " : "MAL  ") + mensaje); };
@@ -112,6 +119,45 @@ for (const v of sistema.vistas) {
   await pagina.keyboard.press("Escape");
   await pagina.$eval('g.nodo[data-id="inicio"]', (g) => g.dispatchEvent(new MouseEvent("click", { bubbles: true })));
   comprobar((await texto("#panel-cuerpo")).includes("Fuera de esta vista"), `en la vista ${v.id}, la ficha dice lo que queda afuera`);
+}
+
+// 9. El dibujo de cada página: nada se pisa, y una captura para mirarla.
+mkdirSync(capturas, { recursive: true });
+const paginas = [{ archivo: "index.html", titulo: "todo el sistema" }].concat(sistema.vistas.map((v) => ({ archivo: v.archivo, titulo: "la vista " + v.id })));
+for (const pg of paginas) {
+  await pagina.setViewport({ width: 2400, height: 1400 });
+  await pagina.goto(pathToFileURL(path.join(raiz, "docs", "tablero-de-arquitectura", pg.archivo)).href);
+  const d = await pagina.evaluate(() => {
+    const pisa = (a, b) => a.x < b.x + b.w - 1 && b.x < a.x + a.w - 1 && a.y < b.y + b.h - 1 && b.y < a.y + a.h - 1;
+    const rect = (r) => ({ x: +r.getAttribute("x"), y: +r.getAttribute("y"), w: +r.getAttribute("width"), h: +r.getAttribute("height") });
+    const cajas = S.nodos.map((n) => ({ id: n.id, x: n.x, y: n.y, w: NW, h: NH }));
+    const franjas = [...document.querySelectorAll("g.franja > rect")].map(rect);
+    const rotulos = [...document.querySelectorAll("g.flecha")]
+      .filter((g) => getComputedStyle(g).display !== "none" && getComputedStyle(g.querySelector("g.rotulo")).display !== "none")
+      .map((g) => Object.assign({ id: g.dataset.id }, rect(g.querySelector("g.rotulo rect"))));
+    const r = { cajas: [], fuera: [], sobreCaja: [], sobreRotulo: [], cortados: [], salen: [] };
+    document.querySelectorAll("g.nodo text.titulo, g.nodo text.sub").forEach((t) => {
+      if (+t.getAttribute("x") + t.getComputedTextLength() > NW - 6) { r.salen.push(t.closest("g.nodo").dataset.id + ": " + t.textContent); }
+    });
+    cajas.forEach((a, i) => cajas.slice(i + 1).forEach((b) => { if (pisa(a, b)) { r.cajas.push(a.id + " y " + b.id); } }));
+    cajas.forEach((c) => { if (!franjas.some((f) => c.x >= f.x && c.y >= f.y && c.x + c.w <= f.x + f.w && c.y + c.h <= f.y + f.h)) { r.fuera.push(c.id); } });
+    rotulos.forEach((o) => cajas.forEach((c) => { if (pisa(o, c)) { r.sobreCaja.push(o.id + " sobre " + c.id); } }));
+    rotulos.forEach((a, i) => rotulos.slice(i + 1).forEach((b) => { if (pisa(a, b)) { r.sobreRotulo.push(a.id + " y " + b.id); } }));
+    r.cortados = [...document.querySelectorAll("g.nodo text")].filter((t) => t.textContent.endsWith("…")).map((t) => t.textContent);
+    return r;
+  });
+  const lista = (xs) => (xs.length ? ": " + xs.join("; ") : "");
+  comprobar(d.cajas.length === 0, `en ${pg.titulo}, ninguna caja pisa otra` + lista(d.cajas));
+  comprobar(d.fuera.length === 0, `en ${pg.titulo}, ninguna caja se sale de su franja` + lista(d.fuera));
+  comprobar(d.salen.length === 0, `en ${pg.titulo}, ningún texto se sale de su caja` + lista(d.salen));
+  comprobar(d.sobreCaja.length === 0, `en ${pg.titulo}, ningún rótulo pisa una caja` + lista(d.sobreCaja));
+  comprobar(d.sobreRotulo.length === 0, `en ${pg.titulo}, ningún rótulo pisa otro` + lista(d.sobreRotulo));
+  if (d.cortados.length) { console.log(`aviso: en ${pg.titulo}, ${d.cortados.length} textos de cajas quedan cortados: ${d.cortados.join("; ")}`); }
+  await pagina.click("#btn-ajustar");
+  await espera(400);
+  const destino = path.join(capturas, pg.archivo.replace(/\.html$/, ".png"));
+  await pagina.screenshot({ path: destino });
+  console.log(`captura de ${pg.titulo}: ${path.relative(raiz, destino)}`);
 }
 
 comprobar(errores.length === 0, "sin errores en la consola" + (errores.length ? ": " + errores.join(" | ") : ""));

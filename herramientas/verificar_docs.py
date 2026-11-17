@@ -8,8 +8,8 @@ Controla, sobre todo el repositorio:
 3. Que tablero.md respete su formato y sus reglas (regla 8), y que esté en
    formato canónico: leerlo y volver a escribirlo da el mismo archivo, que es
    lo que necesita la sincronización con el kanban. Ver herramientas/tablero_md.py.
-4. Que kanban/index.html sea exactamente lo que genera tablero.md
-   (adrs/0001-tablero-fuente-unica-kanban-generado.md).
+4. Que el kanban se pueda generar desde tablero.md. La página generada no se
+   versiona: se publica en GitHub Pages (adrs/0017-forma-de-trabajo-mas-liviana.md).
 5. Que cada lámina SVG de docs/laminas/ sea exactamente lo que genera su
    fuente JSON (regla 5).
 6. Que toda tarea (T01, T02...) citada en un Markdown exista en el tablero.
@@ -25,12 +25,17 @@ Controla, sobre todo el repositorio:
 10. Que el tablero de arquitectura coincida con el código (ADR 0012): cada clase y
     plantilla en un objeto, los tópicos y las tablas del código, quién emite,
     escucha, escribe, lee y usa qué, las rutas de cada página, lo diseñado con
-    tarjetas vivas, y index.html igual a lo que genera sistema.json. El detalle
-    está en herramientas/tablero_arquitectura.py.
+    tarjetas vivas, y que sus páginas se puedan generar desde sistema.json. El
+    detalle está en herramientas/tablero_arquitectura.py.
 11. Que la muestra sintética del banco de pruebas (banco-de-pruebas/muestra/)
     cumpla el formato de banco-de-pruebas/formato.md sin avisos, y que contada
     dé banco-de-pruebas/muestra/medicion-esperada.json. El detalle está en
     herramientas/banco_de_pruebas.py.
+12. Un solo lugar por dato (adrs/0017-forma-de-trabajo-mas-liviana.md): avisa,
+    sin fallar, cuando la misma cifra con unidad (USD o %) aparece en más de un
+    documento vigente. No cuenta la historia (CHANGELOG.md, los ADRs, las
+    decisiones iniciales, obsoletos/, el registro y las tarjetas hechas de
+    tablero.md) ni lo que está entre comillas invertidas.
 
 Uso:  python3 herramientas/verificar_docs.py
 Sale con codigo 0 si todo esta bien y 1 si encuentra algun problema.
@@ -70,6 +75,9 @@ ENLACE = re.compile(r"!?\[[^\]]*\]\(\s*([^)\s]+)(?:\s+\"[^\"]*\")?\s*\)")
 CODIGO_EN_LINEA = re.compile(r"`[^`]*`")
 TAREA = re.compile(r"\bT\d{2}\b")
 DECISION = re.compile(r"\bD\d{1,2}\b")
+CIFRA = re.compile(r"(?<![\w,.])\d+(?:[.,]\d+)?\s?(?:USD|%)(?!\w)")
+REGISTRO = re.compile(r"^- \d{4}-\d{2}-\d{2}:")
+HISTORIA = (Path("CHANGELOG.md"), Path("adrs"), Path("arranque/decisiones-iniciales.md"), Path("obsoletos"))
 
 
 def archivos_del_repo():
@@ -147,13 +155,9 @@ def verificar_tablero(errores):
 
 
 def verificar_kanban(errores):
-    html, problemas = generar_kanban.generar()
+    _, problemas = generar_kanban.generar()
     if problemas:
-        errores.append("kanban/index.html: no se puede generar mientras el tablero tenga problemas")
-        return
-    salida = generar_kanban.SALIDA
-    if not salida.exists() or salida.read_text(encoding="utf-8") != html:
-        errores.append("kanban/index.html: no coincide con tablero.md; corré python3 herramientas/generar_kanban.py")
+        errores.append("kanban: no se puede generar mientras el tablero tenga problemas")
 
 
 def verificar_laminas(errores):
@@ -164,6 +168,27 @@ def verificar_laminas(errores):
     for svg in generar_laminas.CARPETA.glob("*.svg"):
         if not svg.with_suffix(".json").exists():
             errores.append(f"{svg.relative_to(RAIZ)}: lámina sin fuente JSON (las láminas no se dibujan a mano)")
+
+
+def verificar_cifras(markdowns, avisos):
+    """Un solo lugar por dato: la misma cifra con unidad en más de un documento vigente es un aviso."""
+    donde = {}
+    for ruta, relativa in markdowns:
+        if any(relativa.is_relative_to(h) for h in HISTORIA):
+            continue
+        hecho = False
+        for linea in leer_texto(ruta).splitlines():
+            if relativa == Path("tablero.md") and linea.startswith("## "):
+                hecho = linea.strip() == "## Hecho"
+            if hecho or REGISTRO.match(linea):
+                continue
+            for cifra in CIFRA.findall(CODIGO_EN_LINEA.sub("", linea)):
+                clave = re.sub(r"\s", " ", cifra).replace(".", ",")
+                donde.setdefault(clave, set()).add(relativa.as_posix())
+    for cifra, archivos in sorted(donde.items()):
+        if len(archivos) > 1:
+            avisos.append(f"la cifra {cifra} está en {len(archivos)} documentos ({', '.join(sorted(archivos))}); "
+                          "si es el mismo dato, va en uno y los otros lo enlazan (ADR 0017)")
 
 
 DOC_DE_LA_BASE = Path("docs/base-de-afirmaciones.md")
@@ -269,6 +294,7 @@ def main():
     verificar_laminas(errores)
     verificar_mermaid(markdowns, errores, avisos)
     verificar_referencias(markdowns, ids, decisiones_definidas(), errores)
+    verificar_cifras(markdowns, avisos)
     verificar_migracion(errores)
     errores.extend(tablero_arquitectura.verificar())
     errores.extend(banco_de_pruebas.verificar_muestra())

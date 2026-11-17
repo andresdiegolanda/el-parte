@@ -41,7 +41,7 @@ Cada decisión dice qué se decidió, por qué, qué cuesta y qué la haría cam
 - **Por qué.** El presupuesto que corta necesita números desde el principio. Las respuestas grabadas hacen que las pruebas sean reproducibles y gratis.
 - **Costo.** Atarse a un proveedor. Spring AI abstrae el proveedor, pero eso se verifica en el ADR. [ASSUMED]
 - **Qué la haría cambiar.** Que el costo medido por corrida quede muy lejos del tope, por arriba o por abajo.
-- **Estado.** Pasó a los ADRs [0003](../adrs/0003-eleccion-del-stack.md) y [0005](../adrs/0005-presupuesto-por-corrida.md), aceptados. El 2026-11-17, con la medición contra el banco, el tope pasó a 1,25 USD por corrida (ADR 0005, "Valores calibrados").
+- **Estado.** Pasó a los ADRs [0003](../adrs/0003-eleccion-del-stack.md) y [0005](../adrs/0005-presupuesto-por-corrida.md), aceptados. El 2026-11-17, el tope se recalibró con la medición contra el banco (ADR 0005, "Valores calibrados").
 
 ## D5. Las fuentes de la versión 0
 

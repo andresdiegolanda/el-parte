@@ -1,9 +1,9 @@
 # Tablero
 
-Todo pendiente de El Parte vive acá, con dueño (regla 8). Este archivo es lo que manda. El kanban publicado es editable y se sincroniza con este archivo cada vez que una sesión de desarrollo lee o escribe el repositorio, o cuando se le pide; su copia sin conexión, [`kanban/index.html`](kanban/index.html), se genera desde acá con `python3 herramientas/generar_kanban.py` y no se edita a mano ([ADR 0009](adrs/0009-kanban-editable-sincronizado.md)).
+Todo pendiente de El Parte vive acá, con dueño (regla 8). Este archivo es lo que manda. El kanban es una vista de solo lectura de este archivo: se genera con `python3 herramientas/generar_kanban.py` y se publica en <https://andresdiegolanda.github.io/el-parte/kanban/> en cada push ([ADR 0017](adrs/0017-forma-de-trabajo-mas-liviana.md)).
 
 - Actualizado: 2026-11-17
-- Nota: La primera rebanada (T08) anda de punta a punta y ya corrió contra el banco las 78 noches del registro (T20): 12,71 USD, 5 de 5 publicables encontrados, 0 de 1 hallazgo y una precisión estimada del 95 %. El responsable confirmó los juicios de los sorteos; falta que confirme la fuente y la etiqueta de las entradas y las correspondencias. Lo que la medición mostró del explorador de ARCE se arregla en T39. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). La medición con el analista (T21), el presupuesto (T22) y el explorador arreglado (T39) dio 5 de 5 publicables y 60 de 60 extras bien en un sorteo, a 0,245 USD por noche; con eso, el presupuesto quedó en 1,25 USD por noche (T22, hecha). La cola de revisión humana (T23) y el login por enlace (T25) están hechos: correr y revisar son solo del responsable. El Parte está publicado desde la máquina del responsable, con un túnel de Cloudflare y el correo por Resend (T40), y el responsable ya entró desde afuera (ADR 0016, aceptado). En su perfil, cada invitado elige qué organismos seguir y si quiere el aviso diario (T34); sigue el aviso (T35). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.
+- Nota: La primera rebanada (T08) anda de punta a punta y se mide contra el banco las 78 noches del registro (T20); los resultados están en docs/como-se-hizo/medicion-contra-el-banco.md. Falta que el responsable confirme la fuente y la etiqueta de las entradas y las correspondencias. El analista (T21), el presupuesto (T22, con el tope de cada noche en el ADR 0005) y el explorador arreglado (T39) están hechos y medidos. La cola de revisión humana (T23) y el login por enlace (T25) están hechos: correr y revisar son solo del responsable. El Parte está publicado desde la máquina del responsable, con un túnel de Cloudflare y el correo por Resend (T40, ADR 0016). En su perfil, cada invitado elige qué organismos seguir y si quiere el aviso diario (T34); sigue el aviso (T35). La forma de trabajo se alivianó con el ADR 0017 (T45). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.
 - Calendario: 2026-11-07, 2026-11-14, 2026-11-21, 2026-11-28
 - Repositorio: https://github.com/andresdiegolanda/el-parte
 
@@ -129,6 +129,33 @@ Registro:
 - 2026-11-17: Las 78 noches con el analista, el presupuesto y el explorador arreglado, en banco-de-pruebas/mediciones/2026-11-16-2/: 19,11 USD, 0,245 por noche, ninguna cortada. 5 de 5 publicables y 0 de 1 hallazgo, como antes. Un sorteo nuevo de 60 de los 796 extras, con la semilla 20261117: los 60 bien, precisión estimada 1,0 (de 0,94 a 1,0). Los 56 juicios nuevos están en borrador, para que el responsable los confirme. Dos juicios del sorteo anterior quedaron viejos: los hechos cambiaron con T39 y ahora están bien (docs/como-se-hizo/medicion-contra-el-banco.md).
 - 2026-11-17: El responsable confirmó los juicios de los dos sorteos, los 56 nuevos incluidos; el conteo no cambia. Los dos juicios viejos quedan como estaban. Siguen en borrador la fuente y la etiqueta de las entradas y las correspondencias, con lo de ATOS.
 
+### T45 · Aplicar el ADR 0017: una forma de trabajo más liviana
+- Tipo: Herramienta
+- Dueño: desarrollo
+- Detalle: [adrs/0017-forma-de-trabajo-mas-liviana.md](adrs/0017-forma-de-trabajo-mas-liviana.md), [arranque/como-se-trabaja.md](arranque/como-se-trabaja.md)
+
+Un solo lugar por dato, un ritual según el tamaño del cambio, commits autorizados por tarea, el kanban de solo lectura, los tableros publicados en GitHub Pages en cada push, las pruebas de noche y a demanda en GitHub Actions, y controles visuales del tablero de arquitectura.
+
+Etapas:
+- [x] Escrita
+- [x] Probada
+- [x] Documentada
+
+Lista:
+- [x] El ADR 0017, aceptado con su alcance antes del código
+- [x] El kanban de solo lectura, y la sincronización y la plantilla editable a obsoletos/
+- [x] Las páginas generadas fuera del repositorio, y herramientas/armar_sitio.py con .github/workflows/publicar.yml
+- [x] Las pruebas de noche y a demanda, en .github/workflows/pruebas.yml
+- [x] Los controles de posición y las capturas del tablero de arquitectura
+- [x] Un solo lugar por dato: el aviso del verificador y la limpieza de las cifras repetidas
+- [x] El ritual según el tamaño y la autorización por tarea, en arranque/como-se-trabaja.md
+- [ ] GitHub Pages prendido y el sitio publicado
+- [ ] La página publicada en Claude, con un aviso que manda al kanban de GitHub Pages
+
+Registro:
+- 2026-11-17: Creada con el ADR 0017. Tamaño grande. Autorizada con commit y push al terminar. Pasa a En curso.
+- 2026-11-17: Escrito, probado y documentado. El aviso de cifras repetidas deja cinco: tres de la presentación, que repite cifras de la medición 2026-11-15-2, y dos que coinciden por casualidad. Falta prender GitHub Pages y poner el aviso en la página publicada en Claude.
+
 ## Para empezar
 
 ### T43 · Que la corrida de la noche se ponga al día
@@ -206,6 +233,28 @@ Lista:
 Registro:
 - 2026-11-14: Creada al aceptar el ADR 0003.
 - 2026-11-17: Pasa a Para empezar: T22 y T25 están hechas.
+
+### T44 · Que el alta avise cuando un invitado no es un correo
+- Tipo: Componente
+- Dueño: desarrollo
+- Detalle: [docs/como-se-hizo/despliegue.md](docs/como-se-hizo/despliegue.md), [app/src/main/java/io/github/andresdiegolanda/elparte/acceso/AltaDeInvitados.java](app/src/main/java/io/github/andresdiegolanda/elparte/acceso/AltaDeInvitados.java)
+
+Al arrancar, el alta de invitados da de alta cada correo de la configuración. Si uno no es un correo, por ejemplo un texto de ejemplo que quedó en el .env, hoy se da de alta igual y nunca recibe el enlace, sin ningún aviso.
+
+Etapas:
+- [ ] Contrato
+- [ ] Código
+- [ ] Pruebas
+- [ ] Medido contra el banco
+- [ ] Página cómo se hizo
+
+Lista:
+- [ ] Validar cada correo de la lista de invitados al arrancar
+- [ ] Decidir si un correo inválido se anota en el registro o si la aplicación no arranca
+- [ ] Probarlo con un invitado que no es un correo
+
+Registro:
+- 2026-11-17: Creada: salió de la lista de mejoras de la forma de trabajo, pero es un arreglo de este proyecto (ADR 0017).
 
 ## Esperando
 
@@ -809,7 +858,7 @@ Registro:
 ### T28 · Hacer editable el kanban y sincronizarlo con el tablero
 - Tipo: Herramienta
 - Dueño: desarrollo
-- Detalle: [adrs/0009-kanban-editable-sincronizado.md](adrs/0009-kanban-editable-sincronizado.md), [herramientas/sincronizar_tablero.py](herramientas/sincronizar_tablero.py), [kanban/plantilla.html](kanban/plantilla.html)
+- Detalle: [adrs/0009-kanban-editable-sincronizado.md](adrs/0009-kanban-editable-sincronizado.md), [obsoletos/herramientas/sincronizar_tablero.py](obsoletos/herramientas/sincronizar_tablero.py), [obsoletos/kanban/plantilla.html](obsoletos/kanban/plantilla.html)
 
 El kanban publicado se puede editar con las mismas reglas del tablero, y las sesiones de desarrollo lo sincronizan con este archivo. La prueba del kanban corre en Chrome con una base simulada; la de la sincronización, en una copia del repositorio.
 
@@ -822,6 +871,7 @@ Registro:
 - 2026-11-14: Creada y hecha.
 - 2026-11-14: La sincronización también lleva a la base los cambios de orden hechos en tablero.md, con una operación que solo escribe el orden.
 - 2026-11-14: Después de un push, la sincronización escribe solo la huella nueva de las tarjetas que no cambiaron de contenido, en vez de la tarjeta entera.
+- 2026-11-17: El kanban vuelve a ser de solo lectura y la sincronización pasa a obsoletos/ (ADR 0017, T45).
 
 ### T07 · Escribir docs/plan.md
 - Tipo: Documento

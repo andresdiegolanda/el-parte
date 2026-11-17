@@ -1,6 +1,6 @@
 # 0009. Kanban editable, sincronizado con el tablero
 
-- Estado: aceptado
+- Estado: reemplazado por [0017](0017-forma-de-trabajo-mas-liviana.md)
 - Fecha: 2026-11-14
 - Reemplaza a: [0001](0001-tablero-fuente-unica-kanban-generado.md)
 

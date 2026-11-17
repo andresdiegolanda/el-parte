@@ -44,7 +44,7 @@ La medición es parte de la versión 0, no un después.
 - **Se hace:** la medición de la rebanada sobre las noches del banco de pruebas (T20); el analista completo (T21); el presupuesto que corta, con el libro de la corrida y la tabla de precios (T22); la cola de revisión humana (T23).
 - **Se muestra:** el informe de la medición: hallazgos del registro encontrados, no encontrados y fuera de alcance, falsos positivos y costo por noche. Una corrida cortada a propósito con un presupuesto bajo, y cómo lo dice la página de la mañana.
 - **Cómo se comprueba:** las métricas quedan versionadas con la huella del registro usado (ADR 0007); la corrida cortada no deja ningún hecho a medio verificar.
-- **Lo que hace falta del responsable:** revisar la cola de revisión humana y la medición, y decidir si el tope de 0,50 USD se mantiene. Decidido el 2026-11-17: pasa a 1,25 USD, con lo medido (ADR 0005, "Valores calibrados").
+- **Lo que hace falta del responsable:** revisar la cola de revisión humana y la medición, y decidir si el tope de la decisión D4 se mantiene. Decidido el 2026-11-17, con lo medido: ADR 0005, "Valores calibrados".
 
 ## Fin de semana 4: las cinco fuentes y los usuarios (28 y 29 de noviembre)
 

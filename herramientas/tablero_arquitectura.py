@@ -448,14 +448,7 @@ def verificar():
     if errores:
         return errores
     errores += verificar_contra_el_codigo(modelo, hechos_del_codigo(), tarjetas_del_tablero())
-    paginas, problemas = generar(modelo)
+    # Las páginas no se versionan: alcanza con que se puedan generar (ADR 0017).
+    _, problemas = generar(modelo)
     errores += problemas
-    for archivo, html in paginas.items():
-        ruta = CARPETA / archivo
-        if not ruta.exists() or ruta.read_text(encoding="utf-8") != html:
-            errores.append(f"{ruta.relative_to(RAIZ)}: no coincide con sistema.json; corré python3 herramientas/generar_tablero_arquitectura.py")
-    generadas = set(paginas) | {"plantilla.html"}
-    for sobrante in sorted(CARPETA.glob("*.html")):
-        if paginas and sobrante.name not in generadas:
-            errores.append(f"{sobrante.relative_to(RAIZ)}: no lo genera ninguna vista de sistema.json; si la vista se quitó, el archivo va a obsoletos/")
     return errores

@@ -33,16 +33,19 @@ Los términos que usa el proyecto, en orden alfabético. Si un documento usa un 
 | Falso positivo | Algo que el sistema presentó como hallazgo y no lo era: material viejo, un hecho repetido, una deducción presentada como hecho. |
 | Flujo de trabajo | Sistema de agentes en el que el código fija el camino y los modelos se llaman en pasos predefinidos. Una noche de El Parte es un flujo de trabajo. |
 | Fuera de alcance | Hallazgo del banco de pruebas que ninguna fuente de El Parte publica, como la prensa o el sitio del BPS ("fuera de El Parte"), o que publica una fuente que esa medición no leyó ("fuera de esta medición"). Se cuenta aparte y no baja la cobertura ([banco-de-pruebas/metricas.md](../banco-de-pruebas/metricas.md)). |
+| GitHub Actions | El servicio de GitHub que corre tareas automáticas sobre el repositorio, descritas en archivos de `.github/workflows/`. En El Parte publica los tableros en cada push y corre las pruebas de noche ([ADR 0017](../adrs/0017-forma-de-trabajo-mas-liviana.md)). |
+| GitHub Pages | El servicio de GitHub que publica páginas web desde un repositorio. En El Parte publica el kanban y el tablero de arquitectura en <https://andresdiegolanda.github.io/el-parte/>. |
 | Grabación | Lo que una corrida leyó de afuera, de una fuente o del modelo, guardado ya enmascarado en `parte.grabaciones` para poder repetirla (ADR 0011). |
 | Grado (de un documento) | Lo que lleva cada afirmación técnica de los documentos del proyecto: PROVEN con fuente, INFERRED o ASSUMED. Ver [como-se-trabaja.md](como-se-trabaja.md). |
 | Grado (de un hecho) | Lo que pone el refutador a cada hecho: PROVEN (la fuente lo dice), INFERRED (se deduce de lo que dice la fuente) o NOT_MENTIONED (las fuentes no lo mencionan). |
-| Huella | Resumen corto (hash) de un contenido. Si el contenido cambia, la huella cambia. La sincronización del kanban la usa para saber si una tarjeta cambió en GitHub, y cada medición guarda la del registro del banco de pruebas con que se hizo, sin publicarlo. |
+| Huella | Resumen corto (hash) de un contenido. Si el contenido cambia, la huella cambia. Cada medición guarda la del registro del banco de pruebas con que se hizo, sin publicarlo. |
 | IATI | Estándar internacional para publicar datos de proyectos de cooperación (*International Aid Transparency Initiative*). |
 | Idempotencia | Propiedad de una operación que, repetida, deja todo igual que si se hubiera hecho una sola vez. Acá: procesar dos veces el mismo mensaje no crea dos hechos. |
 | Identidad de un hecho | La regla que dice cuándo dos candidatos son el mismo hecho. Se define en `docs/contratos.md`. |
 | INFERRED | Grado: se deduce de algo verificado, pero no se comprobó directamente. Vale para hechos y para documentos. |
+| Integración continua | Correr las pruebas de forma automática sobre lo que está en el repositorio, sin depender de que alguien las corra. En El Parte, de noche y a demanda, con GitHub Actions. |
 | Kafka | Sistema de mensajería con tópicos que guardan su historia y se pueden volver a leer. Es el que usa El Parte ([ADR 0003](../adrs/0003-eleccion-del-stack.md)). |
-| Kanban | Forma de ver el trabajo como tarjetas que avanzan por columnas. En El Parte, la página publicada se puede editar y se sincroniza con `tablero.md`; `kanban/index.html` es su copia sin conexión. |
+| Kanban | Forma de ver el trabajo como tarjetas que avanzan por columnas. En El Parte es una vista de solo lectura de `tablero.md`, publicada en <https://andresdiegolanda.github.io/el-parte/kanban/>. |
 | Lámina | Diagrama de arquitectura en SVG, generado por un script desde su fuente. No se edita a mano. |
 | Libro de la corrida | Fila de la base que lleva lo gastado y lo reservado de una corrida, contra su presupuesto ([ADR 0005](../adrs/0005-presupuesto-por-corrida.md)). |
 | LTS | Versión con soporte largo (del inglés *long-term support*). Java 25 es la LTS más nueva. |
@@ -71,7 +74,7 @@ Los términos que usa el proyecto, en orden alfabético. Si un documento usa un 
 | robots.txt | Archivo que un sitio publica para decir qué partes no quiere que lean los programas automáticos. Se respeta. |
 | Sala de máquinas | La parte de la aplicación que muestra, por cada corrida y cada hallazgo, qué agente hizo qué, qué se refutó y por qué, contra qué se cotejó, cuánto costó y cuánto tardó. |
 | Salida estructurada | Respuesta del modelo en un formato fijo (un tipo Java con su esquema JSON) en lugar de texto libre. Spring AI la valida y la vuelve a pedir si no cumple. |
-| Sincronización del kanban | El paso, hecho por una sesión de desarrollo, que lleva los cambios del kanban publicado a `tablero.md` y el estado de `tablero.md` al kanban ([ADR 0009](../adrs/0009-kanban-editable-sincronizado.md)). |
+| Sincronización del kanban | El paso que llevaba los cambios del kanban editable a `tablero.md` ([ADR 0009](../adrs/0009-kanban-editable-sincronizado.md)). Ya no existe: el kanban es de solo lectura ([ADR 0017](../adrs/0017-forma-de-trabajo-mas-liviana.md)). |
 | Sobre | Los campos comunes a todo mensaje entre agentes: identificador, tipo, versión, corrida, causa, agente y momento de emisión. |
 | Spring AI | Proyecto del ecosistema Spring para usar modelos de lenguaje desde Java. Su estado actual se verifica en el ADR del stack. |
 | Spring Boot | Forma estándar de armar aplicaciones Java con Spring, con configuración por defecto. |

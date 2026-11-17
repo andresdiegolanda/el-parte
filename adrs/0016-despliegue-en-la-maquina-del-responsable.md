@@ -75,7 +75,7 @@ Después, en la máquina del responsable, con el túnel y Resend reales: las pá
 
 ## Costo
 
-- **Depende de la máquina.** Si está apagada o dormida a la hora de la corrida, esa mañana no hay parte nuevo hasta que se corra a mano. Si la máquina se rompe, se pierde lo que haya desde la última copia, y las copias están en el mismo disco: conviene copiar `respaldos/` a otro lado cada tanto. Pasar a un servidor virtual es llevar los mismos archivos a otra máquina.
+- **Depende de la máquina.** Si está apagada o dormida a la hora de la corrida, esa mañana no hay parte nuevo hasta que se corra a mano. Si la máquina se rompe, se pierde lo que haya desde la última copia, y las copias están en el mismo disco. Copiarlas afuera se descartó el 2026-11-17: el proyecto no usa más servicios que el repositorio y Claude, y al repositorio no pueden ir, porque tienen los correos de los invitados ([ADR 0017](0017-forma-de-trabajo-mas-liviana.md)). Es un riesgo aceptado. Pasar a un servidor virtual es llevar los mismos archivos a otra máquina.
 - **Cloudflare ve el tráfico.** El HTTPS termina en Cloudflare, que lo lleva por el túnel hasta la máquina. Las páginas no muestran correos (ADR 0008), pero el enlace para entrar pasa por ahí.
 - **La aplicación recibe todo el `.env`**, también el token del túnel, que no necesita: la lista de invitados tiene un largo variable y entra con el `.env` entero. Separarlo pide un segundo archivo de configuración; con una sola máquina, no se hizo.
 - **El plan gratis de Resend tiene un tope de 100 correos por día.** Alcanza para cinco cuentas; si se suman muchas, hay que pagar el plan siguiente.

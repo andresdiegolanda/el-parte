@@ -12,6 +12,11 @@ respaldos/
 # Lo temporal de cada sesión: no se versiona (regla 14, arranque/como-se-trabaja.md)
 tmp/
 
+# Las páginas generadas de los tableros: se publican en GitHub Pages (ADR 0017)
+kanban/index.html
+docs/tablero-de-arquitectura/*.html
+!docs/tablero-de-arquitectura/plantilla.html
+
 # Lo que compila Maven
 app/target/
 

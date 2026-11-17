@@ -357,11 +357,49 @@ function trazar(f) {
     var lj = Math.hypot(pts[j][0] - pts[j - 1][0], pts[j][1] - pts[j - 1][1]);
     if (lj === mejor) { horizontal = Math.abs(pts[j][1] - pts[j - 1][1]) < 1; break; }
   }
-  return { d: camino(pts), punta: punta, medio: medio, tramo: mejor, horizontal: horizontal };
+  return { d: camino(pts), pts: pts, punta: punta, medio: medio, tramo: mejor, horizontal: horizontal };
+}
+// Dónde va el rótulo de una flecha: sobre su trazo, en el primer lugar que no pise nada de "ocupados".
+// Prueba cada tramo, del más largo al más corto, en el medio y después más cerca de cada punta.
+// Sin lugar, devuelve null y el rótulo solo se ve al pasar el mouse.
+function lugarDelRotulo(t, w, ocupados) {
+  var tramos = [];
+  for (var i = 1; i < t.pts.length; i++) {
+    var a = t.pts[i - 1], b = t.pts[i];
+    tramos.push({ a: a, b: b, l: Math.hypot(b[0] - a[0], b[1] - a[1]), horizontal: Math.abs(b[1] - a[1]) < 1 });
+  }
+  tramos.sort(function (u, v) { return v.l - u.l; });
+  var libre = function (x, y) {
+    var r = { x: x - w / 2 - 2, y: y - 11, w: w + 4, h: 21 };
+    return !ocupados.some(function (o) { return r.x < o.x + o.w && o.x < r.x + r.w && r.y < o.y + o.h && o.y < r.y + r.h; });
+  };
+  var fracciones = [0.5, 0.4, 0.6, 0.3, 0.7, 0.2, 0.8, 0.12, 0.88];
+  for (var k = 0; k < tramos.length; k++) {
+    var tr = tramos[k], margen = tr.horizontal ? w / 2 + 9 : 20;
+    for (var q = 0; q < fracciones.length; q++) {
+      var d = tr.l * fracciones[q];
+      if (d < margen || tr.l - d < margen) { continue; }
+      var x = tr.a[0] + (tr.b[0] - tr.a[0]) * fracciones[q], y = tr.a[1] + (tr.b[1] - tr.a[1]) * fracciones[q];
+      if (libre(x, y)) { return [x, y]; }
+    }
+  }
+  return null;
 }
 
 // ---------------------------------------------------------------- dibujo
 function recortar(t, max) { t = t || ""; return t.length > max ? t.slice(0, max - 1) + "…" : t; }
+// Acorta un texto ya dibujado hasta que entre en "max" píxeles, medido con la letra de quien mira.
+// Se vuelve a medir cuando el navegador terminó de elegir las letras (ajustarTextos).
+function caber(t, max) {
+  t.textContent = t.getAttribute("data-texto");
+  if (t.getComputedTextLength() <= max) { return; }
+  var s = t.textContent.replace(/…$/, "");
+  while (s.length > 1) {
+    s = s.slice(0, -1).replace(/[\s·]+$/, "");
+    t.textContent = s + "…";
+    if (t.getComputedTextLength() <= max) { return; }
+  }
+}
 function dibujar() {
   var gF = $("franjas"), gG = $("grupos"), gA = $("flechas"), gN = $("nodos");
   S.franjas.forEach(function (fr) {
@@ -384,6 +422,9 @@ function dibujar() {
     var t = el("text", { x: x0 + 8, y: y1 - 4 }, g); t.textContent = gr.titulo;
   });
   puertos();
+  // Los rótulos que se ven sin pasar el mouse (los del camino principal) no pisan cajas ni otros rótulos.
+  var cajas = S.nodos.map(function (n) { return { x: n.x, y: n.y, w: NW, h: NH }; });
+  var ocupados = cajas.slice();
   S.flechas.forEach(function (f) {
     var g = el("g", { "class": "flecha " + f.tipo + " " + f.estado + " " + f.papel, "data-id": f.id }, gA);
     var t = trazar(f); f.trazo = t;
@@ -393,11 +434,11 @@ function dibujar() {
     el("path", { d: t.d, "class": "toque" }, g);
     var r = el("g", { "class": "rotulo" }, g);
     var txt = recortar(f.etiqueta, 34), w = txt.length * 5.7 + 12;
-    var cabe = t.horizontal ? t.tramo > w + 18 : t.tramo > 40;
-    if (!cabe) { g.classList.add("corta"); }
-    var ry = cabe ? t.medio[1] : t.medio[1] - 18;
-    el("rect", { x: t.medio[0] - w / 2, y: ry - 9, width: w, height: 17 }, r);
-    var tt = el("text", { x: t.medio[0], y: ry + 3.5, "text-anchor": "middle" }, r); tt.textContent = txt;
+    var lugar = lugarDelRotulo(t, w, f.papel === "camino" ? ocupados : cajas);
+    if (!lugar) { g.classList.add("corta"); lugar = [t.medio[0], t.medio[1] - 18]; }
+    else if (f.papel === "camino") { ocupados.push({ x: lugar[0] - w / 2, y: lugar[1] - 9, w: w, h: 17 }); }
+    el("rect", { x: lugar[0] - w / 2, y: lugar[1] - 9, width: w, height: 17 }, r);
+    var tt = el("text", { x: lugar[0], y: lugar[1] + 3.5, "text-anchor": "middle" }, r); tt.textContent = txt;
     f.g = g; f.path = p;
     g.addEventListener("click", function (ev) { ev.stopPropagation(); if (arrastrado()) { return; } abrirFlecha(f.id); });
     g.addEventListener("contextmenu", function (ev) { ev.preventDefault(); ev.stopPropagation(); menu(ev, f.id); });
@@ -409,8 +450,8 @@ function dibujar() {
     el("rect", { width: NW, height: NH, "class": "caja" }, g);
     el("rect", { x: 0, y: 8, width: 3.5, height: NH - 16, fill: n.estado === "disenado" ? "var(--disenado)" : COLORES[n.tipo], "class": "acento" }, g);
     var ic = el("text", { x: 17, y: 21, "class": "icono", fill: n.estado === "disenado" ? "var(--disenado)" : COLORES[n.tipo] }, g); ic.textContent = ICONOS[n.tipo];
-    var t = el("text", { x: 30, y: 21, "class": "titulo" }, g); t.textContent = recortar(n.titulo, n.tipo === "topico" ? 22 : 23);
-    var s = el("text", { x: 30, y: 38, "class": "sub" }, g); s.textContent = recortar(n.sub, 30);
+    el("text", { x: 30, y: 21, "class": "titulo", "data-texto": recortar(n.titulo, n.tipo === "topico" ? 22 : 23) }, g);
+    el("text", { x: 30, y: 38, "class": "sub", "data-texto": recortar(n.sub, 30) }, g);
     var marcas = [];
     if (n.estado === "disenado") { marcas.push(["DISEÑADO", "var(--disenado)"]); }
     if (n.comun) { marcas.push(["COMÚN", "var(--texto3)"]); }
@@ -844,6 +885,9 @@ document.querySelector("#chip-modelo span").textContent = "modelo del " + S.actu
   });
 })();
 dibujar();
+function ajustarTextos() { document.querySelectorAll("g.nodo text.titulo, g.nodo text.sub").forEach(function (t) { caber(t, NW - 36); }); }
+ajustarTextos();
+if (document.fonts && document.fonts.ready) { document.fonts.ready.then(ajustarTextos); }
 listaRecorridos();
 ajustar();
 ayuda();

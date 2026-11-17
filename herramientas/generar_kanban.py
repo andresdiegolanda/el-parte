@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Genera kanban/index.html desde tablero.md.
 
-tablero.md es la unica fuente (adrs/0001-tablero-fuente-unica-kanban-generado.md).
-Este script lee el tablero, lo valida, convierte los enlaces relativos en
-enlaces al repositorio y mete los datos en kanban/plantilla.html. El resultado,
-kanban/index.html, no se edita a mano.
+tablero.md es la unica fuente y el kanban es una vista de solo lectura
+(adrs/0017-forma-de-trabajo-mas-liviana.md). Este script lee el tablero, lo
+valida, convierte los enlaces relativos en enlaces al repositorio y mete los
+datos en kanban/plantilla.html. El resultado, kanban/index.html, no se edita a
+mano ni se versiona: se publica en GitHub Pages con herramientas/armar_sitio.py.
 
 Uso:  python3 herramientas/generar_kanban.py
 Sale con codigo 1, sin escribir nada, si el tablero tiene errores.
@@ -45,7 +46,7 @@ CAMPOS_TARJETA = ("titulo", "columna", "orden", "tipo", "dueno", "dependeDe", "e
 
 
 def datos_para_la_pagina(datos):
-    """Los datos con la misma forma que la base del kanban publicado (adrs/0009).
+    """Los datos que lee la página: meta y tarjetas.
 
     Los enlaces quedan relativos al repositorio: la página los completa.
     """

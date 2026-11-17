@@ -1,35 +1,33 @@
 # Cómo se trabaja
 
-Las trece reglas están en el [README](../README.md). Acá está cómo se cumplen en una sesión de trabajo, sea de una persona o de un asistente.
+Las catorce reglas están en el [README](../README.md). Acá está cómo se cumplen en una sesión de trabajo, sea de una persona o de un asistente.
 
 ## El ciclo de una sesión
 
 ```mermaid
 flowchart TD
-    A[Leer arranque/] --> S[Sincronizar el kanban<br/>con el tablero]
-    S --> B[Pasar la primera tarjeta de Para empezar<br/>a En curso]
+    A[Leer arranque/] --> B[Elegir la tarjeta y decir su tamaño:<br/>chico, mediano o grande]
     B --> C{¿Toca un producto,<br/>una API o una fuente?}
     C -- Sí --> D[Verificar en la documentación oficial<br/>y anotar URL y fecha]
     C -- No --> E
     D --> E[Escribir el documento o el código,<br/>y el tablero de arquitectura si la toca]
     E --> F[Releer lo escrito y comprobar el cambio]
-    F --> H[CHANGELOG, tablero y ADR si hubo decisión]
-    H --> I[Regenerar el kanban y actualizar<br/>el estado en arranque/README.md]
-    I --> G[Correr herramientas/verificar_docs.py<br/>y sincronizar el kanban]
+    F --> H[Lo que pide su tamaño:<br/>CHANGELOG, tarjeta, página o ADR]
+    H --> G[Correr herramientas/verificar_docs.py,<br/>y mirar las capturas si cambió el tablero de arquitectura]
     G -- Falla --> E
-    G -- Pasa --> J{¿Se pidió commit?}
+    G -- Pasa --> J{¿Commit y push<br/>autorizados para la tarea?}
     J -- Sí --> K[Commit y push]
-    J -- No --> L[Entregar sin commit]
+    J -- No --> L[Entregar y pedirlos]
 ```
 
 ## Al empezar
 
 1. Traer la última versión del repositorio.
 2. Leer la carpeta `arranque/` en el orden de su [README](README.md).
-3. Sincronizar el kanban con el tablero, si la sesión tiene acceso a su base (ver "Sincronizar el kanban"): así entran los cambios que se hicieron en el kanban desde la última sesión.
-4. Abrir el [tablero de arquitectura](../docs/tablero-de-arquitectura/README.md) y ubicar los objetos que toca el trabajo. Si el pedido los cita (`arquitectura: <id>`), se parte de ahí.
-5. Elegir la tarjeta en el [tablero](../tablero.md): la primera de "Para empezar", salvo que haya un motivo para otra. Si lo que hay que hacer no está en el tablero, primero se agrega la tarjeta, con dueño.
-6. Mover su bloque a "En curso" y anotarlo en su registro.
+3. Abrir el [tablero de arquitectura](../docs/tablero-de-arquitectura/README.md) y ubicar los objetos que toca el trabajo. Si el pedido los cita (`arquitectura: <id>`), se parte de ahí.
+4. Elegir la tarjeta en el [tablero](../tablero.md): la primera de "Para empezar", salvo que haya un motivo para otra. Si lo que hay que hacer no está en el tablero, primero se agrega la tarjeta, con dueño.
+5. Decir su tamaño (ver "El tamaño de cada cambio") y si el responsable autoriza commit y push al terminar.
+6. Mover su bloque a "En curso" y anotar en su registro el tamaño y, si la hay, la autorización.
 
 ## Mientras se trabaja
 
@@ -53,10 +51,11 @@ Ojo con un nombre parecido: los agentes también ponen grados a los hechos que e
 
 El [tablero de arquitectura](../docs/tablero-de-arquitectura/README.md) refleja el sistema con precisión y exactitud en todo momento ([ADR 0012](../adrs/0012-tablero-de-arquitectura.md)). En la práctica:
 
-- **Se cambia en el mismo momento que el sistema.** Si un cambio del código o del diseño toca la arquitectura (un agente, un servicio, un tópico, una tabla, una página, una conexión entre ellos, o algo que pasa de diseñado a construido), en el mismo cambio se edita `docs/tablero-de-arquitectura/sistema.json`, se suma una entrada a su historial y se regenera la página con `python3 herramientas/generar_tablero_arquitectura.py`. No hay "después lo actualizo".
+- **Se cambia en el mismo momento que el sistema.** Si un cambio del código o del diseño toca la arquitectura (un agente, un servicio, un tópico, una tabla, una página, una conexión entre ellos, o algo que pasa de diseñado a construido), en el mismo cambio se edita `docs/tablero-de-arquitectura/sistema.json` y se suma una entrada a su historial. No hay "después lo actualizo".
 - **Los pedidos lo citan.** Un pedido nombra los objetos por su referencia, que la ficha de cada objeto deja copiar: `arquitectura: refutador`, `arquitectura: refutador>modelo`. Así no hay dudas sobre de qué pieza se habla.
 - **El verificador lo compara con el código.** Si una clase nueva no está en ningún objeto, si falta o sobra una flecha, si una página atiende otras rutas o si algo diseñado ya se construyó, el verificador falla y dice qué corregir.
-- **Lo que el verificador no ve se revisa a mano**: los textos de cada objeto, los recorridos y las llamadas afuera. Se releen en cada cambio que toque esos objetos.
+- **Se mira antes de subir.** `python3 herramientas/generar_tablero_arquitectura.py` genera las páginas en `docs/tablero-de-arquitectura/`, donde git las ignora, y `herramientas/pruebas/prueba_tablero_arquitectura.mjs` las abre en Chrome: falla si dos cajas se pisan, si una caja se sale de su franja o si una etiqueta queda encima de otra cosa, y deja una captura de cada vista en `tmp/capturas/`. Un cambio de `sistema.json` no se sube sin mirar esas capturas ([ADR 0017](../adrs/0017-forma-de-trabajo-mas-liviana.md)).
+- **Lo que ni el verificador ni las capturas muestran se revisa a mano**: los textos de cada objeto, los recorridos y las llamadas afuera. Se releen en cada cambio que toque esos objetos.
 
 ### Nada de memoria
 
@@ -118,34 +117,34 @@ Cada componente tiene su página en `docs/como-se-hizo/<componente>.md` con seis
 
 Sin datos personales en la base ni en la demo. Solo fuentes públicas y datos sintéticos para las pruebas. Cómo se tratan los nombres de personas que aparecen en las fuentes y los correos de los usuarios está en [decisiones-iniciales.md](decisiones-iniciales.md) (D3).
 
+### Un solo lugar por dato
+
+Cada cifra, valor o decisión vive en un solo documento, y los demás lo enlazan sin repetirlo ([ADR 0017](../adrs/0017-forma-de-trabajo-mas-liviana.md)): el resultado de una medición, en su sección de `docs/como-se-hizo/medicion-contra-el-banco.md`; un valor decidido, en su ADR; el estado de una tarea, en su tarjeta; cómo se construyó algo, en su página "cómo se hizo". La nota de arriba del tablero, los README y el plan dicen dónde mirar. `CHANGELOG.md`, los ADRs, las decisiones iniciales y el registro y las tarjetas hechas del tablero son historia: cuentan qué pasó, con las cifras de su momento. El verificador avisa, sin fallar, cuando la misma cifra con unidad aparece en más de un documento vigente; si es el mismo dato, se deja en su lugar y los demás lo enlazan.
+
+### El tamaño de cada cambio
+
+| Tamaño | Qué es | Qué lleva |
+|---|---|---|
+| Chico | Un arreglo, un texto, un valor de configuración. No cambia contratos, decisiones ni la arquitectura. | Commit y una línea en `CHANGELOG.md`. Si es parte de una tarjeta, una línea en su registro. |
+| Mediano | Un componente nuevo o un cambio de comportamiento dentro de lo decidido. | Lo del chico, más la tarjeta con sus etapas, la página "cómo se hizo" y, si toca la arquitectura, el tablero de arquitectura con sus capturas (regla 13). |
+| Grande | Cambia una decisión, un contrato o la forma de trabajo. | Lo del mediano, más un ADR aceptado antes del código. |
+
+La sesión dice el tamaño al empezar, y el responsable lo puede cambiar.
+
 ### El tablero y el kanban (regla 8)
 
-[`tablero.md`](../tablero.md) es lo que manda sobre lo pendiente ([ADR 0009](../adrs/0009-kanban-editable-sincronizado.md)). Cada pendiente es una tarjeta: un bloque `###` debajo de la columna en la que está. El propio tablero explica el formato, los tipos con sus etapas y las reglas de cada columna.
+[`tablero.md`](../tablero.md) es lo que manda sobre lo pendiente. Cada pendiente es una tarjeta: un bloque `###` debajo de la columna en la que está. El propio tablero explica el formato, los tipos con sus etapas y las reglas de cada columna.
 
 - Mover una tarjeta es mover su bloque a otra columna y sumar una línea a su registro.
 - `tablero.md` tiene que estar en formato canónico: leerlo y volver a escribirlo con `herramientas/tablero_md.py` da el mismo archivo. El verificador lo controla.
-- Después de tocar el tablero se regenera la copia del kanban con `python3 herramientas/generar_kanban.py`. `kanban/index.html` no se edita a mano: lo que se cambia a mano es `kanban/plantilla.html` (el diseño) o `tablero.md` (el contenido).
-- El kanban publicado es editable. Sus cambios viven en la base de la página hasta que una sesión los sincroniza.
+- El kanban es una vista de solo lectura de `tablero.md` ([ADR 0017](../adrs/0017-forma-de-trabajo-mas-liviana.md)), publicada en <https://andresdiegolanda.github.io/el-parte/kanban/>. Las tarjetas se cambian en `tablero.md`; el diseño, en `kanban/plantilla.html`. Para verlo en una sesión, `python3 herramientas/generar_kanban.py` lo genera en `kanban/index.html`, que no se versiona. Su prueba en Chrome es `herramientas/pruebas/prueba_kanban.mjs` (necesita Puppeteer, que viene con mermaid-cli).
 
-### Sincronizar el kanban
+### Lo publicado y la integración continua
 
-La página publicada es <https://claude.ai/artifact/4wQ9LjW4H98WnjUWpcFsf3> (artifact `1fe3d7a9-985e-45cb-a223-38f55b086226`). La sincronización la hace una sesión que tenga las herramientas de la base de artifacts (`db_list`, `db_get`, `db_write`). Se sincroniza al empezar una sesión, cada vez que la sesión escribe `tablero.md` y cuando se pide.
+Dos workflows de GitHub Actions, en `.github/workflows/` ([ADR 0017](../adrs/0017-forma-de-trabajo-mas-liviana.md)):
 
-```mermaid
-flowchart TD
-    A[Volcar la base del kanban<br/>a tmp/kanban-volcado.json] --> B[python3 herramientas/sincronizar_tablero.py<br/>tmp/kanban-volcado.json]
-    B -- sale con 2: tablero.md cambió --> C[Commit y push solo del tablero,<br/>sin esperar pedido]
-    C --> A
-    B -- sale con 0 --> D[Escribir en la base las operaciones<br/>de tmp/kanban-operaciones.json]
-    D --> E[Volver a publicar la página<br/>si cambió la plantilla]
-```
-
-1. **Volcar la base.** Con `db_list` sobre la colección `tarjetas` y `db_get` sobre `meta/tablero`, se arma `tmp/kanban-volcado.json` con la forma `{"tarjetas": [{"id", "version", "data"}], "meta": {"version"} o null}`. De las tarjetas marcadas con `editadaEnKanban` se copia `data` completo; de las demás alcanza con `editadaEnKanban`, `huellaRepo`, `huellaContenido` y `orden`, así el volcado es corto.
-2. **Correr el script.** Aplica a `tablero.md` los cambios del kanban, salvo los que chocan con el repositorio (gana el repositorio y se anota en el registro de la tarjeta) o rompen sus reglas (quedan en el kanban con el motivo). Si `tablero.md` cambió, regenera la copia, suma una línea al CHANGELOG y sale con código 2.
-3. **Commit y push del tablero.** Si salió con 2, se hace commit y push de `tablero.md`, `kanban/index.html` y `CHANGELOG.md`, sin esperar pedido: es la única excepción a la regla de los commits ([ADR 0009](../adrs/0009-kanban-editable-sincronizado.md)). Después se vuelve al paso 1.
-4. **Escribir en la base.** Cuando el script sale con 0, `tmp/kanban-operaciones.json` tiene las llamadas a `db_write`, de a 40 operaciones: solo las tarjetas que cambiaron y el documento `meta/tablero`. Se mandan de a una, esperando 2 segundos entre llamadas. Si una llamada se rechaza por versión, alguien editó el kanban mientras tanto: se vuelve al paso 1.
-
-Las pruebas de estas piezas están en `herramientas/pruebas/`: `prueba_sincronizacion.py` corre la sincronización en una copia del repositorio, y `prueba_kanban.mjs` maneja la página en Chrome con una base simulada (necesita Puppeteer, que viene con mermaid-cli).
+- **`publicar.yml`**, en cada push a `main`: `herramientas/armar_sitio.py` genera el kanban y el tablero de arquitectura y los publica en GitHub Pages, en <https://andresdiegolanda.github.io/el-parte/>. No corre pruebas.
+- **`pruebas.yml`**, todas las noches si `main` cambió en el último día, y a demanda: el verificador, las pruebas de Python y de Chrome de `herramientas/pruebas/` y `mvn test` de `app/`. Deja las capturas del tablero de arquitectura como artefacto de la corrida. No usa secretos: las pruebas no llaman al modelo.
 
 ### Nada se borra (regla 9)
 
@@ -155,7 +154,7 @@ Lo que sobra se mueve a [`obsoletos/`](../obsoletos/README.md), manteniendo su r
 
 Todo lo temporal de una sesión va en `tmp/`, en la raíz del clon, sea el de la máquina del responsable o el de un espacio de trabajo en la nube. La carpeta está en `.gitignore` y el verificador no la revisa.
 
-- **Va en `tmp/`:** el volcado y las operaciones del kanban, los parches, los registros de arranque de la aplicación y de las mediciones, las capturas de pantalla, las copias locales de una medición, los scripts de un solo uso y las listas o tablas para mirar, como `tmp/mejoras.md`.
+- **Va en `tmp/`:** los parches, los registros de arranque de la aplicación y de las mediciones, las capturas de pantalla y las del tablero de arquitectura (`tmp/capturas/`), el sitio armado para mirarlo (`tmp/sitio/`), las copias locales de una medición, los scripts de un solo uso y las listas o tablas para mirar, como `tmp/mejoras.md`.
 - **No va en `tmp/`, porque tiene su lugar:** los secretos, en `.env`; el registro del banco de pruebas, en `banco-de-pruebas/privado/` (D2); los respaldos de la base publicada, en `respaldos/` ([ADR 0016](../adrs/0016-despliegue-en-la-maquina-del-responsable.md)), y lo que las herramientas generan donde lo esperan, como `app/target/` y `__pycache__/`.
 - **Lo que está en `tmp/` se puede volver a armar o ya no hace falta.** Lo que se aprende o se decide pasa al repositorio. Por eso la regla 9 no alcanza a `tmp/`: se puede vaciar cuando lo que tiene ya no sirve.
 - **Una herramienta que necesita una carpeta temporal propia** usa la del sistema y la borra al terminar, como `herramientas/verificar_docs.py` y las pruebas de `herramientas/pruebas/`.
@@ -168,14 +167,16 @@ Después de cada escritura se relee el archivo y se comprueba que el cambio qued
 python3 herramientas/verificar_docs.py
 ```
 
-Controla que no haya guiones largos, que los enlaces relativos de los Markdown apunten a archivos que existen, que el tablero respete su formato y sus reglas, que el kanban y las láminas coincidan con sus fuentes, que toda tarjeta o decisión citada exista, que cada diagrama Mermaid se pueda dibujar, que la primera migración sea igual al DDL del documento de la base y que el tablero de arquitectura coincida con el código. Si algo falla, termina con código 1 y dice dónde.
+Controla que no haya guiones largos, que los enlaces relativos de los Markdown apunten a archivos que existen, que el tablero respete su formato y sus reglas, que el kanban y el tablero de arquitectura se puedan generar, que las láminas coincidan con sus fuentes, que toda tarjeta o decisión citada exista, que cada diagrama Mermaid se pueda dibujar, que la primera migración sea igual al DDL del documento de la base y que el tablero de arquitectura coincida con el código. Si algo falla, termina con código 1 y dice dónde.
 
 Para dibujar los diagramas usa mermaid-cli (el programa `mmdc`), que busca en la variable de entorno `MMDC` o en el `PATH`. Si no lo encuentra, avisa y sigue; con `EXIGIR_MERMAID=1` falla. Los diagramas que ya pasaron se guardan por su hash en `tmp/mermaid-verificados.txt`, que no se versiona, así que las corridas siguientes son instantáneas.
 
 ## Al terminar
 
+Lo que lleva cada cambio depende de su tamaño (ver "El tamaño de cada cambio"). Lo que corresponda de esta lista:
+
 1. Una entrada corta en el [CHANGELOG](../CHANGELOG.md): qué cambió, dónde, y el enlace al documento que tiene el porqué.
-2. El [tablero](../tablero.md) al día: la tarjeta en su columna, con sus etapas, su lista y su registro, y una tarjeta nueva por cada cosa que quedó pendiente. Después, el kanban regenerado.
+2. El [tablero](../tablero.md) al día: la tarjeta en su columna, con sus etapas, su lista y su registro, y una tarjeta nueva por cada cosa que quedó pendiente.
 3. Si se tomó una decisión significativa, su ADR.
 4. Si el trabajo tocó la arquitectura, el [tablero de arquitectura](../docs/tablero-de-arquitectura/README.md) al día, con su entrada en el historial (regla 13).
 5. Si el trabajo enseñó algo que contradice un documento, se corrige el documento (regla 1).
@@ -183,7 +184,7 @@ Para dibujar los diagramas usa mermaid-cli (el programa `mmdc`), que busca en la
 
 ### Commits
 
-No se hacen commits ni push sin un pedido explícito del responsable del proyecto. La única excepción es la sincronización del kanban, que hace commit y push de los archivos del tablero sola (ver "Sincronizar el kanban"). Los mensajes van en español: una primera línea corta con qué cambió y, si hace falta, un cuerpo que enlace al documento con el porqué.
+Commit y push se autorizan por tarea ([ADR 0017](../adrs/0017-forma-de-trabajo-mas-liviana.md)): al empezar, el responsable del proyecto dice si la tarea incluye commit y push al terminar, y se anota en el registro de su tarjeta. Con esa autorización, la sesión hace commit y push al terminar, sin volver a pedirlos. Sin ella, no se hacen commits ni push sin un pedido explícito. Los mensajes van en español: una primera línea corta con qué cambió y, si hace falta, un cuerpo que enlace al documento con el porqué.
 
 ## Entorno de trabajo
 

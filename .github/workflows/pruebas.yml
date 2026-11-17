@@ -1,0 +1,82 @@
+# Corre todas las pruebas del repositorio: de noche, si main cambió en el último día, y a demanda (ADR 0017).
+# No usa secretos: las pruebas no llaman al modelo.
+name: Pruebas
+
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  hace-falta:
+    runs-on: ubuntu-latest
+    outputs:
+      correr: ${{ steps.mirar.outputs.correr }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: ¿Cambió main en el último día?
+        id: mirar
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ] || [ -n "$(git log --since='25 hours ago' --format=%h -1)" ]; then
+            echo "correr=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "correr=false" >> "$GITHUB_OUTPUT"
+            echo "main no cambió desde la última noche: no hay nada nuevo que probar."
+          fi
+
+  documentos-y-tableros:
+    needs: hace-falta
+    if: needs.hace-falta.outputs.correr == 'true'
+    runs-on: ubuntu-latest
+    env:
+      HERRAMIENTAS: ${{ github.workspace }}/../herramientas-node
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - name: Instalar mermaid-cli, que trae Puppeteer
+        run: npm install --no-audit --no-fund --prefix "$HERRAMIENTAS" @mermaid-js/mermaid-cli@12
+      - name: Verificador
+        env:
+          EXIGIR_MERMAID: "1"
+        run: MMDC="$HERRAMIENTAS/node_modules/.bin/mmdc" python3 herramientas/verificar_docs.py
+      - name: Pruebas de Python
+        run: |
+          python3 herramientas/pruebas/prueba_tablero_arquitectura.py
+          python3 herramientas/pruebas/prueba_banco_de_pruebas.py
+      - name: Pruebas en Chrome
+        run: |
+          export NODE_PATH="$HERRAMIENTAS/node_modules" CAPTURAS="$RUNNER_TEMP/capturas"
+          node herramientas/pruebas/prueba_kanban.mjs
+          node herramientas/pruebas/prueba_tablero_arquitectura.mjs
+      - name: Guardar las capturas del tablero de arquitectura
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: capturas-del-tablero-de-arquitectura
+          path: ${{ runner.temp }}/capturas
+          if-no-files-found: warn
+
+  aplicacion:
+    needs: hace-falta
+    if: needs.hace-falta.outputs.correr == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "25"
+          cache: maven
+      - name: Pruebas de la aplicación, con Testcontainers
+        working-directory: app
+        run: mvn -B test
