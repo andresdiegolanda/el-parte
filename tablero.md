@@ -84,30 +84,6 @@ Los campos van pegados al título, sin línea en blanco. Los que no aplican se o
 
 ## Para empezar
 
-### T43 · Que la corrida de la noche se ponga al día
-- Tipo: Componente
-- Dueño: desarrollo
-- Detalle: [docs/como-se-hizo/despliegue.md](docs/como-se-hizo/despliegue.md), [app/src/main/java/io/github/andresdiegolanda/elparte/corrida/NochePorReloj.java](app/src/main/java/io/github/andresdiegolanda/elparte/corrida/NochePorReloj.java)
-
-La corrida de cada noche sale con una tarea programada a las 6 de Uruguay. En la máquina del responsable eso falla de dos maneras: si la máquina virtual de Docker estuvo en pausa, sale tarde, tanto como duró la pausa; y si la máquina está apagada o dormida a esa hora, no sale. Tiene que correr apenas pueda, sin duplicar una noche que ya corrió.
-
-Etapas:
-- [ ] Contrato
-- [ ] Código
-- [ ] Pruebas
-- [ ] Medido contra el banco
-- [ ] Página cómo se hizo
-
-Lista:
-- [ ] Revisar cada pocos minutos si ya pasó la hora y la noche de ayer no tiene corrida normal, y correrla
-- [ ] Que una noche no corra dos veces si la revisión y la corrida a mano coinciden
-- [ ] Probarlo con un reloj de prueba: la hora pasó con la aplicación apagada, y con la aplicación prendida
-
-Registro:
-- 2026-11-17: Creada: la primera corrida automática publicada no salió a las 6; el reloj monótono de la JVM iba unos 44 minutos atrás por una pausa de la máquina virtual de Docker (docs/como-se-hizo/despliegue.md).
-- 2026-11-17: La corrida de la noche del 2026-11-16 arrancó a las 6:47 de Uruguay, 47 minutos tarde. Al reiniciar, la aplicación vuelve a calcular la próxima corrida con la hora de verdad, pero una pausa posterior la vuelve a atrasar. [INFERRED]
-- 2026-11-17: Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
-
 ### T35 · Mandar el aviso diario del parte
 - Tipo: Componente
 - Dueño: desarrollo
@@ -277,6 +253,31 @@ Registro:
 ## Pendiente
 
 ## Hecho
+
+### T43 · Que la corrida de la noche se ponga al día
+- Tipo: Componente
+- Dueño: desarrollo
+- Detalle: [docs/como-se-hizo/despliegue.md](docs/como-se-hizo/despliegue.md), [app/src/main/java/io/github/andresdiegolanda/elparte/corrida/NochePorReloj.java](app/src/main/java/io/github/andresdiegolanda/elparte/corrida/NochePorReloj.java)
+
+La corrida de cada noche sale con una tarea programada a las 6 de Uruguay. En la máquina del responsable eso falla de dos maneras: si la máquina virtual de Docker estuvo en pausa, sale tarde, tanto como duró la pausa; y si la máquina está apagada o dormida a esa hora, no sale. Tiene que correr apenas pueda, sin duplicar una noche que ya corrió.
+
+Etapas:
+- [x] Contrato
+- [x] Código
+- [x] Pruebas
+- [x] Medido contra el banco
+- [x] Página cómo se hizo
+
+Lista:
+- [x] Revisar cada pocos minutos si ya pasó la hora y la noche de ayer no tiene corrida normal, y correrla
+- [x] Que una noche no corra dos veces si la revisión y la corrida a mano coinciden
+- [x] Probarlo con un reloj de prueba: la hora pasó con la aplicación apagada, y con la aplicación prendida
+
+Registro:
+- 2026-11-17: Creada: la primera corrida automática publicada no salió a las 6; el reloj monótono de la JVM iba unos 44 minutos atrás por una pausa de la máquina virtual de Docker (docs/como-se-hizo/despliegue.md).
+- 2026-11-17: La corrida de la noche del 2026-11-16 arrancó a las 6:47 de Uruguay, 47 minutos tarde. Al reiniciar, la aplicación vuelve a calcular la próxima corrida con la hora de verdad, pero una pausa posterior la vuelve a atrasar. [INFERRED]
+- 2026-11-17: Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
+- 2026-11-17: Hecha. Cada cinco minutos la aplicación mira el reloj de pared y corre la noche de ayer si ya pasó la hora y no tiene corrida normal; la variable es ELPARTE_CORRIDA_HORA, en lugar de ELPARTE_CORRIDA_CRON. Cada inicio toma un candado de la base, así una noche no corre dos veces. Lo prueba un reloj fijo antes y después de la hora y cuatro revisiones a la vez. La etapa del banco se tilda sin medir: el banco corre sus noches de otra forma. El ADR 0016 no se reemplaza: la decisión, correr a las 6 en la máquina del responsable, sigue; cambia cómo se pone al día, que el ADR dejaba a mano. Ver docs/como-se-hizo/despliegue.md. Pasa a Hecho.
 
 ### T44 · Que el alta avise cuando un invitado no es un correo
 - Tipo: Componente

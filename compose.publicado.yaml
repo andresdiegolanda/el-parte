@@ -33,8 +33,9 @@ services:
       CORREO_SSL: "true"
       ELPARTE_URL_PUBLICA: ${ELPARTE_URL_PUBLICA:?falta ELPARTE_URL_PUBLICA en el .env}
       ELPARTE_REMITENTE: ${ELPARTE_REMITENTE:?falta ELPARTE_REMITENTE en el .env}
-      # La noche de ayer, todos los días a las 6 de la mañana en Uruguay.
-      ELPARTE_CORRIDA_CRON: ${ELPARTE_CORRIDA_CRON:-0 0 6 * * *}
+      # La noche de ayer, apenas pasan las 6 de la mañana en Uruguay; si a esa hora la máquina estaba
+      # apagada o dormida, apenas vuelve (T43).
+      ELPARTE_CORRIDA_HORA: ${ELPARTE_CORRIDA_HORA:-06:00}
       # La salud va en otro puerto, al que el túnel no lleva: desde afuera no se ve, y nadie puede hacer
       # que la aplicación se conecte a Resend o a Kafka cada vez que la consulta. En esta máquina queda
       # en http://localhost:8090/actuator/health.

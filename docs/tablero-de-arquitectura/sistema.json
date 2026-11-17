@@ -967,12 +967,12 @@
    "id": "noche-por-reloj",
    "tipo": "servicio",
    "titulo": "Corrida por reloj",
-   "sub": "NochePorReloj · apagada",
+   "sub": "NochePorReloj · cada 5 minutos",
    "col": 0,
    "fila": 11,
    "estado": "construido",
-   "que_es": "Corre la noche de ayer a la hora que diga elparte.corrida.cron, en hora de Uruguay. Viene apagada.",
-   "para_que": "Que las noches corran solas cuando se decida dónde vive la aplicación (T27).",
+   "que_es": "Cada cinco minutos mira el reloj de pared: si ya pasó la hora de elparte.corrida.hora, en hora de Uruguay, y la noche de ayer no tiene corrida normal, la corre. En local viene apagada; publicada, a las 6.",
+   "para_que": "Que las noches corran solas y se pongan al día si la máquina estuvo apagada, dormida o en pausa a la hora (T43).",
    "codigo": [
     "app/src/main/java/io/github/andresdiegolanda/elparte/corrida/NochePorReloj.java"
    ],
@@ -980,7 +980,10 @@
     "app/README.md"
    ],
    "nota": "Apagada por omisión: el cron vale \"-\".",
-   "apagado": true
+   "apagado": true,
+   "tarjetas": [
+    "T43"
+   ]
   },
   {
    "id": "corridas",
@@ -1674,8 +1677,8 @@
    "tipo": "usa",
    "estado": "construido",
    "papel": "auxiliar",
-   "etiqueta": "corre la noche de ayer",
-   "detalle": "Si elparte.corrida.cron no es \"-\", el reloj le pide al inicio la corrida de ayer, en hora de Uruguay."
+   "etiqueta": "corre la noche de ayer si falta",
+   "detalle": "Si ya pasó la hora y la noche de ayer no tiene corrida normal, el reloj le pide al inicio esa corrida. El inicio toma un candado de la base y vuelve a mirar, así una noche no corre dos veces si coincide con la sala de máquinas."
   },
   {
    "id": "inicio>kafka/corrida.iniciada",
@@ -3870,6 +3873,14 @@
    "texto": "El alta de invitados no da de alta un texto sin forma de correo y lo avisa en el registro (T44).",
    "objetos": [
     "invitados"
+   ]
+  },
+  {
+   "fecha": "2026-11-17",
+   "texto": "La corrida por reloj se pone al día: revisa cada cinco minutos y corre la noche de ayer si falta, con un candado en el inicio para no correrla dos veces (T43).",
+   "objetos": [
+    "noche-por-reloj",
+    "noche-por-reloj>inicio"
    ]
   }
  ],

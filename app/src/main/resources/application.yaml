@@ -76,8 +76,10 @@ elparte:
     costo-maximo-usd: 1.25
     pasos-maximos: 200
     minutos-maximos: 45
-    # Corrida por reloj, en hora de Uruguay: "-" la apaga; "0 0 6 * * *" corre todos los días a las 6.
-    cron: "-"
+    # Corrida por reloj, en hora de Uruguay: "-" la apaga; "06:00" corre la noche de ayer apenas pasan
+    # las 6. Se revisa cada revisar-cada-ms, así se pone al día después de una pausa o un apagón (T43).
+    hora: "-"
+    revisar-cada-ms: 300000
   # La medición contra el banco (ADR 0014). La arranca el perfil banco; ver application-banco.yaml.
   banco:
     entidad: organismo:bps

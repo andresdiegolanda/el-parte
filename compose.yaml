@@ -75,7 +75,7 @@ services:
       BASE_CLAVE_CUENTAS: ${BASE_CLAVE_CUENTAS:-cuentas-local}
       KAFKA_SERVIDORES: kafka:19092
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-sin-clave}
-      ELPARTE_CORRIDA_CRON: ${ELPARTE_CORRIDA_CRON:--}
+      ELPARTE_CORRIDA_HORA: ${ELPARTE_CORRIDA_HORA:--}
       CORREO_HOST: correo
       CORREO_PUERTO: 1025
       # En local, el enlace del correo apunta a esta máquina aunque el .env tenga la dirección pública,

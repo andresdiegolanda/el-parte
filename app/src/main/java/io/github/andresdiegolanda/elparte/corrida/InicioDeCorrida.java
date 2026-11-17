@@ -8,10 +8,14 @@ import java.time.ZoneId;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import io.github.andresdiegolanda.elparte.mensajes.Contenidos.CorridaIniciada;
 import io.github.andresdiegolanda.elparte.mensajes.Contenidos.Presupuesto;
@@ -29,13 +33,19 @@ import tools.jackson.databind.json.JsonMapper;
  * pruebas, siguiendo solo la entidad que se mide (ADR 0014). Una de reproducción copia todo eso de la
  * corrida que repite.
  *
- * <p>La corrida se anota en la base antes de emitir el mensaje, y sin transacción abierta, para que el
- * observador encuentre la corrida cuando guarde el mensaje.
+ * <p>La corrida se anota en la base antes de emitir el mensaje, en una transacción propia que termina
+ * antes de emitirlo, para que el observador encuentre la corrida cuando guarde el mensaje. Esa
+ * transacción toma un candado de la base, el mismo para todas las corridas: dos inicios a la vez no
+ * eligen el mismo identificador, y la revisión del reloj no corre una noche que la sala de máquinas
+ * acaba de correr (T43).
  */
 @Service
 public class InicioDeCorrida {
 
     public static final ZoneId URUGUAY = ZoneId.of("America/Montevideo");
+
+    /** El candado de la base que toma cada inicio, en {@code pg_advisory_xact_lock}. */
+    private static final long CANDADO = 20261117L;
 
     private final JdbcClient jdbc;
     private final Emisor emisor;
@@ -43,8 +53,10 @@ public class InicioDeCorrida {
     private final JsonMapper json;
     private final Clock reloj;
     private final Presupuesto presupuesto;
+    private final TransactionTemplate aparte;
 
     public InicioDeCorrida(JdbcClient jdbc, Emisor emisor, RegistroDeMensajes registro, JsonMapper json, Clock reloj,
+            PlatformTransactionManager transacciones,
             @Value("${elparte.corrida.costo-maximo-usd:1.25}") BigDecimal costoMaximo,
             @Value("${elparte.corrida.pasos-maximos:200}") int pasosMaximos,
             @Value("${elparte.corrida.minutos-maximos:45}") int minutosMaximos) {
@@ -54,6 +66,8 @@ public class InicioDeCorrida {
         this.json = json;
         this.reloj = reloj;
         this.presupuesto = new Presupuesto(costoMaximo, pasosMaximos, minutosMaximos);
+        this.aparte = new TransactionTemplate(transacciones);
+        this.aparte.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
     }
 
     /** La fecha objetivo por omisión: ayer, en Uruguay. */
@@ -67,18 +81,30 @@ public class InicioDeCorrida {
 
     /** Una noche normal con otro presupuesto que el de la configuración. */
     public String iniciarNormal(LocalDate fechaObjetivo, Presupuesto presupuesto) {
+        return iniciar(normal(fechaObjetivo, presupuesto), false).orElseThrow();
+    }
+
+    /**
+     * Una noche normal solo si esa noche todavía no tiene una corrida normal, en cualquier estado (T43).
+     * Vacío si ya la tenía. Una corrida que falló o se cortó cuenta: volver a correrla es del
+     * responsable, desde la sala de máquinas, porque cada intento gasta.
+     */
+    public Optional<String> iniciarNormalSiFalta(LocalDate fechaObjetivo) {
+        return iniciar(normal(fechaObjetivo, presupuesto), true);
+    }
+
+    private CorridaIniciada normal(LocalDate fechaObjetivo, Presupuesto presupuesto) {
         List<String> entidades = jdbc.sql("select distinct entidad_id from parte.suscripciones order by entidad_id")
                 .query(String.class).list();
-        CorridaIniciada inicio = new CorridaIniciada("normal", fechaObjetivo.toString(), fuentesActivas(), entidades,
+        return new CorridaIniciada("normal", fechaObjetivo.toString(), fuentesActivas(), entidades,
                 presupuesto, modelosVigentes(), null);
-        return iniciar(inicio);
     }
 
     /** Una noche del banco de pruebas: la fecha del registro, y solo la entidad que se mide (ADR 0014). */
     public String iniciarBanco(LocalDate fechaObjetivo, String entidad) {
         CorridaIniciada inicio = new CorridaIniciada("banco", fechaObjetivo.toString(), fuentesActivas(),
                 List.of(entidad), presupuesto, modelosVigentes(), null);
-        return iniciar(inicio);
+        return iniciar(inicio, false).orElseThrow();
     }
 
     /** Repite una corrida normal o del banco con lo que ella grabó: sin red ni costo. */
@@ -91,7 +117,7 @@ public class InicioDeCorrida {
         }
         CorridaIniciada inicio = new CorridaIniciada("reproduccion", original.fechaObjetivo(), original.fuentes(),
                 original.entidadesSeguidas(), original.presupuesto(), original.modelos(), corridaOriginal);
-        return iniciar(inicio);
+        return iniciar(inicio, false).orElseThrow();
     }
 
     private List<String> fuentesActivas() {
@@ -107,7 +133,27 @@ public class InicioDeCorrida {
         return modelos;
     }
 
-    private String iniciar(CorridaIniciada inicio) {
+    private Optional<String> iniciar(CorridaIniciada inicio, boolean siFalta) {
+        String corridaId = aparte.execute(estado -> {
+            jdbc.sql("select pg_advisory_xact_lock(:candado)").param("candado", CANDADO).query((f, n) -> true).list();
+            if (siFalta && tieneCorridaNormal(LocalDate.parse(inicio.fechaObjetivo()))) {
+                return null;
+            }
+            return anotar(inicio);
+        });
+        if (corridaId == null) {
+            return Optional.empty();
+        }
+        emisor.emitir(corridaId, Tipos.CORRIDA_INICIADA, "inicio", null, 0, inicio);
+        return Optional.of(corridaId);
+    }
+
+    private boolean tieneCorridaNormal(LocalDate noche) {
+        return jdbc.sql("select count(*) from parte.corridas where modo = 'normal' and fecha_objetivo = :noche")
+                .param("noche", noche).query(Long.class).single() > 0;
+    }
+
+    private String anotar(CorridaIniciada inicio) {
         String corridaId = nuevoId(inicio.fechaObjetivo(), inicio.modo());
         jdbc.sql("""
                 insert into parte.corridas (id, modo, fecha_objetivo, estado, presupuesto_usd, presupuesto_pasos,
@@ -124,7 +170,6 @@ public class InicioDeCorrida {
                 .param("inicio", Timestamp.from(reloj.instant()))
                 .update();
         jdbc.sql("insert into parte.libros_de_corrida (corrida_id) values (:id)").param("id", corridaId).update();
-        emisor.emitir(corridaId, Tipos.CORRIDA_INICIADA, "inicio", null, 0, inicio);
         return corridaId;
     }
 
