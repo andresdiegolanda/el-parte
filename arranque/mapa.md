@@ -89,6 +89,7 @@ flowchart TD
 | [`docs/como-se-hizo/revision.md`](../docs/como-se-hizo/revision.md) | Cómo se hizo la cola de revisión humana y lo que cambia en la página de la mañana (T23). |
 | [`docs/como-se-hizo/login.md`](../docs/como-se-hizo/login.md) | Cómo se hizo el login por enlace de correo, el alta de invitados y quién puede hacer qué (T25). |
 | [`docs/como-se-hizo/aviso-diario.md`](../docs/como-se-hizo/aviso-diario.md) | Cómo se hizo el aviso diario por correo: escucha los informes de las corridas normales, uno por invitado y noche, sin el contenido de los hechos (T35). |
+| [`docs/como-se-hizo/modelos.md`](../docs/como-se-hizo/modelos.md) | Cómo se hizo la página de modelos y precios: el responsable cambia el modelo de cada agente y carga precios sin reiniciar (T29). |
 | [`docs/como-se-hizo/perfil.md`](../docs/como-se-hizo/perfil.md) | Cómo se hizo el perfil: el catálogo de organismos con su código en ARCE, seguir y dejar de seguir, y el aviso diario sí o no (T34). |
 | [`docs/como-se-hizo/despliegue.md`](../docs/como-se-hizo/despliegue.md) | Cómo se hizo El Parte publicado: el túnel, el correo, la salud fuera del túnel y las copias de la base (T27, T40). |
 

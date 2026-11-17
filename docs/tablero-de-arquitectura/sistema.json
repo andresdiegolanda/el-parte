@@ -1406,18 +1406,28 @@
   {
    "id": "web/responsable",
    "tipo": "pagina",
-   "titulo": "Pantalla del responsable",
-   "sub": "",
+   "titulo": "Modelos y precios",
+   "sub": "/modelos · cambia el responsable",
    "col": 6,
    "fila": 17,
-   "estado": "disenado",
-   "que_es": "La pantalla donde el responsable cambia el modelo de cada agente y los precios, sin reiniciar.",
+   "estado": "construido",
+   "que_es": "La página donde se ve el modelo de cada agente y los precios, con su historia, y donde el responsable los cambia sin reiniciar. No deja elegir un modelo sin precio.",
    "para_que": "Calibrar contra el banco de pruebas cambiando modelos de una corrida a otra (ADR 0003).",
    "docs": [
-    "adrs/0003-eleccion-del-stack.md"
+    "adrs/0003-eleccion-del-stack.md",
+    "docs/como-se-hizo/modelos.md"
    ],
    "tarjetas": [
     "T29"
+   ],
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/web/ModelosControlador.java",
+    "app/src/main/resources/templates/modelos.html"
+   ],
+   "rutas": [
+    "GET /modelos",
+    "POST /modelos/agente",
+    "POST /modelos/precio"
    ]
   },
   {
@@ -2750,7 +2760,7 @@
    "de": "web/responsable",
    "a": "base/modelos_de_agente",
    "tipo": "escribe",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "cambia un modelo",
    "detalle": "Una fila nueva por cambio; vale desde la corrida siguiente.",
@@ -2763,7 +2773,7 @@
    "de": "web/responsable",
    "a": "base/precios_de_modelo",
    "tipo": "escribe",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "cambia un precio",
    "detalle": "Una fila nueva por cambio, con su fuente y fecha.",
@@ -3900,6 +3910,15 @@
     "base/usuarios>envio-del-parte",
     "envio-del-parte>base/envios",
     "envio-del-parte>correo"
+   ]
+  },
+  {
+   "fecha": "2026-11-17",
+   "texto": "La página de modelos y precios, construida (T29): el responsable cambia el modelo de cada agente y carga precios desde la sala, y cada cambio vale desde la corrida siguiente.",
+   "objetos": [
+    "web/responsable",
+    "web/responsable>base/modelos_de_agente",
+    "web/responsable>base/precios_de_modelo"
    ]
   }
  ],

@@ -84,33 +84,6 @@ Los campos van pegados al título, sin línea en blanco. Los que no aplican se o
 
 ## Para empezar
 
-### T29 · Cambiar el modelo de cada agente sin reiniciar la aplicación
-- Tipo: Web
-- Dueño: desarrollo
-- Depende de: T22, T25
-- Detalle: [adrs/0003-eleccion-del-stack.md](adrs/0003-eleccion-del-stack.md), [adrs/0005-presupuesto-por-corrida.md](adrs/0005-presupuesto-por-corrida.md), [docs/base-de-afirmaciones.md](docs/base-de-afirmaciones.md)
-
-El modelo de cada agente y los precios viven en la base, con historia, y el responsable los cambia desde la sala de máquinas. Cada cambio vale desde la corrida siguiente.
-
-Etapas:
-- [ ] Diseño
-- [ ] Código
-- [ ] Pruebas
-- [ ] Página cómo se hizo
-
-Lista:
-- [ ] Tablas de modelos y precios, con los valores iniciales en una migración
-- [ ] El inicio de la corrida congela los modelos en corrida.iniciada
-- [ ] Cada agente pasa su modelo en las opciones de cada pedido
-- [ ] Rol de responsable en la lista de invitados
-- [ ] Pantalla del responsable, que no deja elegir un modelo sin precio
-- [ ] La sala de máquinas muestra qué modelo usó cada agente
-
-Registro:
-- 2026-11-14: Creada al aceptar el ADR 0003.
-- 2026-11-17: Pasa a Para empezar: T22 y T25 están hechas.
-- 2026-11-17: Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
-
 ### T26 · Escribir la sección "Cómo funciona" y las páginas "cómo se hizo"
 - Tipo: Documento
 - Dueño: desarrollo
@@ -256,6 +229,34 @@ Registro:
 ## Pendiente
 
 ## Hecho
+
+### T29 · Cambiar el modelo de cada agente sin reiniciar la aplicación
+- Tipo: Web
+- Dueño: desarrollo
+- Depende de: T22, T25
+- Detalle: [docs/como-se-hizo/modelos.md](docs/como-se-hizo/modelos.md), [adrs/0003-eleccion-del-stack.md](adrs/0003-eleccion-del-stack.md), [adrs/0005-presupuesto-por-corrida.md](adrs/0005-presupuesto-por-corrida.md), [docs/base-de-afirmaciones.md](docs/base-de-afirmaciones.md)
+
+El modelo de cada agente y los precios viven en la base, con historia, y el responsable los cambia desde la sala de máquinas. Cada cambio vale desde la corrida siguiente.
+
+Etapas:
+- [x] Diseño
+- [x] Código
+- [x] Pruebas
+- [x] Página cómo se hizo
+
+Lista:
+- [x] Tablas de modelos y precios, con los valores iniciales en una migración
+- [x] El inicio de la corrida congela los modelos en corrida.iniciada
+- [x] Cada agente pasa su modelo en las opciones de cada pedido
+- [x] Rol de responsable en la lista de invitados
+- [x] Pantalla del responsable, que no deja elegir un modelo sin precio
+- [x] La sala de máquinas muestra qué modelo usó cada agente
+
+Registro:
+- 2026-11-14: Creada al aceptar el ADR 0003.
+- 2026-11-17: Pasa a Para empezar: T22 y T25 están hechas.
+- 2026-11-17: Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
+- 2026-11-17: Hecha. Las tablas con historia, los valores iniciales, la congelación en corrida.iniciada, el modelo en cada pedido, el rol de responsable y la sala que muestra el modelo de cada agente ya estaban. Se suma /modelos: se ve sin entrar, y el responsable cambia el modelo de un agente, solo entre los que tienen precio, y carga precios con su fuente. Ver docs/como-se-hizo/modelos.md. Pasa a Hecho.
 
 ### T43 · Que la corrida de la noche se ponga al día
 - Tipo: Componente

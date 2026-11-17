@@ -5,7 +5,8 @@
 <header th:replace="~{fragmentos :: menu}"></header>
 <main>
     <h1>Sala de máquinas</h1>
-    <p class="sub">Cada corrida, con sus mensajes, su costo y cómo terminó.</p>
+    <p class="sub">Cada corrida, con sus mensajes, su costo y cómo terminó. El modelo de cada agente y los precios están en
+        <a href="/modelos">Modelos y precios</a>.</p>
 
     <div th:if="${usuario == null or !usuario.responsable}" class="tarjeta vacio">
         Correr o repetir una corrida es del responsable del proyecto: una corrida gasta crédito del modelo.

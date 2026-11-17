@@ -55,6 +55,7 @@ public class Seguridad {
             ManejoDelEnlace manejo, PersistentTokenRepository recordatorios) throws Exception {
         http.authorizeHttpRequests(a -> a
                         .requestMatchers(HttpMethod.POST, "/corridas", "/corridas/**").hasRole(UsuarioDeElParte.RESPONSABLE)
+                        .requestMatchers(HttpMethod.POST, "/modelos/**").hasRole(UsuarioDeElParte.RESPONSABLE)
                         .requestMatchers("/revision", "/revision/**").hasRole(UsuarioDeElParte.RESPONSABLE)
                         .requestMatchers(HttpMethod.POST, "/perfil/**").authenticated()
                         .anyRequest().permitAll())

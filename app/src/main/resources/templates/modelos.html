@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabeza('Modelos y precios')}"></head>
+<body>
+<header th:replace="~{fragmentos :: menu}"></header>
+<main>
+    <h1>Modelos y precios</h1>
+    <p class="sub">El modelo de cada agente y lo que cuesta cada modelo. Un cambio vale desde la corrida siguiente:
+        cada corrida congela sus modelos al empezar y usa el precio que regía entonces. <a href="/corridas">Volver a la sala</a>.</p>
+
+    <div th:if="${hecho}" class="tarjeta ok" th:text="${hecho}"></div>
+    <div th:if="${error}" class="tarjeta mal" th:text="${error}"></div>
+    <div th:if="${usuario == null or !usuario.responsable}" class="tarjeta vacio">
+        Cambiar un modelo o un precio es del responsable del proyecto: cambia lo que gasta cada corrida.
+        Mirarlos es libre.
+    </div>
+
+    <h2>El modelo de cada agente</h2>
+    <table>
+        <tr><th>Agente</th><th>Modelo</th><th>Desde</th><th th:if="${usuario != null and usuario.responsable}">Cambiar a</th></tr>
+        <tr th:each="v : ${vigentes}">
+            <td th:text="${v.agente}">refutador</td>
+            <td th:text="${v.modelo}">claude-sonnet-5-5</td>
+            <td th:text="${v.desde}"></td>
+            <td th:if="${usuario != null and usuario.responsable}">
+                <form method="post" th:action="@{/modelos/agente}" class="en-linea">
+                    <input type="hidden" name="agente" th:value="${v.agente}">
+                    <select name="modelo">
+                        <option th:each="m : ${conPrecio}" th:value="${m}" th:text="${m}" th:selected="${m == v.modelo}"></option>
+                    </select>
+                    <button type="submit">Cambiar</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+    <p class="sub">Hoy llaman al modelo el refutador y el analista; los demás tienen el suyo anotado para cuando lo usen.
+        Solo se puede elegir un modelo con precio: sin precio, el presupuesto no sabría cuánto reservar antes de cada llamada.</p>
+
+    <h2>Precios por millón de tokens, en dólares</h2>
+    <table>
+        <tr><th>Modelo</th><th>Entrada</th><th>Salida</th><th>Caché, lectura</th><th>Caché, escritura</th><th>Fuente</th><th>Consultado</th><th>Desde</th></tr>
+        <tr th:each="p : ${precios}">
+            <td th:text="${p.modelo}"></td>
+            <td th:text="${p.entrada}"></td>
+            <td th:text="${p.salida}"></td>
+            <td th:text="${p.cacheLectura}"></td>
+            <td th:text="${p.cacheEscritura}"></td>
+            <td><a th:href="${p.fuente}" th:text="${p.fuente}"></a></td>
+            <td th:text="${p.consultadoEl}"></td>
+            <td th:text="${p.desde}"></td>
+        </tr>
+    </table>
+
+    <div class="tarjeta" style="margin-top: 1rem" th:if="${usuario != null and usuario.responsable}">
+        <strong>Cargar un precio.</strong> Un modelo nuevo, o un precio que cambió. Va con la página donde se leyó.
+        <form method="post" th:action="@{/modelos/precio}">
+            <p class="fila">
+                <label>Modelo <input name="modelo" placeholder="claude-sonnet-5-5" required></label>
+                <label>Entrada <input name="entrada" size="7" required></label>
+                <label>Salida <input name="salida" size="7" required></label>
+                <label>Caché, lectura <input name="cacheLectura" size="7" required></label>
+                <label>Caché, escritura <input name="cacheEscritura" size="7" required></label>
+            </p>
+            <p class="fila">
+                <label>Fuente <input name="fuente" size="50" value="https://docs.claude.com/en/docs/about-claude/pricing" required></label>
+                <label>Consultado el <input type="date" name="consultadoEl" th:value="${hoy}" required></label>
+                <button type="submit">Cargar</button>
+            </p>
+        </form>
+    </div>
+
+    <h2>Los últimos cambios de modelo</h2>
+    <table>
+        <tr><th>Desde</th><th>Agente</th><th>Modelo</th></tr>
+        <tr th:each="h : ${historia}">
+            <td th:text="${h.desde}"></td><td th:text="${h.agente}"></td><td th:text="${h.modelo}"></td>
+        </tr>
+    </table>
+</main>
+</body>
+</html>
