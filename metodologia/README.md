@@ -40,7 +40,7 @@ Las reglas de El Parte, en [`README.md`](../README.md), son las mismas con dos d
 | `herramientas/tablero_md.py` | Lee y valida `tablero.md`. | Se copia tal cual |
 | `herramientas/generar_kanban.py` y `kanban/plantilla.html` | Generan el kanban, de solo lectura, desde `tablero.md`. Toma el nombre y el objetivo del encabezado del tablero. | Se copian; de la plantilla se borra la línea del botón `btn-credito`, que es de El Parte |
 | `herramientas/verificar_docs.py` | El verificador: guiones largos, enlaces, tablero, kanban, tarjetas y decisiones citadas, diagramas Mermaid y cifras repetidas. | Se copia tal cual: lo propio de El Parte se saltea si no está |
-| `herramientas/armar_sitio.py` y `.github/workflows/publicar.yml` | Arman el sitio y lo publican en GitHub Pages en cada push a `main`. | Se copian; en `armar_sitio.py` se cambia `DESCRIPCION` |
+| `herramientas/armar_sitio.py` y `.github/workflows/publicar.yml` | Arman el sitio y lo publican en GitHub Pages en cada push a `main`. | Se copian; en `armar_sitio.py` se cambia `DESCRIPCION`. Si la aplicación está publicada, su dirección va en la variable `URL_DE_LA_APLICACION` del repositorio en GitHub Actions, y la portada suma el enlace |
 | `herramientas/pruebas/prueba_kanban.mjs` | Abre el kanban en Chrome y comprueba que ande y que no se pueda editar. | Se copia tal cual |
 | `.github/workflows/pruebas.yml` | Corre el verificador y cada prueba de `herramientas/pruebas/`, de noche si `main` cambió y a demanda. | Se copia tal cual; las pruebas propias del proyecto se suman como un trabajo más |
 

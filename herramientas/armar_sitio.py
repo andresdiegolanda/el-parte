@@ -8,6 +8,10 @@ y las deja en la carpeta de destino con las mismas rutas que en el repositorio, 
   kanban/index.html                       el kanban, de solo lectura
   docs/tablero-de-arquitectura/*.html     el tablero de arquitectura, una página por vista
 
+Si la variable de entorno URL_DE_LA_APLICACION tiene una dirección, la portada suma un enlace a la
+aplicación publicada. La dirección no va en el repositorio: en GitHub Actions es una variable del
+repositorio con el mismo nombre (ADR 0016).
+
 Lo corre .github/workflows/publicar.yml en cada push a main. En una sesión se puede correr igual,
 para ver el sitio entero antes de subir.
 
@@ -16,6 +20,7 @@ Sale con 1, sin escribir nada, si alguna de las fuentes tiene errores.
 """
 
 import html
+import os
 import shutil
 import sys
 from pathlib import Path
@@ -81,7 +86,12 @@ def armar():
     if errores:
         return {}, errores
     sitio = {"kanban/index.html": kanban}
-    enlaces = [
+    enlaces = []
+    aplicacion = os.environ.get("URL_DE_LA_APLICACION", "").strip()
+    if aplicacion.startswith("https://"):
+        enlaces.append(ENLACE.format(href=html.escape(aplicacion), titulo="La aplicación",
+                                     texto="El proyecto funcionando. Se entra con un enlace que llega por correo, solo con invitación."))
+    enlaces += [
         ENLACE.format(href="kanban/", titulo="El tablero del proyecto",
                       texto="Lo que está en curso, lo que falta y lo que ya se hizo, tarjeta por tarjeta. De solo lectura: se cambia en tablero.md."),
     ]

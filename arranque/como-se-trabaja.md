@@ -143,7 +143,7 @@ La sesión dice el tamaño al empezar, y el responsable lo puede cambiar.
 
 Dos workflows de GitHub Actions, en `.github/workflows/` ([ADR 0017](../adrs/0017-forma-de-trabajo-mas-liviana.md)):
 
-- **`publicar.yml`**, en cada push a `main`: `herramientas/armar_sitio.py` genera el kanban y el tablero de arquitectura y los publica en GitHub Pages, en <https://andresdiegolanda.github.io/el-parte/>. No corre pruebas.
+- **`publicar.yml`**, en cada push a `main`: `herramientas/armar_sitio.py` genera el kanban y el tablero de arquitectura y los publica en GitHub Pages, en <https://andresdiegolanda.github.io/el-parte/>, con un enlace a la aplicación publicada. Esa dirección no va en el repositorio: es la variable `URL_DE_LA_APLICACION` del repositorio en GitHub Actions ([ADR 0016](../adrs/0016-despliegue-en-la-maquina-del-responsable.md)). No corre pruebas.
 - **`pruebas.yml`**, todas las noches si `main` cambió en el último día, y a demanda: el verificador, las pruebas de Python y de Chrome de `herramientas/pruebas/` y `mvn test` de `app/`. Deja las capturas del tablero de arquitectura como artefacto de la corrida. No usa secretos: las pruebas no llaman al modelo.
 
 ### Nada se borra (regla 9)

@@ -28,6 +28,9 @@ jobs:
         with:
           python-version: "3.13"
       - name: Armar el sitio
+        # La dirección de la aplicación publicada es una variable del repositorio, no va en el código (ADR 0016).
+        env:
+          URL_DE_LA_APLICACION: ${{ vars.URL_DE_LA_APLICACION }}
         run: python3 herramientas/armar_sitio.py "$RUNNER_TEMP/sitio"
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
