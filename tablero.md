@@ -129,33 +129,6 @@ Registro:
 - 2026-11-17: Las 78 noches con el analista, el presupuesto y el explorador arreglado, en banco-de-pruebas/mediciones/2026-11-16-2/: 19,11 USD, 0,245 por noche, ninguna cortada. 5 de 5 publicables y 0 de 1 hallazgo, como antes. Un sorteo nuevo de 60 de los 796 extras, con la semilla 20261117: los 60 bien, precisión estimada 1,0 (de 0,94 a 1,0). Los 56 juicios nuevos están en borrador, para que el responsable los confirme. Dos juicios del sorteo anterior quedaron viejos: los hechos cambiaron con T39 y ahora están bien (docs/como-se-hizo/medicion-contra-el-banco.md).
 - 2026-11-17: El responsable confirmó los juicios de los dos sorteos, los 56 nuevos incluidos; el conteo no cambia. Los dos juicios viejos quedan como estaban. Siguen en borrador la fuente y la etiqueta de las entradas y las correspondencias, con lo de ATOS.
 
-### T45 · Aplicar el ADR 0017: una forma de trabajo más liviana
-- Tipo: Herramienta
-- Dueño: desarrollo
-- Detalle: [adrs/0017-forma-de-trabajo-mas-liviana.md](adrs/0017-forma-de-trabajo-mas-liviana.md), [arranque/como-se-trabaja.md](arranque/como-se-trabaja.md)
-
-Un solo lugar por dato, un ritual según el tamaño del cambio, commits autorizados por tarea, el kanban de solo lectura, los tableros publicados en GitHub Pages en cada push, las pruebas de noche y a demanda en GitHub Actions, y controles visuales del tablero de arquitectura.
-
-Etapas:
-- [x] Escrita
-- [x] Probada
-- [x] Documentada
-
-Lista:
-- [x] El ADR 0017, aceptado con su alcance antes del código
-- [x] El kanban de solo lectura, y la sincronización y la plantilla editable a obsoletos/
-- [x] Las páginas generadas fuera del repositorio, y herramientas/armar_sitio.py con .github/workflows/publicar.yml
-- [x] Las pruebas de noche y a demanda, en .github/workflows/pruebas.yml
-- [x] Los controles de posición y las capturas del tablero de arquitectura
-- [x] Un solo lugar por dato: el aviso del verificador y la limpieza de las cifras repetidas
-- [x] El ritual según el tamaño y la autorización por tarea, en arranque/como-se-trabaja.md
-- [ ] GitHub Pages prendido y el sitio publicado
-- [ ] La página publicada en Claude, con un aviso que manda al kanban de GitHub Pages
-
-Registro:
-- 2026-11-17: Creada con el ADR 0017. Tamaño grande. Autorizada con commit y push al terminar. Pasa a En curso.
-- 2026-11-17: Escrito, probado y documentado. El aviso de cifras repetidas deja cinco: tres de la presentación, que repite cifras de la medición 2026-11-15-2, y dos que coinciden por casualidad. Falta prender GitHub Pages y poner el aviso en la página publicada en Claude.
-
 ## Para empezar
 
 ### T43 · Que la corrida de la noche se ponga al día
@@ -401,6 +374,34 @@ Registro:
 - 2026-11-14: Creada con el ADR 0010.
 
 ## Hecho
+
+### T45 · Aplicar el ADR 0017: una forma de trabajo más liviana
+- Tipo: Herramienta
+- Dueño: desarrollo
+- Detalle: [adrs/0017-forma-de-trabajo-mas-liviana.md](adrs/0017-forma-de-trabajo-mas-liviana.md), [arranque/como-se-trabaja.md](arranque/como-se-trabaja.md)
+
+Un solo lugar por dato, un ritual según el tamaño del cambio, commits autorizados por tarea, el kanban de solo lectura, los tableros publicados en GitHub Pages en cada push, las pruebas de noche y a demanda en GitHub Actions, y controles visuales del tablero de arquitectura.
+
+Etapas:
+- [x] Escrita
+- [x] Probada
+- [x] Documentada
+
+Lista:
+- [x] El ADR 0017, aceptado con su alcance antes del código
+- [x] El kanban de solo lectura, y la sincronización y la plantilla editable a obsoletos/
+- [x] Las páginas generadas fuera del repositorio, y herramientas/armar_sitio.py con .github/workflows/publicar.yml
+- [x] Las pruebas de noche y a demanda, en .github/workflows/pruebas.yml
+- [x] Los controles de posición y las capturas del tablero de arquitectura
+- [x] Un solo lugar por dato: el aviso del verificador y la limpieza de las cifras repetidas
+- [x] El ritual según el tamaño y la autorización por tarea, en arranque/como-se-trabaja.md
+- [x] GitHub Pages prendido y el sitio publicado
+- [x] La página publicada en Claude, con un aviso que manda al kanban de GitHub Pages
+
+Registro:
+- 2026-11-17: Creada con el ADR 0017. Tamaño grande. Autorizada con commit y push al terminar. Pasa a En curso.
+- 2026-11-17: Escrito, probado y documentado. El aviso de cifras repetidas deja cinco: tres de la presentación, que repite cifras de la medición 2026-11-15-2, y dos que coinciden por casualidad. Falta prender GitHub Pages y poner el aviso en la página publicada en Claude.
+- 2026-11-17: GitHub Pages prendido, con GitHub Actions como fuente. El sitio está publicado en https://andresdiegolanda.github.io/el-parte/, con el kanban y el tablero de arquitectura, y la página publicada en Claude manda ahí. Las acciones de Pages avisan que apuntan a Node 20 y GitHub las corre en Node 24. Pasa a Hecho.
 
 ### T22 · Implementar el presupuesto que corta
 - Tipo: Componente
