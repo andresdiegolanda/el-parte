@@ -31,7 +31,8 @@ import com.sun.net.httpserver.HttpServer;
  * <li>{@code Decreto 301/026}: el servidor falla al pedirlo.</li>
  * <li>Una resolución, que el explorador no lee.</li>
  * </ul>
- * Cualquier otro día no hubo edición: responde 200 con un texto de error, como IMPO.
+ * Cualquier otro día no hubo edición: responde 200 sin nada, como IMPO un fin de semana, o, el 7 de
+ * noviembre, con un texto de error.
  */
 public class ImpoDePrueba implements AutoCloseable {
 
@@ -86,8 +87,13 @@ public class ImpoDePrueba implements AutoCloseable {
             if (ruta.equals("/diariooficial/2026/11/05/indice.pdf")) {
                 cuerpo = indice;
                 tipo = "application/pdf";
-            } else if (ruta.startsWith("/diariooficial/")) {
+            } else if (ruta.equals("/diariooficial/2026/11/07/indice.pdf")) {
+                // Un sábado: IMPO responde 200 con un texto de error.
                 cuerpo = "Error: no se encontró la edición solicitada".getBytes(StandardCharsets.ISO_8859_1);
+                tipo = "text/html; charset=ISO-8859-1";
+            } else if (ruta.startsWith("/diariooficial/")) {
+                // Cualquier otro día sin edición: 200 y nada, como responde IMPO un fin de semana.
+                cuerpo = new byte[0];
                 tipo = "text/html; charset=ISO-8859-1";
             } else if (ruta.equals("/bases/decretos/300-2026")) {
                 cuerpo = DECRETO_300.getBytes(StandardCharsets.ISO_8859_1);
@@ -98,7 +104,7 @@ public class ImpoDePrueba implements AutoCloseable {
                 cuerpo = "error".getBytes(StandardCharsets.ISO_8859_1);
             }
             intercambio.getResponseHeaders().add("Content-Type", tipo);
-            intercambio.sendResponseHeaders(estado, cuerpo.length);
+            intercambio.sendResponseHeaders(estado, cuerpo.length == 0 ? -1 : cuerpo.length);
             intercambio.getResponseBody().write(cuerpo);
             intercambio.close();
         });

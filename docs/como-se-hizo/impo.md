@@ -48,6 +48,7 @@ El código está en `app/src/main/java/io/github/andresdiegolanda/elparte/fuente
 
 - **La firma de las leyes.** Se esperaba que los nombres estuvieran solo en el campo de firmantes. En la ley de verdad, el último artículo trae la firma de la presidenta del Senado y de su secretario, con títulos encadenados ("Dr. Mag."): la primera versión tapó el primer título y dejó el nombre a la vista. Se vio al pasar el tapado por la ley real antes de medir. Ahora se tapan los títulos encadenados y los nombres en mayúsculas antes de un cargo.
 - **"Dirección Gral."** La primera versión tomaba "Gral." como título de persona y tapaba nombres de oficinas. Se sacó de la lista.
+- **Los fines de semana, como fallas.** Se esperaba que un día sin edición respondiera con un texto de error, como en la verificación de la fuente. Un sábado y un domingo respondieron 200 sin nada, y el lector lo tomaba como una respuesta mal formada: cada fin de semana salía como `fuente.fallida`. Se vio en la base de la primera medición con crédito, la `2026-11-17-2`, que se paró a la tercera noche. Ahora un índice vacío es un día sin edición, y la prueba lo cubre con las dos respuestas.
 - **El tope de gasto.** La medición de IMPO se cortó en su primera noche, sin gastar nada, porque la clave llegó al tope de gasto de su espacio de trabajo en la Claude Console. No es una falla del explorador; mientras dure, tampoco las corridas de cada noche pueden graduar nada.
 
 ## Qué falta

@@ -69,11 +69,11 @@ public class LectorImpo {
     }
 
     /**
-     * El índice de la edición de un día, en PDF. Vacío si ese día no hubo edición: IMPO responde 200 con
-     * un texto de error, y no un PDF.
+     * El índice de la edición de un día, en PDF. Vacío si ese día no hubo edición: IMPO responde 200, sin
+     * nada o con un texto de error, y no un PDF.
      */
     public Optional<byte[]> indice(LocalDate dia) {
-        byte[] cuerpo = traer(urlDelIndice(dia));
+        byte[] cuerpo = traer(urlDelIndice(dia), true);
         boolean esPdf = cuerpo.length > 4 && cuerpo[0] == '%' && cuerpo[1] == 'P' && cuerpo[2] == 'D' && cuerpo[3] == 'F';
         return esPdf ? Optional.of(cuerpo) : Optional.empty();
     }
@@ -81,7 +81,7 @@ public class LectorImpo {
     /** El JSON de una norma, por su identificador en el banco de IMPO: {@code decretos/223-2026}. Viene en ISO-8859-1. */
     public Leida norma(String identificador) {
         String url = urlDeNorma(identificador);
-        byte[] cuerpo = traer(url);
+        byte[] cuerpo = traer(url, false);
         JsonNode norma;
         try {
             norma = json.readTree(new String(cuerpo, StandardCharsets.ISO_8859_1));
@@ -94,7 +94,7 @@ public class LectorImpo {
         return new Leida(norma, "sha256:" + Huellas.sha256(cuerpo));
     }
 
-    private byte[] traer(String url) {
+    private byte[] traer(String url, boolean puedeVenirVacio) {
         RuntimeException ultima = null;
         for (int intento = 1; intento <= INTENTOS; intento++) {
             try {
@@ -107,6 +107,9 @@ public class LectorImpo {
                             "IMPO respondió " + respuesta.statusCode());
                 }
                 if (respuesta.body() == null || respuesta.body().length == 0) {
+                    if (puedeVenirVacio) {
+                        return new byte[0];
+                    }
                     throw new FallaDeImpo("formato", url, "Respuesta vacía");
                 }
                 return respuesta.body();

@@ -75,6 +75,20 @@ class ExploradorImpoTest extends ConServicios {
         assertThat(esperar(() -> comparacion.comparar(corrida, repeticion), r -> r.iguales()).iguales()).isTrue();
     }
 
+    @Test
+    void unDiaSinEdicionNoEsUnaFalla() {
+        // IMPO responde 200 sin nada un fin de semana, y con un texto de error otros días sin edición.
+        for (String noche : new String[] {"2026-11-08", "2026-11-07"}) {
+            String corrida = inicio.iniciarNormal(LocalDate.parse(noche));
+            assertThat(esperarFin(corrida)).isEqualTo("completa");
+            assertThat(deImpo(corrida, Tipos.EXPLORACION_TERMINADA)).singleElement()
+                    .satisfies(s -> assertThat(registro.contenido(s, ExploracionTerminada.class))
+                            .isEqualTo(new ExploracionTerminada("impo", 0, 0, 0)));
+            assertThat(registro.deCorridaYTipo(corrida, Tipos.FUENTE_FALLIDA)).as(noche)
+                    .noneMatch(s -> "impo".equals(s.contenido().path("fuente").asString()));
+        }
+    }
+
     private List<Sobre> deImpo(String corrida, String tipo) {
         return esperar(() -> registro.deCorridaYTipo(corrida, tipo).stream()
                 .filter(s -> "impo".equals(s.contenido().path("fuente").asString())).toList(), l -> !l.isEmpty());
