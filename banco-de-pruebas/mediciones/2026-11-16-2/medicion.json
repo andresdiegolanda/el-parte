@@ -1,0 +1,5797 @@
+{
+ "registro": {
+  "huella": "sha256:7d142fe895a672ac13a01aa57ee9f3c3e89f0315b0545977c9250d2d2c0b3bd6",
+  "primeraNoche": "2026-08-29",
+  "ultimaNoche": "2026-11-14",
+  "entradas": 84
+ },
+ "revision": {
+  "huella": "sha256:8eb810397c976d27440b147348b0ece1f7f5ef0890cf4a251068b4de3b72375b",
+  "sinRevisar": 0
+ },
+ "elParte": {
+  "commit": "a3c8adc",
+  "entidad": "organismo:bps",
+  "fuentes": [
+   "arce"
+  ],
+  "modelos": {
+   "editor": "claude-haiku-5-5",
+   "analista": "claude-sonnet-5-5",
+   "refutador": "claude-sonnet-5-5",
+   "archivista": "claude-haiku-5-5",
+   "explorador-arce": "claude-haiku-5-5"
+  }
+ },
+ "noches": {
+  "medidas": 78,
+  "completas": 78,
+  "cortadas": 0,
+  "fallidas": 0,
+  "conFuentesNoRepetibles": 5,
+  "costoUsd": 19.1108,
+  "costoUsdPorNoche": 0.245,
+  "duracionSegundosPorNoche": 165.8
+ },
+ "hallazgos": {
+  "total": 19,
+  "encontrados": {
+   "publicados": 0,
+   "aRevision": 0
+  },
+  "vistosYDescartados": 0,
+  "noEncontrados": 1,
+  "noRepetibles": 0,
+  "fueraDeLasNochesMedidas": 0,
+  "fueraDeEstaMedicion": 3,
+  "fueraDeElParte": 15,
+  "sinRevisar": 0,
+  "cobertura": 0.0,
+  "diasDeAdelanto": null
+ },
+ "publicables": {
+  "total": 12,
+  "encontrados": {
+   "publicados": 5,
+   "aRevision": 0
+  },
+  "vistosYDescartados": 0,
+  "noEncontrados": 0,
+  "noRepetibles": 0,
+  "fueraDeLasNochesMedidas": 0,
+  "fueraDeEstaMedicion": 0,
+  "fueraDeElParte": 7,
+  "sinRevisar": 0,
+  "cobertura": 1.0,
+  "diasDeAdelanto": 26
+ },
+ "hechos": {
+  "PROVEN": {
+   "total": 727,
+   "verdaderos": 110,
+   "falsos": {
+    "otraEntidad": 0,
+    "noNuevo": 0,
+    "contenidoEquivocado": 2
+   },
+   "sinJuzgar": 615,
+   "precision": 0.9821
+  },
+  "INFERRED": {
+   "total": 79,
+   "verdaderos": 11,
+   "falsos": {
+    "otraEntidad": 0,
+    "noNuevo": 0,
+    "contenidoEquivocado": 0
+   },
+   "sinJuzgar": 68,
+   "precision": 1.0
+  },
+  "todos": {
+   "total": 806,
+   "verdaderos": 121,
+   "falsos": {
+    "otraEntidad": 0,
+    "noNuevo": 0,
+    "contenidoEquivocado": 2
+   },
+   "sinJuzgar": 683,
+   "precision": 0.9837
+  },
+  "descartadosPorElParte": 45,
+  "sorteoDeExtras": {
+   "poblacion": 796,
+   "tamano": 60,
+   "semilla": 20261117,
+   "juzgados": 60,
+   "correctos": 60,
+   "falsos": {
+    "otraEntidad": 0,
+    "noNuevo": 0,
+    "contenidoEquivocado": 0
+   },
+   "precision": 1.0,
+   "intervalo95": [
+    0.9398,
+    1.0
+   ],
+   "precisionDeTodo": 1.0,
+   "intervaloDeTodo95": [
+    0.9405,
+    1.0
+   ]
+  }
+ },
+ "detalle": {
+  "hallazgos": [
+   {
+    "id": "2026-09-17-1",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-09-23-1",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-09-23-2",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-09-25-1",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-09-29-1",
+    "clasificacion": "nuevo",
+    "resultado": "no-encontrado"
+   },
+   {
+    "id": "2026-10-01-1",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-10-08-1",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-esta-medicion"
+   },
+   {
+    "id": "2026-10-08-2",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-10-08-3",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-10-13-1",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-esta-medicion"
+   },
+   {
+    "id": "2026-10-13-2",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-10-15-1",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-10-15-2",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-11-03-1",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-11-10-1",
+    "clasificacion": "actualizacion",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-11-11-1",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-11-11-2",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-11-12-1",
+    "clasificacion": "actualizacion",
+    "resultado": "fuera-de-esta-medicion"
+   },
+   {
+    "id": "2026-11-12-2",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-el-parte"
+   }
+  ],
+  "publicables": [
+   {
+    "id": "2026-09-05-1",
+    "clasificacion": "descartado",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-09-10-1",
+    "clasificacion": "descartado",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-10-08-6",
+    "clasificacion": "descartado",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-10-09-1",
+    "clasificacion": "descartado",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-10-30-1",
+    "clasificacion": "descartado",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-11-01-1",
+    "clasificacion": "descartado",
+    "resultado": "encontrado-publicado",
+    "hechos": [
+     "arce:ocds-yfs5dr-1371280:aclaracion",
+     "arce:ocds-yfs5dr-1371280:llamado"
+    ],
+    "diasDeAdelanto": 51
+   },
+   {
+    "id": "2026-11-01-2",
+    "clasificacion": "descartado",
+    "resultado": "encontrado-publicado",
+    "hechos": [
+     "arce:ocds-yfs5dr-1371678:aclaracion",
+     "arce:ocds-yfs5dr-1371678:adjudicacion"
+    ],
+    "diasDeAdelanto": 48
+   },
+   {
+    "id": "2026-11-01-3",
+    "clasificacion": "descartado",
+    "resultado": "encontrado-publicado",
+    "hechos": [
+     "arce:ocds-yfs5dr-1377586:aclaracion",
+     "arce:ocds-yfs5dr-1377586:llamado"
+    ],
+    "diasDeAdelanto": 26
+   },
+   {
+    "id": "2026-11-01-4",
+    "clasificacion": "descartado",
+    "resultado": "encontrado-publicado",
+    "hechos": [
+     "arce:ocds-yfs5dr-1377871:aclaracion",
+     "arce:ocds-yfs5dr-1377871:llamado"
+    ],
+    "diasDeAdelanto": 25
+   },
+   {
+    "id": "2026-11-01-5",
+    "clasificacion": "descartado",
+    "resultado": "encontrado-publicado",
+    "hechos": [
+     "arce:ocds-yfs5dr-1377948:aclaracion",
+     "arce:ocds-yfs5dr-1377948:llamado"
+    ],
+    "diasDeAdelanto": 25
+   },
+   {
+    "id": "2026-11-06-1",
+    "clasificacion": "descartado",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-11-08-1",
+    "clasificacion": "descartado",
+    "resultado": "fuera-de-el-parte"
+   }
+  ],
+  "hechos": [
+   {
+    "clave": "arce:ocds-yfs5dr-1179342:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1294092:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-03",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1328361:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-18",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1328379:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-13",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1330812:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1333711:adjudicacion",
+    "grado": "INFERRED",
+    "noche": "2026-08-29",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1336909:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-11",
+    "resultado": "falso-positivo-contenido"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1338004:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1345827:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-02",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1347350:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-10",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1348974:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1349540:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-03",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1349546:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-03",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1350800:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-08-31",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1351087:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-05",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1351341:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-08-31",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1351717:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1351946:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-03",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1351952:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-02",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1352926:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-03",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1352972:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1353806:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-08-31",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1354345:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-07",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1354415:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1354543:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-16",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1354566:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-11",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1354719:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-29",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1355014:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1355317:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1355553:adjudicacion",
+    "grado": "INFERRED",
+    "noche": "2026-09-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1355557:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-08",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1355564:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-03",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1355567:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-28",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1355578:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1355586:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1355853:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-02",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1355989:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-04",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1356063:adjudicacion",
+    "grado": "INFERRED",
+    "noche": "2026-10-05",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1356208:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-08-31",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1356356:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-08-31",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1356555:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-05",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1357019:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1357038:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-11",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1357200:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-07",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1357225:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1357242:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-08-31",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1357518:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1357624:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-08-29",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1357915:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-11",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1358376:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1358377:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-08-29",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1358422:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-23",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1358553:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1358570:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1358572:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1358602:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-03",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1358739:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1358745:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-05",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1358878:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1358883:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-08-29",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1359137:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-08-29",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1359971:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1360024:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-03",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1360043:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-08-29",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1360327:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-11",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1360596:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-02",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1360616:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-11",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1360637:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-08-31",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1360647:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-03",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1360659:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-08-31",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1360796:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-24",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1360807:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1360814:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-19",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1360819:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1360831:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-19",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1360832:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1360960:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1361093:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1361596:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-12",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1361619:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-28",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1362276:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-08-29",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1362551:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-13",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1362559:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-08-29",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1362670:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-12",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1362686:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-08-31",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1362686:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-22",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1362695:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-10",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1362751:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-05",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1362945:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1363057:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-01",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1363060:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-08-31",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1363131:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1363316:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-11",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1363386:adjudicacion",
+    "grado": "INFERRED",
+    "noche": "2026-09-04",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1363425:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-08-31",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1363430:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1363433:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-13",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1363434:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1363514:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-08-31",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1363637:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-08-29",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1363637:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1363640:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-08-31",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1363640:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1363641:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1363641:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364052:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-08-29",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364078:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364115:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-20",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364169:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364169:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364368:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-08-29",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364387:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-08-31",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364453:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-08-31",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364480:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364506:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364516:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-19",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364517:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364518:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364521:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-20",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364522:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364525:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-08-29",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364543:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-01",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364557:adjudicacion",
+    "grado": "INFERRED",
+    "noche": "2026-09-02",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364567:adjudicacion",
+    "grado": "INFERRED",
+    "noche": "2026-09-02",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364569:adjudicacion",
+    "grado": "INFERRED",
+    "noche": "2026-09-02",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364601:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-02",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364603:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-08-31",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364641:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-08-31",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364650:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-25",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364656:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-12",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364671:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364675:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-10",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364695:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-11",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364890:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-08-29",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364939:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-13",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1364947:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-09",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1365045:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-08-31",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1365046:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-02",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1365055:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-15",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1365068:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-08",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1365073:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-11",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1365087:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1365127:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-08-29",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1365131:adjudicacion",
+    "grado": "INFERRED",
+    "noche": "2026-09-02",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1365132:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-10",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1365169:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-25",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1365297:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1365570:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-08-29",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1365583:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1365831:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-01",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1365911:aclaracion",
+    "grado": "INFERRED",
+    "noche": "2026-09-04",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1365911:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-25",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366051:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-03",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366057:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-11",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366094:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-03",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366116:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-08-29",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366116:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366131:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-08-29",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366131:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366157:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-08-29",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366165:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366175:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-10",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366181:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366193:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-08-29",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366193:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-02",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366201:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366204:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-08",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366213:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-08-29",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366213:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366236:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-03",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366252:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-10",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366252:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-16",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366260:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-03",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366260:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366284:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-08-31",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366299:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366302:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-08-31",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366326:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366344:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366349:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-15",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366363:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-06",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366395:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-10",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366472:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366472:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366481:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366485:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366497:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-03",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366510:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366522:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-06",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366561:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-08",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366631:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-08-31",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366631:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366681:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-17",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366681:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-05",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366702:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-08-31",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366705:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-08-29",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366705:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366850:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366856:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-10",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366863:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366863:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-23",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366876:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366876:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366878:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366881:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366888:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366893:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366893:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-19",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366906:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366910:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-01",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366910:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366915:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1366915:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1367013:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1367013:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-13",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1367291:adjudicacion",
+    "grado": "INFERRED",
+    "noche": "2026-09-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1367300:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-11",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1367307:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-11",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1367309:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1367309:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-05",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1367309:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-08-29",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1367319:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-15",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1367332:adjudicacion",
+    "grado": "INFERRED",
+    "noche": "2026-09-10",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1367343:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1367415:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-11",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1367418:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-08",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1367429:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1367443:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-11",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1367447:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1367790:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-04",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1367790:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-11",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1367790:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-08-31",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1368071:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-04",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1368071:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1368071:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-09-01",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1368188:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1368207:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-04",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1368207:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1368207:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1368218:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1368234:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-21",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1368305:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-07",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1368305:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1368305:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-09-02",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1368342:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-07",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1368342:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1368342:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-09-02",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1368353:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1368423:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-10",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1368533:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-07",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1368533:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-10",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1368533:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-03",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1368546:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-07",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1368546:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-11",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1368546:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-02",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1368567:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1368596:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1368627:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1368755:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-03",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1368755:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-20",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1369111:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-11",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1369210:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1369218:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-20",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1369224:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-10",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1369237:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-15",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1369248:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-11",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1369253:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1369300:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1369300:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1369300:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-09-04",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1369394:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1369408:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1369420:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1369422:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1369422:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-19",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1369422:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-05",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1369424:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1369424:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1369424:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-04",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1369452:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1369596:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-07",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1369596:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-09-07",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1369648:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1369661:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1369678:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1369683:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-25",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1369812:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-30",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1369921:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1369993:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-02",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370188:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370311:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370320:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-13",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370416:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370416:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-09-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370445:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370445:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-13",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370445:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-10",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370446:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370446:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370467:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370469:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-19",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370473:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-10",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370574:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-15",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370580:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-23",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370582:aclaracion",
+    "grado": "INFERRED",
+    "noche": "2026-09-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370582:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-04",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370582:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-09-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370592:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370592:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-05",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370592:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-09",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370596:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370600:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370600:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370600:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-09-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370790:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370841:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-30",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370871:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-30",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370884:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-30",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370887:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-30",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370923:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370923:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-06",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370923:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-10",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370964:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1370973:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-05",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371001:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-10",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371002:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371096:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371137:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-11",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371137:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-12",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371280:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-18",
+    "resultado": "coincide-con-publicable",
+    "coincideCon": "2026-11-01-1"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371280:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-11",
+    "resultado": "coincide-con-publicable",
+    "coincideCon": "2026-11-01-1"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371594:adjudicacion",
+    "grado": "INFERRED",
+    "noche": "2026-09-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371606:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371621:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-17",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371621:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371621:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371678:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "coincide-con-publicable",
+    "coincideCon": "2026-11-01-2"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371678:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-09",
+    "resultado": "coincide-con-publicable",
+    "coincideCon": "2026-11-01-2"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371685:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371694:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-10",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371697:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-17",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371697:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-19",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371697:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-09-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371700:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-17",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371700:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-02",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371700:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-09-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371702:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-19",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371707:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-17",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371707:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371709:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-17",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371709:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371711:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-21",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371725:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-28",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371732:aclaracion",
+    "grado": "INFERRED",
+    "noche": "2026-09-17",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371732:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-20",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371732:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-09-14",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371736:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-12",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371746:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-28",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371759:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-10",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371761:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-17",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371761:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371761:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371779:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-24",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371779:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-06",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371779:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371785:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-25",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371953:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-18",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371953:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-05",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371953:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-09-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371957:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371957:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-05",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371957:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-16",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371977:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371977:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371981:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-29",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371981:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-13",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1371981:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372331:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372331:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-17",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372409:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-21",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372409:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-13",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372409:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372424:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372424:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-02",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372424:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-09-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372458:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372458:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372468:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-06",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372524:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372524:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372586:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372586:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372586:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-09-17",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372593:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372593:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372593:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-18",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372627:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-17",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372648:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-05",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372693:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-06",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372745:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372745:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-05",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372745:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-17",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372795:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-28",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372800:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372800:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-17",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372802:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-19",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372805:adjudicacion",
+    "grado": "INFERRED",
+    "noche": "2026-10-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372807:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-06",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372808:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372808:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-06",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372808:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-17",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372818:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-13",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372825:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372825:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-29",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372825:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-17",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372827:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372829:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372829:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-13",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372829:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-18",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372833:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372833:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372833:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-18",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372838:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372839:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-21",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372855:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1372904:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-28",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1373004:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-05",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1373041:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1373251:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-28",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1373252:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1373261:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-28",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1373264:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1373267:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-06",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1373268:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1373270:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-28",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1373315:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-23",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1373315:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-02",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1373315:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-18",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1373372:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-30",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1373373:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-28",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1373401:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-24",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1373401:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1373422:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-24",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1373422:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1373431:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1373448:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-24",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1373448:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1373456:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1373635:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-24",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1373635:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1373811:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-13",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1373856:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-28",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1373959:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-28",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374052:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-09-30",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374183:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-28",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374183:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-04",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374183:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-23",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374187:aclaracion",
+    "grado": "INFERRED",
+    "noche": "2026-09-28",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374187:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-10",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374187:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-23",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374189:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-23",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374189:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-24",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374192:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-28",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374192:adjudicacion",
+    "grado": "INFERRED",
+    "noche": "2026-10-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374192:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-09-24",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374196:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-28",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374196:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-10",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374196:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-23",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374215:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-06",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374228:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374424:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-19",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374427:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-20",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374429:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-02",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374520:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-29",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374520:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374600:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-12",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374603:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-02",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374650:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-29",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374650:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-12",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374650:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-24",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374705:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-29",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374705:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-24",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374707:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-29",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374707:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374707:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-24",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374729:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-05",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374737:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-05",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374742:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-20",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374852:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-30",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374852:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374852:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-25",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374896:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-30",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374896:adjudicacion",
+    "grado": "INFERRED",
+    "noche": "2026-10-08",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374896:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-25",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374899:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-30",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374899:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-13",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374899:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-25",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374902:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-30",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374902:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-13",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1374902:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-25",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1375079:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1375129:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-19",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1375173:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-28",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1375173:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-13",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1375202:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-07",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1375202:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-09",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1375202:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-28",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1375329:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-09-28",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1375329:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-28",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1375358:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-05",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1375361:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-06",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1375363:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-13",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1375371:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-13",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1375372:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1375422:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1375422:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-29",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1375504:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-05",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1375775:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-02",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1375775:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1375775:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-30",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1375943:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-12",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376019:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-13",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376038:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-06",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376085:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-13",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376108:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-05",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376108:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-16",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376108:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-09-30",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376109:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-06",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376110:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-10",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376113:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-05",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376113:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376113:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-09-30",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376116:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376120:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-05",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376121:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-10",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376132:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-06",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376142:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-05",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376142:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-06",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376142:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-09-30",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376162:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-13",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376168:adjudicacion",
+    "grado": "INFERRED",
+    "noche": "2026-10-13",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376280:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-19",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376280:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376291:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-10",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376292:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376298:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-06",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376442:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-06",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376442:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-13",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376442:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-02",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376470:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-30",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376470:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-10-02",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376488:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-08",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376488:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-01",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376497:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-20",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376497:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-12",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376500:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-21",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376500:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-01",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376594:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376594:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-05",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376594:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-02",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376617:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-13",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376617:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376830:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-19",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376830:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-02",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376839:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376839:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-10-03",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376935:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-08",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376935:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376945:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-08",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376945:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-21",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376945:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-05",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376956:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376963:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376981:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-10",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1376989:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1377030:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-14",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1377179:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1377182:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-13",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1377185:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-13",
+    "resultado": "falso-positivo-contenido"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1377224:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-06",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1377224:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-10-06",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1377535:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-14",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1377586:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-06",
+    "resultado": "coincide-con-publicable",
+    "coincideCon": "2026-11-01-3"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1377586:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-06",
+    "resultado": "coincide-con-publicable",
+    "coincideCon": "2026-11-01-3"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1377597:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1377623:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-05",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1377627:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-06",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1377762:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-03",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1377834:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1377871:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-07",
+    "resultado": "coincide-con-publicable",
+    "coincideCon": "2026-11-01-4"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1377871:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-07",
+    "resultado": "coincide-con-publicable",
+    "coincideCon": "2026-11-01-4"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1377944:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1377948:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-07",
+    "resultado": "coincide-con-publicable",
+    "coincideCon": "2026-11-01-5"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1377948:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-07",
+    "resultado": "coincide-con-publicable",
+    "coincideCon": "2026-11-01-5"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1377994:aclaracion",
+    "grado": "INFERRED",
+    "noche": "2026-10-31",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1377994:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-07",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378123:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378123:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-20",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378123:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-10-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378125:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-12",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378158:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-08",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378158:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-08",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378172:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378192:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-20",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378295:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-08",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378295:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-10-08",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378327:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-16",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378344:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-19",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378357:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-08",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378361:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-04",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378420:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-08",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378420:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-08",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378487:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378487:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-05",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378487:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378520:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-19",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378538:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378538:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378698:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-12",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378764:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-15",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378764:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-04",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378764:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378771:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378771:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378850:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378850:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-04",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378850:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-13",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378854:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378854:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-04",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378854:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378855:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-06",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1378861:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-03",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1379008:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-20",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1379008:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-13",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1379088:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-16",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1379088:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-13",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1379253:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-19",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1379263:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1379278:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1379365:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-20",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1379460:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-19",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1379481:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-04",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1379520:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-20",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1379609:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-20",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1379609:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1379610:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-19",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1379640:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1379653:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-19",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1379659:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-19",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1379664:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-20",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1379666:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-19",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1379673:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-20",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1379696:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-20",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1379707:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-20",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1379727:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-05",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1379738:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-03",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1379856:adjudicacion",
+    "grado": "INFERRED",
+    "noche": "2026-10-20",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1379878:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-19",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1379931:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-15",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380014:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380187:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-10-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380251:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380251:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-16",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380467:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-19",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380467:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-19",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380550:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-19",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380550:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-20",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380635:aclaracion",
+    "grado": "INFERRED",
+    "noche": "2026-10-30",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380635:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-10-20",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380644:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-05",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380645:aclaracion",
+    "grado": "INFERRED",
+    "noche": "2026-10-30",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380645:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-10-20",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380662:aclaracion",
+    "grado": "INFERRED",
+    "noche": "2026-10-30",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380662:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-20",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380666:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-20",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380666:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-20",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380683:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-21",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380683:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-20",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380870:adjudicacion",
+    "grado": "INFERRED",
+    "noche": "2026-11-04",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380872:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-04",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380879:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-03",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380890:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-10",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380894:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-10",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380903:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-30",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380903:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380903:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380909:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-03",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380911:aclaracion",
+    "grado": "INFERRED",
+    "noche": "2026-10-31",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380911:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-20",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380917:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-31",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380917:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-20",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380923:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-04",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380926:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-06",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380927:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-04",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380997:aclaracion",
+    "grado": "INFERRED",
+    "noche": "2026-10-31",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1380997:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-10-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381000:aclaracion",
+    "grado": "INFERRED",
+    "noche": "2026-10-31",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381000:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-10-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381002:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-11-03",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381002:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381009:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-11-03",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381009:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381028:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-05",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381043:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381175:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-05",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381199:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381199:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-21",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381267:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-12",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381269:aclaracion",
+    "grado": "INFERRED",
+    "noche": "2026-10-30",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381269:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-10-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381365:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381370:aclaracion",
+    "grado": "INFERRED",
+    "noche": "2026-10-30",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381370:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381371:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-31",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381371:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381372:aclaracion",
+    "grado": "INFERRED",
+    "noche": "2026-10-30",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381372:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381378:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-06",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381399:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-31",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381399:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-23",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381420:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-12",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381438:aclaracion",
+    "grado": "INFERRED",
+    "noche": "2026-11-04",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381460:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381460:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-23",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381468:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-12",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381474:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-10",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381502:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-10-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381502:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-10-22",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381599:aclaracion",
+    "grado": "INFERRED",
+    "noche": "2026-10-30",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381599:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-10-22",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1381673:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-10",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1382192:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-11-03",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1382192:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-11-03",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1382235:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-11-09",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1382594:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-11-11",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1382594:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-11-04",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1382788:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-10",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1382791:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-11-05",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1382814:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-11-06",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1382814:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-11-03",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1382883:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-11-04",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383039:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-12",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383048:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-11-10",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383048:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-11-04",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383057:aclaracion",
+    "grado": "INFERRED",
+    "noche": "2026-11-09",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383057:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-11-05",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383160:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-11-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383160:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-11-04",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383174:aclaracion",
+    "grado": "INFERRED",
+    "noche": "2026-11-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383174:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-11-04",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383197:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-11-11",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383197:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-11-04",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383208:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-11-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383208:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-11-04",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383219:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-12",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383232:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-11-04",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383232:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-11-04",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383239:aclaracion",
+    "grado": "INFERRED",
+    "noche": "2026-11-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383271:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-11-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383271:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-11-04",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383273:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-11-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383273:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-11-04",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383275:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-11-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383275:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-11-04",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383306:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-11-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383306:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-11-04",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383328:aclaracion",
+    "grado": "INFERRED",
+    "noche": "2026-11-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383328:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-11-04",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383683:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-11-10",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383683:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-11-05",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383744:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-11-10",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383744:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-11-05",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383788:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-11-10",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1383788:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-11-05",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1384065:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-11-10",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1384065:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-11-06",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1384178:aclaracion",
+    "grado": "INFERRED",
+    "noche": "2026-11-11",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1384178:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-11-06",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1384227:aclaracion",
+    "grado": "INFERRED",
+    "noche": "2026-11-11",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1384245:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-11-11",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1384245:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-11-07",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1384282:aclaracion",
+    "grado": "INFERRED",
+    "noche": "2026-11-11",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1384282:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-11-06",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1384298:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-11-11",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1384298:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-11-06",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1384585:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-11-11",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1384585:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-11-06",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1384586:aclaracion",
+    "grado": "INFERRED",
+    "noche": "2026-11-12",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1384586:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-11-06",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1384588:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-11-11",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1384590:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-11-11",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1384590:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-11-06",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1384944:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-11-12",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1384944:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-11-09",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1385542:adjudicacion",
+    "grado": "PROVEN",
+    "noche": "2026-11-13",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1385561:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-11-11",
+    "resultado": "extra-correcto"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1385798:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-11-12",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1385799:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-11-11",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1386167:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-11-12",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1386271:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-11-13",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1386404:aclaracion",
+    "grado": "PROVEN",
+    "noche": "2026-11-13",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1386404:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-11-13",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1386437:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-11-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1386496:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-11-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1386511:llamado",
+    "grado": "PROVEN",
+    "noche": "2026-11-14",
+    "resultado": "sin-juzgar"
+   },
+   {
+    "clave": "arce:ocds-yfs5dr-1386520:llamado",
+    "grado": "INFERRED",
+    "noche": "2026-11-13",
+    "resultado": "sin-juzgar"
+   }
+  ],
+  "noches": [
+   {
+    "noche": "2026-08-29",
+    "estado": "completa",
+    "costoUsd": 0.33778,
+    "duracionSegundos": 219,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-08-30",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 8,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-08-31",
+    "estado": "completa",
+    "costoUsd": 0.354358,
+    "duracionSegundos": 211,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-01",
+    "estado": "completa",
+    "costoUsd": 0.31493,
+    "duracionSegundos": 227,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-02",
+    "estado": "completa",
+    "costoUsd": 0.246326,
+    "duracionSegundos": 195,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-03",
+    "estado": "completa",
+    "costoUsd": 0.292818,
+    "duracionSegundos": 201,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-04",
+    "estado": "completa",
+    "costoUsd": 0.14814,
+    "duracionSegundos": 213,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-05",
+    "estado": "completa",
+    "costoUsd": 0.016978,
+    "duracionSegundos": 25,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-06",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 20,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-07",
+    "estado": "completa",
+    "costoUsd": 0.11014,
+    "duracionSegundos": 153,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-08",
+    "estado": "completa",
+    "costoUsd": 0.092596,
+    "duracionSegundos": 133,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-09",
+    "estado": "completa",
+    "costoUsd": 0.221058,
+    "duracionSegundos": 193,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-10",
+    "estado": "completa",
+    "costoUsd": 0.149896,
+    "duracionSegundos": 160,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-11",
+    "estado": "completa",
+    "costoUsd": 0.32982,
+    "duracionSegundos": 226,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-12",
+    "estado": "completa",
+    "costoUsd": 0.01399,
+    "duracionSegundos": 23,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-13",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 9,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-14",
+    "estado": "completa",
+    "costoUsd": 0.58694,
+    "duracionSegundos": 308,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-15",
+    "estado": "completa",
+    "costoUsd": 0.519828,
+    "duracionSegundos": 283,
+    "lecturasFallidas": 1,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-16",
+    "estado": "completa",
+    "costoUsd": 0.557028,
+    "duracionSegundos": 345,
+    "lecturasFallidas": 1,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-17",
+    "estado": "completa",
+    "costoUsd": 0.37595,
+    "duracionSegundos": 275,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-18",
+    "estado": "completa",
+    "costoUsd": 0.221166,
+    "duracionSegundos": 181,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-19",
+    "estado": "completa",
+    "costoUsd": 0.044478,
+    "duracionSegundos": 34,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-20",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 14,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-21",
+    "estado": "completa",
+    "costoUsd": 0.35105,
+    "duracionSegundos": 227,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-22",
+    "estado": "completa",
+    "costoUsd": 0.513218,
+    "duracionSegundos": 266,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-23",
+    "estado": "completa",
+    "costoUsd": 0.200824,
+    "duracionSegundos": 178,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-24",
+    "estado": "completa",
+    "costoUsd": 0.194474,
+    "duracionSegundos": 242,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-25",
+    "estado": "completa",
+    "costoUsd": 0.196538,
+    "duracionSegundos": 166,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-26",
+    "estado": "completa",
+    "costoUsd": 0.025822,
+    "duracionSegundos": 27,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-27",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 15,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-28",
+    "estado": "completa",
+    "costoUsd": 0.347966,
+    "duracionSegundos": 216,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-29",
+    "estado": "completa",
+    "costoUsd": 0.184588,
+    "duracionSegundos": 160,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-30",
+    "estado": "completa",
+    "costoUsd": 0.277858,
+    "duracionSegundos": 198,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-01",
+    "estado": "completa",
+    "costoUsd": 0.282018,
+    "duracionSegundos": 194,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-02",
+    "estado": "completa",
+    "costoUsd": 0.322482,
+    "duracionSegundos": 207,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-03",
+    "estado": "completa",
+    "costoUsd": 0.052352,
+    "duracionSegundos": 44,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-04",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 14,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-05",
+    "estado": "completa",
+    "costoUsd": 0.42748,
+    "duracionSegundos": 265,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-06",
+    "estado": "completa",
+    "costoUsd": 0.307782,
+    "duracionSegundos": 229,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-07",
+    "estado": "completa",
+    "costoUsd": 0.160286,
+    "duracionSegundos": 155,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-08",
+    "estado": "completa",
+    "costoUsd": 0.260706,
+    "duracionSegundos": 207,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-09",
+    "estado": "completa",
+    "costoUsd": 0.29755,
+    "duracionSegundos": 227,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-10",
+    "estado": "completa",
+    "costoUsd": 0.040678,
+    "duracionSegundos": 36,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-11",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 14,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-12",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 12,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-13",
+    "estado": "completa",
+    "costoUsd": 0.429894,
+    "duracionSegundos": 234,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-14",
+    "estado": "completa",
+    "costoUsd": 0.174814,
+    "duracionSegundos": 145,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-15",
+    "estado": "completa",
+    "costoUsd": 0.283792,
+    "duracionSegundos": 207,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-16",
+    "estado": "completa",
+    "costoUsd": 0.328292,
+    "duracionSegundos": 253,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-17",
+    "estado": "completa",
+    "costoUsd": 0.011928,
+    "duracionSegundos": 24,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-18",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 13,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-19",
+    "estado": "completa",
+    "costoUsd": 0.423278,
+    "duracionSegundos": 226,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-20",
+    "estado": "completa",
+    "costoUsd": 0.551036,
+    "duracionSegundos": 269,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-21",
+    "estado": "completa",
+    "costoUsd": 0.562494,
+    "duracionSegundos": 311,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-22",
+    "estado": "completa",
+    "costoUsd": 0.35389,
+    "duracionSegundos": 238,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-23",
+    "estado": "completa",
+    "costoUsd": 0.096138,
+    "duracionSegundos": 41,
+    "lecturasFallidas": 0,
+    "noRepetibles": [
+     "arce"
+    ]
+   },
+   {
+    "noche": "2026-10-24",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 4,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-25",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 5,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-26",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 4,
+    "lecturasFallidas": 0,
+    "noRepetibles": [
+     "arce"
+    ]
+   },
+   {
+    "noche": "2026-10-27",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 4,
+    "lecturasFallidas": 0,
+    "noRepetibles": [
+     "arce"
+    ]
+   },
+   {
+    "noche": "2026-10-28",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 4,
+    "lecturasFallidas": 0,
+    "noRepetibles": [
+     "arce"
+    ]
+   },
+   {
+    "noche": "2026-10-29",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 4,
+    "lecturasFallidas": 0,
+    "noRepetibles": [
+     "arce"
+    ]
+   },
+   {
+    "noche": "2026-10-30",
+    "estado": "completa",
+    "costoUsd": 0.437954,
+    "duracionSegundos": 286,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-31",
+    "estado": "completa",
+    "costoUsd": 0.156234,
+    "duracionSegundos": 101,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-11-01",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 14,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-11-02",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 12,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-11-03",
+    "estado": "completa",
+    "costoUsd": 0.66886,
+    "duracionSegundos": 553,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-11-04",
+    "estado": "completa",
+    "costoUsd": 1.139406,
+    "duracionSegundos": 618,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-11-05",
+    "estado": "completa",
+    "costoUsd": 0.752076,
+    "duracionSegundos": 453,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-11-06",
+    "estado": "completa",
+    "costoUsd": 0.593534,
+    "duracionSegundos": 314,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-11-07",
+    "estado": "completa",
+    "costoUsd": 0.071854,
+    "duracionSegundos": 42,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-11-08",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 6,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-11-09",
+    "estado": "completa",
+    "costoUsd": 0.516362,
+    "duracionSegundos": 328,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-11-10",
+    "estado": "completa",
+    "costoUsd": 0.619658,
+    "duracionSegundos": 338,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-11-11",
+    "estado": "completa",
+    "costoUsd": 0.427788,
+    "duracionSegundos": 288,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-11-12",
+    "estado": "completa",
+    "costoUsd": 0.730218,
+    "duracionSegundos": 375,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-11-13",
+    "estado": "completa",
+    "costoUsd": 0.31423,
+    "duracionSegundos": 220,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-11-14",
+    "estado": "completa",
+    "costoUsd": 0.08922,
+    "duracionSegundos": 46,
+    "lecturasFallidas": 0,
+    "noRepetibles": [],
+    "duracionDeLaVigilancia": 1219
+   }
+  ]
+ }
+}

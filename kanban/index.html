@@ -227,7 +227,7 @@
 <script type="application/json" id="datos">{
  "meta": {
   "actualizado": "2026-11-16",
-  "nota": "La primera rebanada (T08) anda de punta a punta y ya corrió contra el banco las 78 noches del registro (T20): 12,71 USD, 5 de 5 publicables encontrados, 0 de 1 hallazgo y una precisión estimada del 95 %. Falta que el responsable confirme la revisión. Lo que la medición mostró del explorador de ARCE se arregla en T39. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). El analista completo (T21) y el presupuesto que corta (T22) están hechos, sin el tope de 60 candidatos, y falta medirlos contra el banco junto con T39, en una sola corrida. La cola de revisión humana (T23) y el login por enlace (T25) están hechos: correr y revisar son solo del responsable. El Parte está publicado desde la máquina del responsable, con un túnel de Cloudflare y el correo por Resend (T40), y el responsable ya entró desde afuera (ADR 0016, aceptado). En su perfil, cada invitado elige qué organismos seguir y si quiere el aviso diario (T34); sigue el aviso (T35). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.",
+  "nota": "La primera rebanada (T08) anda de punta a punta y ya corrió contra el banco las 78 noches del registro (T20): 12,71 USD, 5 de 5 publicables encontrados, 0 de 1 hallazgo y una precisión estimada del 95 %. Falta que el responsable confirme la revisión. Lo que la medición mostró del explorador de ARCE se arregla en T39. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). La medición con el analista (T21), el presupuesto (T22) y el explorador arreglado (T39) dio 5 de 5 publicables y 60 de 60 extras bien en un sorteo, a 0,245 USD por noche; falta fijar el presupuesto por noche (T22). La cola de revisión humana (T23) y el login por enlace (T25) están hechos: correr y revisar son solo del responsable. El Parte está publicado desde la máquina del responsable, con un túnel de Cloudflare y el correo por Resend (T40), y el responsable ya entró desde afuera (ADR 0016, aceptado). En su perfil, cada invitado elige qué organismos seguir y si quiere el aviso diario (T34); sigue el aviso (T35). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.",
   "calendario": [
    "2026-11-07",
    "2026-11-14",
@@ -447,6 +447,14 @@
     {
      "texto": "Que la medición se detenga en la primera noche con errores del modelo: la 2026-11-16-1 se quedó sin crédito en la noche del 2026-09-24 y siguió con noches vacías",
      "hecho": true
+    },
+    {
+     "texto": "Medir de nuevo con el analista, el presupuesto y el explorador arreglado (2026-11-16-2), con un sorteo nuevo de 60 extras",
+     "hecho": true
+    },
+    {
+     "texto": "Que cada juicio de un extra guarde la huella del contenido juzgado: dos juicios viejos siguen marcando mal hechos que ahora están bien",
+     "hecho": false
     }
    ],
    "notas": [
@@ -492,137 +500,10 @@
     {
      "fecha": "2026-11-16",
      "texto": "Los extras se juzgan por sorteo (banco-de-pruebas/metricas.md). Un sorteo de 60 de los 789, con la semilla 20261116: 57 bien y 3 con el contenido equivocado, adjudicaciones repartidas entre varios proveedores. Precisión estimada de los extras, 0,95 (de 0,86 a 0,98), y de todo lo publicado, 0,95. El arreglo del explorador y el aviso de día vacío pasan a T39; el tope de candidatos, a T22. Falta que el responsable confirme la revisión y saber lo de ATOS."
-    }
-   ]
-  },
-  {
-   "id": "T39",
-   "titulo": "Arreglar lo que la medición mostró del explorador de ARCE",
-   "columna": "en-curso",
-   "orden": 2,
-   "tipo": "componente",
-   "dueno": "desarrollo",
-   "dependeDe": "",
-   "esperaA": "",
-   "fecha": "",
-   "detalle": [
-    {
-     "texto": "docs/como-se-hizo/medicion-contra-el-banco.md",
-     "ruta": "docs/como-se-hizo/medicion-contra-el-banco.md"
-    }
-   ],
-   "etapas": [
-    {
-     "texto": "Contrato",
-     "hecho": true
     },
     {
-     "texto": "Código",
-     "hecho": true
-    },
-    {
-     "texto": "Pruebas",
-     "hecho": true
-    },
-    {
-     "texto": "Medido contra el banco",
-     "hecho": false
-    },
-    {
-     "texto": "Página cómo se hizo",
-     "hecho": true
-    }
-   ],
-   "lista": [
-    {
-     "texto": "Un día hábil sin publicaciones en el feed es una fuente fallida, no una noche sin novedades",
-     "hecho": true
-    },
-    {
-     "texto": "La afirmación de una adjudicación nombra a todos los proveedores de la publicación",
-     "hecho": true
-    }
-   ],
-   "notas": [
-    "La medición de las 78 noches dejó a la vista dos fallas del explorador de ARCE: no avisa cuando un día hábil viene sin publicaciones, y la afirmación de una adjudicación repartida entre varios proveedores nombra solo al primero."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-16",
-     "texto": "Creada a partir de la medición de las 78 noches (T20). Pasa a En curso."
-    },
-    {
-     "fecha": "2026-11-16",
-     "texto": "Hecho el código: fuente.fallida de tipo sinPublicaciones cuando la fecha objetivo es un día hábil y el feed no trae nada de ese día, y el resumen de una adjudicación repartida nombra a todos los proveedores (docs/contratos.md, docs/como-se-hizo/primera-rebanada.md). La medición espera a la próxima corrida del banco, con T21."
-    }
-   ]
-  },
-  {
-   "id": "T21",
-   "titulo": "Completar el analista",
-   "columna": "en-curso",
-   "orden": 3,
-   "tipo": "componente",
-   "dueno": "desarrollo",
-   "dependeDe": "",
-   "esperaA": "",
-   "fecha": "",
-   "detalle": [
-    {
-     "texto": "docs/contratos.md",
-     "ruta": "docs/contratos.md"
-    },
-    {
-     "texto": "adrs/0015-que-puede-escribir-el-analista.md",
-     "ruta": "adrs/0015-que-puede-escribir-el-analista.md"
-    },
-    {
-     "texto": "docs/como-se-hizo/analista.md",
-     "ruta": "docs/como-se-hizo/analista.md"
-    }
-   ],
-   "etapas": [
-    {
-     "texto": "Contrato",
-     "hecho": true
-    },
-    {
-     "texto": "Código",
-     "hecho": true
-    },
-    {
-     "texto": "Pruebas",
-     "hecho": true
-    },
-    {
-     "texto": "Medido contra el banco",
-     "hecho": false
-    },
-    {
-     "texto": "Página cómo se hizo",
-     "hecho": true
-    }
-   ],
-   "lista": [],
-   "notas": [
-    "En la primera rebanada el analista solo pasa la afirmación. Acá escribe qué dice, por qué importa y qué mirar."
-   ],
-   "registro": [
-    {
-     "fecha": "2026-11-07",
-     "texto": "Creada con el plan (T07)."
-    },
-    {
-     "fecha": "2026-11-15",
-     "texto": "Deja de depender de T08: el código de la rebanada ya está hecho, y a T08 solo le falta la medición (T20). Pasa a Para empezar."
-    },
-    {
-     "fecha": "2026-11-16",
-     "texto": "Hechos el contrato, el código, las pruebas y la página: el analista le pide al modelo qué dice, por qué importa y qué mirar, copia el grado del refutador y no usa un campo con una cifra que no está en la evidencia (ADR 0015). La página de la mañana muestra el análisis aparte. Falta medirlo contra el banco, junto con T39: se estima que la medición de las 78 noches cuesta unos 16 USD. Pasa a En curso."
-    },
-    {
-     "fecha": "2026-11-16",
-     "texto": "La medición 2026-11-16-1, con 2 USD y 400 llamadas por noche, se quedó sin crédito de la API en la noche del 2026-09-24, después de 22 noches y 6,11 USD, y no se usa. Se mide de nuevo cuando haya crédito."
+     "fecha": "2026-11-17",
+     "texto": "Las 78 noches con el analista, el presupuesto y el explorador arreglado, en banco-de-pruebas/mediciones/2026-11-16-2/: 19,11 USD, 0,245 por noche, ninguna cortada. 5 de 5 publicables y 0 de 1 hallazgo, como antes. Un sorteo nuevo de 60 de los 796 extras, con la semilla 20261117: los 60 bien, precisión estimada 1,0 (de 0,94 a 1,0). Los 56 juicios nuevos están en borrador, para que el responsable los confirme. Dos juicios del sorteo anterior quedaron viejos: los hechos cambiaron con T39 y ahora están bien (docs/como-se-hizo/medicion-contra-el-banco.md)."
     }
    ]
   },
@@ -630,7 +511,7 @@
    "id": "T22",
    "titulo": "Implementar el presupuesto que corta",
    "columna": "en-curso",
-   "orden": 4,
+   "orden": 2,
    "tipo": "componente",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -661,7 +542,7 @@
     },
     {
      "texto": "Medido contra el banco",
-     "hecho": false
+     "hecho": true
     },
     {
      "texto": "Página cómo se hizo",
@@ -690,7 +571,7 @@
      "hecho": true
     },
     {
-     "texto": "Fijar los valores del presupuesto con la medición: con el analista y sin el tope de candidatos, la noche más cargada costaría unos 1,60 USD y pasaría las 200 llamadas",
+     "texto": "Fijar los valores del presupuesto con la medición: con 0,50 USD se habrían cortado 13 de las 78 noches; la más cara costó 1,14 USD y la que más llamó hizo 159 llamadas (docs/como-se-hizo/presupuesto.md)",
      "hecho": false
     }
    ],
@@ -713,6 +594,76 @@
     {
      "fecha": "2026-11-16",
      "texto": "La medición 2026-11-16-1, con 2 USD y 400 llamadas por noche, se quedó sin crédito de la API en la noche del 2026-09-24, después de 22 noches y 6,11 USD, y no se usa. Se mide de nuevo cuando haya crédito."
+    },
+    {
+     "fecha": "2026-11-17",
+     "texto": "Medido en la medición 2026-11-16-2, con 2 USD y 400 llamadas por noche: ninguna noche se cortó. Mediana 0,21 USD, el 90 % por debajo de 0,56, la más cara 1,14 USD, y como mucho 159 llamadas. Con los 0,50 USD por omisión se habrían cortado 13 de las 78. Falta que el responsable fije los valores."
+    }
+   ]
+  },
+  {
+   "id": "T43",
+   "titulo": "Que la corrida de la noche se ponga al día",
+   "columna": "para-empezar",
+   "orden": 1,
+   "tipo": "componente",
+   "dueno": "desarrollo",
+   "dependeDe": "",
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "docs/como-se-hizo/despliegue.md",
+     "ruta": "docs/como-se-hizo/despliegue.md"
+    },
+    {
+     "texto": "app/src/main/java/io/github/andresdiegolanda/elparte/corrida/NochePorReloj.java",
+     "ruta": "app/src/main/java/io/github/andresdiegolanda/elparte/corrida/NochePorReloj.java"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Contrato",
+     "hecho": false
+    },
+    {
+     "texto": "Código",
+     "hecho": false
+    },
+    {
+     "texto": "Pruebas",
+     "hecho": false
+    },
+    {
+     "texto": "Medido contra el banco",
+     "hecho": false
+    },
+    {
+     "texto": "Página cómo se hizo",
+     "hecho": false
+    }
+   ],
+   "lista": [
+    {
+     "texto": "Revisar cada pocos minutos si ya pasó la hora y la noche de ayer no tiene corrida normal, y correrla",
+     "hecho": false
+    },
+    {
+     "texto": "Que una noche no corra dos veces si la revisión y la corrida a mano coinciden",
+     "hecho": false
+    },
+    {
+     "texto": "Probarlo con un reloj de prueba: la hora pasó con la aplicación apagada, y con la aplicación prendida",
+     "hecho": false
+    }
+   ],
+   "notas": [
+    "La corrida de cada noche sale con una tarea programada a las 6 de Uruguay. En la máquina del responsable eso falla de dos maneras: si la máquina virtual de Docker estuvo en pausa, sale tarde, tanto como duró la pausa; y si la máquina está apagada o dormida a esa hora, no sale. Tiene que correr apenas pueda, sin duplicar una noche que ya corrió."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-17",
+     "texto": "Creada: la primera corrida automática publicada no salió a las 6; el reloj monótono de la JVM iba unos 44 minutos atrás por una pausa de la máquina virtual de Docker (docs/como-se-hizo/despliegue.md)."
     }
    ]
   },
@@ -720,7 +671,7 @@
    "id": "T35",
    "titulo": "Mandar el aviso diario del parte",
    "columna": "para-empezar",
-   "orden": 1,
+   "orden": 2,
    "tipo": "componente",
    "dueno": "desarrollo",
    "dependeDe": "T25",
@@ -1288,10 +1239,149 @@
    ]
   },
   {
+   "id": "T39",
+   "titulo": "Arreglar lo que la medición mostró del explorador de ARCE",
+   "columna": "hecho",
+   "orden": 1,
+   "tipo": "componente",
+   "dueno": "desarrollo",
+   "dependeDe": "",
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "docs/como-se-hizo/medicion-contra-el-banco.md",
+     "ruta": "docs/como-se-hizo/medicion-contra-el-banco.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Contrato",
+     "hecho": true
+    },
+    {
+     "texto": "Código",
+     "hecho": true
+    },
+    {
+     "texto": "Pruebas",
+     "hecho": true
+    },
+    {
+     "texto": "Medido contra el banco",
+     "hecho": true
+    },
+    {
+     "texto": "Página cómo se hizo",
+     "hecho": true
+    }
+   ],
+   "lista": [
+    {
+     "texto": "Un día hábil sin publicaciones en el feed es una fuente fallida, no una noche sin novedades",
+     "hecho": true
+    },
+    {
+     "texto": "La afirmación de una adjudicación nombra a todos los proveedores de la publicación",
+     "hecho": true
+    }
+   ],
+   "notas": [
+    "La medición de las 78 noches dejó a la vista dos fallas del explorador de ARCE: no avisa cuando un día hábil viene sin publicaciones, y la afirmación de una adjudicación repartida entre varios proveedores nombra solo al primero."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-16",
+     "texto": "Creada a partir de la medición de las 78 noches (T20). Pasa a En curso."
+    },
+    {
+     "fecha": "2026-11-16",
+     "texto": "Hecho el código: fuente.fallida de tipo sinPublicaciones cuando la fecha objetivo es un día hábil y el feed no trae nada de ese día, y el resumen de una adjudicación repartida nombra a todos los proveedores (docs/contratos.md, docs/como-se-hizo/primera-rebanada.md). La medición espera a la próxima corrida del banco, con T21."
+    },
+    {
+     "fecha": "2026-11-17",
+     "texto": "Medido en la medición 2026-11-16-2: las noches del 23 y del 26 al 29 de octubre terminaron con fuente.fallida sinPublicaciones, y el feed de ARCE confirma que no trae nada de esos días. Las adjudicaciones repartidas del sorteo nombran a todos los proveedores, y dos de las tres que estaban mal ahora están bien. Pasa a Hecho."
+    }
+   ]
+  },
+  {
+   "id": "T21",
+   "titulo": "Completar el analista",
+   "columna": "hecho",
+   "orden": 2,
+   "tipo": "componente",
+   "dueno": "desarrollo",
+   "dependeDe": "",
+   "esperaA": "",
+   "fecha": "",
+   "detalle": [
+    {
+     "texto": "docs/contratos.md",
+     "ruta": "docs/contratos.md"
+    },
+    {
+     "texto": "adrs/0015-que-puede-escribir-el-analista.md",
+     "ruta": "adrs/0015-que-puede-escribir-el-analista.md"
+    },
+    {
+     "texto": "docs/como-se-hizo/analista.md",
+     "ruta": "docs/como-se-hizo/analista.md"
+    }
+   ],
+   "etapas": [
+    {
+     "texto": "Contrato",
+     "hecho": true
+    },
+    {
+     "texto": "Código",
+     "hecho": true
+    },
+    {
+     "texto": "Pruebas",
+     "hecho": true
+    },
+    {
+     "texto": "Medido contra el banco",
+     "hecho": true
+    },
+    {
+     "texto": "Página cómo se hizo",
+     "hecho": true
+    }
+   ],
+   "lista": [],
+   "notas": [
+    "En la primera rebanada el analista solo pasa la afirmación. Acá escribe qué dice, por qué importa y qué mirar."
+   ],
+   "registro": [
+    {
+     "fecha": "2026-11-07",
+     "texto": "Creada con el plan (T07)."
+    },
+    {
+     "fecha": "2026-11-15",
+     "texto": "Deja de depender de T08: el código de la rebanada ya está hecho, y a T08 solo le falta la medición (T20). Pasa a Para empezar."
+    },
+    {
+     "fecha": "2026-11-16",
+     "texto": "Hechos el contrato, el código, las pruebas y la página: el analista le pide al modelo qué dice, por qué importa y qué mirar, copia el grado del refutador y no usa un campo con una cifra que no está en la evidencia (ADR 0015). La página de la mañana muestra el análisis aparte. Falta medirlo contra el banco, junto con T39: se estima que la medición de las 78 noches cuesta unos 16 USD. Pasa a En curso."
+    },
+    {
+     "fecha": "2026-11-16",
+     "texto": "La medición 2026-11-16-1, con 2 USD y 400 llamadas por noche, se quedó sin crédito de la API en la noche del 2026-09-24, después de 22 noches y 6,11 USD, y no se usa. Se mide de nuevo cuando haya crédito."
+    },
+    {
+     "fecha": "2026-11-17",
+     "texto": "Medido en la medición 2026-11-16-2: 5,62 USD en 1.217 llamadas, 0,072 por noche. El control dejó sin análisis 7 \"por qué importa\" y 33 \"qué mirar\", y en 94 el \"qué dice\" quedó igual a la afirmación. Falta un sorteo de análisis, que el banco no juzga. Pasa a Hecho."
+    }
+   ]
+  },
+  {
    "id": "T34",
    "titulo": "Armar la página del perfil",
    "columna": "hecho",
-   "orden": 1,
+   "orden": 3,
    "tipo": "web",
    "dueno": "desarrollo",
    "dependeDe": "T25",
@@ -1369,7 +1459,7 @@
    "id": "T41",
    "titulo": "Aceptar o corregir el ADR 0016",
    "columna": "hecho",
-   "orden": 2,
+   "orden": 4,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1406,7 +1496,7 @@
    "id": "T27",
    "titulo": "Escribir el ADR de despliegue",
    "columna": "hecho",
-   "orden": 3,
+   "orden": 5,
    "tipo": "adr",
    "dueno": "desarrollo",
    "dependeDe": "T08",
@@ -1500,7 +1590,7 @@
    "id": "T40",
    "titulo": "Publicar El Parte en la máquina del responsable",
    "columna": "hecho",
-   "orden": 4,
+   "orden": 6,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "T25, T27",
@@ -1598,7 +1688,7 @@
    "id": "T25",
    "titulo": "Armar el login por enlace, los cuatro usuarios y la cuenta de demostración",
    "columna": "hecho",
-   "orden": 5,
+   "orden": 7,
    "tipo": "web",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1704,7 +1794,7 @@
    "id": "T23",
    "titulo": "Armar la cola de revisión humana",
    "columna": "hecho",
-   "orden": 6,
+   "orden": 8,
    "tipo": "web",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1761,7 +1851,7 @@
    "id": "T38",
    "titulo": "Armar una presentación para quien no conoce el proyecto",
    "columna": "hecho",
-   "orden": 7,
+   "orden": 9,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -1831,7 +1921,7 @@
    "id": "T37",
    "titulo": "Aceptar o corregir el ADR 0014",
    "columna": "hecho",
-   "orden": 8,
+   "orden": 10,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1868,7 +1958,7 @@
    "id": "T12",
    "titulo": "Escribir el formato, la muestra sintética y las métricas del banco de pruebas",
    "columna": "hecho",
-   "orden": 9,
+   "orden": 11,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T11",
@@ -1950,7 +2040,7 @@
    "id": "T36",
    "titulo": "Aceptar o corregir el ADR 0013",
    "columna": "hecho",
-   "orden": 10,
+   "orden": 12,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -1991,7 +2081,7 @@
    "id": "T32",
    "titulo": "Armar el tablero de arquitectura",
    "columna": "hecho",
-   "orden": 11,
+   "orden": 13,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -2065,7 +2155,7 @@
    "id": "T31",
    "titulo": "Aceptar o corregir el ADR 0011",
    "columna": "hecho",
-   "orden": 12,
+   "orden": 14,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -2102,7 +2192,7 @@
    "id": "T18",
    "titulo": "Pedir a IMPO que aclare si su JSON de normas se puede reutilizar",
    "columna": "hecho",
-   "orden": 13,
+   "orden": 15,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -2134,7 +2224,7 @@
    "id": "T11",
    "titulo": "Entregar el registro completo del banco de pruebas",
    "columna": "hecho",
-   "orden": 14,
+   "orden": 16,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -2166,7 +2256,7 @@
    "id": "T14",
    "titulo": "Dejar la clave del proveedor de modelos fuera del repositorio",
    "columna": "hecho",
-   "orden": 15,
+   "orden": 17,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "T05",
@@ -2219,7 +2309,7 @@
    "id": "T19",
    "titulo": "Aceptar o corregir los ADRs propuestos",
    "columna": "hecho",
-   "orden": 16,
+   "orden": 18,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -2296,7 +2386,7 @@
    "id": "T05",
    "titulo": "Escribir los primeros ADRs",
    "columna": "hecho",
-   "orden": 17,
+   "orden": 19,
    "tipo": "adr",
    "dueno": "desarrollo",
    "dependeDe": "T09",
@@ -2398,7 +2488,7 @@
    "id": "T06",
    "titulo": "Escribir los ADRs de las decisiones D2 y D3",
    "columna": "hecho",
-   "orden": 18,
+   "orden": 20,
    "tipo": "adr",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -2464,7 +2554,7 @@
    "id": "T28",
    "titulo": "Hacer editable el kanban y sincronizarlo con el tablero",
    "columna": "hecho",
-   "orden": 19,
+   "orden": 21,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -2521,7 +2611,7 @@
    "id": "T07",
    "titulo": "Escribir docs/plan.md",
    "columna": "hecho",
-   "orden": 20,
+   "orden": 22,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T02",
@@ -2583,7 +2673,7 @@
    "id": "T04",
    "titulo": "Escribir docs/base-de-afirmaciones.md",
    "columna": "hecho",
-   "orden": 21,
+   "orden": 23,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T03",
@@ -2653,7 +2743,7 @@
    "id": "T03",
    "titulo": "Escribir docs/contratos.md",
    "columna": "hecho",
-   "orden": 22,
+   "orden": 24,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T02",
@@ -2723,7 +2813,7 @@
    "id": "T15",
    "titulo": "Comprobar en el verificador que los diagramas Mermaid se dibujan",
    "columna": "hecho",
-   "orden": 23,
+   "orden": 25,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -2768,7 +2858,7 @@
    "id": "T02",
    "titulo": "Escribir docs/arquitectura.md",
    "columna": "hecho",
-   "orden": 24,
+   "orden": 26,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "T09",
@@ -2854,7 +2944,7 @@
    "id": "T10",
    "titulo": "Verificar las fuentes candidatas",
    "columna": "hecho",
-   "orden": 25,
+   "orden": 27,
    "tipo": "verificacion",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -2927,7 +3017,7 @@
    "id": "T09",
    "titulo": "Verificar Spring AI y sus patrones de orquestación",
    "columna": "hecho",
-   "orden": 26,
+   "orden": 28,
    "tipo": "verificacion",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -2980,7 +3070,7 @@
    "id": "T13",
    "titulo": "Elegir la licencia del repositorio",
    "columna": "hecho",
-   "orden": 27,
+   "orden": 29,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -3016,7 +3106,7 @@
    "id": "T17",
    "titulo": "Dar acceso de escritura al repositorio a las sesiones en la nube",
    "columna": "hecho",
-   "orden": 28,
+   "orden": 30,
    "tipo": "gestion",
    "dueno": "Andrés",
    "dependeDe": "",
@@ -3043,7 +3133,7 @@
    "id": "T16",
    "titulo": "Armar el kanban generado desde el tablero",
    "columna": "hecho",
-   "orden": 29,
+   "orden": 31,
    "tipo": "herramienta",
    "dueno": "desarrollo",
    "dependeDe": "",
@@ -3092,7 +3182,7 @@
    "id": "T01",
    "titulo": "Armar la base documental",
    "columna": "hecho",
-   "orden": 30,
+   "orden": 32,
    "tipo": "documento",
    "dueno": "desarrollo",
    "dependeDe": "",

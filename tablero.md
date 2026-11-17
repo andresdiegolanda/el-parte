@@ -3,7 +3,7 @@
 Todo pendiente de El Parte vive acá, con dueño (regla 8). Este archivo es lo que manda. El kanban publicado es editable y se sincroniza con este archivo cada vez que una sesión de desarrollo lee o escribe el repositorio, o cuando se le pide; su copia sin conexión, [`kanban/index.html`](kanban/index.html), se genera desde acá con `python3 herramientas/generar_kanban.py` y no se edita a mano ([ADR 0009](adrs/0009-kanban-editable-sincronizado.md)).
 
 - Actualizado: 2026-11-16
-- Nota: La primera rebanada (T08) anda de punta a punta y ya corrió contra el banco las 78 noches del registro (T20): 12,71 USD, 5 de 5 publicables encontrados, 0 de 1 hallazgo y una precisión estimada del 95 %. Falta que el responsable confirme la revisión. Lo que la medición mostró del explorador de ARCE se arregla en T39. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). El analista completo (T21) y el presupuesto que corta (T22) están hechos, sin el tope de 60 candidatos, y falta medirlos contra el banco junto con T39, en una sola corrida. La cola de revisión humana (T23) y el login por enlace (T25) están hechos: correr y revisar son solo del responsable. El Parte está publicado desde la máquina del responsable, con un túnel de Cloudflare y el correo por Resend (T40), y el responsable ya entró desde afuera (ADR 0016, aceptado). En su perfil, cada invitado elige qué organismos seguir y si quiere el aviso diario (T34); sigue el aviso (T35). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.
+- Nota: La primera rebanada (T08) anda de punta a punta y ya corrió contra el banco las 78 noches del registro (T20): 12,71 USD, 5 de 5 publicables encontrados, 0 de 1 hallazgo y una precisión estimada del 95 %. Falta que el responsable confirme la revisión. Lo que la medición mostró del explorador de ARCE se arregla en T39. El formato, la muestra y las métricas del banco están en banco-de-pruebas/ (T12). La medición con el analista (T21), el presupuesto (T22) y el explorador arreglado (T39) dio 5 de 5 publicables y 60 de 60 extras bien en un sorteo, a 0,245 USD por noche; falta fijar el presupuesto por noche (T22). La cola de revisión humana (T23) y el login por enlace (T25) están hechos: correr y revisar son solo del responsable. El Parte está publicado desde la máquina del responsable, con un túnel de Cloudflare y el correo por Resend (T40), y el responsable ya entró desde afuera (ADR 0016, aceptado). En su perfil, cada invitado elige qué organismos seguir y si quiere el aviso diario (T34); sigue el aviso (T35). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.
 - Calendario: 2026-11-07, 2026-11-14, 2026-11-21, 2026-11-28
 - Repositorio: https://github.com/andresdiegolanda/el-parte
 
@@ -111,6 +111,8 @@ Lista:
 - [x] Que el explorador avise cuando un día hábil viene sin publicaciones: el feed de ARCE no trae nada del 2026-10-23 al 2026-10-29 (pasa a T39, hecho)
 - [x] Decidir qué hacer con el tope de 60 candidatos, que dejó 196 compras del BPS sin procesar (pasa a T22: se va, y corta el presupuesto)
 - [x] Que la medición se detenga en la primera noche con errores del modelo: la 2026-11-16-1 se quedó sin crédito en la noche del 2026-09-24 y siguió con noches vacías
+- [x] Medir de nuevo con el analista, el presupuesto y el explorador arreglado (2026-11-16-2), con un sorteo nuevo de 60 extras
+- [ ] Que cada juicio de un extra guarde la huella del contenido juzgado: dos juicios viejos siguen marcando mal hechos que ahora están bien
 
 Registro:
 - 2026-11-07: Creada con el plan (T07).
@@ -123,48 +125,7 @@ Registro:
 - 2026-11-15: Borrador de la fuente y la etiqueta de las 84 entradas, en banco-de-pruebas/privado/revision/entradas.jsonl, fuera del repositorio, para que lo confirme el responsable. Valida sin errores. De ARCE, la única fuente que lee esta medición, son 8: 1 hallazgo, 5 publicables, 1 no-nuevo y 1 otra-entidad; las demás son de otras fuentes o de ninguna.
 - 2026-11-16: Las 78 noches, en banco-de-pruebas/mediciones/2026-11-15-2/: 12,71 USD y 3 horas y 23 minutos, sin fallas. Con el borrador de la revisión y las correspondencias de seis entradas: 5 de 5 publicables encontrados, con 26 días de adelanto, y 0 de 1 hallazgo, la compra directa a ATOS. Faltan juzgar 789 extras. A la vista: el feed de ARCE no trae nada del 23 al 29 de octubre, y el tope de candidatos dejó 196 compras sin procesar (docs/como-se-hizo/medicion-contra-el-banco.md).
 - 2026-11-16: Los extras se juzgan por sorteo (banco-de-pruebas/metricas.md). Un sorteo de 60 de los 789, con la semilla 20261116: 57 bien y 3 con el contenido equivocado, adjudicaciones repartidas entre varios proveedores. Precisión estimada de los extras, 0,95 (de 0,86 a 0,98), y de todo lo publicado, 0,95. El arreglo del explorador y el aviso de día vacío pasan a T39; el tope de candidatos, a T22. Falta que el responsable confirme la revisión y saber lo de ATOS.
-
-### T39 · Arreglar lo que la medición mostró del explorador de ARCE
-- Tipo: Componente
-- Dueño: desarrollo
-- Detalle: [docs/como-se-hizo/medicion-contra-el-banco.md](docs/como-se-hizo/medicion-contra-el-banco.md)
-
-La medición de las 78 noches dejó a la vista dos fallas del explorador de ARCE: no avisa cuando un día hábil viene sin publicaciones, y la afirmación de una adjudicación repartida entre varios proveedores nombra solo al primero.
-
-Etapas:
-- [x] Contrato
-- [x] Código
-- [x] Pruebas
-- [ ] Medido contra el banco
-- [x] Página cómo se hizo
-
-Lista:
-- [x] Un día hábil sin publicaciones en el feed es una fuente fallida, no una noche sin novedades
-- [x] La afirmación de una adjudicación nombra a todos los proveedores de la publicación
-
-Registro:
-- 2026-11-16: Creada a partir de la medición de las 78 noches (T20). Pasa a En curso.
-- 2026-11-16: Hecho el código: fuente.fallida de tipo sinPublicaciones cuando la fecha objetivo es un día hábil y el feed no trae nada de ese día, y el resumen de una adjudicación repartida nombra a todos los proveedores (docs/contratos.md, docs/como-se-hizo/primera-rebanada.md). La medición espera a la próxima corrida del banco, con T21.
-
-### T21 · Completar el analista
-- Tipo: Componente
-- Dueño: desarrollo
-- Detalle: [docs/contratos.md](docs/contratos.md), [adrs/0015-que-puede-escribir-el-analista.md](adrs/0015-que-puede-escribir-el-analista.md), [docs/como-se-hizo/analista.md](docs/como-se-hizo/analista.md)
-
-En la primera rebanada el analista solo pasa la afirmación. Acá escribe qué dice, por qué importa y qué mirar.
-
-Etapas:
-- [x] Contrato
-- [x] Código
-- [x] Pruebas
-- [ ] Medido contra el banco
-- [x] Página cómo se hizo
-
-Registro:
-- 2026-11-07: Creada con el plan (T07).
-- 2026-11-15: Deja de depender de T08: el código de la rebanada ya está hecho, y a T08 solo le falta la medición (T20). Pasa a Para empezar.
-- 2026-11-16: Hechos el contrato, el código, las pruebas y la página: el analista le pide al modelo qué dice, por qué importa y qué mirar, copia el grado del refutador y no usa un campo con una cifra que no está en la evidencia (ADR 0015). La página de la mañana muestra el análisis aparte. Falta medirlo contra el banco, junto con T39: se estima que la medición de las 78 noches cuesta unos 16 USD. Pasa a En curso.
-- 2026-11-16: La medición 2026-11-16-1, con 2 USD y 400 llamadas por noche, se quedó sin crédito de la API en la noche del 2026-09-24, después de 22 noches y 6,11 USD, y no se usa. Se mide de nuevo cuando haya crédito.
+- 2026-11-17: Las 78 noches con el analista, el presupuesto y el explorador arreglado, en banco-de-pruebas/mediciones/2026-11-16-2/: 19,11 USD, 0,245 por noche, ninguna cortada. 5 de 5 publicables y 0 de 1 hallazgo, como antes. Un sorteo nuevo de 60 de los 796 extras, con la semilla 20261117: los 60 bien, precisión estimada 1,0 (de 0,94 a 1,0). Los 56 juicios nuevos están en borrador, para que el responsable los confirme. Dos juicios del sorteo anterior quedaron viejos: los hechos cambiaron con T39 y ahora están bien (docs/como-se-hizo/medicion-contra-el-banco.md).
 
 ### T22 · Implementar el presupuesto que corta
 - Tipo: Componente
@@ -177,7 +138,7 @@ Etapas:
 - [x] Contrato
 - [x] Código
 - [x] Pruebas
-- [ ] Medido contra el banco
+- [x] Medido contra el banco
 - [x] Página cómo se hizo
 
 Lista:
@@ -186,15 +147,38 @@ Lista:
 - [x] Tabla de precios en la base, con fuente y fecha, y sus valores iniciales en una migración
 - [x] Corte por tiempo y mensaje corrida.cortada
 - [x] Revisar el tope de 60 candidatos por corrida: en las 78 noches dejó 196 compras del BPS sin procesar (T20)
-- [ ] Fijar los valores del presupuesto con la medición: con el analista y sin el tope de candidatos, la noche más cargada costaría unos 1,60 USD y pasaría las 200 llamadas
+- [ ] Fijar los valores del presupuesto con la medición: con 0,50 USD se habrían cortado 13 de las 78 noches; la más cara costó 1,14 USD y la que más llamó hizo 159 llamadas (docs/como-se-hizo/presupuesto.md)
 
 Registro:
 - 2026-11-07: Creada con el plan (T07).
 - 2026-11-15: Deja de depender de T08: el código de la rebanada ya está hecho, y a T08 solo le falta la medición (T20). Pasa a Para empezar.
 - 2026-11-16: Hechos el contrato, el código, las pruebas y la página: un advisor en el ChatClient reserva el peor caso de cada llamada en el libro de la corrida, con un solo update que solo pasa si alcanza, y la rechaza si no; el rechazo se graba, y el cierre corta la corrida con el límite. La tabla de precios y el corte por tiempo ya estaban desde la primera rebanada. Se va el tope de 60 candidatos: los de la fecha objetivo pasan primero. Falta medirlo contra el banco y fijar sus valores. Pasa a En curso.
 - 2026-11-16: La medición 2026-11-16-1, con 2 USD y 400 llamadas por noche, se quedó sin crédito de la API en la noche del 2026-09-24, después de 22 noches y 6,11 USD, y no se usa. Se mide de nuevo cuando haya crédito.
+- 2026-11-17: Medido en la medición 2026-11-16-2, con 2 USD y 400 llamadas por noche: ninguna noche se cortó. Mediana 0,21 USD, el 90 % por debajo de 0,56, la más cara 1,14 USD, y como mucho 159 llamadas. Con los 0,50 USD por omisión se habrían cortado 13 de las 78. Falta que el responsable fije los valores.
 
 ## Para empezar
+
+### T43 · Que la corrida de la noche se ponga al día
+- Tipo: Componente
+- Dueño: desarrollo
+- Detalle: [docs/como-se-hizo/despliegue.md](docs/como-se-hizo/despliegue.md), [app/src/main/java/io/github/andresdiegolanda/elparte/corrida/NochePorReloj.java](app/src/main/java/io/github/andresdiegolanda/elparte/corrida/NochePorReloj.java)
+
+La corrida de cada noche sale con una tarea programada a las 6 de Uruguay. En la máquina del responsable eso falla de dos maneras: si la máquina virtual de Docker estuvo en pausa, sale tarde, tanto como duró la pausa; y si la máquina está apagada o dormida a esa hora, no sale. Tiene que correr apenas pueda, sin duplicar una noche que ya corrió.
+
+Etapas:
+- [ ] Contrato
+- [ ] Código
+- [ ] Pruebas
+- [ ] Medido contra el banco
+- [ ] Página cómo se hizo
+
+Lista:
+- [ ] Revisar cada pocos minutos si ya pasó la hora y la noche de ayer no tiene corrida normal, y correrla
+- [ ] Que una noche no corra dos veces si la revisión y la corrida a mano coinciden
+- [ ] Probarlo con un reloj de prueba: la hora pasó con la aplicación apagada, y con la aplicación prendida
+
+Registro:
+- 2026-11-17: Creada: la primera corrida automática publicada no salió a las 6; el reloj monótono de la JVM iba unos 44 minutos atrás por una pausa de la máquina virtual de Docker (docs/como-se-hizo/despliegue.md).
 
 ### T35 · Mandar el aviso diario del parte
 - Tipo: Componente
@@ -393,6 +377,50 @@ Registro:
 - 2026-11-14: Creada con el ADR 0010.
 
 ## Hecho
+
+### T39 · Arreglar lo que la medición mostró del explorador de ARCE
+- Tipo: Componente
+- Dueño: desarrollo
+- Detalle: [docs/como-se-hizo/medicion-contra-el-banco.md](docs/como-se-hizo/medicion-contra-el-banco.md)
+
+La medición de las 78 noches dejó a la vista dos fallas del explorador de ARCE: no avisa cuando un día hábil viene sin publicaciones, y la afirmación de una adjudicación repartida entre varios proveedores nombra solo al primero.
+
+Etapas:
+- [x] Contrato
+- [x] Código
+- [x] Pruebas
+- [x] Medido contra el banco
+- [x] Página cómo se hizo
+
+Lista:
+- [x] Un día hábil sin publicaciones en el feed es una fuente fallida, no una noche sin novedades
+- [x] La afirmación de una adjudicación nombra a todos los proveedores de la publicación
+
+Registro:
+- 2026-11-16: Creada a partir de la medición de las 78 noches (T20). Pasa a En curso.
+- 2026-11-16: Hecho el código: fuente.fallida de tipo sinPublicaciones cuando la fecha objetivo es un día hábil y el feed no trae nada de ese día, y el resumen de una adjudicación repartida nombra a todos los proveedores (docs/contratos.md, docs/como-se-hizo/primera-rebanada.md). La medición espera a la próxima corrida del banco, con T21.
+- 2026-11-17: Medido en la medición 2026-11-16-2: las noches del 23 y del 26 al 29 de octubre terminaron con fuente.fallida sinPublicaciones, y el feed de ARCE confirma que no trae nada de esos días. Las adjudicaciones repartidas del sorteo nombran a todos los proveedores, y dos de las tres que estaban mal ahora están bien. Pasa a Hecho.
+
+### T21 · Completar el analista
+- Tipo: Componente
+- Dueño: desarrollo
+- Detalle: [docs/contratos.md](docs/contratos.md), [adrs/0015-que-puede-escribir-el-analista.md](adrs/0015-que-puede-escribir-el-analista.md), [docs/como-se-hizo/analista.md](docs/como-se-hizo/analista.md)
+
+En la primera rebanada el analista solo pasa la afirmación. Acá escribe qué dice, por qué importa y qué mirar.
+
+Etapas:
+- [x] Contrato
+- [x] Código
+- [x] Pruebas
+- [x] Medido contra el banco
+- [x] Página cómo se hizo
+
+Registro:
+- 2026-11-07: Creada con el plan (T07).
+- 2026-11-15: Deja de depender de T08: el código de la rebanada ya está hecho, y a T08 solo le falta la medición (T20). Pasa a Para empezar.
+- 2026-11-16: Hechos el contrato, el código, las pruebas y la página: el analista le pide al modelo qué dice, por qué importa y qué mirar, copia el grado del refutador y no usa un campo con una cifra que no está en la evidencia (ADR 0015). La página de la mañana muestra el análisis aparte. Falta medirlo contra el banco, junto con T39: se estima que la medición de las 78 noches cuesta unos 16 USD. Pasa a En curso.
+- 2026-11-16: La medición 2026-11-16-1, con 2 USD y 400 llamadas por noche, se quedó sin crédito de la API en la noche del 2026-09-24, después de 22 noches y 6,11 USD, y no se usa. Se mide de nuevo cuando haya crédito.
+- 2026-11-17: Medido en la medición 2026-11-16-2: 5,62 USD en 1.217 llamadas, 0,072 por noche. El control dejó sin análisis 7 "por qué importa" y 33 "qué mirar", y en 94 el "qué dice" quedó igual a la afirmación. Falta un sorteo de análisis, que el banco no juzga. Pasa a Hecho.
 
 ### T34 · Armar la página del perfil
 - Tipo: Web

@@ -54,5 +54,7 @@ La afirmación del refutador está escrita para compararla con la fuente: "Banco
 
 ## Qué falta
 
-- **Medirlo contra el banco** (T21). La próxima medición de las 78 noches dice cuánto cuesta de verdad, cuántos campos salen sin análisis por el control y, con un sorteo como el de los extras, si los análisis dicen algo falso sin cifras, que es lo que el control no ve. Se estima que agrega unos 3,4 USD a los 12,71 de la medición anterior. [INFERRED: [adrs/0015-que-puede-escribir-el-analista.md](../../adrs/0015-que-puede-escribir-el-analista.md), "Costos"]
+- **Un sorteo de análisis**, como el de los extras, para saber si los análisis dicen algo falso sin cifras, que es lo que el control no ve.
+
+Medido contra el banco en la medición `2026-11-16-2`: el analista hizo 1.217 llamadas y gastó 5,62 USD en las 78 noches, 0,072 por noche, más que los 3,4 USD estimados; el refutador gastó 13,49, más que antes porque ya no hay tope de candidatos. De las 1.217 versiones PROVEN o INFERRED, el control dejó "Sin análisis" el "por qué importa" en 7 y el "qué mirar" en 33, y en 94 el "qué dice" quedó igual a la afirmación. [PROVEN: base de la medición, 2026-11-17] El detalle está en [docs/como-se-hizo/medicion-contra-el-banco.md](medicion-contra-el-banco.md).
 - **La revisión humana** (T23) es la otra forma de encontrar un análisis equivocado.

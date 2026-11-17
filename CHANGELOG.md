@@ -2,6 +2,11 @@
 
 Cada entrada dice qué cambió, dónde, y enlaza al documento que tiene el porqué. Las más nuevas van arriba.
 
+## 2026-11-17
+
+- La primera corrida automática publicada no salió a las 6 de Uruguay: el reloj monótono de la JVM iba unos 44 minutos atrás por una pausa de la máquina virtual de Docker, y la tarea programada sale tarde. T43, para empezar: que la corrida de la noche se ponga al día. Detalle: [docs/como-se-hizo/despliegue.md](docs/como-se-hizo/despliegue.md).
+- La medición `2026-11-16-2`: las 78 noches con el analista, el presupuesto y el explorador arreglado. 19,11 USD, 0,245 por noche, ninguna cortada; 5 de 5 publicables y 0 de 1 hallazgo; un sorteo nuevo de 60 extras, con la semilla 20261117, todos bien (precisión estimada 1,0, de 0,94 a 1,0). El aviso de día vacío marcó el hueco del feed de ARCE del 23 al 29 de octubre. T21 y T39 pasan a Hecho; T22 espera que se fijen los valores. Dos juicios del sorteo anterior quedaron viejos, porque se guardan por clave y el hecho cambió. Detalle: [docs/como-se-hizo/medicion-contra-el-banco.md](docs/como-se-hizo/medicion-contra-el-banco.md).
+
 ## 2026-11-16
 
 - Lo aprendido al publicar y al mirar el proyecto desde afuera, en el repositorio. T42, pendiente: comparar El Parte con una sesión de la Claude Console sobre el banco, después del material para la demo, porque lo que la plataforma vuelve gratis es la orquestación y no la medición. T33 suma que el expediente es donde hace falta contexto largo. `app/README.md` y `docs/como-se-hizo/despliegue.md` suman el panel de Cloudflare que espera la primera conexión, el cuidado del token y el invitado que no era un correo.
