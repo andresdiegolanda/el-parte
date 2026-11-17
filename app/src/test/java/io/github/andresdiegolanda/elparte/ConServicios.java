@@ -8,6 +8,7 @@ import org.testcontainers.kafka.KafkaContainer;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 
 import io.github.andresdiegolanda.elparte.fuentes.arce.ArceDePrueba;
+import io.github.andresdiegolanda.elparte.fuentes.impo.ImpoDePrueba;
 
 /**
  * Lo que comparten las pruebas de la aplicación entera: un PostgreSQL y un Kafka de verdad, con las
@@ -36,6 +37,7 @@ public abstract class ConServicios {
     protected static final PostgreSQLContainer POSTGRES = new PostgreSQLContainer("postgres:18.7");
     protected static final KafkaContainer KAFKA = new KafkaContainer("apache/kafka:4.4.0");
     protected static final ArceDePrueba ARCE = new ArceDePrueba();
+    protected static final ImpoDePrueba IMPO = new ImpoDePrueba();
 
     static {
         POSTGRES.start();
@@ -50,5 +52,7 @@ public abstract class ConServicios {
         propiedades.add("spring.flyway.password", POSTGRES::getPassword);
         propiedades.add("spring.kafka.bootstrap-servers", KAFKA::getBootstrapServers);
         propiedades.add("elparte.arce.url-base", ARCE::urlBase);
+        propiedades.add("elparte.impo.url-base", IMPO::urlBase);
+        propiedades.add("elparte.impo.pausa-ms", () -> "0");
     }
 }

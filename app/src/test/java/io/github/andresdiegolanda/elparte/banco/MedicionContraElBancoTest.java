@@ -81,7 +81,7 @@ class MedicionContraElBancoTest extends ConServicios {
         assertThat(primera.salida()).isEqualTo(CARPETA.resolve("2026-10-20-1").resolve("salida-de-el-parte.json"));
         assertThat(salida.path("commit").asString()).isEqualTo("prueba");
         assertThat(salida.path("entidad").asString()).isEqualTo("organismo:bps");
-        assertThat(texto(salida.path("fuentes"))).containsExactly("arce");
+        assertThat(texto(salida.path("fuentes"))).containsExactly("arce", "impo");
         assertThat(salida.path("modelos").path("refutador").asString()).isEqualTo("claude-sonnet-5-5");
         List<JsonNode> corridas = lista(salida.path("corridas"));
         assertThat(corridas).extracting(c -> c.path("noche").asString())

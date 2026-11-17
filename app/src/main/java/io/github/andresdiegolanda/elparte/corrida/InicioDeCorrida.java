@@ -102,7 +102,13 @@ public class InicioDeCorrida {
 
     /** Una noche del banco de pruebas: la fecha del registro, y solo la entidad que se mide (ADR 0014). */
     public String iniciarBanco(LocalDate fechaObjetivo, String entidad) {
-        CorridaIniciada inicio = new CorridaIniciada("banco", fechaObjetivo.toString(), fuentesActivas(),
+        return iniciarBanco(fechaObjetivo, entidad, List.of());
+    }
+
+    /** Lo mismo, con algunas de las fuentes activas; sin ninguna, con todas. */
+    public String iniciarBanco(LocalDate fechaObjetivo, String entidad, List<String> fuentes) {
+        List<String> activas = fuentesActivas().stream().filter(f -> fuentes.isEmpty() || fuentes.contains(f)).toList();
+        CorridaIniciada inicio = new CorridaIniciada("banco", fechaObjetivo.toString(), activas,
                 List.of(entidad), presupuesto, modelosVigentes(), null);
         return iniciar(inicio, false).orElseThrow();
     }

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,7 @@ public class ArranqueDelBanco implements ApplicationRunner {
     private final BigDecimal costoMaximoUsd;
     private final Path carpeta;
     private final String commit;
+    private final List<String> fuentes;
 
     public ArranqueDelBanco(MedicionContraElBanco medicion,
             @Value("${elparte.banco.medicion:}") String nombre,
@@ -40,7 +42,8 @@ public class ArranqueDelBanco implements ApplicationRunner {
             @Value("${elparte.banco.entidad:organismo:bps}") String entidad,
             @Value("${elparte.banco.costo-maximo-usd:5.00}") BigDecimal costoMaximoUsd,
             @Value("${elparte.banco.carpeta:/mediciones}") Path carpeta,
-            @Value("${elparte.banco.commit:}") String commit) {
+            @Value("${elparte.banco.commit:}") String commit,
+            @Value("${elparte.banco.fuentes:}") String fuentes) {
         this.medicion = medicion;
         this.nombre = nombre;
         this.desde = desde;
@@ -49,6 +52,7 @@ public class ArranqueDelBanco implements ApplicationRunner {
         this.costoMaximoUsd = costoMaximoUsd;
         this.carpeta = carpeta;
         this.commit = commit;
+        this.fuentes = java.util.Arrays.stream(fuentes.split(",")).map(String::trim).filter(f -> !f.isEmpty()).toList();
     }
 
     @Override
@@ -61,13 +65,14 @@ public class ArranqueDelBanco implements ApplicationRunner {
         MedicionContraElBanco.Parametros parametros;
         try {
             parametros = new MedicionContraElBanco.Parametros(nombre, LocalDate.parse(desde), LocalDate.parse(hasta),
-                    entidad, costoMaximoUsd, carpeta, commit);
+                    entidad, costoMaximoUsd, carpeta, commit, fuentes);
         } catch (DateTimeParseException e) {
             log.error("Las noches de la medición van como AAAA-MM-DD, y son {} y {}; no se mide nada", desde, hasta);
             return;
         }
-        log.info("Medición contra el banco {}: noches del {} al {}, entidad {}, tope {} USD", parametros.medicion(),
-                parametros.desde(), parametros.hasta(), parametros.entidad(), parametros.costoMaximoUsd());
+        log.info("Medición contra el banco {}: noches del {} al {}, entidad {}, tope {} USD, fuentes {}", parametros.medicion(),
+                parametros.desde(), parametros.hasta(), parametros.entidad(), parametros.costoMaximoUsd(),
+                fuentes.isEmpty() ? "todas las activas" : fuentes);
         Thread.ofPlatform().name("medicion-del-banco").start(() -> {
             try {
                 medicion.medir(parametros);

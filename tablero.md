@@ -82,8 +82,6 @@ Los campos van pegados al título, sin línea en blanco. Los que no aplican se o
 
 ## En curso
 
-## Para empezar
-
 ### T30 · Sumar el explorador de IMPO
 - Tipo: Componente
 - Dueño: desarrollo
@@ -109,6 +107,9 @@ Lista:
 Registro:
 - 2026-11-14: Creada con el ADR 0010.
 - 2026-11-17: Pasa a Para empezar: T08 está hecha. Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
+- 2026-11-17: Pasa a En curso. El explorador anda contra un IMPO de mentira y contra muestras reales del índice y de las normas, bajadas a diez segundos entre pedidos después de volver a leer el robots.txt. Sigue la medición contra el banco, solo con IMPO.
+
+## Para empezar
 
 ### T24 · Sumar los exploradores del BID, el Banco Mundial y Presidencia
 - Tipo: Componente

@@ -14,6 +14,11 @@ import io.github.andresdiegolanda.elparte.fuentes.arce.Enmascarador;
 import io.github.andresdiegolanda.elparte.fuentes.arce.LectorArce;
 import io.github.andresdiegolanda.elparte.fuentes.arce.LectorArce.FallaDeArce;
 import io.github.andresdiegolanda.elparte.fuentes.arce.LectorArce.Leida;
+import io.github.andresdiegolanda.elparte.fuentes.impo.EnmascaradorImpo;
+import io.github.andresdiegolanda.elparte.fuentes.impo.LectorImpo;
+import io.github.andresdiegolanda.elparte.fuentes.impo.LectorImpo.FallaDeImpo;
+import io.github.andresdiegolanda.elparte.fuentes.impo.NombresDeEntidad;
+import io.github.andresdiegolanda.elparte.fuentes.impo.NormaRecortada;
 import io.github.andresdiegolanda.elparte.grabaciones.Grabaciones;
 import io.github.andresdiegolanda.elparte.infraestructura.Procesados;
 import io.github.andresdiegolanda.elparte.mensajes.Contenidos.Candidato;
@@ -38,7 +43,8 @@ import tools.jackson.databind.node.ObjectNode;
  * el único que pone el grado (ADR 0004).
  *
  * <p>Vuelve a leer la fuente por su cuenta, sin confiar en lo que leyó el explorador, y le pide al
- * modelo que compare la afirmación con la publicación. Las pruebas de fecha y de duplicado no
+ * modelo que compare la afirmación con la publicación: una publicación de ARCE en OCDS, o una norma de
+ * IMPO, recortada a los artículos que nombran a las entidades del candidato. Las pruebas de fecha y de duplicado no
  * necesitan el modelo: salen de la publicación y del cotejo del archivista.
  */
 @Component
@@ -73,17 +79,19 @@ public class Refutador {
     private final Corridas corridas;
     private final Grabaciones grabaciones;
     private final LectorArce lector;
+    private final LectorImpo lectorImpo;
     private final Modelo modelo;
     private final Emisor emisor;
     private final Procesados procesados;
     private final JsonMapper json;
 
     public Refutador(RegistroDeMensajes registro, Corridas corridas, Grabaciones grabaciones, LectorArce lector,
-            Modelo modelo, Emisor emisor, Procesados procesados, JsonMapper json) {
+            LectorImpo lectorImpo, Modelo modelo, Emisor emisor, Procesados procesados, JsonMapper json) {
         this.registro = registro;
         this.corridas = corridas;
         this.grabaciones = grabaciones;
         this.lector = lector;
+        this.lectorImpo = lectorImpo;
         this.modelo = modelo;
         this.emisor = emisor;
         this.procesados = procesados;
@@ -112,7 +120,8 @@ public class Refutador {
                 : new Prueba("duplicado", "pasa", "Es una actualización del hecho " + cotejo.hechoRelacionadoId()
                         + ": " + String.join(" ", cotejo.diferencias()));
 
-        JsonNode releida = releer(sobre.corridaId(), candidato.identificadorEnFuente());
+        JsonNode releida = LectorImpo.FUENTE.equals(candidato.fuente()) ? releerNorma(sobre.corridaId(), candidato)
+                : releer(sobre.corridaId(), candidato.identificadorEnFuente());
         CandidatoGraduado graduado;
         if (releida.has("falla")) {
             graduado = new CandidatoGraduado(candidato.candidatoId(), cotejo.claveDeHecho(), candidato.resumen(),
@@ -191,6 +200,24 @@ public class Refutador {
         });
     }
 
+    /** Vuelve a leer una norma de IMPO, la tapa y la recorta a lo que nombra a las entidades del candidato. */
+    private JsonNode releerNorma(String corridaId, Candidato candidato) {
+        return grabaciones.conGrabacion(corridaId, "refutador:impo:norma:" + candidato.identificadorEnFuente(), "fuente", () -> {
+            try {
+                LectorImpo.Leida leida = lectorImpo.norma(candidato.identificadorEnFuente());
+                JsonNode tapada = EnmascaradorImpo.enmascarar(leida.norma()).norma();
+                List<NombresDeEntidad> entidades = candidato.entidades().stream()
+                        .map(e -> new NombresDeEntidad(e.entidadId(), e.nombre(), List.of())).toList();
+                ObjectNode nueva = json.createObjectNode();
+                nueva.set("publicacion", NormaRecortada.recortar(tapada, entidades, json));
+                nueva.put("hashContenido", leida.hashContenido());
+                return nueva;
+            } catch (FallaDeImpo falla) {
+                return json.createObjectNode().put("falla", falla.tipoDeFalla()).put("detalle", falla.getMessage());
+            }
+        });
+    }
+
     private static Prueba pruebaDeFecha(Candidato candidato, CorridaIniciada corrida) {
         String dia = candidato.fechaPublicacion().length() >= 10 ? candidato.fechaPublicacion().substring(0, 10) : "";
         if (dia.equals(corrida.fechaObjetivo())) {
@@ -205,11 +232,14 @@ public class Refutador {
     }
 
     private String pedidoAlModelo(Candidato candidato, CorridaIniciada corrida, JsonNode publicacion) {
+        String fuente = LectorImpo.FUENTE.equals(candidato.fuente())
+                ? "Norma del Diario Oficial, en el JSON de IMPO, con los artículos que nombran a la entidad (" + candidato.url() + "):\n"
+                        + json.writeValueAsString(publicacion)
+                : "Publicación de la fuente, en OCDS (" + candidato.url() + "):\n" + json.writeValueAsString(recortar(publicacion));
         return "Noche leída: " + corrida.fechaObjetivo() + "\n\n"
                 + "Candidato (" + candidato.tipoDeHecho() + "):\n" + candidato.resumen() + "\n\n"
                 + "Campos que citó el explorador:\n" + candidato.evidencia().fragmento() + "\n\n"
-                + "Publicación de la fuente, en OCDS (" + candidato.url() + "):\n"
-                + json.writeValueAsString(recortar(publicacion));
+                + fuente;
     }
 
     /** Las listas de ítems se cortan para que el pedido no crezca sin límite. */

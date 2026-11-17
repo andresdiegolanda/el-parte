@@ -197,7 +197,7 @@
    "sub": "Diario Oficial · JSON de normas",
    "col": 0,
    "fila": 5,
-   "estado": "disenado",
+   "estado": "construido",
    "que_es": "Una de las cinco fuentes de la versión 0 (IMPO). Todavía no se lee.",
    "para_que": "Suma hechos de otra fuente pública sobre las mismas entidades.",
    "docs": [
@@ -465,21 +465,51 @@
    ]
   },
   {
-   "id": "explorador-impo",
-   "tipo": "agente",
-   "titulo": "Explorador de IMPO",
-   "sub": "",
-   "col": 2,
+   "id": "lector-impo",
+   "tipo": "servicio",
+   "titulo": "Lector de IMPO",
+   "sub": "LectorImpo · IndiceImpo · EnmascaradorImpo",
+   "col": 1,
    "fila": 5,
-   "estado": "disenado",
-   "que_es": "El explorador de IMPO: leerá lo publicado la noche objetivo, tapará los datos personales y emitirá candidatos, como el de ARCE.",
-   "para_que": "Suma su fuente sin tocar a los demás agentes: el contrato de los candidatos es el mismo. También emitirá exploracion.terminada y fuente.fallida, y grabará lo que lea (ADR 0011).",
+   "estado": "construido",
+   "que_es": "Pide a IMPO el índice de cada edición, en PDF, y el JSON de cada norma, a diez segundos entre pedidos. Lee el índice, tapa a las personas de cada norma y busca en ella a cada entidad.",
+   "para_que": "Que el explorador y el refutador lean IMPO igual, con la misma pausa y el mismo tapado (ADR 0010).",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/impo/LectorImpo.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/impo/IndiceImpo.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/impo/EnmascaradorImpo.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/impo/NombresDeEntidad.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/impo/NormaRecortada.java"
+   ],
    "docs": [
-    "adrs/0006-fuentes-de-la-version-0.md",
-    "adrs/0010-impo-como-quinta-fuente.md"
+    "adrs/0010-impo-como-quinta-fuente.md",
+    "docs/fuentes/impo.md"
    ],
    "tarjetas": [
     "T30"
+   ]
+  },
+  {
+   "id": "explorador-impo",
+   "tipo": "agente",
+   "titulo": "Explorador de IMPO",
+   "sub": "ExploradorImpo · CandidatosDeImpo",
+   "col": 2,
+   "fila": 5,
+   "estado": "construido",
+   "que_es": "Lee la edición del Diario Oficial de la noche: el índice, y de cada ley y decreto, su JSON. Emite un candidato por cada norma que nombra a una entidad seguida, sin el modelo.",
+   "para_que": "Suma su fuente sin tocar a los demás agentes: el contrato de los candidatos es el mismo. También emitirá exploracion.terminada y fuente.fallida, y grabará lo que lea (ADR 0011).",
+   "docs": [
+    "adrs/0006-fuentes-de-la-version-0.md",
+    "adrs/0010-impo-como-quinta-fuente.md",
+    "docs/fuentes/impo.md"
+   ],
+   "tarjetas": [
+    "T30"
+   ],
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/impo/ExploradorImpo.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/impo/CandidatosDeImpo.java"
    ]
   },
   {
@@ -2600,24 +2630,10 @@
    "de": "kafka/corrida.iniciada",
    "a": "explorador-impo",
    "tipo": "escucha",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "empieza a explorar",
    "detalle": "Escuchará corrida.iniciada como el de ARCE.",
-   "tarjetas": [
-    "T30"
-   ]
-  },
-  {
-   "id": "explorador-impo>afuera/impo",
-   "de": "explorador-impo",
-   "a": "afuera/impo",
-   "tipo": "llama",
-   "estado": "disenado",
-   "papel": "auxiliar",
-   "etiqueta": "lee la fuente",
-   "detalle": "Leerá lo publicado la noche objetivo.",
-   "fuente": "docs/fuentes/impo.md",
    "tarjetas": [
     "T30"
    ]
@@ -2627,7 +2643,7 @@
    "de": "explorador-impo",
    "a": "kafka/candidatos",
    "tipo": "emite",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "candidatos",
    "detalle": "Emitirá candidatos con el mismo contrato.",
@@ -2640,7 +2656,7 @@
    "de": "explorador-impo",
    "a": "kafka/exploracion.terminada",
    "tipo": "emite",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "terminé",
    "detalle": "Avisará cuándo terminó.",
@@ -2653,7 +2669,7 @@
    "de": "explorador-impo",
    "a": "kafka/fuente.fallida",
    "tipo": "emite",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "la fuente falló",
    "detalle": "Avisará si su fuente no respondió.",
@@ -3304,6 +3320,72 @@
    "detalle": "Si una versión no se sostuvo en la revisión, por qué.",
    "tarjetas": [
     "T33"
+   ]
+  },
+  {
+   "id": "explorador-impo>lector-impo",
+   "de": "explorador-impo",
+   "a": "lector-impo",
+   "tipo": "usa",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "pide el índice y cada norma",
+   "detalle": "El índice de la edición y el JSON de cada ley y decreto.",
+   "tarjetas": [
+    "T30"
+   ]
+  },
+  {
+   "id": "lector-impo>afuera/impo",
+   "de": "lector-impo",
+   "a": "afuera/impo",
+   "tipo": "llama",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "HTTPS, diez segundos entre pedidos",
+   "detalle": "Diez segundos entre pedidos, como pide el robots.txt; sin avisos ni búsqueda.",
+   "fuente": "docs/fuentes/compras-estatales.md",
+   "tarjetas": [
+    "T30"
+   ]
+  },
+  {
+   "id": "explorador-impo>grabaciones",
+   "de": "explorador-impo",
+   "a": "grabaciones",
+   "tipo": "usa",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "graba lo leído",
+   "detalle": "La lista de leyes y decretos del índice, y cada norma ya tapada; el PDF no se guarda.",
+   "tarjetas": [
+    "T30"
+   ]
+  },
+  {
+   "id": "refutador>lector-impo",
+   "de": "refutador",
+   "a": "lector-impo",
+   "tipo": "usa",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "vuelve a leer la fuente",
+   "detalle": "Vuelve a leer la norma, la tapa y la recorta a los artículos que nombran a la entidad.",
+   "tarjetas": [
+    "T30"
+   ]
+  },
+  {
+   "id": "base/entidades>explorador-impo",
+   "de": "base/entidades",
+   "a": "explorador-impo",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "nombre y sigla",
+   "detalle": "Cómo se nombra a cada entidad seguida en las normas: su nombre y su sigla.",
+   "tarjetas": [
+    "T30"
    ]
   }
  ],
@@ -4023,6 +4105,20 @@
     "base/entidades>web/expediente",
     "base/evidencias>web/expediente",
     "base/revisiones>web/expediente"
+   ]
+  },
+  {
+   "fecha": "2026-11-17",
+   "texto": "El explorador de IMPO, construido (T30): lee el índice de cada edición del Diario Oficial y el JSON de cada ley y decreto, tapa a las personas y emite las normas que nombran a una entidad seguida.",
+   "objetos": [
+    "afuera/impo",
+    "lector-impo",
+    "explorador-impo",
+    "explorador-impo>lector-impo",
+    "lector-impo>afuera/impo",
+    "explorador-impo>grabaciones",
+    "refutador>lector-impo",
+    "base/entidades>explorador-impo"
    ]
   }
  ],

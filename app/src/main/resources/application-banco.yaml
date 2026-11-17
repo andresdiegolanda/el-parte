@@ -3,12 +3,14 @@
 #
 # La medición, sus noches y el tope llegan por variables de entorno: ELPARTE_BANCO_MEDICION
 # (AAAA-MM-DD-N), ELPARTE_BANCO_DESDE y ELPARTE_BANCO_HASTA (las noches, AAAA-MM-DD),
-# ELPARTE_BANCO_COSTO_MAXIMO_USD y ELPARTE_COMMIT.
+# ELPARTE_BANCO_COSTO_MAXIMO_USD, ELPARTE_COMMIT y, si se quiere medir solo algunas fuentes,
+# ELPARTE_BANCO_FUENTES (por ejemplo "impo").
 elparte:
   arce:
     # La medición pide en horas lo que las noches de todos los días piden en semanas.
     pausa-ms: 250
   banco:
     commit: ${ELPARTE_COMMIT:}
+    fuentes: ${ELPARTE_BANCO_FUENTES:}
   corrida:
-    cron: "-"
+    hora: "-"

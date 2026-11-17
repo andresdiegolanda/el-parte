@@ -70,8 +70,10 @@ class PrimeraRebanadaTest extends ConServicios {
         String original = inicio.iniciarNormal(LocalDate.parse(ArceDePrueba.NOCHE));
         assertThat(esperarFin(original)).isEqualTo("completa");
 
-        ExploracionTerminada exploracion = unico(original, Tipos.EXPLORACION_TERMINADA, ExploracionTerminada.class);
+        ExploracionTerminada exploracion = deArce(original);
         assertThat(exploracion).isEqualTo(new ExploracionTerminada("arce", 5, 3, 1));
+        // IMPO no tuvo edición esa noche: nada que leer, y ninguna falla.
+        assertThat(exploracion(original, "impo")).isEqualTo(new ExploracionTerminada("impo", 0, 0, 0));
         assertThat(registro.deCorridaYTipo(original, Tipos.FUENTE_FALLIDA)).hasSize(1)
                 .first().satisfies(s -> assertThat(s.contenido().path("url").asString()).endsWith("/release/llamado-1200006"));
 
@@ -201,7 +203,7 @@ class PrimeraRebanadaTest extends ConServicios {
         // reciente, es la que muestra. La de antes se elige en la lista de noches.
         String domingo = inicio.iniciarNormal(LocalDate.parse("2026-11-22"));
         assertThat(esperarFin(domingo)).isEqualTo("completa");
-        assertThat(unico(domingo, Tipos.EXPLORACION_TERMINADA, ExploracionTerminada.class).publicacionesLeidas()).isZero();
+        assertThat(deArce(domingo).publicacionesLeidas()).isZero();
         esperar(() -> jdbc.sql("select count(*) from parte.informes where corrida_id = :c").param("c", domingo)
                 .query(Long.class).single(), n -> n == 3);
         String vacia = pagina("/manana");
@@ -236,6 +238,18 @@ class PrimeraRebanadaTest extends ConServicios {
             actual = valor.get();
         }
         return actual;
+    }
+
+    private ExploracionTerminada deArce(String corridaId) {
+        return exploracion(corridaId, "arce");
+    }
+
+    /** El exploracion.terminada de una fuente: hay uno por fuente activa. */
+    private ExploracionTerminada exploracion(String corridaId, String fuente) {
+        List<Sobre> sobres = esperar(() -> registro.deCorridaYTipo(corridaId, Tipos.EXPLORACION_TERMINADA).stream()
+                .filter(s -> fuente.equals(s.contenido().path("fuente").asString())).toList(), lista -> !lista.isEmpty());
+        assertThat(sobres).as(fuente).hasSize(1);
+        return registro.contenido(sobres.getFirst(), ExploracionTerminada.class);
     }
 
     private <T> T unico(String corridaId, String tipo, Class<T> clase) {

@@ -85,6 +85,13 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- El índice de cada edición del Diario Oficial, que IMPO publica solo en PDF (ADR 0010). -->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>3.0.8</version>
+        </dependency>
+
         <!-- Modelos de lenguaje (ADR 0003). -->
         <dependency>
             <groupId>org.springframework.ai</groupId>

@@ -58,8 +58,17 @@ public class MedicionContraElBanco {
     }
 
     /** Qué medir: la medición, sus noches, la entidad, el tope de gasto, dónde dejar la salida y el commit. */
+    /**
+     * Qué medir. {@code fuentes} acota la medición a algunas de las fuentes activas, por ejemplo a la que se
+     * acaba de sumar; vacía, mide con todas.
+     */
     public record Parametros(String medicion, LocalDate desde, LocalDate hasta, String entidad,
-            BigDecimal costoMaximoUsd, Path carpeta, String commit) {
+            BigDecimal costoMaximoUsd, Path carpeta, String commit, List<String> fuentes) {
+
+        public Parametros(String medicion, LocalDate desde, LocalDate hasta, String entidad, BigDecimal costoMaximoUsd,
+                Path carpeta, String commit) {
+            this(medicion, desde, hasta, entidad, costoMaximoUsd, carpeta, commit, List.of());
+        }
     }
 
     /**
@@ -89,7 +98,7 @@ public class MedicionContraElBanco {
                     cortadaPorTope = true;
                     break;
                 }
-                corridaId = inicio.iniciarBanco(noche, p.entidad());
+                corridaId = inicio.iniciarBanco(noche, p.entidad(), p.fuentes());
             }
             String estado = esperarFin(corridaId);
             log.info("Medición {}: noche {} {} ({})", p.medicion(), noche, estado, corridaId);
