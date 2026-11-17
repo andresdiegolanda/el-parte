@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>El Parte · tablero de arquitectura</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22 role=%22img%22 aria-label=%22El Parte icon%22%3E%3Crect width=%2232%22 height=%2232%22 fill=%22%23ffffff%22/%3E%3Cpath d=%22M5 2H17V12H27V30H5Z M8 20L11 17L15 21L22 14L25 17L15 27Z%22 fill=%22%231d2330%22 fill-rule=%22evenodd%22/%3E%3Cpath d=%22M19 2L27 10H19Z%22 fill=%22%231a5fb4%22/%3E%3C/svg%3E">
 <!--AVISO-->
 <!--
   El tablero de arquitectura de El Parte (ADR 0012): el sistema objeto por objeto, con lo construido en trazo
@@ -34,6 +35,7 @@
   header { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 10px 16px;
            border-bottom: 1px solid var(--linea); background: linear-gradient(180deg, #0f1730, var(--fondo)); }
   header h1 { margin: 0 8px 0 0; font-size: 18px; font-weight: 650; }
+  header svg.marca { flex: none; }
   header h1 small { display: block; font-size: 12px; font-weight: 400; color: var(--texto2); }
   .chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border: 1px solid var(--linea2);
           border-radius: 999px; color: var(--texto2); font-size: 12px; }
@@ -160,6 +162,7 @@
 </head>
 <body>
 <header>
+  <svg class="marca" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><path d="M5 2H17V12H27V30H5Z M8 20L11 17L15 21L22 14L25 17L15 27Z" fill="#ffffff" fill-rule="evenodd"/><path d="M19 2L27 10H19Z" fill="#ffffff"/></svg>
   <h1 id="titulo">El Parte · tablero de arquitectura<small>el sistema objeto por objeto: lo construido y lo diseñado</small></h1>
   <span class="chip" id="chip-modelo" title="La fecha del modelo y lo que controla el verificador"><i></i><span></span></span>
   <span class="sep"></span>

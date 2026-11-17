@@ -26,7 +26,11 @@ class ComoFuncionaTest extends ConServicios {
         String pagina = anonimo.get("/como-funciona").body();
         assertThat(pagina).contains("El refutador", "PROVEN", "INFERRED", "NOT_MENTIONED", "/modelos", "/corridas",
                 "tablero-de-arquitectura/", "docs/como-se-hizo/README.md");
-        assertThat(anonimo.get("/").body()).contains("href=\"/como-funciona\"");
+        assertThat(anonimo.get("/").body()).contains("href=\"/como-funciona\"", "/marca/el-parte-lockup-color.svg");
+        // El logo se sirve sin entrar: el ícono del menú, el de la pestaña y el logo del inicio.
+        for (String archivo : new String[] {"/favicon.ico", "/marca/el-parte-icon-color.svg", "/marca/el-parte-lockup-color.svg"}) {
+            assertThat(anonimo.get(archivo).statusCode()).as(archivo).isEqualTo(200);
+        }
 
         // Cada página de docs/como-se-hizo/ está enlazada, y cada enlace lleva a una que existe.
         Path carpeta = Path.of("..", "docs", "como-se-hizo");

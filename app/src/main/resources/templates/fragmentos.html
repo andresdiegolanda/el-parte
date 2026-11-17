@@ -4,12 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title th:text="${titulo} + ' · El Parte'">El Parte</title>
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/marca/el-parte-icon-color.svg" type="image/svg+xml">
     <style>
         :root { --tinta: #1d2330; --suave: #5b6476; --linea: #dde1e8; --fondo: #f7f8fa; --azul: #1a5fb4;
                 --verde: #1f7a46; --ambar: #9a6700; --rojo: #a32424; }
         body { font-family: system-ui, sans-serif; color: var(--tinta); background: #fff; margin: 0; line-height: 1.5; }
         header { border-bottom: 1px solid var(--linea); padding: 0.75rem 1.5rem; display: flex; gap: 1.5rem; align-items: baseline; }
         header strong { font-size: 1.15rem; }
+        header a.marca { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--tinta); }
+        header a.marca img { width: 26px; height: 26px; }
+        h1.logo { margin: 0 0 0.5rem; }
+        h1.logo img { height: 72px; width: auto; display: block; margin-left: -6px; }
         header a { color: var(--suave); text-decoration: none; }
         header a:hover { color: var(--azul); }
         main { max-width: 64rem; margin: 0 auto; padding: 1.5rem; }
@@ -42,7 +48,7 @@
 </head>
 <body>
 <header th:fragment="menu">
-    <strong>El Parte</strong>
+    <a href="/" class="marca"><img src="/marca/el-parte-icon-color.svg" alt=""><strong>El Parte</strong></a>
     <a href="/manana">Página de la mañana</a>
     <a href="/expediente">Expedientes</a>
     <a href="/corridas">Sala de máquinas</a>

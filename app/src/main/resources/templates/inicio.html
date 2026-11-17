@@ -4,12 +4,13 @@
 <body>
 <header th:replace="~{fragmentos :: menu}"></header>
 <main>
-    <h1>El Parte</h1>
+    <h1 class="logo"><img src="/marca/el-parte-lockup-color.svg" alt="El Parte"></h1>
     <p class="sub">Versión 0, en construcción.</p>
     <p>Cada noche, agentes que se pasan el trabajo por mensajes leen fuentes públicas del Estado uruguayo,
         se quedan con lo que publicaron las entidades que alguien sigue, y publican cada hecho con su grado de evidencia.</p>
     <ul>
         <li><a href="/manana">La página de la mañana</a> de la cuenta de demostración.</li>
+        <li><a href="/expediente">Los expedientes</a>: todo lo que El Parte sabe de cada entidad, mes por mes.</li>
         <li><a href="/corridas">La sala de máquinas</a>: cada corrida, qué hizo cada agente, cuánto costó, y el botón para correr una noche.</li>
         <li><a href="/como-funciona">Cómo funciona</a>: los agentes, los grados, el presupuesto, la medición y dónde leer el detalle.</li>
         <li th:if="${saludEnLasPaginas}"><a href="/actuator/health">El estado</a> de la aplicación, la base y Kafka.</li>

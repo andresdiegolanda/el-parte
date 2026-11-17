@@ -1,4 +1,9 @@
-# El Parte
+<h1>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/marca/el-parte-lockup-reversed.svg">
+    <img src="docs/marca/el-parte-lockup-color.svg" alt="El Parte" height="72">
+  </picture>
+</h1>
 
 [![licencia: MIT](https://img.shields.io/badge/licencia-MIT-green)](LICENSE)
 [![IA: agentes orquestados](https://img.shields.io/badge/IA-agentes%20orquestados-c0392b)](arranque/proyecto.md)

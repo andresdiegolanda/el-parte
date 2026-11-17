@@ -36,8 +36,10 @@ Controla, sobre todo el repositorio:
     documento vigente. No cuenta la historia (CHANGELOG.md, los ADRs, las
     decisiones iniciales, obsoletos/, el registro y las tarjetas hechas de
     tablero.md) ni lo que está entre comillas invertidas.
+13. Que las copias del logo que lleva la aplicación (app/src/main/resources/static/)
+    sean iguales a las de docs/marca/, que es donde vive el logo.
 
-Los puntos 5, 9, 10 y 11 son piezas propias de El Parte: si su módulo o su
+Los puntos 5, 9, 10, 11 y 13 son piezas propias de El Parte: si su módulo o su
 archivo no está, se saltean. Así este archivo se puede copiar tal cual a otro
 proyecto que use la metodología (metodologia/README.md).
 
@@ -298,6 +300,24 @@ def verificar_referencias(markdowns, ids, decisiones, errores):
                     errores.append(f"{relativa}:{numero}: cita la decision {decision}, que no existe")
 
 
+def verificar_marca(errores):
+    """Las copias del logo en la aplicación, iguales a las de docs/marca/ (punto 13)."""
+    marca = RAIZ / "docs" / "marca"
+    estaticos = RAIZ / "app" / "src" / "main" / "resources" / "static"
+    if not marca.is_dir() or not estaticos.is_dir():
+        return
+    copias = [estaticos / "favicon.ico"] + sorted((estaticos / "marca").glob("*"))
+    for copia in copias:
+        if not copia.is_file():
+            continue
+        original = marca / copia.name
+        relativa = copia.relative_to(RAIZ).as_posix()
+        if not original.is_file():
+            errores.append(f"{relativa}: no está en docs/marca/, que es donde vive el logo")
+        elif original.read_bytes() != copia.read_bytes():
+            errores.append(f"{relativa}: no es igual a docs/marca/{copia.name}; copiala de nuevo")
+
+
 def main():
     archivos = list(archivos_del_repo())
     markdowns = [(r, rel) for r, rel in archivos if r.suffix == ".md"]
@@ -313,6 +333,7 @@ def main():
     verificar_referencias(markdowns, ids, decisiones_definidas(), errores)
     verificar_cifras(markdowns, avisos)
     verificar_migracion(errores)
+    verificar_marca(errores)
     if tablero_arquitectura is not None:
         errores.extend(tablero_arquitectura.verificar())
     if banco_de_pruebas is not None:

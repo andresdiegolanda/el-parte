@@ -7,6 +7,7 @@ y las deja en la carpeta de destino con las mismas rutas que en el repositorio, 
   index.html                              la portada
   kanban/index.html                       el kanban, de solo lectura
   docs/tablero-de-arquitectura/*.html     el tablero de arquitectura, una página por vista
+  marca/                                  el logo, si el proyecto tiene docs/marca/
 
 Si la variable de entorno URL_DE_LA_APLICACION tiene una dirección, la portada suma un enlace a la
 aplicación publicada. La dirección no va en el repositorio: en GitHub Actions es una variable del
@@ -36,6 +37,12 @@ except ImportError:
 
 RAIZ = Path(__file__).resolve().parent.parent
 
+# El logo del proyecto, si tiene (docs/marca/README.md): la portada lo pone arriba, el kanban en su
+# encabezado, y cada página lo usa de ícono. Sin esta carpeta, el sitio sale sin logo.
+MARCA = RAIZ / "docs" / "marca"
+ICONO = "el-parte-icon-color-sin-fondo.svg"
+LOGO = "el-parte-lockup-color-sin-fondo.svg"
+
 # Lo único que cambia al copiar este archivo a otro proyecto (metodologia/README.md). El nombre
 # sale del campo "Proyecto" del encabezado de tablero.md.
 DESCRIPCION = ("Un proyecto didáctico de agentes orquestados que leen fuentes públicas del Estado uruguayo "
@@ -52,6 +59,7 @@ PORTADA = """<!DOCTYPE html>
   body {{ font: 16px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; color: #1b2226; background: #eceeed; margin: 0; }}
   main {{ max-width: 720px; margin: 0 auto; padding: 48px 20px; }}
   h1 {{ font-size: 28px; margin: 0 0 8px; }}
+  h1 img {{ height: 64px; width: auto; display: block; margin-left: -6px; }}
   p {{ margin: 0 0 16px; color: #3a454b; }}
   ul {{ list-style: none; padding: 0; margin: 24px 0; display: grid; gap: 12px; }}
   a.tarjeta {{ display: block; background: #fff; border: 1px solid #cdd3d2; border-radius: 10px; padding: 16px 18px; color: inherit; text-decoration: none; }}
@@ -109,7 +117,25 @@ def armar():
     sitio["index.html"] = PORTADA.format(nombre=html.escape(nombre), descripcion=html.escape(DESCRIPCION),
                                          enlaces="\n".join(enlaces), repo=repo,
                                          repo_corto=repo.removeprefix("https://"))
+    if (MARCA / ICONO).exists():
+        sitio = {ruta: con_marca(ruta, contenido, nombre) for ruta, contenido in sitio.items()}
     return sitio, []
+
+
+def con_marca(ruta, contenido, nombre):
+    """La página con el logo: el ícono en la pestaña, el logo en la portada y el ícono en el kanban."""
+    prefijo = "../" * ruta.count("/") + "marca/"
+    icono = (f'<link rel="icon" href="{prefijo}favicon.ico" sizes="any">\n'
+             f'<link rel="icon" href="{prefijo}{ICONO}" type="image/svg+xml">\n')
+    if 'rel="icon"' not in contenido:
+        contenido = contenido.replace("</title>\n", "</title>\n" + icono, 1)
+    if ruta == "index.html" and (MARCA / LOGO).exists():
+        contenido = contenido.replace(f"<h1>{html.escape(nombre)}</h1>",
+                                      f'<h1><img src="{prefijo}{LOGO}" alt="{html.escape(nombre)}"></h1>', 1)
+    if ruta == "kanban/index.html":
+        contenido = contenido.replace('<div class="id">\n', f'<div class="id">\n      <img src="{prefijo}{ICONO}" alt="" '
+                                      'width="36" height="36" style="display:block;margin:0 0 8px -4px">\n', 1)
+    return contenido
 
 
 def main():
@@ -130,6 +156,8 @@ def main():
         archivo = destino / ruta
         archivo.parent.mkdir(parents=True, exist_ok=True)
         archivo.write_text(contenido, encoding="utf-8", newline="\n")
+    if (MARCA / ICONO).exists():
+        shutil.copytree(MARCA, destino / "marca", ignore=shutil.ignore_patterns("*.md"))
     print(f"Listo: {len(sitio)} páginas en {destino}.")
     return 0
 
