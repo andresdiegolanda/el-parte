@@ -4,6 +4,7 @@ Cada entrada dice qué cambió, dónde, y enlaza al documento que tiene el porqu
 
 ## 2026-11-18
 
+- La presentación, puesta al día (T38, T51): ocho diapositivas, con las cinco fuentes andando, las mediciones de cada una, una diapositiva nueva sobre lo que agrega El Parte frente a una sesión con el modelo, y la versión 0 completa y publicada. De dónde sale cada cifra: [docs/presentacion/README.md](docs/presentacion/README.md).
 - La lectura del expediente, desplegada en El Parte publicado (T47, hecha). La lectura de verdad y su juicio quedan en T50, cuando haya más semanas de hechos.
 - El aviso diario del parte, prendido en la aplicación publicada (T35, hecha). Ver [docs/como-se-hizo/aviso-diario.md](docs/como-se-hizo/aviso-diario.md).
 - Presidencia y el Banco Mundial, medidos contra el banco (T24, hecha): Presidencia publicó un hecho en 78 noches, juzgado correcto; el Banco Mundial corrió sin fallas y sin candidatos. Ver [banco-de-pruebas/mediciones/README.md](banco-de-pruebas/mediciones/README.md).

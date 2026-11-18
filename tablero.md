@@ -82,6 +82,23 @@ Los campos van pegados al título, sin línea en blanco. Los que no aplican se o
 
 ## En curso
 
+### T51 · Hacer tres videos para presentar El Parte
+- Tipo: Gestión
+- Dueño: desarrollo
+- Depende de: T38, T32
+- Detalle: [docs/presentacion/README.md](docs/presentacion/README.md), [docs/tablero-de-arquitectura/README.md](docs/tablero-de-arquitectura/README.md)
+
+Tres videos con voz, que reemplazan a los dos de la demo del 2026-11-17: la presentación animada; la arquitectura, con los dos tableros de arquitectura; y cómo funciona, recorriendo las páginas de El Parte publicado y el repositorio. Llevan la voz de ElevenLabs, música suave y subtítulos en un .srt aparte. Los videos no se versionan; el guion de cada uno se aprueba antes de generar la voz.
+
+Lista:
+- [x] La presentación puesta al día, con las cinco fuentes, las mediciones y la comparación con una sesión
+- [ ] Video 1: la presentación animada
+- [ ] Video 2: la arquitectura
+- [ ] Video 3: cómo funciona
+
+Registro:
+- 2026-11-18: Creada. Se hace un video por vez. La presentación se puso al día primero: ocho diapositivas, con las cinco fuentes andando, las mediciones de cada una, la comparación con una sesión con el modelo (T42) y la versión 0 publicada.
+
 ## Para empezar
 
 ## Esperando
@@ -783,6 +800,7 @@ Lista:
 
 Registro:
 - 2026-11-15: Creada y hecha. Se eligió Marp para que la presentación viva en el repositorio; lo que se resigna está en docs/presentacion/README.md.
+- 2026-11-18: Puesta al día para los videos (T51): ocho diapositivas, con las cinco fuentes, las mediciones de cada una, la comparación con una sesión con el modelo y la versión 0 publicada.
 
 ### T37 · Aceptar o corregir el ADR 0014
 - Tipo: Gestión

@@ -120,7 +120,7 @@ for dy, fin in ((-14, 14), (0, 14), (14, 4)):
     g.append(f'<line x1="{centros[4] - 14}" y1="{cy + dy}" x2="{centros[4] + fin}" y2="{cy + dy}"/>')
 c.append(f'<g fill="none" stroke="{PAPEL}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">{"".join(g)}</g>')
 c.append(f'<rect x="{centros[1] - 10}" y="{cy + 4}" width="20" height="6" rx="3" fill="{PAPEL}"/>')
-roles = (("Explorador", "busca lo publicado esa", "noche en una fuente"),
+roles = (("Exploradores", "uno por fuente, buscan", "lo publicado esa noche"),
          ("Archivista", "se acuerda de lo ya visto:", "¿es nuevo?"),
          ("Refutador", "intenta demostrar", "que es falso"),
          ("Analista", "explica qué dice y", "por qué importa"),
@@ -154,7 +154,7 @@ for i in range(78):
     h = 28 + 28 * cuenta[i] if i in cuenta else 24
     c.append(f'<rect x="{x(i)}" y="{200 - h}" width="12" height="{h}" rx="3" fill="{NARANJA if i in cuenta else "#D3CAB6"}"/>')
 c += ['<rect x="0" y="200" width="1600" height="2" fill="#8C96A3"/>',
-      texto(20, 252, "El Parte: las mismas 78 noches, una por una, con varios agentes.", 28, TINTA)]
+      texto(20, 252, "El Parte: las mismas 78 noches, una por una, con sus cinco fuentes.", 28, TINTA)]
 for i in range(78):
     c.append(f'<rect x="{x(i)}" y="270" width="12" height="60" rx="3" fill="#2F6690"/>')
 c.append('<rect x="0" y="330" width="1600" height="2" fill="#8C96A3"/>')
@@ -162,24 +162,20 @@ for i, mes in ((3, "Septiembre"), (33, "Octubre"), (64, "Noviembre")):
     c += [f'<rect x="{x(i) - 4}" y="334" width="2" height="14" fill="#8C96A3"/>', texto(x(i) + 4, 378, mes, 26)]
 guardar("medicion.svg", 1600, 400, "Dos filas de 78 noches: arriba la vigilancia anterior, con sus noches de hallazgos en naranja; abajo El Parte, que repite cada noche", c)
 
-# Dónde estamos: cuatro fines de semana.
-hitos = (200, 600, 1000, 1400)
-c = [f'<line x1="200" y1="130" x2="800" y2="130" stroke="{TINTA}" stroke-width="6" stroke-linecap="round"/>',
-     '<line x1="800" y1="130" x2="1400" y2="130" stroke="#8C96A3" stroke-width="6" stroke-linecap="round" stroke-dasharray="14 12"/>',
-     f'<line x1="800" y1="52" x2="800" y2="110" stroke="{NARANJA}" stroke-width="3" stroke-dasharray="6 6"/>',
-     texto(800, 36, "Hoy, 16 de noviembre", 26, "#8A3415", "middle", "bold")]
-for x in hitos[:2]:
-    c += [f'<circle cx="{x}" cy="130" r="40" fill="{TINTA}"/>',
+# Dónde estamos: las cuatro etapas del plan hechas, y publicado.
+hitos = (160, 480, 800, 1120, 1440)
+c = [f'<line x1="160" y1="130" x2="1440" y2="130" stroke="{TINTA}" stroke-width="6" stroke-linecap="round"/>',
+     f'<line x1="1440" y1="52" x2="1440" y2="88" stroke="{NARANJA}" stroke-width="3" stroke-dasharray="6 6"/>',
+     texto(1440, 36, "Hoy, 18 de noviembre", 26, "#8A3415", "middle", "bold")]
+for i, x in enumerate(hitos):
+    c += [f'<circle cx="{x}" cy="130" r="40" fill="{NARANJA if i == 4 else TINTA}"/>',
           f'<path d="M {x - 18} 132 L {x - 5} 145 L {x + 20} 116" fill="none" stroke="{PAPEL}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>']
-c += [f'<circle cx="1000" cy="130" r="40" fill="#FBE9DD" stroke="{NARANJA}" stroke-width="6"/>',
-      f'<path d="M 1000 93 A 37 37 0 0 0 1000 167 Z" fill="{NARANJA}"/>',
-      f'<circle cx="1400" cy="130" r="40" fill="{PAPEL}" stroke="#8C96A3" stroke-width="6"/>']
-etapas = (("7 y 8 de noviembre", ("Documentación: el plan,", "las decisiones y cómo", "se hablan los agentes"), ("Hecho", TINTA)),
-          ("14 y 15 de noviembre", ("La primera rebanada:", "una fuente, de la red", "a la página de la mañana"), ("Hecho", TINTA)),
-          ("21 y 22 de noviembre", ("La medición contra la", "vigilancia anterior y", "el analista completo"), ("Empezado: medición corrida", "#8A3415")),
-          ("28 y 29 de noviembre", ("Las otras cuatro fuentes,", "los usuarios y la", "demostración"), ("Pendiente", GRIS)))
-for x, (fecha, lineas, (estado, color)) in zip(hitos, etapas):
-    c.append(texto(x, 215, fecha, 26, TINTA, "middle", "bold"))
-    c += [texto(x, 252 + k * 32, l, 24, anchor="middle") for k, l in enumerate(lineas)]
-    c.append(texto(x, 352, estado, 24, color, "middle", "bold"))
-guardar("donde.svg", 1600, 370, "El plan en cuatro fines de semana: los dos primeros hechos, el tercero empezado y el cuarto pendiente, con la marca de hoy entre el segundo y el tercero", c)
+etapas = (("Documentación", ("El plan, las decisiones", "y cómo se hablan", "los agentes")),
+          ("Primera rebanada", ("Una fuente, de la red", "a la página de", "la mañana")),
+          ("Medición", ("78 noches contra la", "vigilancia anterior", "")),
+          ("Cinco fuentes", ("Las otras cuatro", "fuentes y los", "usuarios invitados")),
+          ("Publicado", ("Con aviso por correo", "y el expediente de", "cada entidad")))
+for x, (nombre, lineas) in zip(hitos, etapas):
+    c.append(texto(x, 215, nombre, 26, TINTA, "middle", "bold"))
+    c += [texto(x, 252 + k * 32, l, 24, anchor="middle") for k, l in enumerate(lineas) if l]
+guardar("donde.svg", 1600, 370, "El plan en cinco hitos, todos hechos: documentación, primera rebanada, medición, cinco fuentes y publicado, con la marca de hoy en el último", c)

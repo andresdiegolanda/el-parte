@@ -3,7 +3,7 @@ marp: true
 theme: el-parte
 paginate: true
 lang: es
-title: El Parte, en siete diapositivas
+title: El Parte, en ocho diapositivas
 ---
 
 <!-- _class: oscura portada -->
@@ -28,10 +28,10 @@ El Parte es un proyecto didáctico. La idea entra en una frase: el Estado urugua
 
 ![w:1130](imagenes/que-hace.svg)
 
-**Las cinco fuentes:** compras estatales (ARCE), que es la primera; BID; Banco Mundial; normativa de Presidencia, y Diario Oficial (IMPO). Hoy lee la primera; las otras cuatro entran al final del plan.
+**Las cinco fuentes, todas andando:** compras estatales (ARCE), Diario Oficial (IMPO), normativa de Presidencia, BID y Banco Mundial. A la mañana, además de la página, llega un aviso por correo.
 
 <!--
-Tres pasos. Primero, cada persona elige qué entidades le interesan: un organismo como el BPS, una empresa, un programa. Segundo, de noche, El Parte lee lo que se publicó ese día en las fuentes públicas. Solo usa fuentes que permiten el uso de sus datos: datos abiertos, APIs o descargas oficiales; nada de sitios que prohíben la lectura automática. Tercero, a la mañana, cada persona ve lo nuevo sobre lo que sigue, con la fuente de cada cosa, y si no hubo nada nuevo la página lo dice en lugar de inventar. Son cinco fuentes en la versión 0. Por ahora anda la primera, compras estatales.
+Tres pasos. Primero, cada persona elige qué entidades le interesan: un organismo como el BPS, una empresa, un programa. Segundo, de noche, El Parte lee lo que se publicó ese día en las fuentes públicas. Solo usa fuentes que permiten el uso de sus datos: datos abiertos, APIs o descargas oficiales; nada de sitios que prohíben la lectura automática. Tercero, a la mañana, cada persona ve lo nuevo sobre lo que sigue, con la fuente de cada cosa, y si no hubo nada nuevo la página lo dice en lugar de inventar; además le llega un aviso corto por correo. Son cinco fuentes: compras estatales, el Diario Oficial, la normativa de Presidencia, el BID y el Banco Mundial. Las cinco andan.
 -->
 
 ---
@@ -78,7 +78,7 @@ Un agente es un programa que usa un modelo de lenguaje para una tarea acotada. S
 ![w:1130](imagenes/agentes.svg)
 
 <!--
-En lugar de un solo programa que hace todo, son varios agentes con un trabajo cada uno, que se pasan el trabajo como en una línea de montaje. El explorador busca en una fuente; hay uno por fuente porque cada fuente tiene su formato y sus fallas. El archivista es el único que recuerda: compara con lo que ya se vio para no anunciar dos veces lo mismo. El refutador, en naranja, es la pieza clave: intenta demostrar que cada hecho es falso, o viejo, o una deducción. El analista explica para qué sirve lo que sobrevive, y el editor arma la página de cada persona. Arriba, el observador mide todo: cuánto cuesta y cuánto tarda cada paso. Cada mensaje queda guardado, así que una noche se puede repetir entera sin costo para revisarla.
+En lugar de un solo programa que hace todo, son varios agentes con un trabajo cada uno, que se pasan el trabajo como en una línea de montaje. Los exploradores buscan en las fuentes: hay cinco, uno por fuente, porque cada fuente tiene su formato y sus fallas. El archivista es el único que recuerda: compara con lo que ya se vio para no anunciar dos veces lo mismo. El refutador, en naranja, es la pieza clave: intenta demostrar que cada hecho es falso, o viejo, o una deducción. El analista explica para qué sirve lo que sobrevive, y el editor arma la página de cada persona. Arriba, el observador mide todo: cuánto cuesta y cuánto tarda cada paso. Cada mensaje queda guardado, así que una noche se puede repetir entera sin costo para revisarla.
 -->
 
 ---
@@ -106,16 +106,36 @@ Esta es la regla que hace que el sistema no mienta. Ningún hecho llega a nadie 
 
 ## Cómo sabemos si funciona
 
-Otra vigilancia siguió al BPS durante 78 noches. El Parte repite esas noches y se compara.
+Otra vigilancia siguió al BPS durante 78 noches. El Parte repite esas noches, con sus cinco fuentes, y se compara.
 
-![w:1130](imagenes/medicion.svg)
+![w:1000](imagenes/medicion.svg)
 
-| 5 de 5 | 12,71 USD | 1 de 5 |
-|---|---|---|
-| compras del BPS que la vigilancia descartó y El Parte publicó, 26 días antes | las 78 noches, en 3 horas y 23 minutos | fuentes en esta primera medición: compras estatales |
+| 5 de 5 | 60 de 60 | 2 de 4 | 0,25 USD |
+|---|---|---|---|
+| compras del BPS que la vigilancia descartó y El Parte publicó, 26 días antes | hechos de un sorteo, correctos: precisión de 0,94 a 1 | hallazgos de la vigilancia al alcance de las cinco fuentes, de 14 a 27 días antes | por noche, con las cinco fuentes |
 
 <!--
-Para saber si El Parte sirve hace falta compararlo con algo. Entre el 29 de agosto y el 14 de noviembre, otra vigilancia siguió al BPS todas las noches con un solo agente y anotó lo que encontró y lo que descartó: 84 entradas, de las que 19 son hallazgos. El Parte vuelve a correr esas mismas 78 noches, una por una, pidiéndole a cada fuente lo que publicó esa fecha, y después se cuenta: cuánto de lo que encontró la vigilancia encontró también El Parte, cuánto de lo que publica El Parte está bien, y cuánto cuesta. Las 78 noches costaron 12,71 dólares y tardaron 3 horas y 23 minutos. El Parte encontró las cinco compras del BPS que la vigilancia había visto y descartado porque no eran de su tema, y las vio la noche en que se publicaron: una mediana de 26 días antes. Esta primera medición lee una sola de las cinco fuentes, así que de los 19 hallazgos solo uno estaba a su alcance, una compra directa, y no la encontró; falta saber si esa compra se publicó en compras estatales. De los casi 800 hechos que El Parte publicó y que la vigilancia no tenía, se juzgó un sorteo de 60: 57 estaban bien, una precisión estimada del 95 %. Los tres que no, nombraban a un solo proveedor en compras repartidas entre varios.
+Para saber si El Parte sirve hace falta compararlo con algo. Entre el 29 de agosto y el 14 de noviembre, otra vigilancia siguió al BPS todas las noches con un solo agente y anotó lo que encontró y lo que descartó: 84 entradas, de las que 19 son hallazgos. El Parte vuelve a correr esas mismas 78 noches, una por una, pidiéndole a cada fuente lo que publicó esa fecha, y después se cuenta: cuánto de lo que encontró la vigilancia encontró también El Parte, cuánto de lo que publica está bien, y cuánto cuesta. En compras estatales, El Parte publicó las cinco compras del BPS que la vigilancia había visto y descartado porque no eran de su tema, una mediana de 26 días antes. De lo que publicó y la vigilancia no tenía, una persona juzgó un sorteo de 60 hechos: los 60 estaban bien. De los 19 hallazgos, 15 estaban en sitios que El Parte no lee; de los 4 a su alcance encontró 2, una ley y un decreto del Diario Oficial, entre 14 y 27 días antes. Los otros dos son una compra directa que no está entre lo que compras estatales publicó esas noches y una operación que no está en la tabla de proyectos del BID. Una noche con las cinco fuentes cuesta unos 25 centavos de dólar, y casi todo es compras estatales.
+-->
+
+---
+
+## ¿No alcanza con preguntarle al modelo?
+
+Diez noches del BPS, las mismas publicaciones: una sesión con el modelo, sin agentes, contra El Parte.
+
+| | Una sesión con el modelo | El Parte |
+|---|---|---|
+| Compras importantes encontradas | 5 de 5 | 5 de 5 |
+| Precisión juzgada por una persona | 20 de 20 | 35 de 36 |
+| Hechos, con lo que ya había contado | 310 | 175 |
+| Una cifra que no está en la fuente | nada lo impide | no se publica |
+| Costo de las diez noches | 1,53 USD | 4,11 USD |
+
+Lo que agrega El Parte no es encontrar más: es no repetir, no dejar pasar una cifra sin evidencia y medirse noche por noche.
+
+<!--
+La pregunta honesta es si hace falta todo esto, o si alcanza con darle al modelo lo que se publicó cada noche y pedirle el parte. Se probó con diez noches del BPS y las mismas publicaciones. La sesión encontró lo mismo, con la misma precisión, por un tercio del costo y en un quinto del tiempo. Lo que El Parte agrega es otra cosa: el archivista se acuerda de lo que ya contó, así que no repite, 175 hechos contra 310; una cifra que no está en la evidencia no se publica, y en la sesión nada lo impide; y se mide contra el banco noche por noche. La comparación también mostró algo incómodo: el refutador casi no refutó, y casi todo lo que parecía refutación eran respuestas cortadas, que se arreglaron. Está escrito así en el repositorio.
 -->
 
 ---
@@ -124,8 +144,8 @@ Para saber si El Parte sirve hace falta compararlo con algo. Entre el 29 de agos
 
 ![w:1130](imagenes/donde.svg)
 
-Es un proyecto didáctico: cada decisión, cada prueba y cada error quedan escritos en el repositorio, para que cualquiera entienda cómo se hizo. [github.com/andresdiegolanda/el-parte](https://github.com/andresdiegolanda/el-parte)
+La versión 0 está completa y publicada: cinco fuentes, usuarios invitados, un aviso por correo cada mañana, el expediente de cada entidad y, a pedido, una lectura del expediente con el modelo. Cada decisión, cada prueba y cada error quedan escritos en el repositorio: [github.com/andresdiegolanda/el-parte](https://github.com/andresdiegolanda/el-parte)
 
 <!--
-El plan de la versión 0 son cuatro fines de semana. El primero fue de documentación: antes de escribir código se decidió qué fuentes entran, cómo se hablan los agentes y cómo se guarda cada hecho. El segundo construyó la primera rebanada, chica pero completa: una sola fuente, compras estatales, desde la red hasta la página de la mañana. El tercero es medirse contra la vigilancia anterior: las 78 noches ya corrieron, y falta revisar lo que salió. El cuarto suma las otras cuatro fuentes, los usuarios y una cuenta de demostración. Todo queda documentado en el repositorio, incluido lo que salió mal, porque mostrar cómo se hizo es tan importante como el resultado.
+El plan de la versión 0 eran cuatro fines de semana, hasta el 29 de noviembre, y se terminó el 18. Primero la documentación: antes de escribir código se decidió qué fuentes entran, cómo se hablan los agentes y cómo se guarda cada hecho. Después la primera rebanada, chica pero completa: una fuente, de la red a la página de la mañana. Después la medición contra la vigilancia anterior, y las otras cuatro fuentes con los usuarios. Hoy está publicado, con un aviso por correo cada mañana y el expediente de cada entidad: todos sus hechos a lo largo del tiempo. Y a pedido, el modelo lee el expediente entero y propone observaciones que citan hechos, que el refutador también gradúa. Es un proyecto didáctico: todo queda documentado en el repositorio, incluido lo que salió mal, porque mostrar cómo se hizo es tan importante como el resultado.
 -->
