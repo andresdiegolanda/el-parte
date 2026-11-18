@@ -34,7 +34,7 @@ El código está en `app/src/main/java/io/github/andresdiegolanda/elparte/fuente
 ## Qué se probó
 
 - **Con un Banco Mundial de mentira**, en `app/src/test/java/io/github/andresdiegolanda/elparte/fuentes/bancomundial/ExploradorBancoMundialTest.java`: de dos proyectos aprobados una noche, sale un candidato, el que tiene al BPS como agencia ejecutora, y se publica; el otro no sigue. Los dos traen un jefe de equipo inventado, que no queda en ninguna grabación ni en ningún mensaje. La repetición da los mismos mensajes sin pedirle nada al Banco Mundial.
-- **Contra el banco**, con Presidencia: [docs/como-se-hizo/presidencia.md](presidencia.md), "Qué se probó".
+- **Contra el banco.** En la medición `2026-11-18-4`, con Presidencia, cada pedido dio 403 (ver "Qué falló"). Con el arreglo, la medición `2026-11-18-5` (`banco-de-pruebas/mediciones/2026-11-18-5/`) corrió las 78 noches del registro, del 2026-08-29 al 2026-11-14, solo con el Banco Mundial: ninguna falla, un proyecto aprobado, el P513691 del 2026-09-10, que no nombra al BPS, y ningún candidato. Costó 0 USD y llevó 3 segundos por noche. Ni la cobertura ni la precisión se pueden medir: el registro no tiene entradas del Banco Mundial y El Parte no publicó ningún hecho.
 
 ## Qué falló
 

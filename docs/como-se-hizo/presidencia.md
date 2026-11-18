@@ -51,10 +51,11 @@ El código está en `app/src/main/java/io/github/andresdiegolanda/elparte/fuente
 
 - **El tapado**, en `app/src/test/java/io/github/andresdiegolanda/elparte/fuentes/presidencia/EnmascaradorPresidenciaTest.java`, con nombres inventados y las formas de los títulos reales: nombres de varias palabras, varios nombres unidos por "y", un título o un cargo delante, un nombre cortado, las instituciones y la entidad seguida que no se tocan, y el límite del apellido solo.
 - **Una noche de punta a punta**, en `app/src/test/java/io/github/andresdiegolanda/elparte/fuentes/presidencia/ExploradorPresidenciaTest.java`, con una Presidencia de mentira de 25 resoluciones en tres páginas: la noche se lee en tres pedidos, de seis resoluciones sale un candidato, el de la designación en el directorio del BPS, que se publica con el nombre tapado y el resumen entero de la página. Ni el nombre inventado ni la ruta que lo lleva quedan en las grabaciones, los mensajes o las afirmaciones. La repetición da los mismos mensajes sin pedirle nada a Presidencia.
+- **Contra el banco**, en la medición `2026-11-18-4` (`banco-de-pruebas/mediciones/2026-11-18-4/`): las 78 noches del registro, del 2026-08-29 al 2026-11-14, solo con Presidencia y el Banco Mundial. Leyó 953 resoluciones y sacó un candidato, la noche del 2026-10-26: la transferencia al BPS para los gastos de administración de las soluciones habitacionales, la misma que se había visto a mano en octubre. Se publicó PROVEN como `presidencia:235603:resolucion`, sin nada que tapar, y una persona la juzgó correcta: precisión 1 de 1. La cobertura no se puede medir, porque el registro no tiene ninguna entrada de Presidencia. Costó 0,013 USD en total y llevó 101 segundos por noche, por la pausa de diez segundos entre pedidos. El Banco Mundial falló en todas las noches de esta medición; se midió aparte (`docs/como-se-hizo/banco-mundial.md`).
 
 ## Qué falló
 
-Nada todavía en el código.
+- **El conteo.** La herramienta del banco no aceptaba la clave `presidencia:235603:resolucion`: el tipo de hecho `resolucion` faltaba en su lista y en el contrato. Se sumó a los dos (`herramientas/banco_de_pruebas.py`, `docs/contratos.md`).
 
 ## Qué falta
 

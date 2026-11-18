@@ -162,6 +162,10 @@ Los 116 juicios ya hechos recibieron la huella de lo que se juzgó: los 60 del p
 
 Desde el 2026-11-17 la medición puede acotarse a algunas fuentes. Las 78 noches solo con IMPO y el BID cuestan mucho menos que las de ARCE, porque casi ninguna noche tiene un candidato. La que vale es la `2026-11-18-3`: encontró y publicó los dos hallazgos de IMPO antes que la vigilancia, y no encontró el del BID, que la tabla de proyectos no tiene. Los resultados están en [docs/como-se-hizo/impo.md](impo.md) y [docs/como-se-hizo/bid.md](bid.md), y cada medición, en [banco-de-pruebas/mediciones/README.md](../../banco-de-pruebas/mediciones/README.md).
 
+## Presidencia y el Banco Mundial
+
+El registro no tiene entradas de ninguna de las dos, así que la medición no dice nada de su cobertura: sirve para ver que corren las 78 noches sin fallar y para juzgar lo que publican. Presidencia, en la `2026-11-18-4`, publicó un hecho y una persona lo juzgó correcto ([docs/como-se-hizo/presidencia.md](presidencia.md)). El Banco Mundial falló en esa medición por el User-Agent, y en la `2026-11-18-5`, con el arreglo, no tuvo candidatos ([docs/como-se-hizo/banco-mundial.md](banco-mundial.md)).
+
 ## Qué falta
 
 - Un sorteo de análisis, para saber si dicen algo falso sin cifras (T21).

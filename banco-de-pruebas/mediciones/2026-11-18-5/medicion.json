@@ -1,0 +1,896 @@
+{
+ "registro": {
+  "huella": "sha256:7d142fe895a672ac13a01aa57ee9f3c3e89f0315b0545977c9250d2d2c0b3bd6",
+  "primeraNoche": "2026-08-29",
+  "ultimaNoche": "2026-11-14",
+  "entradas": 84
+ },
+ "revision": {
+  "huella": "sha256:7ccdb17a7b23999fc8f20a799d73f4ee3567cce282304bd524f7d5b12db6e4a4",
+  "sinRevisar": 0
+ },
+ "elParte": {
+  "commit": "e4944ee",
+  "entidad": "organismo:bps",
+  "fuentes": [
+   "banco-mundial"
+  ],
+  "modelos": {
+   "editor": "claude-haiku-5-5",
+   "analista": "claude-sonnet-5-5",
+   "refutador": "claude-sonnet-5-5",
+   "archivista": "claude-haiku-5-5",
+   "explorador-arce": "claude-haiku-5-5",
+   "lector-de-expedientes": "claude-sonnet-5-5"
+  }
+ },
+ "noches": {
+  "medidas": 78,
+  "completas": 78,
+  "cortadas": 0,
+  "fallidas": 0,
+  "conFuentesNoRepetibles": 0,
+  "costoUsd": 0,
+  "costoUsdPorNoche": 0.0,
+  "duracionSegundosPorNoche": 3.2
+ },
+ "hallazgos": {
+  "total": 19,
+  "encontrados": {
+   "publicados": 0,
+   "aRevision": 0
+  },
+  "vistosYDescartados": 0,
+  "noEncontrados": 0,
+  "noRepetibles": 0,
+  "fueraDeLasNochesMedidas": 0,
+  "fueraDeEstaMedicion": 4,
+  "fueraDeElParte": 15,
+  "sinRevisar": 0,
+  "cobertura": null,
+  "diasDeAdelanto": null
+ },
+ "publicables": {
+  "total": 12,
+  "encontrados": {
+   "publicados": 0,
+   "aRevision": 0
+  },
+  "vistosYDescartados": 0,
+  "noEncontrados": 0,
+  "noRepetibles": 0,
+  "fueraDeLasNochesMedidas": 0,
+  "fueraDeEstaMedicion": 5,
+  "fueraDeElParte": 7,
+  "sinRevisar": 0,
+  "cobertura": null,
+  "diasDeAdelanto": null
+ },
+ "hechos": {
+  "PROVEN": {
+   "total": 0,
+   "verdaderos": 0,
+   "falsos": {
+    "otraEntidad": 0,
+    "noNuevo": 0,
+    "contenidoEquivocado": 0
+   },
+   "sinJuzgar": 0,
+   "precision": null
+  },
+  "INFERRED": {
+   "total": 0,
+   "verdaderos": 0,
+   "falsos": {
+    "otraEntidad": 0,
+    "noNuevo": 0,
+    "contenidoEquivocado": 0
+   },
+   "sinJuzgar": 0,
+   "precision": null
+  },
+  "todos": {
+   "total": 0,
+   "verdaderos": 0,
+   "falsos": {
+    "otraEntidad": 0,
+    "noNuevo": 0,
+    "contenidoEquivocado": 0
+   },
+   "sinJuzgar": 0,
+   "precision": null
+  },
+  "descartadosPorElParte": 0,
+  "juiciosViejos": 0,
+  "sorteoDeOtraSalida": true
+ },
+ "detalle": {
+  "hallazgos": [
+   {
+    "id": "2026-09-17-1",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-09-23-1",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-09-23-2",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-09-25-1",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-09-29-1",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-esta-medicion"
+   },
+   {
+    "id": "2026-10-01-1",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-10-08-1",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-esta-medicion"
+   },
+   {
+    "id": "2026-10-08-2",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-10-08-3",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-10-13-1",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-esta-medicion"
+   },
+   {
+    "id": "2026-10-13-2",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-10-15-1",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-10-15-2",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-11-03-1",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-11-10-1",
+    "clasificacion": "actualizacion",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-11-11-1",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-11-11-2",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-11-12-1",
+    "clasificacion": "actualizacion",
+    "resultado": "fuera-de-esta-medicion"
+   },
+   {
+    "id": "2026-11-12-2",
+    "clasificacion": "nuevo",
+    "resultado": "fuera-de-el-parte"
+   }
+  ],
+  "publicables": [
+   {
+    "id": "2026-09-05-1",
+    "clasificacion": "descartado",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-09-10-1",
+    "clasificacion": "descartado",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-10-08-6",
+    "clasificacion": "descartado",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-10-09-1",
+    "clasificacion": "descartado",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-10-30-1",
+    "clasificacion": "descartado",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-11-01-1",
+    "clasificacion": "descartado",
+    "resultado": "fuera-de-esta-medicion"
+   },
+   {
+    "id": "2026-11-01-2",
+    "clasificacion": "descartado",
+    "resultado": "fuera-de-esta-medicion"
+   },
+   {
+    "id": "2026-11-01-3",
+    "clasificacion": "descartado",
+    "resultado": "fuera-de-esta-medicion"
+   },
+   {
+    "id": "2026-11-01-4",
+    "clasificacion": "descartado",
+    "resultado": "fuera-de-esta-medicion"
+   },
+   {
+    "id": "2026-11-01-5",
+    "clasificacion": "descartado",
+    "resultado": "fuera-de-esta-medicion"
+   },
+   {
+    "id": "2026-11-06-1",
+    "clasificacion": "descartado",
+    "resultado": "fuera-de-el-parte"
+   },
+   {
+    "id": "2026-11-08-1",
+    "clasificacion": "descartado",
+    "resultado": "fuera-de-el-parte"
+   }
+  ],
+  "hechos": [],
+  "noches": [
+   {
+    "noche": "2026-08-29",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 4,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-08-30",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 3,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-08-31",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 3,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-01",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 5,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-02",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 3,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-03",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 3,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-04",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 3,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-05",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 3,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-06",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 3,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-07",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 3,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-08",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 3,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-09",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 6,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-10",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 3,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-11",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 3,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-12",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 3,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-13",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 3,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-14",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 4,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-15",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 4,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-16",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 6,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-17",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 4,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-18",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 4,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-19",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 4,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-20",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 4,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-21",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 8,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-22",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 4,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-23",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 4,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-24",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 4,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-25",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 4,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-26",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 7,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-27",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 4,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-28",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 4,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-29",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 4,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-09-30",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 4,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-01",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 5,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-02",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 4,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-03",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 4,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-04",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 4,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-05",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 4,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-06",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-07",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 4,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-08",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-09",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-10",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-11",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-12",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-13",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-14",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-15",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-16",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-17",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-18",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-19",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-20",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-21",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 5,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-22",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-23",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-24",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-25",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-26",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-27",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-28",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 5,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-29",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-30",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-10-31",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-11-01",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-11-02",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-11-03",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-11-04",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-11-05",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 6,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-11-06",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-11-07",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-11-08",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-11-09",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-11-10",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-11-11",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-11-12",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 5,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-11-13",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": []
+   },
+   {
+    "noche": "2026-11-14",
+    "estado": "completa",
+    "costoUsd": 0,
+    "duracionSegundos": 2,
+    "lecturasFallidas": 0,
+    "noRepetibles": [],
+    "duracionDeLaVigilancia": 1219
+   }
+  ]
+ }
+}

@@ -14,6 +14,8 @@ Una carpeta por cada medición de El Parte contra el banco de pruebas, con el no
 | `2026-11-18-1` (sin carpeta) | La repetición de la `2026-11-17-3` con la base guardada, para ver la causa de los NOT_MENTIONED; se paró en la noche del 2026-09-27, con la causa a la vista (T48). Ver [docs/como-se-hizo/veredictos-cortados.md](../../docs/como-se-hizo/veredictos-cortados.md). |
 | `banco-de-pruebas/mediciones/2026-11-18-2/` | Las 78 noches con IMPO y el BID, con el refutador arreglado (T48): ningún NOT_MENTIONED. Le queda la lectura fallida del decreto departamental. No tiene `medicion.json`: la reemplaza la `2026-11-18-3`. |
 | `banco-de-pruebas/mediciones/2026-11-18-3/` | Las 78 noches con IMPO y el BID, con los dos arreglos: la que vale para IMPO y el BID (T30, T24), contada con las dos correspondencias de IMPO y los cuatro extras juzgados. Los resultados están en [docs/como-se-hizo/impo.md](../../docs/como-se-hizo/impo.md) y [docs/como-se-hizo/bid.md](../../docs/como-se-hizo/bid.md). |
+| `banco-de-pruebas/mediciones/2026-11-18-4/` | Las 78 noches con Presidencia y el Banco Mundial (T24). Vale para Presidencia: un hecho, juzgado correcto. El Banco Mundial respondió 403 en todas las noches por el User-Agent. Ver [docs/como-se-hizo/presidencia.md](../../docs/como-se-hizo/presidencia.md). |
+| `banco-de-pruebas/mediciones/2026-11-18-5/` | Las 78 noches solo con el Banco Mundial, con el User-Agent arreglado (T24): ninguna falla y ningún candidato. Ver [docs/como-se-hizo/banco-mundial.md](../../docs/como-se-hizo/banco-mundial.md). |
 
 | Archivo | Qué es | Quién lo escribe |
 |---|---|---|

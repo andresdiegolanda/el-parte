@@ -108,33 +108,6 @@ Registro:
 - 2026-11-18: El ADR 0018 está aceptado (T49). Pasa a En curso, dentro de lo autorizado el 2026-11-18: hacer todo lo demás, con commit y push al terminar.
 - 2026-11-18: Construida como dice el ADR 0018: una corrida en modo lectura que pide el responsable desde el expediente, el lector de expedientes con su control en código, el refutador graduando contra los hechos citados y el resultado arriba del expediente. Probada de punta a punta con el modelo de mentira, con su repetición. Falta una lectura de verdad y el juicio de sus observaciones.
 
-### T24 · Sumar los exploradores del BID, el Banco Mundial y Presidencia
-- Tipo: Componente
-- Dueño: desarrollo
-- Depende de: T08
-- Detalle: [docs/como-se-hizo/bid.md](docs/como-se-hizo/bid.md), [docs/como-se-hizo/banco-mundial.md](docs/como-se-hizo/banco-mundial.md), [docs/como-se-hizo/presidencia.md](docs/como-se-hizo/presidencia.md), [adrs/0006-fuentes-de-la-version-0.md](adrs/0006-fuentes-de-la-version-0.md), [adrs/0008-datos-personales.md](adrs/0008-datos-personales.md)
-
-Las otras tres fuentes de la versión 0, cada una con sus descartes de datos personales.
-
-Etapas:
-- [x] Contrato
-- [x] Código
-- [x] Pruebas
-- [ ] Medido contra el banco
-- [x] Página cómo se hizo
-
-Lista:
-- [x] Explorador del BID
-- [x] Explorador del Banco Mundial (API v3, campos acotados)
-- [x] Explorador de la normativa de Presidencia, a ritmo bajo
-
-Registro:
-- 2026-11-07: Creada con el plan (T07).
-- 2026-11-17: Pasa a Para empezar: T08 está hecha. Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
-- 2026-11-17: Pasa a En curso. El explorador del BID anda: las operaciones para Uruguay aprobadas cada noche que nombran a una entidad seguida, probado con un BID de mentira y con el filtro por fecha contra la API real. La operación del hallazgo del BID en el registro no está en la tabla de proyectos, así que por fecha no se puede ver (docs/como-se-hizo/bid.md). Siguen el Banco Mundial y Presidencia, que no tienen entradas en el registro, después del material para la demo; medir espera crédito en la API.
-- 2026-11-18: El BID, medido contra el banco con IMPO (medición 2026-11-18-3): ningún candidato en las 78 noches, como se esperaba, y el hallazgo del registro sigue fuera de su alcance. Ver docs/como-se-hizo/bid.md.
-- 2026-11-18: Construidos los exploradores del Banco Mundial y de Presidencia, con el contrato de candidatos de siempre. El Banco Mundial pide solo nueve campos y descarta el resto, sin el jefe de equipo. Presidencia lee las resoluciones de cada noche por bisección de páginas, a diez segundos entre pedidos, y tapa los nombres por reglas: probado contra las 440 resoluciones de octubre, sin nombres a la vista. Falta medirlos contra el banco.
-
 ## Para empezar
 
 ## Esperando
@@ -173,6 +146,34 @@ Registro:
 ## Pendiente
 
 ## Hecho
+
+### T24 · Sumar los exploradores del BID, el Banco Mundial y Presidencia
+- Tipo: Componente
+- Dueño: desarrollo
+- Depende de: T08
+- Detalle: [docs/como-se-hizo/bid.md](docs/como-se-hizo/bid.md), [docs/como-se-hizo/banco-mundial.md](docs/como-se-hizo/banco-mundial.md), [docs/como-se-hizo/presidencia.md](docs/como-se-hizo/presidencia.md), [adrs/0006-fuentes-de-la-version-0.md](adrs/0006-fuentes-de-la-version-0.md), [adrs/0008-datos-personales.md](adrs/0008-datos-personales.md)
+
+Las otras tres fuentes de la versión 0, cada una con sus descartes de datos personales.
+
+Etapas:
+- [x] Contrato
+- [x] Código
+- [x] Pruebas
+- [x] Medido contra el banco
+- [x] Página cómo se hizo
+
+Lista:
+- [x] Explorador del BID
+- [x] Explorador del Banco Mundial (API v3, campos acotados)
+- [x] Explorador de la normativa de Presidencia, a ritmo bajo
+
+Registro:
+- 2026-11-07: Creada con el plan (T07).
+- 2026-11-17: Pasa a Para empezar: T08 está hecha. Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
+- 2026-11-17: Pasa a En curso. El explorador del BID anda: las operaciones para Uruguay aprobadas cada noche que nombran a una entidad seguida, probado con un BID de mentira y con el filtro por fecha contra la API real. La operación del hallazgo del BID en el registro no está en la tabla de proyectos, así que por fecha no se puede ver (docs/como-se-hizo/bid.md). Siguen el Banco Mundial y Presidencia, que no tienen entradas en el registro, después del material para la demo; medir espera crédito en la API.
+- 2026-11-18: El BID, medido contra el banco con IMPO (medición 2026-11-18-3): ningún candidato en las 78 noches, como se esperaba, y el hallazgo del registro sigue fuera de su alcance. Ver docs/como-se-hizo/bid.md.
+- 2026-11-18: Construidos los exploradores del Banco Mundial y de Presidencia, con el contrato de candidatos de siempre. El Banco Mundial pide solo nueve campos y descarta el resto, sin el jefe de equipo. Presidencia lee las resoluciones de cada noche por bisección de páginas, a diez segundos entre pedidos, y tapa los nombres por reglas: probado contra las 440 resoluciones de octubre, sin nombres a la vista. Falta medirlos contra el banco.
+- 2026-11-18: Medidos contra el banco. Presidencia (medición 2026-11-18-4): 953 resoluciones en 78 noches, un hecho, la transferencia al BPS del 2026-10-26, juzgado correcto. El Banco Mundial respondía 403 por la tilde del User-Agent; arreglado, la medición 2026-11-18-5 corrió las 78 noches sin fallas y sin candidatos. El registro no tiene entradas de ninguna de las dos, así que su cobertura no se mide. Pasa a Hecho.
 
 ### T49 · Aceptar o corregir el ADR 0018
 - Tipo: Gestión

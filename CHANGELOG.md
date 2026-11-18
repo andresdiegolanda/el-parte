@@ -4,6 +4,7 @@ Cada entrada dice qué cambió, dónde, y enlaza al documento que tiene el porqu
 
 ## 2026-11-18
 
+- Presidencia y el Banco Mundial, medidos contra el banco (T24, hecha): Presidencia publicó un hecho en 78 noches, juzgado correcto; el Banco Mundial corrió sin fallas y sin candidatos. Ver [banco-de-pruebas/mediciones/README.md](banco-de-pruebas/mediciones/README.md).
 - El Banco Mundial respondía 403 a cada pedido porque el User-Agent de El Parte tenía una tilde. Ahora es ASCII en los cuatro lectores que lo mandan, y una prueba lo controla. Ver [docs/como-se-hizo/banco-mundial.md](docs/como-se-hizo/banco-mundial.md), "Qué falló".
 - La lectura del expediente con el modelo (T47, ADR 0018): desde el expediente, el responsable pide leer los últimos 90 días; el lector de expedientes propone observaciones que citan hechos, el control en código y el refutador descartan las que no se sostienen, y el resto queda arriba del expediente. Ver [docs/como-se-hizo/lectura-del-expediente.md](docs/como-se-hizo/lectura-del-expediente.md).
 - IMPO, cerrada (T30): con las correspondencias confirmadas y los cuatro extras juzgados, la medición `2026-11-18-3` queda contada en [banco-de-pruebas/mediciones/2026-11-18-3/medicion.json](banco-de-pruebas/mediciones/2026-11-18-3/medicion.json).
