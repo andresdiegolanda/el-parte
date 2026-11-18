@@ -97,6 +97,7 @@ flowchart TD
 | [`docs/como-se-hizo/impo.md`](../docs/como-se-hizo/impo.md) | Cómo se hizo el explorador de IMPO: el índice de cada edición, el JSON de cada ley y decreto, el tapado y el filtro por entidad (T30). |
 | [`docs/como-se-hizo/modelos.md`](../docs/como-se-hizo/modelos.md) | Cómo se hizo la página de modelos y precios: el responsable cambia el modelo de cada agente y carga precios sin reiniciar (T29). |
 | [`docs/como-se-hizo/perfil.md`](../docs/como-se-hizo/perfil.md) | Cómo se hizo el perfil: el catálogo de organismos con su código en ARCE, seguir y dejar de seguir, y el aviso diario sí o no (T34). |
+| [`docs/como-se-hizo/veredictos-cortados.md`](../docs/como-se-hizo/veredictos-cortados.md) | Los veredictos del refutador que se cortaban en el máximo de tokens de salida, cómo se vio y cómo se arregló (T48). |
 | [`docs/como-se-hizo/despliegue.md`](../docs/como-se-hizo/despliegue.md) | Cómo se hizo El Parte publicado: el túnel, el correo, la salud fuera del túnel y las copias de la base (T27, T40). |
 
 ## Lo que va a haber

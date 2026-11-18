@@ -710,9 +710,10 @@ def contar(registro, revision, salida):
         detalle_noches.append(fila)
     sorteo_de_extras = None
     sorteo = revision.get("sorteo")
-    if sorteo is not None:
-        if sorteo["salida"] != salida.get("huella"):
-            raise ErrorDeFormato("revision/sorteo.json es de otra salida: hay que sortear de nuevo.")
+    # Un sorteo de otra salida no estima nada de esta: la medición sale sin estimación y lo dice. El
+    # sorteo se queda, porque sigue valiendo para la medición de la que se sorteó.
+    sorteo_de_otra_salida = sorteo is not None and sorteo["salida"] != salida.get("huella")
+    if sorteo is not None and not sorteo_de_otra_salida:
         juicios = [extra_vigente(k)["juicio"] for k in sorteo["claves"] if extra_vigente(k) is not None]
         juzgados, correctos = len(juicios), juicios.count("correcto")
         de_registro = [f["resultado"] for f in detalle_hechos if "coincideCon" in f]
@@ -767,6 +768,7 @@ def contar(registro, revision, salida):
             "descartadosPorElParte": sum(1 for h in hechos.values() if h["grado"] == "NOT_MENTIONED"),
             "juiciosViejos": len(viejos),
             **({"sorteoDeExtras": sorteo_de_extras} if sorteo_de_extras is not None else {}),
+            **({"sorteoDeOtraSalida": True} if sorteo_de_otra_salida else {}),
         },
         "detalle": {
             "hallazgos": detalle_hallazgos,
@@ -799,7 +801,11 @@ def medir(carpeta, ruta_salida):
         raise ErrorDeFormato(" ".join(errores))
     registro, _, _ = leer_registro(carpeta)
     revision, _, _ = leer_revision(carpeta / "revision", registro)
-    return contar(registro, revision, leer_salida(ruta_salida))
+    medicion = contar(registro, revision, leer_salida(ruta_salida))
+    if medicion["hechos"].get("sorteoDeOtraSalida"):
+        print("Aviso: revision/sorteo.json es de otra salida; esta medición sale sin la estimación del sorteo.",
+              file=sys.stderr)
+    return medicion
 
 
 def verificar_muestra():

@@ -54,5 +54,5 @@ Lo que se puede decir sin ese sorteo: lo que la plataforma vuelve gratis, leer y
 ## Qué falló
 
 - **Respuestas cortadas.** La primera vuelta pidió hasta 8.000 tokens de salida: siete de las diez noches quedaron cortadas a la mitad, con el JSON sin cerrar. Se vio al revisar las respuestas, todas de casi el mismo largo. Se volvieron a pedir esas siete con 32.000 tokens; el primer intento costó cerca de 1 USD sin resultado. En la Console, quien lee la respuesta pediría que siga.
-- **El sorteo de la revisión.** El conteo de una salida que no es la del sorteo se niega a contar ("hay que sortear de nuevo"). Se contó con una copia de la revisión sin el sorteo, en `tmp/`, y se borró después.
+- **El sorteo de la revisión.** El conteo de una salida que no es la del sorteo se negaba a contar ("hay que sortear de nuevo"). Se contó con una copia de la revisión sin el sorteo, en `tmp/`, y se borró después. Desde el 2026-11-18 el conteo sale sin la estimación del sorteo y lo dice, en `hechos.sorteoDeOtraSalida` ([banco-de-pruebas/metricas.md](../../banco-de-pruebas/metricas.md)).
 - **Las fechas como cifras.** La prueba de cifras marcaba "14/09/2026" como inventada cuando la publicación dice 2026-09-14. Ahora una cifra vale si está entera o si están todas sus partes.

@@ -28,7 +28,9 @@ import tools.jackson.databind.node.ObjectNode;
  * <ul>
  * <li>Cada agente usa el modelo que le fijó su corrida (ADR 0003), pasado en las opciones de cada
  * pedido.</li>
- * <li>La respuesta se pide como salida estructurada y se convierte al {@code record} del agente.</li>
+ * <li>La respuesta se pide como salida estructurada y se convierte al {@code record} del agente. Si el
+ * modelo se quedó sin tokens de salida antes de terminar, la falla lo dice, porque lo que llega no es
+ * una respuesta mal formada sino una cortada.</li>
  * <li>Cada respuesta se graba, y en modo reproducción se lee de la grabación sin llamar al modelo.</li>
  * <li>Cada llamada pasa por el advisor de presupuesto, que reserva antes y anota después en el libro de
  * la corrida (ADR 0005). Si no alcanza, la llamada no se hace, y también eso se graba.</li>
@@ -43,6 +45,8 @@ public class Modelo {
     public static final String REPRODUCIDA = "reproducida";
     public static final String ERROR = "error";
     public static final String RECHAZADA = "rechazadaPorPresupuesto";
+    /** Lo que dice la API cuando la respuesta llegó al máximo de tokens de salida pedido. */
+    static final String CORTADA_EN_EL_MAXIMO = "max_tokens";
 
     private final ChatClient chat;
     private final Grabaciones grabaciones;
@@ -88,7 +92,8 @@ public class Modelo {
             if (grabada.has("error")) {
                 throw new FallaDelModelo(grabada.path("error").asString());
             }
-            return convertir(conversor, grabada.path("texto").asString());
+            return convertir(conversor, grabada.path("texto").asString(), grabada.path("cortada").asBoolean(false),
+                    pedido.maximoTokensSalida());
         }
 
         long inicio = System.currentTimeMillis();
@@ -121,6 +126,7 @@ public class Modelo {
         }
         long duracion = System.currentTimeMillis() - inicio;
         String texto = respuesta.chatResponse().getResult().getOutput().getText();
+        boolean cortada = cortada(respuesta.chatResponse().getResult().getMetadata().getFinishReason());
         Usage uso = respuesta.chatResponse().getMetadata().getUsage();
         long entrada = valor(uso == null ? null : uso.getPromptTokens());
         long salida = valor(uso == null ? null : uso.getCompletionTokens());
@@ -130,14 +136,25 @@ public class Modelo {
         grabacion.put("texto", texto);
         grabacion.put("tokensEntrada", entrada);
         grabacion.put("tokensSalida", salida);
+        if (cortada) {
+            grabacion.put("cortada", true);
+        }
         grabaciones.guardar(pedido.corridaId(), clave, "modelo", grabacion);
 
         emitirUso(pedido, modelo, HECHA, entrada, salida, decimal(respuesta, AdvisorDePresupuesto.COSTO),
                 decimal(respuesta, AdvisorDePresupuesto.RESERVA), duracion, null);
-        return convertir(conversor, texto);
+        return convertir(conversor, texto, cortada, pedido.maximoTokensSalida());
     }
 
-    private static <T> T convertir(BeanOutputConverter<T> conversor, String texto) {
+    static boolean cortada(String motivoDeFin) {
+        return motivoDeFin != null && CORTADA_EN_EL_MAXIMO.equalsIgnoreCase(motivoDeFin.trim());
+    }
+
+    /**
+     * La respuesta convertida al {@code record} del agente. Una respuesta cortada que igual se puede
+     * convertir vale; si no se puede, la falla dice que se cortó y en cuántos tokens.
+     */
+    static <T> T convertir(BeanOutputConverter<T> conversor, String texto, boolean cortada, int maximoTokensSalida) {
         try {
             T valor = conversor.convert(texto);
             if (valor == null) {
@@ -147,6 +164,10 @@ public class Modelo {
         } catch (FallaDelModelo falla) {
             throw falla;
         } catch (RuntimeException e) {
+            if (cortada) {
+                throw new FallaDelModelo("La respuesta del modelo se cortó en el máximo de " + maximoTokensSalida
+                        + " tokens de salida");
+            }
             throw new FallaDelModelo("La respuesta del modelo no tiene la forma pedida");
         }
     }

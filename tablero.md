@@ -82,6 +82,29 @@ Los campos van pegados al título, sin línea en blanco. Los que no aplican se o
 
 ## En curso
 
+### T48 · Que el refutador no corte sus veredictos
+- Tipo: Componente
+- Dueño: desarrollo
+- Detalle: [docs/como-se-hizo/veredictos-cortados.md](docs/como-se-hizo/veredictos-cortados.md)
+
+El refutador pedía cada veredicto con un máximo de 1200 tokens de salida. Cuando el modelo llegaba al máximo, la respuesta se cortaba, no se podía convertir y el candidato quedaba NOT_MENTIONED sin que nadie lo hubiera refutado. Pasó con cuatro de los seis hechos de IMPO de la medición 2026-11-17-3, uno de ellos el de un hallazgo, y con los 13 NOT_MENTIONED de la producción.
+
+Etapas:
+- [x] Contrato
+- [x] Código
+- [x] Pruebas
+- [ ] Medido contra el banco
+- [x] Página cómo se hizo
+
+Lista:
+- [x] El máximo del refutador, de 1200 a 4000 tokens
+- [x] La falla de una respuesta cortada dice que se cortó, y la grabación lo guarda
+- [ ] Una medición nueva de IMPO y el BID con el arreglo
+- [ ] El arreglo en la producción
+
+Registro:
+- 2026-11-18: Creada a partir de la medición 2026-11-17-3 (T30). La repetición 2026-11-18-1, con la base guardada, mostró la causa: los veredictos llegaban a los 1200 tokens. Hechos el código y las pruebas. Pasa a En curso.
+
 ### T24 · Sumar los exploradores del BID, el Banco Mundial y Presidencia
 - Tipo: Componente
 - Dueño: desarrollo

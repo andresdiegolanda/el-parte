@@ -55,7 +55,12 @@ public class Refutador {
     public static final String AGENTE = "refutador";
     private static final Set<String> GRADOS = Set.of("PROVEN", "INFERRED", "NOT_MENTIONED");
     private static final int MAXIMO_ITEMS = 10;
-    private static final int TOKENS_DE_SALIDA = 1200;
+    /**
+     * El máximo de tokens de salida de cada veredicto. Era 1200, y uno de cada cinco veredictos de la
+     * producción se cortaba antes del grado y quedaba NOT_MENTIONED sin que nadie lo refutara
+     * (docs/como-se-hizo/veredictos-cortados.md). Los que terminan usan menos de mil.
+     */
+    static final int TOKENS_DE_SALIDA = 4000;
 
     static final String SISTEMA = """
             Sos el refutador de El Parte. Tu trabajo es intentar tirar abajo una afirmación antes de que se \

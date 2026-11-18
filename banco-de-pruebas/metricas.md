@@ -118,7 +118,7 @@ Una medición larga deja muchos más extras de los que se pueden juzgar uno por 
 - **Precisión de los extras** = correctos del sorteo / juzgados del sorteo, con su intervalo de Wilson al 95 %.
 - **Precisión de todo lo publicado** = (verdaderos con correspondencia + precisión de los extras × extras) / (juzgados con correspondencia + extras). Los hechos con correspondencia se juzgan uno por uno; los extras, por el sorteo. El intervalo se arma igual, con los extremos del de los extras.
 
-La estimación va en `hechos.sorteoDeExtras` y solo aparece si hay sorteo. Si el sorteo es de otra salida, el conteo da error: hay que sortear de nuevo. Un extra juzgado fuera del sorteo cuenta en la precisión de lo juzgado pero no en la estimación, que vale porque el sorteo es al azar.
+La estimación va en `hechos.sorteoDeExtras` y solo aparece si hay sorteo. Si el sorteo es de otra salida, por ejemplo el de una medición anterior, no estima nada de esta: la medición sale sin la estimación y con `hechos.sorteoDeOtraSalida` en `true`, y el sorteo queda para la medición de la que se sorteó. Un extra juzgado fuera del sorteo cuenta en la precisión de lo juzgado pero no en la estimación, que vale porque el sorteo es al azar.
 
 ## La forma de una medición
 
@@ -131,7 +131,7 @@ Una medición es un JSON, el que escribe `herramientas/banco_de_pruebas.py conta
 | `elParte` | El commit, la entidad, las fuentes leídas y los modelos, copiados de la salida. |
 | `noches` | Cuántas se midieron, cuántas terminaron completas, cortadas o fallidas, cuántas tuvieron fuentes no repetibles, el costo total y por noche, y la duración por noche. |
 | `hallazgos` y `publicables` | Para cada bloque: el total, los encontrados (publicados y a revisión), los vistos y descartados, los no encontrados, los no repetibles, los que quedan fuera de las noches medidas, de esta medición y de El Parte, los sin revisar, la cobertura y la mediana de días de adelanto. |
-| `hechos` | Para `PROVEN`, `INFERRED` y `todos`: el total, los verdaderos, los falsos positivos por clase, los sin juzgar y la precisión; cuántos descartó El Parte; cuántos juicios viejos hubo; y, si hay sorteo, `sorteoDeExtras`: la población, el tamaño, la semilla, los juzgados, los correctos, los falsos por clase, la precisión de los extras y la de todo, cada una con su intervalo al 95 %. |
+| `hechos` | Para `PROVEN`, `INFERRED` y `todos`: el total, los verdaderos, los falsos positivos por clase, los sin juzgar y la precisión; cuántos descartó El Parte; cuántos juicios viejos hubo; y, si hay sorteo, `sorteoDeExtras`: la población, el tamaño, la semilla, los juzgados, los correctos, los falsos por clase, la precisión de los extras y la de todo, cada una con su intervalo al 95 %; o `sorteoDeOtraSalida`, en `true`, si el sorteo es de otra salida. |
 | `detalle` | El resultado de cada entrada evaluada, por `id`, con las claves de sus hechos; el de cada hecho, con el `id` con el que coincide; y cada noche, con su costo, su duración y la de la vigilancia si consta. |
 
 Una medición lleva solo huellas, identificadores, claves de hechos, fechas, clasificaciones y conteos. Nunca lleva texto del registro ni de la revisión: ni `organismo`, ni `que_dice`, ni `motivo`, ni `url`, ni `sitio`, ni las notas. Así se puede versionar sin publicar el registro ([adrs/0007-registro-del-banco-fuera-del-repositorio.md](../adrs/0007-registro-del-banco-fuera-del-repositorio.md)).

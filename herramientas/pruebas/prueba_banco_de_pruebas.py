@@ -258,11 +258,9 @@ escribir_lineas(registro / "revision" / "extras.jsonl",
                 + [{"hecho": "arce:ocds-ejemplo-9999:llamado", "juicio": "correcto"}])
 comprobar(any("fuera del sorteo" in a for a in bp.validar(registro)[1]), "un extra juzgado fuera del sorteo es un aviso")
 reemplazar(salida, '"entidad"', ' "entidad"')
-try:
-    bp.medir(registro, salida)
-    comprobar(False, "un sorteo de otra salida es un error")
-except bp.ErrorDeFormato as e:
-    comprobar("es de otra salida" in str(e), "un sorteo de otra salida es un error")
+otra = bp.medir(registro, salida)["hechos"]
+comprobar("sorteoDeExtras" not in otra and otra.get("sorteoDeOtraSalida") is True,
+          "un sorteo de otra salida no estima nada: la medición sale sin estimación y lo dice")
 
 # La huella depende de cada byte de los archivos del registro, y no de la revisión.
 registro, _ = copia()
