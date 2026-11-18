@@ -148,6 +148,9 @@ escribir_lineas(registro / "revision" / "correspondencias.jsonl",
                 leer_lineas(registro / "revision" / "correspondencias.jsonl") + [{"registro": "2026-01-12-3", "hecho": "arce:ocds-x:fusion"}])
 errores, _ = bp.validar(registro)
 comprobar(any("no es una clave de hecho" in e for e in errores), "una clave de hecho con un tipo que no existe es un error")
+comprobar(all(bp.CLAVE_DE_HECHO.match(c) for c in ("presidencia:235603:resolucion", "banco-mundial:P513691:aprobacion",
+                                                   "impo:decretos-223-2026:norma")),
+          "las claves de Presidencia, el Banco Mundial e IMPO son claves de hecho")
 
 registro, salida = copia()
 filas = [f for f in leer_lineas(registro / "revision" / "entradas.jsonl") if f["id"] != "2026-01-12-1"]

@@ -56,7 +56,7 @@ RESULTADOS_DE_BUSQUEDA = ("nada", "fallo", "encontro", None)
 
 # Los identificadores de parte.fuentes y los tipos de hecho de docs/contratos.md.
 FUENTES = ("arce", "bid", "banco-mundial", "presidencia", "impo")
-TIPOS_DE_HECHO = ("llamado", "adjudicacion", "aclaracion", "cancelacion", "aprobacion", "aviso", "norma")
+TIPOS_DE_HECHO = ("llamado", "adjudicacion", "aclaracion", "cancelacion", "aprobacion", "aviso", "norma", "resolucion")
 CLAVE_DE_HECHO = re.compile(r"^(%s):[^:\s]+:(%s)$" % ("|".join(FUENTES), "|".join(TIPOS_DE_HECHO)))
 
 ETIQUETAS = ("publicable", "otra-entidad", "no-nuevo", "sin-decidir")
