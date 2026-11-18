@@ -34,6 +34,9 @@ MODELO = "claude-sonnet-5-5"
 # Dólares por millón de tokens, los de la tabla de precios de la aplicación (ADR 0005).
 PRECIO_ENTRADA, PRECIO_SALIDA = 2.00, 10.00
 TIPOS = {"llamado", "aclaracion", "adjudicacion", "cancelacion"}
+# Una noche con muchas publicaciones da un parte largo: con 8.000 tokens de salida, siete de diez noches
+# quedaban cortadas a la mitad. En la Console, quien lo lee pediría que siga; acá se da lugar de entrada.
+MAXIMO_DE_SALIDA = 32000
 CIFRA = re.compile(r"\d(?:[\d.,/-]*\d)?")
 
 SISTEMA = """Sos quien escribe el parte de la mañana sobre las compras del Banco de Previsión Social (BPS) \
@@ -57,7 +60,7 @@ def huella(texto):
 
 
 def pedir(clave, usuario):
-    cuerpo = json.dumps({"model": MODELO, "max_tokens": 8000, "system": SISTEMA,
+    cuerpo = json.dumps({"model": MODELO, "max_tokens": MAXIMO_DE_SALIDA, "system": SISTEMA,
                          "messages": [{"role": "user", "content": usuario}]}).encode("utf-8")
     pedido = urllib.request.Request("https://api.anthropic.com/v1/messages", data=cuerpo, method="POST", headers={
         "x-api-key": clave, "anthropic-version": "2023-06-01", "content-type": "application/json"})
@@ -78,7 +81,7 @@ def correr(carpeta, noches):
     (carpeta / "respuestas").mkdir(exist_ok=True)
     for noche in noches:
         destino = carpeta / "respuestas" / f"{noche}.json"
-        if destino.exists():
+        if destino.exists() and json.loads(destino.read_text(encoding="utf-8")).get("corte") != "max_tokens":
             print(f"{noche}: ya estaba")
             continue
         publicaciones = json.loads((carpeta / f"{noche}.json").read_text(encoding="utf-8-sig"))
@@ -91,7 +94,8 @@ def correr(carpeta, noches):
         costo = round((uso.get("input_tokens", 0) * PRECIO_ENTRADA + uso.get("output_tokens", 0) * PRECIO_SALIDA) / 1e6, 6)
         texto = "".join(b.get("text", "") for b in respuesta.get("content", []))
         destino.write_text(json.dumps({"noche": noche, "segundos": segundos, "costoUsd": costo, "uso": uso,
-                                       "texto": texto}, ensure_ascii=False, indent=1), encoding="utf-8")
+                                       "corte": respuesta.get("stop_reason"), "texto": texto},
+                                      ensure_ascii=False, indent=1), encoding="utf-8")
         print(f"{noche}: {len(publicaciones)} publicaciones, {segundos} s, {costo} USD")
     escribir_salida(carpeta, noches)
 
