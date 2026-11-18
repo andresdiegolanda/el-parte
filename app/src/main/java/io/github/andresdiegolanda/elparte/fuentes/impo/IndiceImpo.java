@@ -19,12 +19,15 @@ import io.github.andresdiegolanda.elparte.fuentes.impo.LectorImpo.FallaDeImpo;
  * <p>Cada documento del índice empieza con su número de orden: {@code 7 - Decreto 223/026.- Reglaméntase
  * la Ley 20.504, ...  (4.083*R)....... Pág. 8}. Las leyes no traen el año en el número: es el de la
  * edición. Las resoluciones de cada organismo no se leen: casi todas son designaciones de personas, y no
- * tienen una dirección fija en el banco de normas.
+ * tienen una dirección fija en el banco de normas. Tampoco lo que viene desde "GOBIERNOS DEPARTAMENTALES":
+ * un decreto de una intendencia o de una junta no está en el banco de decretos nacionales, y pedirlo ahí
+ * da una página que no es una norma (el Decreto 4.049/026 de Rivera, en la edición del 09/11/2026).
  */
 public final class IndiceImpo {
 
     private static final Pattern ENTRADA = Pattern.compile(
             "(?m)^\\s*(\\d{1,3}) - (Ley|Decreto) (\\d{1,3}(?:\\.\\d{3})?)(?:/(\\d{3}))?\\.-\\s*([\\s\\S]*?)Pág\\.\\s*\\d+");
+    private static final Pattern DEPARTAMENTALES = Pattern.compile("(?m)^\\s*GOBIERNOS\\s+DEPARTAMENTALES\\s*$");
     private static final Pattern COLA = Pattern.compile("\\s*\\(\\d[\\d.,]*\\*?\\s*R?\\)[.\\s]*$");
 
     private IndiceImpo() {
@@ -57,7 +60,8 @@ public final class IndiceImpo {
 
     static List<Entrada> deTexto(String texto, int anioDeLaEdicion) {
         List<Entrada> entradas = new ArrayList<>();
-        Matcher m = ENTRADA.matcher(texto);
+        Matcher departamentales = DEPARTAMENTALES.matcher(texto);
+        Matcher m = ENTRADA.matcher(departamentales.find() ? texto.substring(0, departamentales.start()) : texto);
         while (m.find()) {
             int anio = m.group(4) == null ? anioDeLaEdicion : 2000 + Integer.parseInt(m.group(4));
             String sumario = COLA.matcher(m.group(5).replaceAll("\\s+", " ").trim()).replaceAll("").trim();

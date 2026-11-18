@@ -37,6 +37,15 @@ class PiezasDeImpoTest {
         assertThat(deTexto).extracting(Entrada::identificador).containsExactly("decretos/223-2026", "leyes-originales/20531-2026");
         assertThat(deTexto.get(0).sumario())
                 .isEqualTo("Reglaméntase la Ley 20.504, de fecha 26 de junio de 2026, por la que se establece un régimen especial");
+
+        // Lo de los gobiernos departamentales no está en el banco de decretos nacionales: no se pide.
+        assertThat(IndiceImpo.deTexto("""
+                3 - Decreto 253/026.- Autorízase a la firma CONECTA S.A. el ajuste en sus tarifas. (4.656*R)..... Pág. 4
+                GOBIERNOS DEPARTAMENTALES
+                INTENDENCIAS
+                INTENDENCIA DE RIVERA
+                20 - Decreto 4.049/026.- Promúlgase la Ordenanza 7/2026. (4.890*R)........................ Pág. 26
+                """, 2026)).extracting(Entrada::identificador).containsExactly("decretos/253-2026");
     }
 
     @Test
