@@ -4,6 +4,7 @@ Cada entrada dice qué cambió, dónde, y enlaza al documento que tiene el porqu
 
 ## 2026-11-18
 
+- IMPO y el BID, medidos contra el banco (T30, T24): la medición `2026-11-18-3` encontró y publicó los dos hallazgos de IMPO y dejó cuatro decretos más que nombran al BPS, sin juzgar todavía; el BID no tuvo candidatos, como se esperaba. El índice de IMPO ya no lee los decretos departamentales. Ver [docs/como-se-hizo/impo.md](docs/como-se-hizo/impo.md) y [banco-de-pruebas/mediciones/README.md](banco-de-pruebas/mediciones/README.md).
 - El refutador ya no corta sus veredictos (T48): el máximo de salida pasó de 1200 a 4000 tokens, y una respuesta cortada lo dice en vez de pasar por mal formada. Con 1200, los 13 NOT_MENTIONED de la producción y cuatro de los seis hechos de IMPO de la medición 2026-11-17-3 eran cortes, no refutaciones: [docs/como-se-hizo/veredictos-cortados.md](docs/como-se-hizo/veredictos-cortados.md).
 - El conteo del banco ya no se niega a contar una salida que no es la del sorteo: sale sin la estimación y lo dice en `hechos.sorteoDeOtraSalida` ([banco-de-pruebas/metricas.md](banco-de-pruebas/metricas.md)).
 - El Parte contra una sesión con el modelo, sin agentes (T42): diez noches del banco, las mismas publicaciones, un pedido por noche (`herramientas/sesion_de_comparacion.py`), contadas con la misma herramienta. Lo que dio y lo que falta, el juicio de un sorteo de la sesión: [docs/verificaciones/comparacion-con-una-sesion.md](docs/verificaciones/comparacion-con-una-sesion.md).

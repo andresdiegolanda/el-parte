@@ -35,7 +35,8 @@ El código está en `app/src/main/java/io/github/andresdiegolanda/elparte/fuente
 
 ## Qué se probó
 
-`app/src/test/java/io/github/andresdiegolanda/elparte/fuentes/bid/ExploradorBidTest.java`, con un BID de mentira: de dos operaciones aprobadas una noche, sale un candidato, la que nombra al BPS por su sigla, y se publica; la otra no sigue. La repetición da los mismos mensajes sin pedirle nada al BID.
+- **Con un BID de mentira**, en `app/src/test/java/io/github/andresdiegolanda/elparte/fuentes/bid/ExploradorBidTest.java`: de dos operaciones aprobadas una noche, sale un candidato, la que nombra al BPS por su sigla, y se publica; la otra no sigue. La repetición da los mismos mensajes sin pedirle nada al BID.
+- **Contra el banco, las 78 noches**, con IMPO, en la medición `2026-11-18-3`: el BID no dio ningún candidato y no tuvo lecturas fallidas. Era lo esperado: en esas noches no se aprobó ninguna operación para Uruguay que nombre al BPS, y el hallazgo del registro, el perfil de la UR-L1191, quedó como no encontrado porque la tabla no lo tiene. [PROVEN: `banco-de-pruebas/mediciones/2026-11-18-3/salida-de-el-parte.json` y conteo, 2026-11-18]
 
 ## Qué falló
 
@@ -43,5 +44,4 @@ Nada en el código. Lo que no anda es lo que la fuente no tiene: el estado de un
 
 ## Qué falta
 
-- **Medirlo contra el banco** con las 78 noches, cuando la clave tenga crédito otra vez. Se espera que no encuentre ninguna operación del BPS en esas noches.
 - **Los avisos de adquisiciones**, que nombran adjudicatarios y necesitan su tapado.

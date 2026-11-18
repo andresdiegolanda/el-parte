@@ -82,29 +82,6 @@ Los campos van pegados al título, sin línea en blanco. Los que no aplican se o
 
 ## En curso
 
-### T48 · Que el refutador no corte sus veredictos
-- Tipo: Componente
-- Dueño: desarrollo
-- Detalle: [docs/como-se-hizo/veredictos-cortados.md](docs/como-se-hizo/veredictos-cortados.md)
-
-El refutador pedía cada veredicto con un máximo de 1200 tokens de salida. Cuando el modelo llegaba al máximo, la respuesta se cortaba, no se podía convertir y el candidato quedaba NOT_MENTIONED sin que nadie lo hubiera refutado. Pasó con cuatro de los seis hechos de IMPO de la medición 2026-11-17-3, uno de ellos el de un hallazgo, y con los 13 NOT_MENTIONED de la producción.
-
-Etapas:
-- [x] Contrato
-- [x] Código
-- [x] Pruebas
-- [ ] Medido contra el banco
-- [x] Página cómo se hizo
-
-Lista:
-- [x] El máximo del refutador, de 1200 a 4000 tokens
-- [x] La falla de una respuesta cortada dice que se cortó, y la grabación lo guarda
-- [ ] Una medición nueva de IMPO y el BID con el arreglo
-- [ ] El arreglo en la producción
-
-Registro:
-- 2026-11-18: Creada a partir de la medición 2026-11-17-3 (T30). La repetición 2026-11-18-1, con la base guardada, mostró la causa: los veredictos llegaban a los 1200 tokens. Hechos el código y las pruebas. Pasa a En curso.
-
 ### T24 · Sumar los exploradores del BID, el Banco Mundial y Presidencia
 - Tipo: Componente
 - Dueño: desarrollo
@@ -129,6 +106,7 @@ Registro:
 - 2026-11-07: Creada con el plan (T07).
 - 2026-11-17: Pasa a Para empezar: T08 está hecha. Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
 - 2026-11-17: Pasa a En curso. El explorador del BID anda: las operaciones para Uruguay aprobadas cada noche que nombran a una entidad seguida, probado con un BID de mentira y con el filtro por fecha contra la API real. La operación del hallazgo del BID en el registro no está en la tabla de proyectos, así que por fecha no se puede ver (docs/como-se-hizo/bid.md). Siguen el Banco Mundial y Presidencia, que no tienen entradas en el registro, después del material para la demo; medir espera crédito en la API.
+- 2026-11-18: El BID, medido contra el banco con IMPO (medición 2026-11-18-3): ningún candidato en las 78 noches, como se esperaba, y el hallazgo del registro sigue fuera de su alcance. Ver docs/como-se-hizo/bid.md.
 
 ## Para empezar
 
@@ -183,7 +161,7 @@ Registro:
 - Tipo: Componente
 - Dueño: desarrollo
 - Depende de: T08
-- Espera a: crédito en la API: la clave llegó al tope de gasto de su espacio de trabajo, y sin el modelo no se puede medir
+- Espera a: que el responsable confirme las dos correspondencias de IMPO (tmp/consola/correspondencias-impo-borrador.jsonl) y juzgue los cuatro extras (tmp/consola/extras-de-impo.jsonl), los dos en su máquina
 - Detalle: [docs/como-se-hizo/impo.md](docs/como-se-hizo/impo.md), [adrs/0010-impo-como-quinta-fuente.md](adrs/0010-impo-como-quinta-fuente.md), [docs/fuentes/impo.md](docs/fuentes/impo.md)
 
 La quinta fuente de la versión 0: solo el JSON de las normas del Diario Oficial, sin avisos y con las personas tapadas.
@@ -192,7 +170,7 @@ Etapas:
 - [x] Contrato
 - [x] Código
 - [x] Pruebas
-- [ ] Medido contra el banco
+- [x] Medido contra el banco
 - [x] Página cómo se hizo
 
 Lista:
@@ -207,6 +185,7 @@ Registro:
 - 2026-11-17: Pasa a Para empezar: T08 está hecha. Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
 - 2026-11-17: Pasa a En curso. El explorador anda contra un IMPO de mentira y contra muestras reales del índice y de las normas, bajadas a diez segundos entre pedidos después de volver a leer el robots.txt. Sigue la medición contra el banco, solo con IMPO.
 - 2026-11-17: El explorador anda: probado con un IMPO de mentira y con las dos normas reales de los hallazgos; las resoluciones no se leen, a propósito. Contra IMPO de verdad, la medición 2026-11-17-1, de una noche y solo con IMPO, leyó los tres decretos del 24/09 y se quedó con el 223/026, el del hallazgo, pero se cortó sin gastar: la clave llegó al tope de gasto de su espacio de trabajo. Pasa a Esperando. Ver docs/como-se-hizo/impo.md.
+- 2026-11-18: Medido con crédito otra vez. La primera medición de las 78 noches, la 2026-11-17-3, dejó cuatro de seis hechos como NOT_MENTIONED: el refutador cortaba sus veredictos (T48). Además, un decreto de la Intendencia de Rivera se pedía como nacional y daba una lectura fallida: el índice ahora se lee hasta los gobiernos departamentales. La medición 2026-11-18-3, con los dos arreglos, encontró y publicó los dos hallazgos de IMPO, con 27 y 14 días de adelanto, y dejó cuatro decretos más que nombran al BPS. Espera la confirmación de las correspondencias y el juicio de esos cuatro. Ver docs/como-se-hizo/impo.md.
 
 ### T35 · Mandar el aviso diario del parte
 - Tipo: Componente
@@ -242,6 +221,30 @@ Registro:
 ## Pendiente
 
 ## Hecho
+
+### T48 · Que el refutador no corte sus veredictos
+- Tipo: Componente
+- Dueño: desarrollo
+- Detalle: [docs/como-se-hizo/veredictos-cortados.md](docs/como-se-hizo/veredictos-cortados.md)
+
+El refutador pedía cada veredicto con un máximo de 1200 tokens de salida. Cuando el modelo llegaba al máximo, la respuesta se cortaba, no se podía convertir y el candidato quedaba NOT_MENTIONED sin que nadie lo hubiera refutado. Pasó con cuatro de los seis hechos de IMPO de la medición 2026-11-17-3, uno de ellos el de un hallazgo, y con los 13 NOT_MENTIONED de la producción.
+
+Etapas:
+- [x] Contrato
+- [x] Código
+- [x] Pruebas
+- [x] Medido contra el banco
+- [x] Página cómo se hizo
+
+Lista:
+- [x] El máximo del refutador, de 1200 a 4000 tokens
+- [x] La falla de una respuesta cortada dice que se cortó, y la grabación lo guarda
+- [x] Una medición nueva de IMPO y el BID con el arreglo
+- [x] El arreglo en la producción
+
+Registro:
+- 2026-11-18: Creada a partir de la medición 2026-11-17-3 (T30). La repetición 2026-11-18-1, con la base guardada, mostró la causa: los veredictos llegaban a los 1200 tokens. Hechos el código y las pruebas. Pasa a En curso.
+- 2026-11-18: Medido: en las mediciones 2026-11-18-2 y 2026-11-18-3, de IMPO y el BID, ningún veredicto se cortó y ningún hecho quedó NOT_MENTIONED; cuatro de los seis veredictos pasaron los 1200 tokens. En la base guardada de la medición 2026-11-16-2, 32 de sus 45 NOT_MENTIONED eran cortes, ninguno de una entrada del registro; repetirla cuesta más de lo que queda de la tanda. El arreglo está en la producción. Pasa a Hecho. Ver docs/como-se-hizo/veredictos-cortados.md.
 
 ### T33 · Armar el expediente de cada entidad
 - Tipo: Web
