@@ -301,7 +301,7 @@
    "col": 1,
    "fila": 0,
    "estado": "construido",
-   "que_es": "Arma una corrida normal para una noche, una del banco para una noche del registro del banco de pruebas, que sigue solo la entidad medida (ADR 0014), o una repetición de una normal o del banco, y la anuncia.",
+   "que_es": "Arma una corrida normal para una noche, una del banco para una noche del registro del banco de pruebas, que sigue solo la entidad medida (ADR 0014), una lectura del expediente de una entidad (ADR 0018), o una repetición de cualquiera de ellas, y la anuncia.",
    "para_que": "Congela todo lo que la corrida necesita (noche, fuentes, entidades seguidas, presupuesto y modelos) para que cada agente use lo mismo y la corrida se pueda repetir.",
    "codigo": [
     "app/src/main/java/io/github/andresdiegolanda/elparte/corrida/InicioDeCorrida.java"
@@ -771,10 +771,11 @@
    "col": 6,
    "fila": 1,
    "estado": "construido",
-   "que_es": "Intenta tirar abajo cada candidato nuevo o actualizado: vuelve a leer la fuente por su cuenta y le pide al modelo que compare la afirmación con la publicación. Es el único que pone el grado.",
+   "que_es": "Intenta tirar abajo cada candidato nuevo o actualizado: vuelve a leer la fuente por su cuenta y le pide al modelo que compare la afirmación con la publicación. Es el único que pone el grado. En una lectura de expediente, también gradúa cada observación contra los hechos que cita.",
    "para_que": "Que nada se publique sin evidencia (ADR 0004). Si no hay veredicto, el grado es NOT_MENTIONED.",
    "codigo": [
-    "app/src/main/java/io/github/andresdiegolanda/elparte/refutador/Refutador.java"
+    "app/src/main/java/io/github/andresdiegolanda/elparte/refutador/Refutador.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/refutador/RefutadorDeObservaciones.java"
    ],
    "docs": [
     "docs/contratos.md",
@@ -1515,14 +1516,15 @@
    "col": 9,
    "fila": 17,
    "estado": "construido",
-   "que_es": "Todo lo que la base sabe de una entidad: cada hecho con todas sus versiones, ordenado por la noche en que apareció, con un resumen mes por mes.",
+   "que_es": "Todo lo que la base sabe de una entidad: cada hecho con todas sus versiones, ordenado por la noche en que apareció, con un resumen mes por mes. Arriba, la última lectura del modelo, y para el responsable, el botón para pedir una.",
    "para_que": "Consultar una entidad cuando se quiera, no solo lo de anoche.",
    "docs": [
     "docs/arquitectura.md",
     "docs/como-se-hizo/expediente.md"
    ],
    "tarjetas": [
-    "T33"
+    "T33",
+    "T47"
    ],
    "codigo": [
     "app/src/main/java/io/github/andresdiegolanda/elparte/web/ExpedienteControlador.java",
@@ -1531,7 +1533,8 @@
    ],
    "rutas": [
     "GET /expediente",
-    "GET /expediente/{entidad}"
+    "GET /expediente/{entidad}",
+    "POST /expediente/{entidad}/lectura"
    ]
   },
   {
@@ -1803,6 +1806,89 @@
    "tarjetas": [
     "T24"
    ]
+  },
+  {
+   "id": "lector-de-expedientes",
+   "tipo": "agente",
+   "titulo": "Lector de expedientes",
+   "sub": "LectorDeExpedientes · observaciones sobre muchos hechos",
+   "col": 4,
+   "fila": 7,
+   "estado": "construido",
+   "que_es": "En una corrida de lectura, lee de una vez los hechos publicados de una entidad en una ventana y le pide al modelo observaciones que citan dos hechos o más. Las controla en código, las hace graduar por el refutador, guarda las que se sostienen y cierra la corrida.",
+   "para_que": "Ver lo que una publicación sola no muestra, sin que juntar hechos produzca algo que parezca probado (ADR 0018).",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/lectura/LectorDeExpedientes.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/lectura/ControlDeObservaciones.java"
+   ],
+   "docs": [
+    "adrs/0018-lectura-del-expediente-con-contexto-largo.md",
+    "docs/contratos.md",
+    "docs/como-se-hizo/lectura-del-expediente.md"
+   ],
+   "tarjetas": [
+    "T47"
+   ]
+  },
+  {
+   "id": "kafka/observaciones.propuestas",
+   "tipo": "topico",
+   "titulo": "observaciones.propuestas",
+   "sub": "tópico de Kafka",
+   "col": 5,
+   "fila": 7,
+   "estado": "construido",
+   "que_es": "Las observaciones que propuso el modelo sobre un expediente, con lo que dijo de cada una el control en código.",
+   "para_que": "Deja en la traza lo propuesto, también lo descartado.",
+   "docs": [
+    "docs/contratos.md"
+   ],
+   "topico": "observaciones.propuestas"
+  },
+  {
+   "id": "kafka/observaciones.graduadas",
+   "tipo": "topico",
+   "titulo": "observaciones.graduadas",
+   "sub": "tópico de Kafka",
+   "col": 6,
+   "fila": 7,
+   "estado": "construido",
+   "que_es": "Las observaciones que pasaron el control, con el grado del refutador y el que vale.",
+   "para_que": "Deja en la traza el veredicto de cada una.",
+   "docs": [
+    "docs/contratos.md"
+   ],
+   "topico": "observaciones.graduadas"
+  },
+  {
+   "id": "base/lecturas_de_expediente",
+   "tipo": "tabla",
+   "titulo": "lecturas_de_expediente",
+   "sub": "parte.lecturas_de_expediente",
+   "col": 8,
+   "fila": 15,
+   "estado": "construido",
+   "que_es": "Una fila por lectura de expediente: la entidad, la ventana, cuántos hechos leyó y la huella de la entrada, cuántas observaciones se propusieron y cuántas se descartaron.",
+   "para_que": "Que el expediente muestre la última lectura y su costo.",
+   "docs": [
+    "docs/base-de-afirmaciones.md"
+   ],
+   "tabla": "parte.lecturas_de_expediente"
+  },
+  {
+   "id": "base/observaciones",
+   "tipo": "tabla",
+   "titulo": "observaciones",
+   "sub": "parte.observaciones",
+   "col": 9,
+   "fila": 15,
+   "estado": "construido",
+   "que_es": "Las observaciones que se sostuvieron, con su clase, su texto, su grado y las claves de los hechos que citan.",
+   "para_que": "Lo que el expediente muestra de una lectura.",
+   "docs": [
+    "docs/base-de-afirmaciones.md"
+   ],
+   "tabla": "parte.observaciones"
   }
  ],
  "flechas": [
@@ -3624,6 +3710,266 @@
    "tarjetas": [
     "T24"
    ]
+  },
+  {
+   "id": "kafka/corrida.iniciada>lector-de-expedientes",
+   "de": "kafka/corrida.iniciada",
+   "a": "lector-de-expedientes",
+   "tipo": "escucha",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "solo las lecturas",
+   "detalle": "Actúa en las corridas de lectura y en sus repeticiones; las noches las ignora.",
+   "tarjetas": [
+    "T47"
+   ]
+  },
+  {
+   "id": "lector-de-expedientes>kafka/observaciones.propuestas",
+   "de": "lector-de-expedientes",
+   "a": "kafka/observaciones.propuestas",
+   "tipo": "emite",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "lo que propuso el modelo",
+   "detalle": "Cada observación con lo que dijo el control en código.",
+   "tarjetas": [
+    "T47"
+   ]
+  },
+  {
+   "id": "lector-de-expedientes>kafka/observaciones.graduadas",
+   "de": "lector-de-expedientes",
+   "a": "kafka/observaciones.graduadas",
+   "tipo": "emite",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "lo que se sostiene",
+   "detalle": "Las que pasaron el control, con el grado del refutador y el que vale.",
+   "tarjetas": [
+    "T47"
+   ]
+  },
+  {
+   "id": "lector-de-expedientes>kafka/corrida.terminada",
+   "de": "lector-de-expedientes",
+   "a": "kafka/corrida.terminada",
+   "tipo": "emite",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "cierra la lectura",
+   "detalle": "Con los hechos leídos, las propuestas, las sostenidas y las descartadas.",
+   "tarjetas": [
+    "T47"
+   ]
+  },
+  {
+   "id": "lector-de-expedientes>modelo",
+   "de": "lector-de-expedientes",
+   "a": "modelo",
+   "tipo": "usa",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "pide las observaciones",
+   "detalle": "Un solo pedido con todos los hechos de la ventana, una línea por hecho.",
+   "tarjetas": [
+    "T47"
+   ]
+  },
+  {
+   "id": "lector-de-expedientes>refutador",
+   "de": "lector-de-expedientes",
+   "a": "refutador",
+   "tipo": "usa",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "hace graduar cada una",
+   "detalle": "El refutador la gradúa contra los hechos que cita, y el grado no supera al del más débil.",
+   "tarjetas": [
+    "T47"
+   ]
+  },
+  {
+   "id": "lector-de-expedientes>grabaciones",
+   "de": "lector-de-expedientes",
+   "a": "grabaciones",
+   "tipo": "usa",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "graba la entrada",
+   "detalle": "Los hechos leídos se graban como una lectura de fuente, para repetir la lectura igual.",
+   "tarjetas": [
+    "T47"
+   ]
+  },
+  {
+   "id": "base/hechos>lector-de-expedientes",
+   "de": "base/hechos",
+   "a": "lector-de-expedientes",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "los hechos de la ventana",
+   "detalle": "Las últimas versiones publicadas, sin las rechazadas en la revisión.",
+   "tarjetas": [
+    "T47"
+   ]
+  },
+  {
+   "id": "lector-de-expedientes>base/lecturas_de_expediente",
+   "de": "lector-de-expedientes",
+   "a": "base/lecturas_de_expediente",
+   "tipo": "escribe",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "lo que leyó",
+   "detalle": "Cuántos hechos, la huella, cuántas propuestas y descartadas.",
+   "tarjetas": [
+    "T47"
+   ]
+  },
+  {
+   "id": "lector-de-expedientes>base/observaciones",
+   "de": "lector-de-expedientes",
+   "a": "base/observaciones",
+   "tipo": "escribe",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "las que se sostienen",
+   "detalle": "Con su grado y las claves que citan.",
+   "tarjetas": [
+    "T47"
+   ]
+  },
+  {
+   "id": "lector-de-expedientes>base/corridas",
+   "de": "lector-de-expedientes",
+   "a": "base/corridas",
+   "tipo": "escribe",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "cierra la corrida",
+   "detalle": "Completa, o cortada si el presupuesto no alcanzó.",
+   "tarjetas": [
+    "T47"
+   ]
+  },
+  {
+   "id": "inicio>base/lecturas_de_expediente",
+   "de": "inicio",
+   "a": "base/lecturas_de_expediente",
+   "tipo": "escribe",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "anota la ventana",
+   "detalle": "En la misma transacción que la corrida.",
+   "tarjetas": [
+    "T47"
+   ]
+  },
+  {
+   "id": "web/expediente>inicio",
+   "de": "web/expediente",
+   "a": "inicio",
+   "tipo": "usa",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "pide una lectura",
+   "detalle": "El responsable pide leer los últimos 90 días, con hasta 0,50 USD.",
+   "tarjetas": [
+    "T47"
+   ]
+  },
+  {
+   "id": "base/lecturas_de_expediente>web/expediente",
+   "de": "base/lecturas_de_expediente",
+   "a": "web/expediente",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "la última lectura",
+   "detalle": "Para mostrarla arriba del expediente.",
+   "tarjetas": [
+    "T47"
+   ]
+  },
+  {
+   "id": "base/observaciones>web/expediente",
+   "de": "base/observaciones",
+   "a": "web/expediente",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "sus observaciones",
+   "detalle": "Con enlaces a los hechos que citan.",
+   "tarjetas": [
+    "T47"
+   ]
+  },
+  {
+   "id": "base/libros_de_corrida>web/expediente",
+   "de": "base/libros_de_corrida",
+   "a": "web/expediente",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "su costo",
+   "detalle": "Lo gastado por la lectura.",
+   "tarjetas": [
+    "T47"
+   ]
+  },
+  {
+   "id": "base/entidades>lector-de-expedientes",
+   "de": "base/entidades",
+   "a": "lector-de-expedientes",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "el nombre de la entidad",
+   "detalle": "Para el pedido al modelo.",
+   "tarjetas": [
+    "T47"
+   ]
+  },
+  {
+   "id": "base/hecho_entidades>lector-de-expedientes",
+   "de": "base/hecho_entidades",
+   "a": "lector-de-expedientes",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "los hechos de la entidad",
+   "detalle": "Qué hechos la nombran.",
+   "tarjetas": [
+    "T47"
+   ]
+  },
+  {
+   "id": "base/versiones_de_hecho>lector-de-expedientes",
+   "de": "base/versiones_de_hecho",
+   "a": "lector-de-expedientes",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "la última versión de cada uno",
+   "detalle": "Su grado, su afirmación y si se rechazó en la revisión.",
+   "tarjetas": [
+    "T47"
+   ]
+  },
+  {
+   "id": "base/libros_de_corrida>lector-de-expedientes",
+   "de": "base/libros_de_corrida",
+   "a": "lector-de-expedientes",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "lo gastado",
+   "detalle": "El costo de la lectura, para corrida.terminada.",
+   "tarjetas": [
+    "T47"
+   ]
   }
  ],
  "recorridos": [
@@ -4392,6 +4738,20 @@
     "explorador-presidencia>grabaciones",
     "refutador>lector-presidencia",
     "base/entidades>explorador-presidencia"
+   ]
+  },
+  {
+   "fecha": "2026-11-18",
+   "texto": "La lectura del expediente con el modelo (T47, ADR 0018): el lector de expedientes, dos tópicos, dos tablas y el botón del responsable en el expediente.",
+   "objetos": [
+    "lector-de-expedientes",
+    "kafka/observaciones.propuestas",
+    "kafka/observaciones.graduadas",
+    "base/lecturas_de_expediente",
+    "base/observaciones",
+    "web/expediente",
+    "refutador",
+    "inicio"
    ]
   }
  ],

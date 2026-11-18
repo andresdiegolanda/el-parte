@@ -61,13 +61,13 @@ Lo emite el inicio de corrida. Arranca la noche.
 
 | Campo | Qué es |
 |---|---|
-| `modo` | `normal`, `reproduccion` (respuestas grabadas, sin red) o `banco` (una noche del banco de pruebas). |
+| `modo` | `normal`, `reproduccion` (respuestas grabadas, sin red), `banco` (una noche del banco de pruebas) o `lectura` (la lectura del expediente de una entidad, que pide el responsable: sin fuentes, con su propio presupuesto; [ADR 0018](../adrs/0018-lectura-del-expediente-con-contexto-largo.md)). |
 | `fechaObjetivo` | La fecha cuyas publicaciones se leen. En modo normal es la de ayer; en modo banco, la de la noche que se repite. |
 | `fuentes` | Las fuentes de esta corrida. |
 | `entidadesSeguidas` | Las entidades con algún suscriptor. Los exploradores filtran por ellas antes de usar el modelo. En modo `banco`, solo la entidad que se mide ([ADR 0014](../adrs/0014-medicion-contra-el-banco.md)). |
 | `presupuesto` | `costoMaximoUsd`, `pasosMaximos` y `minutosMaximos` ([ADR 0005](../adrs/0005-presupuesto-por-corrida.md)). |
 | `modelos` | El modelo de cada agente en esta corrida, el vigente al empezar ([ADR 0003](../adrs/0003-eleccion-del-stack.md)). Cada agente usa este y no otro. |
-| `reproduceA` | En modo `reproduccion`, la corrida que se repite, normal o del banco; nulo en los demás modos. Se sumó con la primera rebanada (ver "Repetir una corrida"). |
+| `reproduceA` | En modo `reproduccion`, la corrida que se repite, normal, del banco o de lectura; nulo en los demás modos. Se sumó con la primera rebanada (ver "Repetir una corrida"). |
 
 ```json
 {
@@ -313,6 +313,26 @@ Lo emite el servicio del modelo por cada llamada, se haga o no, con lo que le de
   "costoUsd": 0.01431, "reservaUsd": 0.0477, "duracionMs": 6120, "limite": null }
 ```
 
+### `observaciones.propuestas` y `observaciones.graduadas`
+
+Los emite el lector de expedientes en una corrida de lectura ([ADR 0018](../adrs/0018-lectura-del-expediente-con-contexto-largo.md)), causados por `corrida.iniciada`. `observaciones.propuestas` trae la ventana leída (`entidad`, `desde`, `hasta`), cuántos hechos entraron (`hechosLeidos`) y cuántos se cortaron por viejos (`hechosCortados`), la huella de la entrada (`huellaDeLosHechos`) y cada observación que propuso el modelo, numerada, con su `clase` (`repeticion`, `cadena`, `proveedor` u `otra`), su `texto`, las claves de los `hechos` que cita y `descarte`: nulo si pasó el control en código, o por qué no.
+
+```json
+{ "entidad": "organismo:bps", "desde": "2026-08-21", "hasta": "2026-11-18", "hechosLeidos": 912, "hechosCortados": 0,
+  "huellaDeLosHechos": "sha256:...",
+  "observaciones": [
+    { "numero": 1, "clase": "proveedor", "texto": "...", "hechos": ["arce:ocds-yfs5dr-1367309:adjudicacion", "..."], "descarte": null },
+    { "numero": 2, "clase": "otra", "texto": "...", "hechos": ["arce:ocds-yfs5dr-1367309:adjudicacion"], "descarte": "cita menos de dos hechos." } ] }
+```
+
+`observaciones.graduadas`, causado por el anterior, trae las que pasaron el control con el veredicto del refutador: `gradoDelRefutador` es lo que dijo el refutador contra los hechos citados, y `grado`, lo que vale, nunca más que el más débil de esos hechos. `descartadas` cuenta las que no se publican, por el control o por el refutador. Las llamadas al modelo de los dos pasos van en `uso.modelo`, del lector y del refutador.
+
+```json
+{ "observaciones": [ { "numero": 1, "clase": "proveedor", "texto": "...", "hechos": ["..."], "grado": "INFERRED",
+                       "gradoDelRefutador": "PROVEN", "razonamiento": "Cita un hecho deducido, ...", "busqueda": null } ],
+  "descartadas": 1 }
+```
+
 ### `corrida.cortada` y `corrida.terminada`
 
 `corrida.cortada` dice qué límite se alcanzó (`costo`, `pasos` o `tiempo`), lo gastado y cuántos candidatos quedaron sin procesar. `corrida.terminada` cierra la corrida con su estado (`completa`, `cortada` o `fallida`), los conteos por estado y por grado, el costo y la duración.
@@ -323,7 +343,7 @@ Lo emite el servicio del modelo por cada llamada, se haga o no, con lo que le de
 
 ### Cuándo termina una corrida
 
-Una corrida termina cuando todas sus fuentes mandaron `exploracion.terminada` y todos los candidatos llegaron a un final: el archivista los dio por conocidos, el refutador los graduó NOT_MENTIONED, el presupuesto le rechazó la llamada al refutador (el candidato queda sin procesar) o el editor procesó su análisis. Lo controla un proceso que revisa cada dos segundos las corridas en curso, contando desde el registro de mensajes. El total de candidatos sale de `exploracion.terminada` y no de contar los mensajes `candidatos`, porque el observador guarda cada tópico a su ritmo. Al terminar, el editor emite un `informes` por cada cliente con suscripciones y después `corrida.terminada`. Si la corrida pasa su tope de tiempo, se corta: primero `corrida.cortada`, después los informes con `corridaCortada` y `corrida.terminada`. [PROVEN: primera rebanada, `CierreDeCorrida`, 2026-11-14] Si el presupuesto rechazó alguna llamada, por costo o por pasos, la corrida termina igual cuando todos sus candidatos llegaron a un final, pero cortada, con el límite del primer `uso.modelo` rechazado. Un candidato rechazado en el refutador queda sin procesar; uno rechazado en el analista se publica sin análisis. [PROVEN: `PresupuestoQueCortaTest`, 2026-11-16]
+Una corrida termina cuando todas sus fuentes mandaron `exploracion.terminada` y todos los candidatos llegaron a un final: el archivista los dio por conocidos, el refutador los graduó NOT_MENTIONED, el presupuesto le rechazó la llamada al refutador (el candidato queda sin procesar) o el editor procesó su análisis. Lo controla un proceso que revisa cada dos segundos las corridas en curso, contando desde el registro de mensajes. El total de candidatos sale de `exploracion.terminada` y no de contar los mensajes `candidatos`, porque el observador guarda cada tópico a su ritmo. Al terminar, el editor emite un `informes` por cada cliente con suscripciones y después `corrida.terminada`. Si la corrida pasa su tope de tiempo, se corta: primero `corrida.cortada`, después los informes con `corridaCortada` y `corrida.terminada`. [PROVEN: primera rebanada, `CierreDeCorrida`, 2026-11-14] Si el presupuesto rechazó alguna llamada, por costo o por pasos, la corrida termina igual cuando todos sus candidatos llegaron a un final, pero cortada, con el límite del primer `uso.modelo` rechazado. Un candidato rechazado en el refutador queda sin procesar; uno rechazado en el analista se publica sin análisis. [PROVEN: `PresupuestoQueCortaTest`, 2026-11-16] Una corrida de lectura no tiene candidatos ni informes: la cierra el lector de expedientes después de `observaciones.graduadas`, con `corrida.terminada` y los conteos `hechosLeidos`, `propuestas`, `sostenidas` y `descartadas`. El proceso que revisa las corridas solo la corta si pasa su tope de tiempo. [PROVEN: `LecturaDelExpedienteTest`, 2026-11-18]
 
 ```json
 { "estado": "completa",

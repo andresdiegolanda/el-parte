@@ -160,7 +160,7 @@ public class Analista {
      * Las cifras de un texto, sin separadores ni ceros a la izquierda, para que "1.200.000" sea lo mismo
      * que "1200000" y "04/2026" lo mismo que "4/2026".
      */
-    static Set<String> cifras(String texto) {
+    public static Set<String> cifras(String texto) {
         Set<String> cifras = new HashSet<>();
         Matcher m = CIFRA.matcher(texto);
         while (m.find()) {
@@ -173,7 +173,7 @@ public class Analista {
      * Las cifras que el analista puede nombrar: las del texto de la fuente, enteras y también por partes,
      * para que de "2026-11-06" se pueda decir "6 de noviembre de 2026".
      */
-    static Set<String> cifrasPermitidas(String fuente) {
+    public static Set<String> cifrasPermitidas(String fuente) {
         Set<String> permitidas = cifras(fuente);
         Matcher m = CIFRA.matcher(fuente);
         while (m.find()) {

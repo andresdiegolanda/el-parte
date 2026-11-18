@@ -34,7 +34,8 @@ import io.github.andresdiegolanda.elparte.refutador.Refutador;
 /**
  * Cierra cada corrida cuando todos sus candidatos llegaron a un final, o la corta cuando pasa su tope
  * de tiempo (ADR 0005). Si el presupuesto rechazó alguna llamada al modelo, la corrida cierra cortada,
- * con el límite que se alcanzó.
+ * con el límite que se alcanzó. Las lecturas de expediente las cierra su lector; acá solo se cortan por
+ * tiempo (ADR 0018).
  *
  * <p>Un candidato llega a un final cuando el archivista lo da por conocido, cuando el refutador lo
  * gradúa NOT_MENTIONED, cuando el presupuesto le rechazó la llamada al refutador (queda sin procesar)
@@ -82,6 +83,17 @@ public class CierreDeCorrida {
         CorridaIniciada corrida = corridas.contexto(corridaId);
         Instant iniciada = jdbc.sql("select iniciada_en from parte.corridas where id = :id").param("id", corridaId)
                 .query(Timestamp.class).single().toInstant();
+        if (corridas.lecturaQueHace(corridaId).isPresent()) {
+            // Una lectura de expediente la cierra su lector (ADR 0018): acá solo se corta si pasa su tope de
+            // tiempo, sin informes, porque no es una noche.
+            if (Duration.between(iniciada, reloj.instant()).toMinutes() >= corrida.presupuesto().minutosMaximos()) {
+                jdbc.sql("""
+                        update parte.corridas set estado = 'cortada', limite_alcanzado = 'tiempo', terminada_en = :fin
+                        where id = :id and estado = 'en_curso'
+                        """).param("fin", Timestamp.from(reloj.instant())).param("id", corridaId).update();
+            }
+            return;
+        }
         Conteo conteo = contar(corridaId);
         // El total sale de exploracion.terminada y no de contar candidatos: el observador guarda los
         // mensajes de cada tópico a su ritmo, y un candidato puede llegar a la tabla después.

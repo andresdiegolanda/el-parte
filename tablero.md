@@ -86,26 +86,27 @@ Los campos van pegados al título, sin línea en blanco. Los que no aplican se o
 - Tipo: Componente
 - Dueño: desarrollo
 - Depende de: T33, T49
-- Detalle: [docs/como-se-hizo/expediente.md](docs/como-se-hizo/expediente.md), [adrs/0018-lectura-del-expediente-con-contexto-largo.md](adrs/0018-lectura-del-expediente-con-contexto-largo.md)
+- Detalle: [docs/como-se-hizo/lectura-del-expediente.md](docs/como-se-hizo/lectura-del-expediente.md), [docs/como-se-hizo/expediente.md](docs/como-se-hizo/expediente.md), [adrs/0018-lectura-del-expediente-con-contexto-largo.md](adrs/0018-lectura-del-expediente-con-contexto-largo.md)
 
 El expediente muestra cada hecho de una entidad a lo largo del tiempo, pero nadie lo lee entero. Con contexto largo, el modelo podría ver patrones que una publicación sola no muestra: compras que se repiten, prórrogas en cadena, proveedores que vuelven. Antes del código hace falta un ADR: qué puede escribir el modelo sobre muchos hechos juntos, cómo se gradúa una afirmación que sale de varios, y qué se guarda afuera del modelo, en la base y en el repositorio.
 
 Etapas:
-- [ ] Contrato
-- [ ] Código
-- [ ] Pruebas
+- [x] Contrato
+- [x] Código
+- [x] Pruebas
 - [ ] Medido contra el banco
-- [ ] Página cómo se hizo
+- [x] Página cómo se hizo
 
 Lista:
-- [ ] El ADR: qué puede escribir el modelo sobre un expediente y cómo se gradúa
-- [ ] Una lectura del expediente con su costo en el presupuesto
+- [x] El ADR: qué puede escribir el modelo sobre un expediente y cómo se gradúa
+- [x] Una lectura del expediente con su costo en el presupuesto
 
 Registro:
 - 2026-11-17: Creada al construir el expediente sin el modelo (T33). Va a Para empezar porque T33 está hecha; no entra en la tanda autorizada el 2026-11-17.
 - 2026-11-18: Escrito el ADR 0018 como propuesta: una corrida aparte, a pedido, en la que el modelo propone observaciones que citan hechos y el refutador las gradúa contra esos hechos. El código espera que se acepte (T49).
 - 2026-11-18: Pasa a Pendiente: depende de que se acepte el ADR 0018 (T49).
 - 2026-11-18: El ADR 0018 está aceptado (T49). Pasa a En curso, dentro de lo autorizado el 2026-11-18: hacer todo lo demás, con commit y push al terminar.
+- 2026-11-18: Construida como dice el ADR 0018: una corrida en modo lectura que pide el responsable desde el expediente, el lector de expedientes con su control en código, el refutador graduando contra los hechos citados y el resultado arriba del expediente. Probada de punta a punta con el modelo de mentira, con su repetición. Falta una lectura de verdad y el juicio de sus observaciones.
 
 ### T24 · Sumar los exploradores del BID, el Banco Mundial y Presidencia
 - Tipo: Componente

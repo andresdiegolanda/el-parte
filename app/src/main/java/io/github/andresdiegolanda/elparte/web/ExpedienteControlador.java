@@ -1,5 +1,6 @@
 package io.github.andresdiegolanda.elparte.web;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -11,11 +12,13 @@ import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 import io.github.andresdiegolanda.elparte.analista.Analista;
+import io.github.andresdiegolanda.elparte.corrida.InicioDeCorrida;
 
 /**
  * El expediente de cada entidad (T33, docs/arquitectura.md): todo lo que la base sabe de ella, cada hecho
@@ -38,10 +41,78 @@ public class ExpedienteControlador {
             )
             """;
 
-    private final JdbcClient jdbc;
+    /** La ventana y el presupuesto de una lectura del expediente (ADR 0018). */
+    static final int DIAS_DE_UNA_LECTURA = 90;
+    static final BigDecimal COSTO_DE_UNA_LECTURA = new BigDecimal("0.50");
 
-    public ExpedienteControlador(JdbcClient jdbc) {
+    private final JdbcClient jdbc;
+    private final InicioDeCorrida inicio;
+
+    public ExpedienteControlador(JdbcClient jdbc, InicioDeCorrida inicio) {
         this.jdbc = jdbc;
+        this.inicio = inicio;
+    }
+
+    /** La última lectura del expediente, con sus observaciones; {@code estado} es el de su corrida. */
+    public record Lectura(String corridaId, String estado, String limite, String desde, String hasta, Integer hechosLeidos,
+            Integer hechosCortados, Integer propuestas, Integer descartadas, String modelo, BigDecimal costo,
+            List<Observacion> observaciones) {
+
+        public boolean enCurso() {
+            return "en_curso".equals(estado);
+        }
+    }
+
+    /** Una observación, con los hechos que cita y el mes de cada uno, para enlazarlos. */
+    public record Observacion(String clase, String texto, String grado, String razonamiento, List<Cita> citas) {
+    }
+
+    public record Cita(String clave, String mes) {
+    }
+
+    @PostMapping("/expediente/{entidad}/lectura")
+    public String leer(@PathVariable String entidad) {
+        jdbc.sql("select id from parte.entidades where id = :id").param("id", entidad).query(String.class).optional()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No hay una entidad " + entidad));
+        String corrida = inicio.iniciarLectura(entidad, DIAS_DE_UNA_LECTURA, COSTO_DE_UNA_LECTURA);
+        return "redirect:/expediente/" + entidad + "?lectura=" + corrida;
+    }
+
+    private Optional<Lectura> ultimaLectura(String entidad) {
+        return jdbc.sql("""
+                select l.corrida_id, c.estado, c.limite_alcanzado, l.desde::text, l.hasta::text, l.hechos_leidos,
+                       l.hechos_cortados, l.propuestas, l.descartadas, c.modelos->>'lector-de-expedientes',
+                       coalesce(lc.gastado_usd, 0)
+                from parte.lecturas_de_expediente l
+                join parte.corridas c on c.id = l.corrida_id
+                left join parte.libros_de_corrida lc on lc.corrida_id = l.corrida_id
+                where l.entidad_id = :entidad and c.modo = 'lectura'
+                order by c.iniciada_en desc limit 1
+                """).param("entidad", entidad)
+                .query((f, n) -> new Lectura(f.getString(1), f.getString(2), f.getString(3), f.getString(4), f.getString(5),
+                        (Integer) f.getObject(6), (Integer) f.getObject(7), (Integer) f.getObject(8), (Integer) f.getObject(9),
+                        f.getString(10), f.getBigDecimal(11), new ArrayList<>()))
+                .optional()
+                .map(l -> {
+                    l.observaciones().addAll(observaciones(entidad, l.corridaId()));
+                    return l;
+                });
+    }
+
+    private List<Observacion> observaciones(String entidad, String corridaId) {
+        Map<String, String> meses = new LinkedHashMap<>();
+        jdbc.sql(PRIMERAS + "select p.clave_de_hecho, to_char(p.noche, 'YYYY-MM') from primeras p").param("entidad", entidad)
+                .query((f, n) -> meses.put(f.getString(1), f.getString(2))).list();
+        return jdbc.sql("""
+                select clase, texto, grado, razonamiento, hechos from parte.observaciones
+                where corrida_id = :id order by numero
+                """).param("id", corridaId)
+                .query((f, n) -> {
+                    String[] hechos = (String[]) f.getArray(5).getArray();
+                    return new Observacion(f.getString(1), f.getString(2), f.getString(3), f.getString(4),
+                            java.util.Arrays.stream(hechos).map(h -> new Cita(h, meses.get(h))).toList());
+                })
+                .list();
     }
 
     public record Entidad(String id, String nombre, long hechos, String ultima) {
@@ -110,6 +181,9 @@ public class ExpedienteControlador {
         modelo.addAttribute("meses", meses);
         modelo.addAttribute("mes", elegido.orElse(null));
         modelo.addAttribute("hechos", elegido.map(m -> hechos(entidad, m)).orElse(List.of()));
+        modelo.addAttribute("lectura", ultimaLectura(entidad).orElse(null));
+        modelo.addAttribute("diasDeUnaLectura", DIAS_DE_UNA_LECTURA);
+        modelo.addAttribute("costoDeUnaLectura", COSTO_DE_UNA_LECTURA);
         return "expediente";
     }
 

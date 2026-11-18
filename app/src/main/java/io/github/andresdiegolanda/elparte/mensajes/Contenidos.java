@@ -121,6 +121,25 @@ public final class Contenidos {
     public record CorridaCortada(String limite, BigDecimal gastadoUsd, int pasos, long minutos, int sinProcesar) {
     }
 
+    /**
+     * Una observación que el lector de expedientes propone sobre varios hechos (ADR 0018), con el control
+     * en código: {@code descarte} es nulo si pasó, o dice por qué no.
+     */
+    public record ObservacionPropuesta(int numero, String clase, String texto, List<String> hechos, String descarte) {
+    }
+
+    public record ObservacionesPropuestas(String entidad, String desde, String hasta, int hechosLeidos, int hechosCortados,
+            String huellaDeLosHechos, List<ObservacionPropuesta> observaciones) {
+    }
+
+    /** Una observación que el control dejó pasar, con el grado del refutador ya limitado por sus hechos. */
+    public record ObservacionGraduada(int numero, String clase, String texto, List<String> hechos, String grado,
+            String gradoDelRefutador, String razonamiento, String busqueda) {
+    }
+
+    public record ObservacionesGraduadas(List<ObservacionGraduada> observaciones, int descartadas) {
+    }
+
     public record CorridaTerminada(String estado, Map<String, Integer> conteos, BigDecimal costoUsd, long duracionSegundos) {
     }
 }

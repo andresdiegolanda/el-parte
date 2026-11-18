@@ -8,6 +8,38 @@
     <p class="sub">El expediente: cada hecho con todas sus versiones, ordenado por la noche en que apareció.
         <a href="/expediente">Todos los expedientes</a>.</p>
 
+    <section th:if="${lectura != null or (usuario != null and usuario.responsable)}">
+        <h2>Lo que leyó el modelo</h2>
+        <p class="sub">El lector de expedientes lee de una vez los hechos ya publicados y propone observaciones que una
+            publicación sola no muestra; el refutador las gradúa contra los hechos que citan. No son hechos nuevos, y su
+            grado nunca supera al del más débil de los hechos citados.
+            <a th:href="${'https://github.com/andresdiegolanda/el-parte/blob/main/adrs/0018-lectura-del-expediente-con-contexto-largo.md'}">Cómo se decidió</a>.</p>
+        <div th:if="${lectura != null and lectura.enCurso}" class="tarjeta vacio">La lectura está en curso.
+            <a th:href="@{/corridas/{id}(id=${lectura.corridaId})}">Ver su traza</a>.</div>
+        <th:block th:if="${lectura != null and !lectura.enCurso}">
+            <p class="sub">Del <span th:text="${lectura.desde}"></span> al <span th:text="${lectura.hasta}"></span>:
+                <span th:text="${lectura.hechosLeidos}">0</span> hechos leídos<span th:if="${lectura.hechosCortados != null and lectura.hechosCortados > 0}" th:text="', sin los ' + ${lectura.hechosCortados} + ' más viejos'"></span>,
+                <span th:text="${lectura.propuestas}">0</span> observaciones propuestas y
+                <span th:text="${lectura.descartadas}">0</span> descartadas. Con <span th:text="${lectura.modelo}"></span>,
+                por <span th:text="${#numbers.formatDecimal(lectura.costo, 1, 4, 'POINT')}"></span> USD.
+                <span th:if="${lectura.estado == 'cortada'}" class="marca" th:text="'Cortada: ' + ${lectura.limite}"></span>
+                <a th:href="@{/corridas/{id}(id=${lectura.corridaId})}">Ver su traza en la sala de máquinas</a>.</p>
+            <div th:if="${lectura.observaciones.isEmpty()}" class="tarjeta vacio">Ninguna observación se sostuvo.</div>
+            <div th:each="o : ${lectura.observaciones}" class="tarjeta">
+                <div><span class="grado" th:classappend="${o.grado}" th:text="${o.grado}">PROVEN</span>
+                    <span class="sub" th:text="${o.clase}">repeticion</span></div>
+                <p th:text="${o.texto}">La observación.</p>
+                <p th:if="${o.razonamiento != null}" class="sub">Se deduce de: <span th:text="${o.razonamiento}"></span></p>
+                <p class="sub">Cita:
+                    <th:block th:each="c, i : ${o.citas}"><a th:href="@{/expediente/{id}(id=${entidad}, mes=${c.mes})} + '#' + ${c.clave}" th:text="${c.clave}"></a><span th:if="${!i.last}">, </span></th:block></p>
+            </div>
+        </th:block>
+        <form th:if="${usuario != null and usuario.responsable and (lectura == null or !lectura.enCurso)}" class="fila" method="post"
+              th:action="@{/expediente/{id}/lectura(id=${entidad})}">
+            <button type="submit" th:text="'Leer los últimos ' + ${diasDeUnaLectura} + ' días con el modelo, hasta ' + ${costoDeUnaLectura} + ' USD'">Leer</button>
+        </form>
+    </section>
+
     <div th:if="${meses.isEmpty()}" class="tarjeta vacio">Todavía no hay hechos de esta entidad.</div>
 
     <th:block th:if="${!meses.isEmpty()}">
@@ -27,7 +59,7 @@
         </table>
 
         <h2>Los hechos de <span th:text="${mes}">2026-11</span></h2>
-        <div th:each="h : ${hechos}" class="tarjeta">
+        <div th:each="h : ${hechos}" class="tarjeta" th:id="${h.clave}">
             <div>
                 <span class="grado" th:classappend="${h.ultima.grado}" th:text="${h.ultima.grado}">PROVEN</span>
                 <span class="sub" th:text="${h.tipo} + ' · apareció la noche del ' + ${h.noche} + ' · ' + ${h.versiones.size()} + (${h.versiones.size() == 1} ? ' versión' : ' versiones')"></span>

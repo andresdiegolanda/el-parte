@@ -31,7 +31,8 @@ public class Observador {
     @KafkaListener(groupId = "observador", topics = {
             Tipos.CORRIDA_INICIADA, Tipos.CANDIDATOS, Tipos.EXPLORACION_TERMINADA, Tipos.CANDIDATOS_COTEJADOS,
             Tipos.CANDIDATOS_GRADUADOS, Tipos.HECHOS_ANALIZADOS, Tipos.INFORMES, Tipos.REVISION_PENDIENTE,
-            Tipos.FUENTE_FALLIDA, Tipos.USO_MODELO, Tipos.CORRIDA_CORTADA, Tipos.CORRIDA_TERMINADA })
+            Tipos.FUENTE_FALLIDA, Tipos.USO_MODELO, Tipos.CORRIDA_CORTADA, Tipos.CORRIDA_TERMINADA,
+            Tipos.OBSERVACIONES_PROPUESTAS, Tipos.OBSERVACIONES_GRADUADAS })
     public void recibir(String valor) {
         Sobre sobre = json.readValue(valor, Sobre.class);
         jdbc.sql("""

@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.simple.JdbcClient;
@@ -46,6 +47,9 @@ public class InicioDeCorrida {
 
     /** El candado de la base que toma cada inicio, en {@code pg_advisory_xact_lock}. */
     private static final long CANDADO = 20261117L;
+    /** Una lectura es un pedido al lector y uno al refutador por observación: pocos pasos y pocos minutos. */
+    private static final int PASOS_DE_UNA_LECTURA = 40;
+    private static final int MINUTOS_DE_UNA_LECTURA = 20;
 
     private final JdbcClient jdbc;
     private final Emisor emisor;
@@ -113,17 +117,43 @@ public class InicioDeCorrida {
         return iniciar(inicio, false).orElseThrow();
     }
 
-    /** Repite una corrida normal o del banco con lo que ella grabó: sin red ni costo. */
+    /**
+     * Una lectura del expediente de una entidad (ADR 0018): los hechos publicados de los últimos
+     * {@code dias} días, con su propio presupuesto. No lee fuentes, así que no tiene ninguna.
+     */
+    public String iniciarLectura(String entidad, int dias, BigDecimal costoMaximoUsd) {
+        LocalDate hasta = LocalDate.now(reloj.withZone(URUGUAY));
+        LocalDate desde = hasta.minusDays(dias - 1L);
+        CorridaIniciada inicio = new CorridaIniciada("lectura", hasta.toString(), List.of(), List.of(entidad),
+                new Presupuesto(costoMaximoUsd, PASOS_DE_UNA_LECTURA, MINUTOS_DE_UNA_LECTURA), modelosVigentes(), null);
+        return iniciar(inicio, false, id -> anotarLectura(id, entidad, desde, hasta)).orElseThrow();
+    }
+
+    /** Repite una corrida normal, del banco o de lectura con lo que ella grabó: sin red ni costo. */
     public String iniciarReproduccion(String corridaOriginal) {
         CorridaIniciada original = registro.contenido(registro.esperar(Corridas.idDeInicio(corridaOriginal)),
                 CorridaIniciada.class);
-        if (!"normal".equals(original.modo()) && !"banco".equals(original.modo())) {
-            throw new IllegalArgumentException("Solo se repite una corrida normal o del banco; " + corridaOriginal
-                    + " es " + original.modo());
+        if (!List.of("normal", "banco", "lectura").contains(original.modo())) {
+            throw new IllegalArgumentException("Solo se repite una corrida normal, del banco o de lectura; "
+                    + corridaOriginal + " es " + original.modo());
         }
         CorridaIniciada inicio = new CorridaIniciada("reproduccion", original.fechaObjetivo(), original.fuentes(),
                 original.entidadesSeguidas(), original.presupuesto(), original.modelos(), corridaOriginal);
-        return iniciar(inicio, false).orElseThrow();
+        return iniciar(inicio, false, id -> {
+            if ("lectura".equals(original.modo())) {
+                jdbc.sql("""
+                        insert into parte.lecturas_de_expediente (corrida_id, entidad_id, desde, hasta)
+                        select :id, entidad_id, desde, hasta from parte.lecturas_de_expediente where corrida_id = :original
+                        """).param("id", id).param("original", corridaOriginal).update();
+            }
+        }).orElseThrow();
+    }
+
+    private void anotarLectura(String corridaId, String entidad, LocalDate desde, LocalDate hasta) {
+        jdbc.sql("""
+                insert into parte.lecturas_de_expediente (corrida_id, entidad_id, desde, hasta)
+                values (:id, :entidad, :desde, :hasta)
+                """).param("id", corridaId).param("entidad", entidad).param("desde", desde).param("hasta", hasta).update();
     }
 
     private List<String> fuentesActivas() {
@@ -140,12 +170,20 @@ public class InicioDeCorrida {
     }
 
     private Optional<String> iniciar(CorridaIniciada inicio, boolean siFalta) {
+        return iniciar(inicio, siFalta, id -> {
+        });
+    }
+
+    /** {@code ademas} corre en la misma transacción que anota la corrida, antes de avisar que empezó. */
+    private Optional<String> iniciar(CorridaIniciada inicio, boolean siFalta, Consumer<String> ademas) {
         String corridaId = aparte.execute(estado -> {
             jdbc.sql("select pg_advisory_xact_lock(:candado)").param("candado", CANDADO).query((f, n) -> true).list();
             if (siFalta && tieneCorridaNormal(LocalDate.parse(inicio.fechaObjetivo()))) {
                 return null;
             }
-            return anotar(inicio);
+            String id = anotar(inicio);
+            ademas.accept(id);
+            return id;
         });
         if (corridaId == null) {
             return Optional.empty();

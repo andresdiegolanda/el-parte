@@ -20,11 +20,13 @@ public final class Tipos {
     public static final String USO_MODELO = "uso.modelo";
     public static final String CORRIDA_CORTADA = "corrida.cortada";
     public static final String CORRIDA_TERMINADA = "corrida.terminada";
+    public static final String OBSERVACIONES_PROPUESTAS = "observaciones.propuestas";
+    public static final String OBSERVACIONES_GRADUADAS = "observaciones.graduadas";
 
     public static final List<String> TODOS = List.of(
             CORRIDA_INICIADA, CANDIDATOS, EXPLORACION_TERMINADA, CANDIDATOS_COTEJADOS, CANDIDATOS_GRADUADOS,
             HECHOS_ANALIZADOS, INFORMES, REVISION_PENDIENTE, FUENTE_FALLIDA, USO_MODELO, CORRIDA_CORTADA,
-            CORRIDA_TERMINADA);
+            CORRIDA_TERMINADA, OBSERVACIONES_PROPUESTAS, OBSERVACIONES_GRADUADAS);
 
     /** Versión del contrato de cada tipo. Todos están en la 1. */
     public static final int VERSION = 1;

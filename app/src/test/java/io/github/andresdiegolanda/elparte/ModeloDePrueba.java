@@ -1,5 +1,6 @@
 package io.github.andresdiegolanda.elparte;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Matcher;
@@ -23,6 +24,7 @@ public class ModeloDePrueba implements ChatModel {
 
     private static final Pattern CANDIDATO = Pattern.compile("Candidato \\((\\w+)\\):\\n(.*)\\n");
     private static final Pattern HECHO = Pattern.compile("Hecho graduado \\((\\w+), (\\w+)\\):\\n(.*)\\n");
+    private static final Pattern LINEA_DE_HECHO = Pattern.compile("(?m)^(\\S+:\\S+:\\S+) \\| \\S+ \\| (PROVEN|INFERRED) \\| ");
 
     private final List<String> modelosPedidos = new CopyOnWriteArrayList<>();
     private volatile boolean sinCredito;
@@ -32,6 +34,14 @@ public class ModeloDePrueba implements ChatModel {
         modelosPedidos.add(pedido.getOptions() == null ? "" : String.valueOf(pedido.getOptions().getModel()));
         if (sinCredito) {
             throw new IllegalStateException("400: Your credit balance is too low to access the Anthropic API (prueba)");
+        }
+        String usuario = pedido.getUserMessage().getText();
+        if (usuario.startsWith("Hechos del expediente de ")) {
+            return respuesta(lectura(usuario));
+        }
+        if (usuario.startsWith("Observación propuesta (")) {
+            return respuesta("""
+                    {"grado": "PROVEN", "razonamiento": null, "busqueda": null}""");
         }
         Matcher hecho = HECHO.matcher(pedido.getUserMessage().getText());
         if (hecho.find()) {
@@ -53,6 +63,36 @@ public class ModeloDePrueba implements ChatModel {
                    "razonamiento": null, "busqueda": null, "fuenteDice": "La publicación dice lo mismo."}"""
                         .formatted(resumen);
         return respuesta(respuesta);
+    }
+
+    /**
+     * Las observaciones del lector de expedientes (ADR 0018): una por cada caso del control. Con los dos
+     * primeros hechos PROVEN, una repetición que pasa; con un INFERRED y un PROVEN, una cadena que pasa y
+     * queda INFERRED; y cuatro que el control descarta: una con un solo hecho, una con una cifra que no
+     * está, una que califica y una que cita un hecho que no se leyó.
+     */
+    private static String lectura(String usuario) {
+        List<String> probados = new ArrayList<>();
+        List<String> deducidos = new ArrayList<>();
+        Matcher linea = LINEA_DE_HECHO.matcher(usuario);
+        while (linea.find()) {
+            ("PROVEN".equals(linea.group(2)) ? probados : deducidos).add(linea.group(1));
+        }
+        if (probados.size() < 2 || deducidos.isEmpty()) {
+            return "{\"observaciones\": []}";
+        }
+        String p1 = probados.get(0);
+        String p2 = probados.get(1);
+        String d1 = deducidos.get(0);
+        return """
+                {"observaciones": [
+                 {"clase": "repeticion", "texto": "El organismo compró sillas en dos hechos distintos de la ventana.", "hechos": ["%1$s", "%2$s"]},
+                 {"clase": "cadena", "texto": "El mismo llamado aparece primero publicado y después prorrogado.", "hechos": ["%3$s", "%1$s"]},
+                 {"clase": "proveedor", "texto": "Un proveedor aparece una vez.", "hechos": ["%1$s"]},
+                 {"clase": "repeticion", "texto": "Entre los dos suman 999999 pesos.", "hechos": ["%1$s", "%2$s"]},
+                 {"clase": "otra", "texto": "Es irregular que se compren sillas dos veces.", "hechos": ["%1$s", "%2$s"]},
+                 {"clase": "otra", "texto": "Se repite en otro hecho.", "hechos": ["%1$s", "arce:ocds-no-leido:llamado"]}
+                ]}""".formatted(p1, p2, d1);
     }
 
     private static ChatResponse respuesta(String texto) {

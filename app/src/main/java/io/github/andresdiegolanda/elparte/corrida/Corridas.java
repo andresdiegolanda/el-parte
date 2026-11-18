@@ -44,6 +44,22 @@ public class Corridas {
     }
 
     /**
+     * La corrida de lectura de expediente que esta corrida hace o repite (ADR 0018), o vacío si es una
+     * noche.
+     */
+    public Optional<String> lecturaQueHace(String corridaId) {
+        CorridaIniciada contexto = contexto(corridaId);
+        if ("lectura".equals(contexto.modo())) {
+            return Optional.of(corridaId);
+        }
+        if ("reproduccion".equals(contexto.modo()) && contexto.reproduceA() != null
+                && "lectura".equals(contexto(contexto.reproduceA()).modo())) {
+            return Optional.of(contexto.reproduceA());
+        }
+        return Optional.empty();
+    }
+
+    /**
      * En modo banco, la corrida del banco de la noche anterior en la misma base, si la hay: lo que ella
      * leyó del día de margen no se vuelve a pedir a la fuente (ADR 0014).
      */
