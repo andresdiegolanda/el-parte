@@ -53,4 +53,4 @@ Nada en el código. La primera versión sacaba el modo del `corrida.iniciada` de
 
 ## Qué falta
 
-- **Prenderlo publicado**, cuando el responsable lo decida.
+- **Ver el primer aviso de verdad.** Está prendido en la aplicación publicada desde el 2026-11-18; el primero sale con el informe de la próxima noche normal.

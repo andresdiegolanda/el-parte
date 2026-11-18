@@ -112,11 +112,14 @@ Registro:
 
 ## Esperando
 
+## Pendiente
+
+## Hecho
+
 ### T35 · Mandar el aviso diario del parte
 - Tipo: Componente
 - Dueño: desarrollo
 - Depende de: T25
-- Espera a: que el responsable prenda el aviso en la aplicación publicada (ELPARTE_AVISO_PRENDIDO=true en el .env)
 - Detalle: [docs/como-se-hizo/aviso-diario.md](docs/como-se-hizo/aviso-diario.md), [adrs/0013-acceso-perfil-y-parte-diario.md](adrs/0013-acceso-perfil-y-parte-diario.md), [docs/contratos.md](docs/contratos.md)
 
 Cada mañana, a cada invitado que lo quiere, un aviso corto con la noche, cuántos hechos hay y el enlace a su página. No manda el contenido de los hechos.
@@ -134,7 +137,7 @@ Lista:
 - [x] Registro de envíos en cuentas.envios_del_parte, para no mandar dos veces
 - [x] El aviso: asunto con la noche y cuántos hechos; cuerpo con pendientes, corrida cortada y el enlace
 - [x] El correo saliente por SMTP; el servicio real se decide en T27
-- [ ] Prenderlo en la aplicación publicada
+- [x] Prenderlo en la aplicación publicada
 
 Registro:
 - 2026-11-14: Creada con el diseño del parte diario (ADR 0013).
@@ -142,10 +145,7 @@ Registro:
 - 2026-11-16: El servicio de correo quedó decidido en el ADR 0016: Resend por SMTP, con la misma configuración que el enlace para entrar.
 - 2026-11-17: Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
 - 2026-11-17: El aviso anda: escucha los informes de las corridas normales, que ahora traen el modo, y manda uno por invitado y noche, con el rol de cuentas solo. La etapa del banco se tilda sin medir: el banco no tiene invitados. Publicado viene apagado. Pasa a Esperando: falta que el responsable lo prenda. Ver docs/como-se-hizo/aviso-diario.md.
-
-## Pendiente
-
-## Hecho
+- 2026-11-18: Prendido en la aplicación publicada: el responsable lo prendió en el .env y se volvió a desplegar; la aplicación lo ve prendido. El primer aviso sale con el informe de la próxima noche normal. Pasa a Hecho.
 
 ### T24 · Sumar los exploradores del BID, el Banco Mundial y Presidencia
 - Tipo: Componente

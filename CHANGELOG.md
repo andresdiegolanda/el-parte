@@ -4,6 +4,7 @@ Cada entrada dice qué cambió, dónde, y enlaza al documento que tiene el porqu
 
 ## 2026-11-18
 
+- El aviso diario del parte, prendido en la aplicación publicada (T35, hecha). Ver [docs/como-se-hizo/aviso-diario.md](docs/como-se-hizo/aviso-diario.md).
 - Presidencia y el Banco Mundial, medidos contra el banco (T24, hecha): Presidencia publicó un hecho en 78 noches, juzgado correcto; el Banco Mundial corrió sin fallas y sin candidatos. Ver [banco-de-pruebas/mediciones/README.md](banco-de-pruebas/mediciones/README.md).
 - El Banco Mundial respondía 403 a cada pedido porque el User-Agent de El Parte tenía una tilde. Ahora es ASCII en los cuatro lectores que lo mandan, y una prueba lo controla. Ver [docs/como-se-hizo/banco-mundial.md](docs/como-se-hizo/banco-mundial.md), "Qué falló".
 - La lectura del expediente con el modelo (T47, ADR 0018): desde el expediente, el responsable pide leer los últimos 90 días; el lector de expedientes propone observaciones que citan hechos, el control en código y el refutador descartan las que no se sostienen, y el resto queda arriba del expediente. Ver [docs/como-se-hizo/lectura-del-expediente.md](docs/como-se-hizo/lectura-del-expediente.md).
