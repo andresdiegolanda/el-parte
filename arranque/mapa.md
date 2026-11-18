@@ -64,6 +64,7 @@ flowchart TD
 | [`docs/plan.md`](../docs/plan.md) | Los cuatro fines de semana: qué se hace, qué se muestra y cómo se comprueba cada uno (T07). |
 | [`docs/marca/README.md`](../docs/marca/README.md) | El logo: la hoja con el tilde, sus colores, sus archivos en SVG y PNG, el favicon, cómo se usa y dónde está (el README, la aplicación, GitHub Pages y el tablero de arquitectura). |
 | [`docs/presentacion/README.md`](../docs/presentacion/README.md) | La presentación para quien no conoce el proyecto, en Marp: `docs/presentacion/el-parte.md`, su tema y sus dibujos, cómo se exporta y de dónde sale cada cifra (T38). |
+| [`docs/verificaciones/comparacion-con-una-sesion.md`](../docs/verificaciones/comparacion-con-una-sesion.md) | El Parte contra una sesión con el modelo, sin agentes, sobre diez noches del banco: cobertura, hechos, cifras, costo y tiempo (T42). |
 | [`docs/verificaciones/spring-ai.md`](../docs/verificaciones/spring-ai.md) | Qué ofrece hoy Spring AI, verificado con URL y fecha (T09). |
 | [`docs/fuentes/README.md`](../docs/fuentes/README.md) | Resumen de las siete fuentes candidatas y una página por fuente (T10). |
 | [`docs/como-se-hizo/primera-rebanada.md`](../docs/como-se-hizo/primera-rebanada.md) | Cómo se hizo la primera rebanada: qué hace, por qué, cómo se construyó, qué se probó, qué falló y qué se cambió (T08). |

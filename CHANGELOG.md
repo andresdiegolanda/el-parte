@@ -2,6 +2,10 @@
 
 Cada entrada dice qué cambió, dónde, y enlaza al documento que tiene el porqué. Las más nuevas van arriba.
 
+## 2026-11-18
+
+- El Parte contra una sesión con el modelo, sin agentes (T42): diez noches del banco, las mismas publicaciones, un pedido por noche (`herramientas/sesion_de_comparacion.py`), contadas con la misma herramienta. Lo que dio y lo que falta, el juicio de un sorteo de la sesión: [docs/verificaciones/comparacion-con-una-sesion.md](docs/verificaciones/comparacion-con-una-sesion.md).
+
 ## 2026-11-17
 
 - IMPO: un índice que viene vacío es un día sin edición y no una falla. Los fines de semana IMPO responde 200 sin nada, y cada uno salía como `fuente.fallida`; se vio en la primera medición con crédito, que se paró. Cambia `app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/impo/LectorImpo.java`. Detalle: [docs/como-se-hizo/impo.md](docs/como-se-hizo/impo.md).

@@ -2,7 +2,7 @@
 
 Todo pendiente de El Parte vive acá, con dueño (regla 8). Este archivo es lo que manda. El kanban es una vista de solo lectura de este archivo: se genera con `python3 herramientas/generar_kanban.py` y se publica en <https://andresdiegolanda.github.io/el-parte/kanban/> en cada push ([ADR 0017](adrs/0017-forma-de-trabajo-mas-liviana.md)).
 
-- Actualizado: 2026-11-17
+- Actualizado: 2026-11-18
 - Nota: La primera rebanada (T08) anda de punta a punta y se mide contra el banco las 78 noches del registro (T20); los resultados están en docs/como-se-hizo/medicion-contra-el-banco.md, con la revisión confirmada: T08 y T20 están hechas. El analista (T21), el presupuesto (T22, con el tope de cada noche en el ADR 0005) y el explorador arreglado (T39) están hechos y medidos. La cola de revisión humana (T23) y el login por enlace (T25) están hechos: correr y revisar son solo del responsable. El Parte está publicado desde la máquina del responsable, con un túnel de Cloudflare y el correo por Resend (T40, ADR 0016). En su perfil, cada invitado elige qué organismos seguir y si quiere el aviso diario (T34); el aviso anda y espera que el responsable lo prenda publicado (T35). La forma de trabajo se alivianó con el ADR 0017 (T45). El sistema, objeto por objeto, está en el tablero de arquitectura (docs/tablero-de-arquitectura/, ADR 0012), que se cambia en el mismo momento que el sistema.
 - Calendario: 2026-11-07, 2026-11-14, 2026-11-21, 2026-11-28
 - Repositorio: https://github.com/andresdiegolanda/el-parte
@@ -137,23 +137,24 @@ Registro:
 - Tipo: Verificación
 - Dueño: desarrollo
 - Depende de: T20
-- Espera a: crédito en la API: la clave llegó al tope de gasto de su espacio de trabajo, y una sesión de la Console usa la misma
-- Detalle: [banco-de-pruebas/README.md](banco-de-pruebas/README.md), [adrs/0014-medicion-contra-el-banco.md](adrs/0014-medicion-contra-el-banco.md), [adrs/0004-grados-de-evidencia.md](adrs/0004-grados-de-evidencia.md)
+- Espera a: que el responsable juzgue el sorteo de 20 hechos de la sesión (tmp/consola/sorteo-de-la-sesion.jsonl, en su máquina)
+- Detalle: [docs/verificaciones/comparacion-con-una-sesion.md](docs/verificaciones/comparacion-con-una-sesion.md), [banco-de-pruebas/README.md](banco-de-pruebas/README.md), [adrs/0014-medicion-contra-el-banco.md](adrs/0014-medicion-contra-el-banco.md), [adrs/0004-grados-de-evidencia.md](adrs/0004-grados-de-evidencia.md)
 
 Media hora con la Claude Console, con lo que ARCE publicó cada noche, puede dar un parte que se lee mejor que el de El Parte. Lo que no da es cuánto acierta, de dónde sale cada afirmación, la garantía de que no agrega cifras y lo que cuesta por noche. Esta comparación lo mide con el mismo banco y el mismo conteo.
 
 Lo que la plataforma vuelve gratis con cada versión es la orquestación y la infraestructura. Lo que no trae es el banco con lo que pasó de verdad, la evidencia de cada afirmación y la medición en el dominio. Si la sesión de la Console sale igual o mejor, lo que vale de El Parte es la medición y no la infraestructura, y se recorta. Va después del material para la demo.
 
 Lista:
-- [ ] Una muestra de 10 noches del registro, con lo que ARCE publicó del BPS en cada una
-- [ ] La misma consigna a la Console, noche por noche, con la salida en el formato del banco
-- [ ] El conteo con la misma herramienta, y el costo y el tiempo de cada lado
+- [x] Una muestra de 10 noches del registro, con lo que ARCE publicó del BPS en cada una
+- [x] La misma consigna a la Console, noche por noche, con la salida en el formato del banco
+- [x] El conteo con la misma herramienta, y el costo y el tiempo de cada lado
 - [ ] La conclusión escrita: qué se mantiene de El Parte y qué se recorta
 
 Registro:
 - 2026-11-16: Creada. Se hace después del material para la demo.
 - 2026-11-17: Pasa a Para empezar: T20 está hecha. Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
 - 2026-11-17: El material para la demo está hecho: dos videos con voz, uno de cómo funciona y otro de la arquitectura, armados con capturas de la aplicación publicada y los recorridos del tablero de arquitectura, fuera del repositorio. Pasa a Esperando: sin crédito en la API no hay sesión que comparar.
+- 2026-11-18: Con crédito otra vez, la sesión corrió sobre diez noches con las mismas publicaciones que leyó El Parte. La cobertura empata; la sesión cuesta un tercio, tarda un quinto y cuenta de nuevo lo que ya contó, y nadie la refuta. Su precisión espera que una persona juzgue un sorteo de 20 de sus hechos: los juicios de El Parte guardan la huella de otra redacción. Ver docs/verificaciones/comparacion-con-una-sesion.md.
 
 ### T30 · Sumar el explorador de IMPO
 - Tipo: Componente
