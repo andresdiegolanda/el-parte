@@ -48,5 +48,5 @@ Nada en el código todavía.
 
 ## Qué falta
 
-- **Una lectura de verdad**, con el BPS en El Parte publicado, y el juicio de una persona sobre sus observaciones: el ADR dice que la precisión se mide así, porque el registro del banco tiene hallazgos de una publicación, no patrones.
+- **Una lectura de verdad**, con el BPS en El Parte publicado, y el juicio de una persona sobre sus observaciones: el ADR dice que la precisión se mide así, porque el registro del banco tiene hallazgos de una publicación, no patrones. Está desplegada desde el 2026-11-18, pero con 60 hechos de una sola semana vería poco: queda para cuando haya más (tablero, T50).
 - **La cobertura**, que con el registro actual no se puede medir.

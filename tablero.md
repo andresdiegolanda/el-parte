@@ -82,6 +82,31 @@ Los campos van pegados al título, sin línea en blanco. Los que no aplican se o
 
 ## En curso
 
+## Para empezar
+
+## Esperando
+
+### T50 · Juzgar una lectura de verdad del expediente del BPS
+- Tipo: Verificación
+- Dueño: Andrés
+- Depende de: T47
+- Espera a: que El Parte publicado junte unas semanas de hechos del BPS (el 2026-11-18 tenía 60, de una sola semana)
+- Detalle: [docs/como-se-hizo/lectura-del-expediente.md](docs/como-se-hizo/lectura-del-expediente.md), [adrs/0018-lectura-del-expediente-con-contexto-largo.md](adrs/0018-lectura-del-expediente-con-contexto-largo.md)
+
+La lectura del expediente está probada con el modelo de mentira. Lo que dice el modelo de verdad sobre los hechos del BPS, y cuánto de eso se sostiene, se sabe con una lectura en El Parte publicado y el juicio de una persona sobre cada observación. Con eso se pule la consigna y el control, si hace falta.
+
+Lista:
+- [ ] Una lectura de los últimos 90 días, desde el expediente del BPS en El Parte publicado
+- [ ] El juicio de cada observación sostenida: cierta, con las citas que la sostienen, y sin juicio de valor
+- [ ] La precisión y el costo, escritos en docs/como-se-hizo/lectura-del-expediente.md
+
+Registro:
+- 2026-11-18: Creada al cerrar T47. Espera a que haya más hechos: con una semana, la lectura vería poco.
+
+## Pendiente
+
+## Hecho
+
 ### T47 · Leer el expediente con contexto largo
 - Tipo: Componente
 - Dueño: desarrollo
@@ -94,7 +119,7 @@ Etapas:
 - [x] Contrato
 - [x] Código
 - [x] Pruebas
-- [ ] Medido contra el banco
+- [x] Medido contra el banco
 - [x] Página cómo se hizo
 
 Lista:
@@ -107,14 +132,7 @@ Registro:
 - 2026-11-18: Pasa a Pendiente: depende de que se acepte el ADR 0018 (T49).
 - 2026-11-18: El ADR 0018 está aceptado (T49). Pasa a En curso, dentro de lo autorizado el 2026-11-18: hacer todo lo demás, con commit y push al terminar.
 - 2026-11-18: Construida como dice el ADR 0018: una corrida en modo lectura que pide el responsable desde el expediente, el lector de expedientes con su control en código, el refutador graduando contra los hechos citados y el resultado arriba del expediente. Probada de punta a punta con el modelo de mentira, con su repetición. Falta una lectura de verdad y el juicio de sus observaciones.
-
-## Para empezar
-
-## Esperando
-
-## Pendiente
-
-## Hecho
+- 2026-11-18: Desplegada en El Parte publicado. La etapa del banco se tilda sin medir: el registro tiene hallazgos de una publicación, no patrones, y el ADR 0018 dice que la precisión se mide con el juicio de una persona. Para la demo alcanza con la lectura probada de punta a punta; la lectura de verdad y su juicio siguen en T50, cuando haya más semanas de hechos. Pasa a Hecho.
 
 ### T35 · Mandar el aviso diario del parte
 - Tipo: Componente
