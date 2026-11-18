@@ -113,7 +113,10 @@ def escribir_salida(carpeta, noches):
             vistas.add(clave)
             grado = h.get("grado") if h.get("grado") in ("PROVEN", "INFERRED") else "INFERRED"
             hechos.append({"clave": clave, "noche": noche, "grado": grado, "contenido": huella(h.get("afirmacion", ""))})
-    commit = subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True).stdout.strip()
+    try:
+        commit = subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True).stdout.strip()
+    except FileNotFoundError:
+        commit = os.environ.get("ELPARTE_COMMIT", "")
     salida = {"commit": commit or "sin-git", "entidad": "organismo:bps", "fuentes": ["arce"],
               "modelos": {"sesion": MODELO}, "corridas": corridas, "hechos": hechos}
     (carpeta / "salida-de-la-sesion.json").write_text(json.dumps(salida, ensure_ascii=False, indent=1) + "\n",
