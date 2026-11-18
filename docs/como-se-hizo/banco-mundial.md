@@ -38,7 +38,8 @@ El código está en `app/src/main/java/io/github/andresdiegolanda/elparte/fuente
 
 ## Qué falló
 
-Nada en el código. Lo que no anda es lo que la fuente no tiene: como en el BID, da el estado de hoy de cada proyecto y no el de esa noche (D1).
+- **El User-Agent con tilde.** En la medición 2026-11-18-4, cada pedido al Banco Mundial dio 403 y cada noche terminó con `fuente.fallida`. El lector se presentaba como "El Parte (proyecto didáctico; ...)": el cliente HTTP de Java manda la tilde tal cual por HTTP/2, y el Banco Mundial rechaza el pedido. El mismo pedido con "didactico" da 200, y con un signo de pregunta en el lugar de la tilde, también. [PROVEN: pedidos a https://search.worldbank.org/api/v3/projects desde la máquina de la medición, 2026-11-18] Las pruebas no lo vieron porque el Banco Mundial de mentira habla HTTP/1.1, donde Java cambia la tilde por un signo de pregunta antes de mandarla. Se cambió el User-Agent a ASCII en los cuatro lectores que lo mandan, y `app/src/test/java/io/github/andresdiegolanda/elparte/fuentes/AgenteDeUsuarioTest.java` lee el código y falla si alguno no es ASCII. IMPO, el BID y Presidencia lo aceptaban con tilde.
+- **Lo que la fuente no tiene**: como en el BID, da el estado de hoy de cada proyecto y no el de esa noche (D1).
 
 ## Qué falta
 

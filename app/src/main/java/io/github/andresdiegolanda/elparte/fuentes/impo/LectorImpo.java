@@ -100,7 +100,7 @@ public class LectorImpo {
             try {
                 pausar();
                 HttpResponse<byte[]> respuesta = http.send(HttpRequest.newBuilder(URI.create(url))
-                        .header("User-Agent", "El Parte (proyecto didáctico; https://github.com/andresdiegolanda/el-parte)")
+                        .header("User-Agent", "El Parte (proyecto didactico; https://github.com/andresdiegolanda/el-parte)")
                         .timeout(Duration.ofSeconds(60)).GET().build(), HttpResponse.BodyHandlers.ofByteArray());
                 if (respuesta.statusCode() != 200) {
                     throw new FallaDeImpo(respuesta.statusCode() >= 500 ? "servidor" : "http", url,
