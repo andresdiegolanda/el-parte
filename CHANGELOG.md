@@ -4,6 +4,7 @@ Cada entrada dice qué cambió, dónde, y enlaza al documento que tiene el porqu
 
 ## 2026-11-18
 
+- Los tres videos para presentar El Parte, hechos (T51): la presentación animada, la arquitectura sobre los dos tableros, y un tutorial de cómo entrar y cómo usarlo. Llevan voz, música suave y subtítulos aparte, y no se versionan. Ver la tarjeta T51 en [tablero.md](tablero.md).
 - La presentación, puesta al día (T38, T51): ocho diapositivas, con las cinco fuentes andando, las mediciones de cada una, una diapositiva nueva sobre lo que agrega El Parte frente a una sesión con el modelo, y la versión 0 completa y publicada. De dónde sale cada cifra: [docs/presentacion/README.md](docs/presentacion/README.md).
 - La lectura del expediente, desplegada en El Parte publicado (T47, hecha). La lectura de verdad y su juicio quedan en T50, cuando haya más semanas de hechos.
 - El aviso diario del parte, prendido en la aplicación publicada (T35, hecha). Ver [docs/como-se-hizo/aviso-diario.md](docs/como-se-hizo/aviso-diario.md).
