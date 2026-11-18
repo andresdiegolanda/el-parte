@@ -23,3 +23,4 @@ Cada decisión significativa del proyecto es un ADR, un registro de decisión de
 | [0015](0015-que-puede-escribir-el-analista.md) | Qué puede escribir el analista | aceptado | 2026-11-16 |
 | [0016](0016-despliegue-en-la-maquina-del-responsable.md) | El Parte se publica desde la máquina del responsable, con un túnel de Cloudflare y el correo por Resend | aceptado | 2026-11-16 |
 | [0017](0017-forma-de-trabajo-mas-liviana.md) | Una forma de trabajo más liviana: un lugar por dato, ritual según el tamaño, integración continua y tableros publicados; reemplaza al 0009 | aceptado | 2026-11-17 |
+| [0018](0018-lectura-del-expediente-con-contexto-largo.md) | Qué puede escribir el modelo cuando lee un expediente entero: observaciones que citan hechos, graduadas por el refutador | propuesto | 2026-11-18 |

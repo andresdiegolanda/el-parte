@@ -73,6 +73,7 @@ flowchart TD
 | [`adrs/0013-acceso-perfil-y-parte-diario.md`](../adrs/0013-acceso-perfil-y-parte-diario.md) | Cómo entra cada usuario, dónde queda su perfil y cómo lee su parte cada mañana (T36). |
 | [`adrs/0014-medicion-contra-el-banco.md`](../adrs/0014-medicion-contra-el-banco.md) | La medición contra el banco corre en un Compose aparte, noche por noche (T20, T37). |
 | [`adrs/0015-que-puede-escribir-el-analista.md`](../adrs/0015-que-puede-escribir-el-analista.md) | Qué puede escribir el analista: el grado se copia y una cifra que no está en la evidencia no se usa (T21). |
+| [`adrs/0018-lectura-del-expediente-con-contexto-largo.md`](../adrs/0018-lectura-del-expediente-con-contexto-largo.md) | Propuesto: qué puede escribir el modelo cuando lee un expediente entero, y cómo se gradúa (T47, T49). |
 | [`app/`](../app/README.md) | El código: una aplicación Spring Boot con un paquete por agente ([ADR 0003](../adrs/0003-eleccion-del-stack.md)), sus migraciones, sus páginas y sus pruebas. Cómo se levanta y qué hay adentro, en [app/README.md](../app/README.md). |
 | [`compose.yaml`](../compose.yaml) | Levanta en local la aplicación, PostgreSQL, Kafka y el buzón de correo de prueba. Con `compose.banco.yaml`, una medición contra el banco. |
 | [`obsoletos/README.md`](../obsoletos/README.md) | Índice de lo que se movió a obsoletos. |

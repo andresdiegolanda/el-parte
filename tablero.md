@@ -111,27 +111,18 @@ Registro:
 
 ## Para empezar
 
-### T47 · Leer el expediente con contexto largo
-- Tipo: Componente
-- Dueño: desarrollo
-- Depende de: T33
-- Detalle: [docs/como-se-hizo/expediente.md](docs/como-se-hizo/expediente.md)
+### T49 · Aceptar o corregir el ADR 0018
+- Tipo: Gestión
+- Dueño: Andrés
+- Detalle: [adrs/0018-lectura-del-expediente-con-contexto-largo.md](adrs/0018-lectura-del-expediente-con-contexto-largo.md)
 
-El expediente muestra cada hecho de una entidad a lo largo del tiempo, pero nadie lo lee entero. Con contexto largo, el modelo podría ver patrones que una publicación sola no muestra: compras que se repiten, prórrogas en cadena, proveedores que vuelven. Antes del código hace falta un ADR: qué puede escribir el modelo sobre muchos hechos juntos, cómo se gradúa una afirmación que sale de varios, y qué se guarda afuera del modelo, en la base y en el repositorio.
-
-Etapas:
-- [ ] Contrato
-- [ ] Código
-- [ ] Pruebas
-- [ ] Medido contra el banco
-- [ ] Página cómo se hizo
+Qué puede escribir el modelo cuando lee el expediente entero de una entidad (T47): observaciones de cuatro clases que citan dos hechos o más, un control en código, el grado del refutador contra los hechos citados y nunca mayor que el más bajo de ellos, una corrida aparte que pide el responsable, con 0,50 USD por omisión, y el resultado aparte en el expediente. Al aceptarlo, su estado pasa a "aceptado" en el archivo y en el índice.
 
 Lista:
-- [ ] El ADR: qué puede escribir el modelo sobre un expediente y cómo se gradúa
-- [ ] Una lectura del expediente con su costo en el presupuesto
+- [ ] 0018: lectura del expediente con contexto largo
 
 Registro:
-- 2026-11-17: Creada al construir el expediente sin el modelo (T33). Va a Para empezar porque T33 está hecha; no entra en la tanda autorizada el 2026-11-17.
+- 2026-11-18: Creada con el ADR 0018.
 
 ## Esperando
 
@@ -220,6 +211,30 @@ Registro:
 - 2026-11-17: El aviso anda: escucha los informes de las corridas normales, que ahora traen el modo, y manda uno por invitado y noche, con el rol de cuentas solo. La etapa del banco se tilda sin medir: el banco no tiene invitados. Publicado viene apagado. Pasa a Esperando: falta que el responsable lo prenda. Ver docs/como-se-hizo/aviso-diario.md.
 
 ## Pendiente
+
+### T47 · Leer el expediente con contexto largo
+- Tipo: Componente
+- Dueño: desarrollo
+- Depende de: T33, T49
+- Detalle: [docs/como-se-hizo/expediente.md](docs/como-se-hizo/expediente.md), [adrs/0018-lectura-del-expediente-con-contexto-largo.md](adrs/0018-lectura-del-expediente-con-contexto-largo.md)
+
+El expediente muestra cada hecho de una entidad a lo largo del tiempo, pero nadie lo lee entero. Con contexto largo, el modelo podría ver patrones que una publicación sola no muestra: compras que se repiten, prórrogas en cadena, proveedores que vuelven. Antes del código hace falta un ADR: qué puede escribir el modelo sobre muchos hechos juntos, cómo se gradúa una afirmación que sale de varios, y qué se guarda afuera del modelo, en la base y en el repositorio.
+
+Etapas:
+- [ ] Contrato
+- [ ] Código
+- [ ] Pruebas
+- [ ] Medido contra el banco
+- [ ] Página cómo se hizo
+
+Lista:
+- [ ] El ADR: qué puede escribir el modelo sobre un expediente y cómo se gradúa
+- [ ] Una lectura del expediente con su costo en el presupuesto
+
+Registro:
+- 2026-11-17: Creada al construir el expediente sin el modelo (T33). Va a Para empezar porque T33 está hecha; no entra en la tanda autorizada el 2026-11-17.
+- 2026-11-18: Escrito el ADR 0018 como propuesta: una corrida aparte, a pedido, en la que el modelo propone observaciones que citan hechos y el refutador las gradúa contra esos hechos. El código espera que se acepte (T49).
+- 2026-11-18: Pasa a Pendiente: depende de que se acepte el ADR 0018 (T49).
 
 ## Hecho
 
