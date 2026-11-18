@@ -10,9 +10,12 @@ herramientas/banco_de_pruebas.py, con el mismo registro y la misma revisión.
                                publicaciones que El Parte leyó esa noche, ya tapadas, y escribe
                                carpeta/respuestas/<noche>.json y carpeta/salida-de-la-sesion.json.
                                Necesita la clave en ANTHROPIC_API_KEY; no la lee de ningún archivo.
-    revisar carpeta            Lo que se puede revisar sin una persona: cuántos hechos, cuántos con
+    revisar carpeta [afirmaciones.json]
+                               Lo que se puede revisar sin una persona: cuántos hechos, cuántos con
                                una clave que no está en las publicaciones, cuántos con una cifra que
-                               no está en la publicación, y el costo y el tiempo. Escribe
+                               no está en la publicación, y el costo y el tiempo. Con las afirmaciones
+                               de El Parte (una lista de {clave, afirmacion}), les hace a sus hechos
+                               de esas noches la misma prueba de cifras. Escribe
                                carpeta/revision-automatica.json.
     elparte salida.json carpeta noche...
                                La salida de una medición de El Parte, acotada a esas noches, en
@@ -123,7 +126,28 @@ def escribir_salida(carpeta, noches):
                                                        encoding="utf-8")
 
 
-def revisar(carpeta):
+def publicaciones_por_ocid(carpeta, noches):
+    por_ocid = {}
+    for noche in noches:
+        for p in json.loads((carpeta / f"{noche}.json").read_text(encoding="utf-8-sig")):
+            por_ocid.setdefault(p["publicacion"].get("ocid", ""), []).append(json.dumps(p["publicacion"], ensure_ascii=False))
+    return por_ocid
+
+
+def cifras_que_no_estan(afirmacion, fuente):
+    """Las cifras de la afirmación que no están en la fuente, ni enteras ni por partes: "14/09/2026" vale
+    si la fuente dice 2026-09-14."""
+    permitidas = cifras_permitidas(fuente)
+    sobran = set()
+    for c in CIFRA.findall(afirmacion):
+        entera = re.sub(r"^0+(?=\d)", "", re.sub(r"[.,/-]", "", c))
+        partes = [re.sub(r"^0+(?=\d)", "", x) for x in re.split(r"[.,/-]", c) if x]
+        if entera not in permitidas and not all(x in permitidas for x in partes):
+            sobran.add(c)
+    return sobran
+
+
+def revisar(carpeta, afirmaciones=None):
     resumen = {"noches": 0, "hechos": 0, "conClaveQueNoEsta": 0, "conTipoQueNoExiste": 0, "conCifraQueNoEsta": 0,
                "sinCampos": 0, "inferred": 0, "costoUsd": 0.0, "segundos": 0.0, "tokensEntrada": 0, "tokensSalida": 0,
                "ejemplosDeCifras": []}
@@ -147,18 +171,40 @@ def revisar(carpeta):
             if not fuente:
                 resumen["conClaveQueNoEsta"] += 1
                 continue
-            permitidas = cifras_permitidas(" ".join(fuente) + " " + r["noche"])
-            sobran = cifras(h.get("afirmacion", "")) - permitidas
+            sobran = cifras_que_no_estan(h.get("afirmacion", ""), " ".join(fuente) + " " + r["noche"])
             if sobran:
                 resumen["conCifraQueNoEsta"] += 1
                 if len(resumen["ejemplosDeCifras"]) < 5:
                     resumen["ejemplosDeCifras"].append({"clave": f"arce:{h.get('ocid')}:{h.get('tipo')}",
                                                         "cifras": sorted(sobran)})
+    if afirmaciones:
+        resumen["elParte"] = revisar_el_parte(carpeta, afirmaciones)
     resumen["costoUsd"] = round(resumen["costoUsd"], 4)
     resumen["segundos"] = round(resumen["segundos"], 1)
     (carpeta / "revision-automatica.json").write_text(json.dumps(resumen, ensure_ascii=False, indent=1) + "\n",
                                                       encoding="utf-8")
     print(json.dumps(resumen, ensure_ascii=False, indent=1))
+
+
+def revisar_el_parte(carpeta, afirmaciones):
+    """La misma prueba de cifras a los hechos de El Parte de esas noches (salida-de-el-parte.json)."""
+    salida = json.loads((carpeta / "salida-de-el-parte.json").read_text(encoding="utf-8"))
+    noches = [c["noche"] for c in salida["corridas"]]
+    por_ocid = publicaciones_por_ocid(carpeta, noches)
+    texto = {a["clave"]: a["afirmacion"] for a in json.loads(Path(afirmaciones).read_text(encoding="utf-8-sig"))}
+    cuenta = {"hechos": 0, "conAfirmacion": 0, "conCifraQueNoEsta": 0, "ejemplosDeCifras": []}
+    for h in salida["hechos"]:
+        cuenta["hechos"] += 1
+        ocid = h["clave"].split(":")[1]
+        if h["clave"] not in texto or ocid not in por_ocid:
+            continue
+        cuenta["conAfirmacion"] += 1
+        sobran = cifras_que_no_estan(texto[h["clave"]], " ".join(por_ocid[ocid]) + " " + h["noche"])
+        if sobran:
+            cuenta["conCifraQueNoEsta"] += 1
+            if len(cuenta["ejemplosDeCifras"]) < 5:
+                cuenta["ejemplosDeCifras"].append({"clave": h["clave"], "cifras": sorted(sobran)})
+    return cuenta
 
 
 def cifras(texto):
@@ -188,7 +234,7 @@ if __name__ == "__main__":
     if orden == "correr":
         correr(Path(sys.argv[2]), sys.argv[3:])
     elif orden == "revisar":
-        revisar(Path(sys.argv[2]))
+        revisar(Path(sys.argv[2]), sys.argv[3] if len(sys.argv) > 3 else None)
     elif orden == "elparte":
         elparte(sys.argv[2], Path(sys.argv[3]), sys.argv[4:])
     else:
