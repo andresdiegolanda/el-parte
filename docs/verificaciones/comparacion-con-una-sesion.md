@@ -29,10 +29,11 @@ flowchart LR
 | El hallazgo de ARCE de esas noches | no lo encontró | tampoco |
 | Hechos | 175 | 310 |
 | Graduados INFERRED | 16 | 4 |
-| Descartados antes de publicar (NOT_MENTIONED) | 7 | ninguno: nadie los revisa |
+| Descartados antes de publicar (NOT_MENTIONED) | 7: 6 veredictos cortados y 1 refutación | ninguno: nadie los revisa |
 | Con una cifra que no está en la publicación | 2 | 6 |
 | Con una clave que no está en las publicaciones | ninguno | ninguno |
 | Juzgados por una persona, bien de los juzgados | 35 de 36 | 11 de 11 |
+| Sorteo de 20 hechos juzgado por una persona | | 20 de 20 correctos |
 | Sin juzgar | 132 | 234 |
 | Costo de las diez noches | 4,11 USD | 1,53 USD |
 | Tiempo de las diez noches | 2.681 s | 517 s |
@@ -41,15 +42,17 @@ flowchart LR
 
 - **La cobertura empata.** Con las mismas publicaciones, los dos lados encuentran los mismos cinco publicables, con los mismos días de adelanto sobre la vigilancia anterior, y los dos se pierden el mismo hallazgo.
 - **La sesión cuenta de nuevo lo que ya contó.** Sin memoria de las noches anteriores, repite cada compra que vuelve a aparecer en el día de margen o en una aclaración. El Parte la reconoce en el archivista y no la publica dos veces. [INFERRED: de los 310 hechos contra los 175, y de que la sesión no recibe nada de las noches anteriores]
-- **La sesión no se refuta.** Casi todo sale PROVEN. En El Parte, el refutador vuelve a leer cada publicación y descartó 7 afirmaciones que no se sostenían; en la sesión, nadie hace esa pregunta.
+- **La sesión no se refuta, y El Parte casi no refutó.** Casi todo lo de la sesión sale PROVEN, porque nadie vuelve a preguntar. En El Parte, el refutador vuelve a leer cada publicación, pero de sus 7 descartes, 6 fueron veredictos que se cortaron antes del grado ([docs/como-se-hizo/veredictos-cortados.md](../como-se-hizo/veredictos-cortados.md)), y solo 1, una adjudicación, fue una afirmación que no se sostenía. [PROVEN: base guardada de la medición `2026-11-16-2`, 2026-11-18] Con el arreglo de T48, esos 6 se habrían publicado.
 - **Ninguno inventa cifras en esta muestra.** Las 6 de la sesión que la prueba marca son, en los ejemplos revisados, montos redondeados o escritos con otros decimales: la publicación dice 1803.2787 y la sesión, 1.803,28; la publicación dice 20.9 y la sesión, 20,90. No son inventadas, pero tampoco son lo que dice la fuente. Las 2 de El Parte son el número de adjudicaciones de una compra repartida, que cuenta el explorador. [PROVEN: las publicaciones de ocds-yfs5dr-1364695 y ocds-yfs5dr-1368546, y las afirmaciones de El Parte, 2026-11-18] La diferencia no está en lo que pasó, sino en lo que puede pasar: en El Parte, una cifra que no está en la evidencia no se publica; en la sesión, nada lo impide.
 - **Cuesta un tercio y tarda un quinto.** Un pedido por noche con todo junto es más barato que un pedido por candidato al refutador y otro al analista.
 
-## Lo que falta para concluir
+## La precisión
 
-La precisión de la sesión no se puede comparar todavía: de sus 310 hechos, solo 11 coinciden con algo que una persona ya juzgó. Los juicios de El Parte no le sirven, porque guardan la huella de la redacción que se juzgó y la sesión escribe otra ([banco-de-pruebas/metricas.md](../../banco-de-pruebas/metricas.md), juicios viejos). Para cerrar, una persona juzga un sorteo de 20 hechos de la sesión, con la semilla 20261118, que está en `tmp/consola/sorteo-de-la-sesion.jsonl` en la máquina del responsable, con la misma escala que los extras de El Parte.
+Una persona juzgó un sorteo de 20 hechos de la sesión, con la semilla 20261118 y la misma escala que los extras de El Parte: los 20 son correctos. Los campos que cita cada uno coinciden con su publicación, y sus cifras están en ella; uno llama "análisis de laboratorio" a ocho renglones entre los que hay un colirio, y se juzgó correcto. [PROVEN: `tmp/consola/sorteo-de-la-sesion.jsonl` en la máquina del responsable, juzgado el 2026-11-18] Con 20 de 20, el intervalo de Wilson va de 0,84 a 1; el de los 36 hechos juzgados de El Parte, de 0,86 a 0,99. Con estas muestras, la precisión de los dos lados no se distingue.
 
-Lo que se puede decir sin ese sorteo: lo que la plataforma vuelve gratis, leer y resumir, la sesión lo hace a menor precio y encuentra lo mismo. Lo que El Parte agrega no es la orquestación: es la memoria de lo ya publicado, la refutación antes de publicar, la regla que no deja publicar una cifra que no está en la evidencia y la medición contra el banco. [INFERRED: de la tabla de arriba] Qué se recorta de El Parte se decide con el sorteo juzgado.
+## Lo que se concluye
+
+En diez noches del BPS, una sesión con el modelo encuentra lo mismo que El Parte, con la misma precisión, por un tercio del costo y en un quinto del tiempo. Lo que El Parte agrega no es encontrar ni acertar: es no contar dos veces lo que ya contó (175 hechos contra 310), no dejar publicar una cifra que no está en la evidencia, que en la sesión nada impide, y medirse contra el banco noche por noche. La refutación, que era el argumento más fuerte, en esta muestra descartó una sola afirmación, y la mayor parte de lo que parecía refutación eran veredictos cortados. [INFERRED: de la tabla, el sorteo y la base de la medición] Si algo se recorta de El Parte, el primer candidato es el costo del refutador por candidato, no la memoria del archivista.
 
 ## Qué falló
 

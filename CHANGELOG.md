@@ -4,6 +4,9 @@ Cada entrada dice qué cambió, dónde, y enlaza al documento que tiene el porqu
 
 ## 2026-11-18
 
+- IMPO, cerrada (T30): con las correspondencias confirmadas y los cuatro extras juzgados, la medición `2026-11-18-3` queda contada en [banco-de-pruebas/mediciones/2026-11-18-3/medicion.json](banco-de-pruebas/mediciones/2026-11-18-3/medicion.json).
+- La comparación con una sesión, cerrada (T42): el sorteo de la sesión, juzgado, sale 20 de 20, y 6 de los 7 descartes de El Parte en esas noches eran veredictos cortados. Ver [docs/verificaciones/comparacion-con-una-sesion.md](docs/verificaciones/comparacion-con-una-sesion.md).
+- El ADR 0018, aceptado (T49); T47 pasa a En curso.
 - El ADR 0018, propuesto: qué puede escribir el modelo cuando lee un expediente entero, cómo se gradúa y cuándo corre (T47). Espera que se acepte o se corrija (T49): [adrs/0018-lectura-del-expediente-con-contexto-largo.md](adrs/0018-lectura-del-expediente-con-contexto-largo.md).
 - Los exploradores del Banco Mundial y de Presidencia (T24): los proyectos para Uruguay aprobados cada noche y las resoluciones de Presidencia de cada noche que nombran a una entidad seguida, Presidencia con los nombres de personas tapados. Ver [docs/como-se-hizo/banco-mundial.md](docs/como-se-hizo/banco-mundial.md) y [docs/como-se-hizo/presidencia.md](docs/como-se-hizo/presidencia.md).
 - IMPO y el BID, medidos contra el banco (T30, T24): la medición `2026-11-18-3` encontró y publicó los dos hallazgos de IMPO y dejó cuatro decretos más que nombran al BPS, sin juzgar todavía; el BID no tuvo candidatos, como se esperaba. El índice de IMPO ya no lee los decretos departamentales. Ver [docs/como-se-hizo/impo.md](docs/como-se-hizo/impo.md) y [banco-de-pruebas/mediciones/README.md](banco-de-pruebas/mediciones/README.md).

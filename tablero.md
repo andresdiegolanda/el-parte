@@ -82,6 +82,31 @@ Los campos van pegados al título, sin línea en blanco. Los que no aplican se o
 
 ## En curso
 
+### T47 · Leer el expediente con contexto largo
+- Tipo: Componente
+- Dueño: desarrollo
+- Depende de: T33, T49
+- Detalle: [docs/como-se-hizo/expediente.md](docs/como-se-hizo/expediente.md), [adrs/0018-lectura-del-expediente-con-contexto-largo.md](adrs/0018-lectura-del-expediente-con-contexto-largo.md)
+
+El expediente muestra cada hecho de una entidad a lo largo del tiempo, pero nadie lo lee entero. Con contexto largo, el modelo podría ver patrones que una publicación sola no muestra: compras que se repiten, prórrogas en cadena, proveedores que vuelven. Antes del código hace falta un ADR: qué puede escribir el modelo sobre muchos hechos juntos, cómo se gradúa una afirmación que sale de varios, y qué se guarda afuera del modelo, en la base y en el repositorio.
+
+Etapas:
+- [ ] Contrato
+- [ ] Código
+- [ ] Pruebas
+- [ ] Medido contra el banco
+- [ ] Página cómo se hizo
+
+Lista:
+- [ ] El ADR: qué puede escribir el modelo sobre un expediente y cómo se gradúa
+- [ ] Una lectura del expediente con su costo en el presupuesto
+
+Registro:
+- 2026-11-17: Creada al construir el expediente sin el modelo (T33). Va a Para empezar porque T33 está hecha; no entra en la tanda autorizada el 2026-11-17.
+- 2026-11-18: Escrito el ADR 0018 como propuesta: una corrida aparte, a pedido, en la que el modelo propone observaciones que citan hechos y el refutador las gradúa contra esos hechos. El código espera que se acepte (T49).
+- 2026-11-18: Pasa a Pendiente: depende de que se acepte el ADR 0018 (T49).
+- 2026-11-18: El ADR 0018 está aceptado (T49). Pasa a En curso, dentro de lo autorizado el 2026-11-18: hacer todo lo demás, con commit y push al terminar.
+
 ### T24 · Sumar los exploradores del BID, el Banco Mundial y Presidencia
 - Tipo: Componente
 - Dueño: desarrollo
@@ -111,73 +136,7 @@ Registro:
 
 ## Para empezar
 
-### T49 · Aceptar o corregir el ADR 0018
-- Tipo: Gestión
-- Dueño: Andrés
-- Detalle: [adrs/0018-lectura-del-expediente-con-contexto-largo.md](adrs/0018-lectura-del-expediente-con-contexto-largo.md)
-
-Qué puede escribir el modelo cuando lee el expediente entero de una entidad (T47): observaciones de cuatro clases que citan dos hechos o más, un control en código, el grado del refutador contra los hechos citados y nunca mayor que el más bajo de ellos, una corrida aparte que pide el responsable, con 0,50 USD por omisión, y el resultado aparte en el expediente. Al aceptarlo, su estado pasa a "aceptado" en el archivo y en el índice.
-
-Lista:
-- [ ] 0018: lectura del expediente con contexto largo
-
-Registro:
-- 2026-11-18: Creada con el ADR 0018.
-
 ## Esperando
-
-### T42 · Comparar El Parte con una sesión de la Claude Console sobre el banco
-- Tipo: Verificación
-- Dueño: desarrollo
-- Depende de: T20
-- Espera a: que el responsable juzgue el sorteo de 20 hechos de la sesión (tmp/consola/sorteo-de-la-sesion.jsonl, en su máquina)
-- Detalle: [docs/verificaciones/comparacion-con-una-sesion.md](docs/verificaciones/comparacion-con-una-sesion.md), [banco-de-pruebas/README.md](banco-de-pruebas/README.md), [adrs/0014-medicion-contra-el-banco.md](adrs/0014-medicion-contra-el-banco.md), [adrs/0004-grados-de-evidencia.md](adrs/0004-grados-de-evidencia.md)
-
-Media hora con la Claude Console, con lo que ARCE publicó cada noche, puede dar un parte que se lee mejor que el de El Parte. Lo que no da es cuánto acierta, de dónde sale cada afirmación, la garantía de que no agrega cifras y lo que cuesta por noche. Esta comparación lo mide con el mismo banco y el mismo conteo.
-
-Lo que la plataforma vuelve gratis con cada versión es la orquestación y la infraestructura. Lo que no trae es el banco con lo que pasó de verdad, la evidencia de cada afirmación y la medición en el dominio. Si la sesión de la Console sale igual o mejor, lo que vale de El Parte es la medición y no la infraestructura, y se recorta. Va después del material para la demo.
-
-Lista:
-- [x] Una muestra de 10 noches del registro, con lo que ARCE publicó del BPS en cada una
-- [x] La misma consigna a la Console, noche por noche, con la salida en el formato del banco
-- [x] El conteo con la misma herramienta, y el costo y el tiempo de cada lado
-- [ ] La conclusión escrita: qué se mantiene de El Parte y qué se recorta
-
-Registro:
-- 2026-11-16: Creada. Se hace después del material para la demo.
-- 2026-11-17: Pasa a Para empezar: T20 está hecha. Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
-- 2026-11-17: El material para la demo está hecho: dos videos con voz, uno de cómo funciona y otro de la arquitectura, armados con capturas de la aplicación publicada y los recorridos del tablero de arquitectura, fuera del repositorio. Pasa a Esperando: sin crédito en la API no hay sesión que comparar.
-- 2026-11-18: Con crédito otra vez, la sesión corrió sobre diez noches con las mismas publicaciones que leyó El Parte. La cobertura empata; la sesión cuesta un tercio, tarda un quinto y cuenta de nuevo lo que ya contó, y nadie la refuta. Su precisión espera que una persona juzgue un sorteo de 20 de sus hechos: los juicios de El Parte guardan la huella de otra redacción. Ver docs/verificaciones/comparacion-con-una-sesion.md.
-
-### T30 · Sumar el explorador de IMPO
-- Tipo: Componente
-- Dueño: desarrollo
-- Depende de: T08
-- Espera a: que el responsable confirme las dos correspondencias de IMPO (tmp/consola/correspondencias-impo-borrador.jsonl) y juzgue los cuatro extras (tmp/consola/extras-de-impo.jsonl), los dos en su máquina
-- Detalle: [docs/como-se-hizo/impo.md](docs/como-se-hizo/impo.md), [adrs/0010-impo-como-quinta-fuente.md](adrs/0010-impo-como-quinta-fuente.md), [docs/fuentes/impo.md](docs/fuentes/impo.md)
-
-La quinta fuente de la versión 0: solo el JSON de las normas del Diario Oficial, sin avisos y con las personas tapadas.
-
-Etapas:
-- [x] Contrato
-- [x] Código
-- [x] Pruebas
-- [x] Medido contra el banco
-- [x] Página cómo se hizo
-
-Lista:
-- [x] Índice de cada edición: números de las normas del día
-- [x] JSON de cada norma, en ISO-8859-1
-- [x] Firmantes descartados y nombres de personas tapados en el texto
-- [x] Diez segundos entre pedidos, sin búsqueda ni avisos
-- [x] Probar la cadena con leyes y resoluciones, no solo con decretos
-
-Registro:
-- 2026-11-14: Creada con el ADR 0010.
-- 2026-11-17: Pasa a Para empezar: T08 está hecha. Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
-- 2026-11-17: Pasa a En curso. El explorador anda contra un IMPO de mentira y contra muestras reales del índice y de las normas, bajadas a diez segundos entre pedidos después de volver a leer el robots.txt. Sigue la medición contra el banco, solo con IMPO.
-- 2026-11-17: El explorador anda: probado con un IMPO de mentira y con las dos normas reales de los hallazgos; las resoluciones no se leen, a propósito. Contra IMPO de verdad, la medición 2026-11-17-1, de una noche y solo con IMPO, leyó los tres decretos del 24/09 y se quedó con el 223/026, el del hallazgo, pero se cortó sin gastar: la clave llegó al tope de gasto de su espacio de trabajo. Pasa a Esperando. Ver docs/como-se-hizo/impo.md.
-- 2026-11-18: Medido con crédito otra vez. La primera medición de las 78 noches, la 2026-11-17-3, dejó cuatro de seis hechos como NOT_MENTIONED: el refutador cortaba sus veredictos (T48). Además, un decreto de la Intendencia de Rivera se pedía como nacional y daba una lectura fallida: el índice ahora se lee hasta los gobiernos departamentales. La medición 2026-11-18-3, con los dos arreglos, encontró y publicó los dos hallazgos de IMPO, con 27 y 14 días de adelanto, y dejó cuatro decretos más que nombran al BPS. Espera la confirmación de las correspondencias y el juicio de esos cuatro. Ver docs/como-se-hizo/impo.md.
 
 ### T35 · Mandar el aviso diario del parte
 - Tipo: Componente
@@ -212,31 +171,74 @@ Registro:
 
 ## Pendiente
 
-### T47 · Leer el expediente con contexto largo
-- Tipo: Componente
-- Dueño: desarrollo
-- Depende de: T33, T49
-- Detalle: [docs/como-se-hizo/expediente.md](docs/como-se-hizo/expediente.md), [adrs/0018-lectura-del-expediente-con-contexto-largo.md](adrs/0018-lectura-del-expediente-con-contexto-largo.md)
+## Hecho
 
-El expediente muestra cada hecho de una entidad a lo largo del tiempo, pero nadie lo lee entero. Con contexto largo, el modelo podría ver patrones que una publicación sola no muestra: compras que se repiten, prórrogas en cadena, proveedores que vuelven. Antes del código hace falta un ADR: qué puede escribir el modelo sobre muchos hechos juntos, cómo se gradúa una afirmación que sale de varios, y qué se guarda afuera del modelo, en la base y en el repositorio.
+### T49 · Aceptar o corregir el ADR 0018
+- Tipo: Gestión
+- Dueño: Andrés
+- Detalle: [adrs/0018-lectura-del-expediente-con-contexto-largo.md](adrs/0018-lectura-del-expediente-con-contexto-largo.md)
 
-Etapas:
-- [ ] Contrato
-- [ ] Código
-- [ ] Pruebas
-- [ ] Medido contra el banco
-- [ ] Página cómo se hizo
+Qué puede escribir el modelo cuando lee el expediente entero de una entidad (T47): observaciones de cuatro clases que citan dos hechos o más, un control en código, el grado del refutador contra los hechos citados y nunca mayor que el más bajo de ellos, una corrida aparte que pide el responsable, con 0,50 USD por omisión, y el resultado aparte en el expediente. Al aceptarlo, su estado pasa a "aceptado" en el archivo y en el índice.
 
 Lista:
-- [ ] El ADR: qué puede escribir el modelo sobre un expediente y cómo se gradúa
-- [ ] Una lectura del expediente con su costo en el presupuesto
+- [x] 0018: lectura del expediente con contexto largo
 
 Registro:
-- 2026-11-17: Creada al construir el expediente sin el modelo (T33). Va a Para empezar porque T33 está hecha; no entra en la tanda autorizada el 2026-11-17.
-- 2026-11-18: Escrito el ADR 0018 como propuesta: una corrida aparte, a pedido, en la que el modelo propone observaciones que citan hechos y el refutador las gradúa contra esos hechos. El código espera que se acepte (T49).
-- 2026-11-18: Pasa a Pendiente: depende de que se acepte el ADR 0018 (T49).
+- 2026-11-18: Creada con el ADR 0018.
+- 2026-11-18: Aceptado el 0018, sin cambios. Pasa a Hecho.
 
-## Hecho
+### T42 · Comparar El Parte con una sesión de la Claude Console sobre el banco
+- Tipo: Verificación
+- Dueño: desarrollo
+- Depende de: T20
+- Detalle: [docs/verificaciones/comparacion-con-una-sesion.md](docs/verificaciones/comparacion-con-una-sesion.md), [banco-de-pruebas/README.md](banco-de-pruebas/README.md), [adrs/0014-medicion-contra-el-banco.md](adrs/0014-medicion-contra-el-banco.md), [adrs/0004-grados-de-evidencia.md](adrs/0004-grados-de-evidencia.md)
+
+Media hora con la Claude Console, con lo que ARCE publicó cada noche, puede dar un parte que se lee mejor que el de El Parte. Lo que no da es cuánto acierta, de dónde sale cada afirmación, la garantía de que no agrega cifras y lo que cuesta por noche. Esta comparación lo mide con el mismo banco y el mismo conteo.
+
+Lo que la plataforma vuelve gratis con cada versión es la orquestación y la infraestructura. Lo que no trae es el banco con lo que pasó de verdad, la evidencia de cada afirmación y la medición en el dominio. Si la sesión de la Console sale igual o mejor, lo que vale de El Parte es la medición y no la infraestructura, y se recorta. Va después del material para la demo.
+
+Lista:
+- [x] Una muestra de 10 noches del registro, con lo que ARCE publicó del BPS en cada una
+- [x] La misma consigna a la Console, noche por noche, con la salida en el formato del banco
+- [x] El conteo con la misma herramienta, y el costo y el tiempo de cada lado
+- [x] La conclusión escrita: qué se mantiene de El Parte y qué se recorta
+
+Registro:
+- 2026-11-16: Creada. Se hace después del material para la demo.
+- 2026-11-17: Pasa a Para empezar: T20 está hecha. Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
+- 2026-11-17: El material para la demo está hecho: dos videos con voz, uno de cómo funciona y otro de la arquitectura, armados con capturas de la aplicación publicada y los recorridos del tablero de arquitectura, fuera del repositorio. Pasa a Esperando: sin crédito en la API no hay sesión que comparar.
+- 2026-11-18: Con crédito otra vez, la sesión corrió sobre diez noches con las mismas publicaciones que leyó El Parte. La cobertura empata; la sesión cuesta un tercio, tarda un quinto y cuenta de nuevo lo que ya contó, y nadie la refuta. Su precisión espera que una persona juzgue un sorteo de 20 de sus hechos: los juicios de El Parte guardan la huella de otra redacción. Ver docs/verificaciones/comparacion-con-una-sesion.md.
+- 2026-11-18: El responsable juzgó el sorteo de 20 hechos de la sesión: los 20, correctos. La precisión de los dos lados no se distingue con estas muestras. Además, de los 7 descartes de El Parte en esas noches, 6 eran veredictos cortados (T48): la comparación lo corrige. Pasa a Hecho. Ver docs/verificaciones/comparacion-con-una-sesion.md.
+
+### T30 · Sumar el explorador de IMPO
+- Tipo: Componente
+- Dueño: desarrollo
+- Depende de: T08
+- Detalle: [docs/como-se-hizo/impo.md](docs/como-se-hizo/impo.md), [adrs/0010-impo-como-quinta-fuente.md](adrs/0010-impo-como-quinta-fuente.md), [docs/fuentes/impo.md](docs/fuentes/impo.md)
+
+La quinta fuente de la versión 0: solo el JSON de las normas del Diario Oficial, sin avisos y con las personas tapadas.
+
+Etapas:
+- [x] Contrato
+- [x] Código
+- [x] Pruebas
+- [x] Medido contra el banco
+- [x] Página cómo se hizo
+
+Lista:
+- [x] Índice de cada edición: números de las normas del día
+- [x] JSON de cada norma, en ISO-8859-1
+- [x] Firmantes descartados y nombres de personas tapados en el texto
+- [x] Diez segundos entre pedidos, sin búsqueda ni avisos
+- [x] Probar la cadena con leyes y resoluciones, no solo con decretos
+
+Registro:
+- 2026-11-14: Creada con el ADR 0010.
+- 2026-11-17: Pasa a Para empezar: T08 está hecha. Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
+- 2026-11-17: Pasa a En curso. El explorador anda contra un IMPO de mentira y contra muestras reales del índice y de las normas, bajadas a diez segundos entre pedidos después de volver a leer el robots.txt. Sigue la medición contra el banco, solo con IMPO.
+- 2026-11-17: El explorador anda: probado con un IMPO de mentira y con las dos normas reales de los hallazgos; las resoluciones no se leen, a propósito. Contra IMPO de verdad, la medición 2026-11-17-1, de una noche y solo con IMPO, leyó los tres decretos del 24/09 y se quedó con el 223/026, el del hallazgo, pero se cortó sin gastar: la clave llegó al tope de gasto de su espacio de trabajo. Pasa a Esperando. Ver docs/como-se-hizo/impo.md.
+- 2026-11-18: Medido con crédito otra vez. La primera medición de las 78 noches, la 2026-11-17-3, dejó cuatro de seis hechos como NOT_MENTIONED: el refutador cortaba sus veredictos (T48). Además, un decreto de la Intendencia de Rivera se pedía como nacional y daba una lectura fallida: el índice ahora se lee hasta los gobiernos departamentales. La medición 2026-11-18-3, con los dos arreglos, encontró y publicó los dos hallazgos de IMPO, con 27 y 14 días de adelanto, y dejó cuatro decretos más que nombran al BPS. Espera la confirmación de las correspondencias y el juicio de esos cuatro. Ver docs/como-se-hizo/impo.md.
+- 2026-11-18: El responsable confirmó las dos correspondencias y juzgó correctos los cuatro extras. La medición 2026-11-18-3 queda contada: dos de los tres hallazgos de IMPO y el BID, y los seis hechos bien. Pasa a Hecho.
 
 ### T48 · Que el refutador no corte sus veredictos
 - Tipo: Componente

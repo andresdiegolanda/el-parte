@@ -1,6 +1,6 @@
 # 0018. Qué puede escribir el modelo cuando lee un expediente entero
 
-- Estado: propuesto
+- Estado: aceptado
 - Fecha: 2026-11-18
 
 ## Contexto
