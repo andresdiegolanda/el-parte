@@ -8,8 +8,10 @@ import org.testcontainers.kafka.KafkaContainer;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 
 import io.github.andresdiegolanda.elparte.fuentes.arce.ArceDePrueba;
+import io.github.andresdiegolanda.elparte.fuentes.bancomundial.BancoMundialDePrueba;
 import io.github.andresdiegolanda.elparte.fuentes.bid.BidDePrueba;
 import io.github.andresdiegolanda.elparte.fuentes.impo.ImpoDePrueba;
+import io.github.andresdiegolanda.elparte.fuentes.presidencia.PresidenciaDePrueba;
 
 /**
  * Lo que comparten las pruebas de la aplicación entera: un PostgreSQL y un Kafka de verdad, con las
@@ -40,6 +42,8 @@ public abstract class ConServicios {
     protected static final ArceDePrueba ARCE = new ArceDePrueba();
     protected static final ImpoDePrueba IMPO = new ImpoDePrueba();
     protected static final BidDePrueba BID = new BidDePrueba();
+    protected static final BancoMundialDePrueba BANCO_MUNDIAL = new BancoMundialDePrueba();
+    protected static final PresidenciaDePrueba PRESIDENCIA = new PresidenciaDePrueba();
 
     static {
         POSTGRES.start();
@@ -58,5 +62,9 @@ public abstract class ConServicios {
         propiedades.add("elparte.impo.pausa-ms", () -> "0");
         propiedades.add("elparte.bid.url-base", BID::urlBase);
         propiedades.add("elparte.bid.pausa-ms", () -> "0");
+        propiedades.add("elparte.banco-mundial.url-base", BANCO_MUNDIAL::urlBase);
+        propiedades.add("elparte.banco-mundial.pausa-ms", () -> "0");
+        propiedades.add("elparte.presidencia.url-base", PRESIDENCIA::urlBase);
+        propiedades.add("elparte.presidencia.pausa-ms", () -> "0");
     }
 }

@@ -41,3 +41,12 @@ Sí, por fecha de aprobación del directorio (`strdate` y `enddate`). Los avisos
 
 - La versión 3 no está documentada y puede cambiar sin aviso. [INFERRED]
 - Hay Cloudflare delante, y la API del catálogo respondió 429 (límite de pedidos) en la primera llamada. [PROVEN: 2026-11-07]
+
+## Lo que se aprendió al construir el explorador
+
+Verificado de nuevo el 2026-11-18 (tarjeta T24). El explorador está en [docs/como-se-hizo/banco-mundial.md](../como-se-hizo/banco-mundial.md).
+
+- **Un día sin proyectos** responde `{"total": "0", "projects": {}}`, y un identificador que no existe, lo mismo. [PROVEN: consultas a la API, 2026-11-18]
+- **`fl` no alcanza para acotar.** Con `fl=id,project_name`, la respuesta igual trae `proj_id`. El lector copia solo los campos que pide. [PROVEN: 2026-11-18]
+- **El BPS en la API.** Una búsqueda de "BPS" en los proyectos de Uruguay da tres, todos aprobados en 2007, y una de "Social Security Bank", ninguno. [PROVEN: consultas con `qterm`, 2026-11-18]
+

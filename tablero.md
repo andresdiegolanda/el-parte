@@ -86,27 +86,28 @@ Los campos van pegados al título, sin línea en blanco. Los que no aplican se o
 - Tipo: Componente
 - Dueño: desarrollo
 - Depende de: T08
-- Detalle: [docs/como-se-hizo/bid.md](docs/como-se-hizo/bid.md), [adrs/0006-fuentes-de-la-version-0.md](adrs/0006-fuentes-de-la-version-0.md), [adrs/0008-datos-personales.md](adrs/0008-datos-personales.md)
+- Detalle: [docs/como-se-hizo/bid.md](docs/como-se-hizo/bid.md), [docs/como-se-hizo/banco-mundial.md](docs/como-se-hizo/banco-mundial.md), [docs/como-se-hizo/presidencia.md](docs/como-se-hizo/presidencia.md), [adrs/0006-fuentes-de-la-version-0.md](adrs/0006-fuentes-de-la-version-0.md), [adrs/0008-datos-personales.md](adrs/0008-datos-personales.md)
 
 Las otras tres fuentes de la versión 0, cada una con sus descartes de datos personales.
 
 Etapas:
-- [ ] Contrato
-- [ ] Código
-- [ ] Pruebas
+- [x] Contrato
+- [x] Código
+- [x] Pruebas
 - [ ] Medido contra el banco
-- [ ] Página cómo se hizo
+- [x] Página cómo se hizo
 
 Lista:
 - [x] Explorador del BID
-- [ ] Explorador del Banco Mundial (API v3, campos acotados)
-- [ ] Explorador de la normativa de Presidencia, a ritmo bajo
+- [x] Explorador del Banco Mundial (API v3, campos acotados)
+- [x] Explorador de la normativa de Presidencia, a ritmo bajo
 
 Registro:
 - 2026-11-07: Creada con el plan (T07).
 - 2026-11-17: Pasa a Para empezar: T08 está hecha. Autorizada con commit y push al terminar; el gasto de la API de esta tanda, hasta 10 USD en total.
 - 2026-11-17: Pasa a En curso. El explorador del BID anda: las operaciones para Uruguay aprobadas cada noche que nombran a una entidad seguida, probado con un BID de mentira y con el filtro por fecha contra la API real. La operación del hallazgo del BID en el registro no está en la tabla de proyectos, así que por fecha no se puede ver (docs/como-se-hizo/bid.md). Siguen el Banco Mundial y Presidencia, que no tienen entradas en el registro, después del material para la demo; medir espera crédito en la API.
 - 2026-11-18: El BID, medido contra el banco con IMPO (medición 2026-11-18-3): ningún candidato en las 78 noches, como se esperaba, y el hallazgo del registro sigue fuera de su alcance. Ver docs/como-se-hizo/bid.md.
+- 2026-11-18: Construidos los exploradores del Banco Mundial y de Presidencia, con el contrato de candidatos de siempre. El Banco Mundial pide solo nueve campos y descarta el resto, sin el jefe de equipo. Presidencia lee las resoluciones de cada noche por bisección de páginas, a diez segundos entre pedidos, y tapa los nombres por reglas: probado contra las 440 resoluciones de octubre, sin nombres a la vista. Falta medirlos contra el banco.
 
 ## Para empezar
 

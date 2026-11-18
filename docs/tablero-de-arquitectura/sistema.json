@@ -1,6 +1,6 @@
 {
  "titulo": "El Parte · tablero de arquitectura",
- "actualizado": "2026-11-17",
+ "actualizado": "2026-11-18",
  "repositorio": "https://github.com/andresdiegolanda/el-parte/blob/main/",
  "tablero": "https://github.com/andresdiegolanda/el-parte/blob/main/tablero.md",
  "kanban": "https://andresdiegolanda.github.io/el-parte/kanban/",
@@ -147,7 +147,7 @@
    "col": 0,
    "fila": 2,
    "estado": "construido",
-   "que_es": "Una de las cinco fuentes de la versión 0 (BID). Todavía no se lee.",
+   "que_es": "Una de las fuentes de la versión 0: la tabla de proyectos del portal de datos abiertos del BID, con licencia CC BY 4.0.",
    "para_que": "Suma hechos de otra fuente pública sobre las mismas entidades.",
    "docs": [
     "docs/fuentes/bid.md"
@@ -163,8 +163,8 @@
    "sub": "API v3 de proyectos",
    "col": 0,
    "fila": 3,
-   "estado": "disenado",
-   "que_es": "Una de las cinco fuentes de la versión 0 (Banco Mundial). Todavía no se lee.",
+   "estado": "construido",
+   "que_es": "Una de las fuentes de la versión 0, como fuente secundaria: los proyectos del Banco Mundial para Uruguay, de la versión 3 de su API de búsqueda, sin documentar. Datos con licencia CC BY 4.0.",
    "para_que": "Suma hechos de otra fuente pública sobre las mismas entidades.",
    "docs": [
     "docs/fuentes/banco-mundial.md"
@@ -180,8 +180,8 @@
    "sub": "normativa",
    "col": 0,
    "fila": 4,
-   "estado": "disenado",
-   "que_es": "Una de las cinco fuentes de la versión 0 (Presidencia). Todavía no se lee.",
+   "estado": "construido",
+   "que_es": "Una de las fuentes de la versión 0: las resoluciones de la normativa de Presidencia en gub.uy, leídas a ritmo bajo. Sin licencia explícita: los términos de uso admiten el acceso por aplicaciones.",
    "para_que": "Suma hechos de otra fuente pública sobre las mismas entidades.",
    "docs": [
     "docs/fuentes/presidencia.md"
@@ -460,35 +460,46 @@
   {
    "id": "explorador-banco-mundial",
    "tipo": "agente",
-   "titulo": "Explorador de Banco Mundial",
-   "sub": "",
+   "titulo": "Explorador del Banco Mundial",
+   "sub": "ExploradorBancoMundial",
    "col": 2,
    "fila": 3,
-   "estado": "disenado",
-   "que_es": "El explorador de Banco Mundial: leerá lo publicado la noche objetivo, tapará los datos personales y emitirá candidatos, como el de ARCE.",
-   "para_que": "Suma su fuente sin tocar a los demás agentes: el contrato de los candidatos es el mismo. También emitirá exploracion.terminada y fuente.fallida, y grabará lo que lea (ADR 0011).",
+   "estado": "construido",
+   "que_es": "Los proyectos del Banco Mundial para Uruguay que el directorio aprobó la noche objetivo, y un candidato por cada uno que nombra a una entidad seguida en su nombre, su objetivo, su resumen, su prestatario o su agencia ejecutora. Sin el modelo.",
+   "para_que": "Suma su fuente sin tocar a los demás agentes: el contrato de los candidatos es el mismo.",
    "docs": [
-    "adrs/0006-fuentes-de-la-version-0.md"
+    "adrs/0006-fuentes-de-la-version-0.md",
+    "docs/como-se-hizo/banco-mundial.md",
+    "docs/fuentes/banco-mundial.md"
    ],
    "tarjetas": [
     "T24"
+   ],
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/bancomundial/ExploradorBancoMundial.java"
    ]
   },
   {
    "id": "explorador-presidencia",
    "tipo": "agente",
    "titulo": "Explorador de Presidencia",
-   "sub": "",
+   "sub": "ExploradorPresidencia",
    "col": 2,
    "fila": 4,
-   "estado": "disenado",
-   "que_es": "El explorador de Presidencia: leerá lo publicado la noche objetivo, tapará los datos personales y emitirá candidatos, como el de ARCE.",
-   "para_que": "Suma su fuente sin tocar a los demás agentes: el contrato de los candidatos es el mismo. También emitirá exploracion.terminada y fuente.fallida, y grabará lo que lea (ADR 0011).",
+   "estado": "construido",
+   "que_es": "Las resoluciones de Presidencia de la noche objetivo, y un candidato por cada una que nombra a una entidad seguida, con los nombres de personas tapados. Guarda solo esas, sin la ruta del listado. Sin el modelo.",
+   "para_que": "Suma su fuente sin tocar a los demás agentes: el contrato de los candidatos es el mismo.",
    "docs": [
-    "adrs/0006-fuentes-de-la-version-0.md"
+    "adrs/0006-fuentes-de-la-version-0.md",
+    "docs/como-se-hizo/presidencia.md",
+    "docs/fuentes/presidencia.md"
    ],
    "tarjetas": [
     "T24"
+   ],
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/presidencia/ExploradorPresidencia.java",
+    "app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/presidencia/EnmascaradorPresidencia.java"
    ]
   },
   {
@@ -1750,6 +1761,48 @@
    ],
    "que_es": "Un registro por aviso mandado: el invitado, la noche, la corrida y cuándo salió.",
    "para_que": "Que un aviso no salga dos veces de la misma noche, aunque el mensaje llegue dos veces o la noche se corra otra vez a mano."
+  },
+  {
+   "id": "lector-banco-mundial",
+   "tipo": "servicio",
+   "titulo": "Lector del Banco Mundial",
+   "sub": "LectorBancoMundial · API v3 de proyectos",
+   "col": 1,
+   "fila": 3,
+   "estado": "construido",
+   "que_es": "Pide a la versión 3 de la API de proyectos del Banco Mundial los proyectos de Uruguay aprobados un día, o uno por su identificador, solo con los campos necesarios: sin el jefe de equipo.",
+   "para_que": "Que el explorador y el refutador lean la fuente igual.",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/bancomundial/LectorBancoMundial.java"
+   ],
+   "docs": [
+    "docs/fuentes/banco-mundial.md",
+    "docs/como-se-hizo/banco-mundial.md"
+   ],
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "lector-presidencia",
+   "tipo": "servicio",
+   "titulo": "Lector de Presidencia",
+   "sub": "LectorPresidencia · HTML de gub.uy",
+   "col": 1,
+   "fila": 4,
+   "estado": "construido",
+   "que_es": "Lee el listado de resoluciones de un mes, buscando por bisección la página de la noche, y la página de cada resolución, por su ruta o por su número de nodo. Diez segundos antes de cada pedido.",
+   "para_que": "Que el explorador y el refutador lean la fuente igual.",
+   "codigo": [
+    "app/src/main/java/io/github/andresdiegolanda/elparte/fuentes/presidencia/LectorPresidencia.java"
+   ],
+   "docs": [
+    "docs/fuentes/presidencia.md",
+    "docs/como-se-hizo/presidencia.md"
+   ],
+   "tarjetas": [
+    "T24"
+   ]
   }
  ],
  "flechas": [
@@ -2512,24 +2565,10 @@
    "de": "kafka/corrida.iniciada",
    "a": "explorador-banco-mundial",
    "tipo": "escucha",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "empieza a explorar",
    "detalle": "Escuchará corrida.iniciada como el de ARCE.",
-   "tarjetas": [
-    "T24"
-   ]
-  },
-  {
-   "id": "explorador-banco-mundial>afuera/banco-mundial",
-   "de": "explorador-banco-mundial",
-   "a": "afuera/banco-mundial",
-   "tipo": "llama",
-   "estado": "disenado",
-   "papel": "auxiliar",
-   "etiqueta": "lee la fuente",
-   "detalle": "Leerá lo publicado la noche objetivo.",
-   "fuente": "docs/fuentes/banco-mundial.md",
    "tarjetas": [
     "T24"
    ]
@@ -2539,7 +2578,7 @@
    "de": "explorador-banco-mundial",
    "a": "kafka/candidatos",
    "tipo": "emite",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "candidatos",
    "detalle": "Emitirá candidatos con el mismo contrato.",
@@ -2552,7 +2591,7 @@
    "de": "explorador-banco-mundial",
    "a": "kafka/exploracion.terminada",
    "tipo": "emite",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "terminé",
    "detalle": "Avisará cuándo terminó.",
@@ -2565,7 +2604,7 @@
    "de": "explorador-banco-mundial",
    "a": "kafka/fuente.fallida",
    "tipo": "emite",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "la fuente falló",
    "detalle": "Avisará si su fuente no respondió.",
@@ -2578,24 +2617,10 @@
    "de": "kafka/corrida.iniciada",
    "a": "explorador-presidencia",
    "tipo": "escucha",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "empieza a explorar",
    "detalle": "Escuchará corrida.iniciada como el de ARCE.",
-   "tarjetas": [
-    "T24"
-   ]
-  },
-  {
-   "id": "explorador-presidencia>afuera/presidencia",
-   "de": "explorador-presidencia",
-   "a": "afuera/presidencia",
-   "tipo": "llama",
-   "estado": "disenado",
-   "papel": "auxiliar",
-   "etiqueta": "lee la fuente",
-   "detalle": "Leerá lo publicado la noche objetivo.",
-   "fuente": "docs/fuentes/presidencia.md",
    "tarjetas": [
     "T24"
    ]
@@ -2605,7 +2630,7 @@
    "de": "explorador-presidencia",
    "a": "kafka/candidatos",
    "tipo": "emite",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "candidatos",
    "detalle": "Emitirá candidatos con el mismo contrato.",
@@ -2618,7 +2643,7 @@
    "de": "explorador-presidencia",
    "a": "kafka/exploracion.terminada",
    "tipo": "emite",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "terminé",
    "detalle": "Avisará cuándo terminó.",
@@ -2631,7 +2656,7 @@
    "de": "explorador-presidencia",
    "a": "kafka/fuente.fallida",
    "tipo": "emite",
-   "estado": "disenado",
+   "estado": "construido",
    "papel": "auxiliar",
    "etiqueta": "la fuente falló",
    "detalle": "Avisará si su fuente no respondió.",
@@ -3424,7 +3449,7 @@
    "papel": "camino",
    "etiqueta": "HTTPS, API de CKAN",
    "detalle": "Un segundo antes de cada pedido; el robots.txt deja la API abierta.",
-   "fuente": "docs/fuentes/compras-estatales.md",
+   "fuente": "docs/fuentes/bid.md",
    "tarjetas": [
     "T24"
    ]
@@ -3464,6 +3489,138 @@
    "papel": "auxiliar",
    "etiqueta": "nombre y sigla",
    "detalle": "Cómo se nombra a cada entidad seguida en los textos del BID, que están en inglés.",
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "explorador-banco-mundial>lector-banco-mundial",
+   "de": "explorador-banco-mundial",
+   "a": "lector-banco-mundial",
+   "tipo": "usa",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "pide los aprobados del día",
+   "detalle": "Los proyectos de Uruguay aprobados por el directorio la noche objetivo.",
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "lector-banco-mundial>afuera/banco-mundial",
+   "de": "lector-banco-mundial",
+   "a": "afuera/banco-mundial",
+   "tipo": "llama",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "HTTPS, API v3",
+   "detalle": "Dos segundos antes de cada pedido; delante hay Cloudflare.",
+   "fuente": "docs/fuentes/banco-mundial.md",
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "explorador-banco-mundial>grabaciones",
+   "de": "explorador-banco-mundial",
+   "a": "grabaciones",
+   "tipo": "usa",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "graba lo leído",
+   "detalle": "Los proyectos aprobados de la noche, ya acotados, para repetirla sin red.",
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "refutador>lector-banco-mundial",
+   "de": "refutador",
+   "a": "lector-banco-mundial",
+   "tipo": "usa",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "vuelve a leer el proyecto",
+   "detalle": "El proyecto por su identificador, con el resumen recortado.",
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "base/entidades>explorador-banco-mundial",
+   "de": "base/entidades",
+   "a": "explorador-banco-mundial",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "nombre y sigla",
+   "detalle": "Cómo se nombra a cada entidad seguida en los textos del Banco Mundial, que están en inglés.",
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "explorador-presidencia>lector-presidencia",
+   "de": "explorador-presidencia",
+   "a": "lector-presidencia",
+   "tipo": "usa",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "pide las resoluciones del día",
+   "detalle": "Las del listado de la noche objetivo, y la página de las que nombran a una entidad.",
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "lector-presidencia>afuera/presidencia",
+   "de": "lector-presidencia",
+   "a": "afuera/presidencia",
+   "tipo": "llama",
+   "estado": "construido",
+   "papel": "camino",
+   "etiqueta": "HTTPS, HTML",
+   "detalle": "Diez segundos antes de cada pedido; el robots.txt no prohíbe la normativa.",
+   "fuente": "docs/fuentes/presidencia.md",
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "explorador-presidencia>grabaciones",
+   "de": "explorador-presidencia",
+   "a": "grabaciones",
+   "tipo": "usa",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "graba lo leído",
+   "detalle": "Las resoluciones de la noche que nombran a una entidad, tapadas, para repetirla sin red.",
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "refutador>lector-presidencia",
+   "de": "refutador",
+   "a": "lector-presidencia",
+   "tipo": "usa",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "vuelve a leer la resolución",
+   "detalle": "La página por su número de nodo, tapada igual que en el explorador.",
+   "tarjetas": [
+    "T24"
+   ]
+  },
+  {
+   "id": "base/entidades>explorador-presidencia",
+   "de": "base/entidades",
+   "a": "explorador-presidencia",
+   "tipo": "lee",
+   "estado": "construido",
+   "papel": "auxiliar",
+   "etiqueta": "nombre y sigla",
+   "detalle": "Cómo se nombra a cada entidad seguida en las resoluciones.",
    "tarjetas": [
     "T24"
    ]
@@ -4213,6 +4370,28 @@
     "explorador-bid>grabaciones",
     "refutador>lector-bid",
     "base/entidades>explorador-bid"
+   ]
+  },
+  {
+   "fecha": "2026-11-18",
+   "texto": "Los exploradores del Banco Mundial y de Presidencia, construidos (T24): los proyectos aprobados cada noche y las resoluciones de cada noche que nombran a una entidad seguida, Presidencia con los nombres de personas tapados.",
+   "objetos": [
+    "afuera/banco-mundial",
+    "lector-banco-mundial",
+    "explorador-banco-mundial",
+    "explorador-banco-mundial>lector-banco-mundial",
+    "lector-banco-mundial>afuera/banco-mundial",
+    "explorador-banco-mundial>grabaciones",
+    "refutador>lector-banco-mundial",
+    "base/entidades>explorador-banco-mundial",
+    "afuera/presidencia",
+    "lector-presidencia",
+    "explorador-presidencia",
+    "explorador-presidencia>lector-presidencia",
+    "lector-presidencia>afuera/presidencia",
+    "explorador-presidencia>grabaciones",
+    "refutador>lector-presidencia",
+    "base/entidades>explorador-presidencia"
    ]
   }
  ],

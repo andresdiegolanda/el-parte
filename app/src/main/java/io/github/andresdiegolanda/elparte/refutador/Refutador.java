@@ -14,7 +14,12 @@ import io.github.andresdiegolanda.elparte.fuentes.arce.Enmascarador;
 import io.github.andresdiegolanda.elparte.fuentes.arce.LectorArce;
 import io.github.andresdiegolanda.elparte.fuentes.arce.LectorArce.FallaDeArce;
 import io.github.andresdiegolanda.elparte.fuentes.arce.LectorArce.Leida;
+import io.github.andresdiegolanda.elparte.fuentes.bancomundial.LectorBancoMundial;
+import io.github.andresdiegolanda.elparte.fuentes.bancomundial.LectorBancoMundial.FallaDelBancoMundial;
 import io.github.andresdiegolanda.elparte.fuentes.bid.LectorBid;
+import io.github.andresdiegolanda.elparte.fuentes.presidencia.ExploradorPresidencia;
+import io.github.andresdiegolanda.elparte.fuentes.presidencia.LectorPresidencia;
+import io.github.andresdiegolanda.elparte.fuentes.presidencia.LectorPresidencia.FallaDePresidencia;
 import io.github.andresdiegolanda.elparte.fuentes.bid.LectorBid.FallaDelBid;
 import io.github.andresdiegolanda.elparte.fuentes.impo.EnmascaradorImpo;
 import io.github.andresdiegolanda.elparte.fuentes.impo.LectorImpo;
@@ -27,6 +32,7 @@ import io.github.andresdiegolanda.elparte.mensajes.Contenidos.Candidato;
 import io.github.andresdiegolanda.elparte.mensajes.Contenidos.CandidatoCotejado;
 import io.github.andresdiegolanda.elparte.mensajes.Contenidos.CandidatoGraduado;
 import io.github.andresdiegolanda.elparte.mensajes.Contenidos.CorridaIniciada;
+import io.github.andresdiegolanda.elparte.mensajes.Contenidos.EntidadEnCandidato;
 import io.github.andresdiegolanda.elparte.mensajes.Contenidos.EvidenciaConUrl;
 import io.github.andresdiegolanda.elparte.mensajes.Contenidos.Prueba;
 import io.github.andresdiegolanda.elparte.mensajes.Emisor;
@@ -46,8 +52,8 @@ import tools.jackson.databind.node.ObjectNode;
  *
  * <p>Vuelve a leer la fuente por su cuenta, sin confiar en lo que leyó el explorador, y le pide al
  * modelo que compare la afirmación con la publicación: una publicación de ARCE en OCDS, una norma de
- * IMPO, recortada a los artículos que nombran a las entidades del candidato, o una operación del BID. Las pruebas de fecha y de duplicado no
- * necesitan el modelo: salen de la publicación y del cotejo del archivista.
+ * IMPO, recortada a los artículos que nombran a las entidades del candidato, una operación del BID, un
+ * proyecto del Banco Mundial o una resolución de Presidencia, con los nombres de personas tapados. Las pruebas de fecha y de duplicado no necesitan el modelo: salen de la publicación y del cotejo del archivista.
  */
 @Component
 public class Refutador {
@@ -88,19 +94,24 @@ public class Refutador {
     private final LectorArce lector;
     private final LectorImpo lectorImpo;
     private final LectorBid lectorBid;
+    private final LectorBancoMundial lectorBancoMundial;
+    private final LectorPresidencia lectorPresidencia;
     private final Modelo modelo;
     private final Emisor emisor;
     private final Procesados procesados;
     private final JsonMapper json;
 
     public Refutador(RegistroDeMensajes registro, Corridas corridas, Grabaciones grabaciones, LectorArce lector,
-            LectorImpo lectorImpo, LectorBid lectorBid, Modelo modelo, Emisor emisor, Procesados procesados, JsonMapper json) {
+            LectorImpo lectorImpo, LectorBid lectorBid, LectorBancoMundial lectorBancoMundial, LectorPresidencia lectorPresidencia,
+            Modelo modelo, Emisor emisor, Procesados procesados, JsonMapper json) {
         this.registro = registro;
         this.corridas = corridas;
         this.grabaciones = grabaciones;
         this.lector = lector;
         this.lectorImpo = lectorImpo;
         this.lectorBid = lectorBid;
+        this.lectorBancoMundial = lectorBancoMundial;
+        this.lectorPresidencia = lectorPresidencia;
         this.modelo = modelo;
         this.emisor = emisor;
         this.procesados = procesados;
@@ -132,6 +143,8 @@ public class Refutador {
         JsonNode releida = switch (candidato.fuente()) {
             case LectorImpo.FUENTE -> releerNorma(sobre.corridaId(), candidato);
             case LectorBid.FUENTE -> releerOperacion(sobre.corridaId(), candidato);
+            case LectorBancoMundial.FUENTE -> releerProyecto(sobre.corridaId(), candidato);
+            case LectorPresidencia.FUENTE -> releerResolucion(sobre.corridaId(), candidato);
             default -> releer(sobre.corridaId(), candidato.identificadorEnFuente());
         };
         CandidatoGraduado graduado;
@@ -250,6 +263,50 @@ public class Refutador {
         });
     }
 
+    /** Vuelve a leer un proyecto del Banco Mundial, con los mismos campos acotados que el explorador. */
+    private JsonNode releerProyecto(String corridaId, Candidato candidato) {
+        return grabaciones.conGrabacion(corridaId, "refutador:banco-mundial:proyecto:" + candidato.identificadorEnFuente(), "fuente",
+                () -> {
+                    try {
+                        LectorBancoMundial.Leido leido = lectorBancoMundial.proyecto(candidato.identificadorEnFuente());
+                        ObjectNode publicacion = (ObjectNode) leido.proyecto().deepCopy();
+                        String resumen = publicacion.path("project_abstract").asString("");
+                        if (resumen.length() > 4000) {
+                            publicacion.put("project_abstract", resumen.substring(0, 4000) + " [...]");
+                        }
+                        ObjectNode nueva = json.createObjectNode();
+                        nueva.set("publicacion", publicacion);
+                        nueva.put("hashContenido", leido.hashContenido());
+                        return nueva;
+                    } catch (FallaDelBancoMundial falla) {
+                        return json.createObjectNode().put("falla", falla.tipoDeFalla()).put("detalle", falla.getMessage());
+                    }
+                });
+    }
+
+    /**
+     * Vuelve a leer una resolución de Presidencia por su número de nodo y la tapa igual que el explorador:
+     * las palabras de las entidades del candidato no se tocan.
+     */
+    private JsonNode releerResolucion(String corridaId, Candidato candidato) {
+        return grabaciones.conGrabacion(corridaId, "refutador:presidencia:resolucion:" + candidato.identificadorEnFuente(),
+                "fuente", () -> {
+                    try {
+                        LectorPresidencia.Resolucion pagina = lectorPresidencia.porNodo(candidato.identificadorEnFuente());
+                        List<String> palabras = candidato.entidades().stream().map(EntidadEnCandidato::nombre).toList();
+                        ObjectNode publicacion = ExploradorPresidencia.tapada(pagina, palabras, json);
+                        String hash = publicacion.path("hashContenido").asString();
+                        publicacion.remove("hashContenido");
+                        ObjectNode nueva = json.createObjectNode();
+                        nueva.set("publicacion", publicacion);
+                        nueva.put("hashContenido", hash);
+                        return nueva;
+                    } catch (FallaDePresidencia falla) {
+                        return json.createObjectNode().put("falla", falla.tipoDeFalla()).put("detalle", falla.getMessage());
+                    }
+                });
+    }
+
     private static Prueba pruebaDeFecha(Candidato candidato, CorridaIniciada corrida) {
         String dia = candidato.fechaPublicacion().length() >= 10 ? candidato.fechaPublicacion().substring(0, 10) : "";
         if (dia.equals(corrida.fechaObjetivo())) {
@@ -269,6 +326,10 @@ public class Refutador {
                     + candidato.url() + "):\n" + json.writeValueAsString(publicacion);
             case LectorBid.FUENTE -> "Operación del BID, en el JSON de su portal de datos abiertos (" + candidato.url() + "):\n"
                     + json.writeValueAsString(publicacion);
+            case LectorBancoMundial.FUENTE -> "Proyecto del Banco Mundial, en el JSON de su API de proyectos (" + candidato.url()
+                    + "):\n" + json.writeValueAsString(publicacion);
+            case LectorPresidencia.FUENTE -> "Resolución de Presidencia, como la publica gub.uy (" + candidato.url()
+                    + "), con los nombres de personas tapados como [persona]:\n" + json.writeValueAsString(publicacion);
             default -> "Publicación de la fuente, en OCDS (" + candidato.url() + "):\n" + json.writeValueAsString(recortar(publicacion));
         };
         return "Noche leída: " + corrida.fechaObjetivo() + "\n\n"

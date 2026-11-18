@@ -22,15 +22,16 @@ public final class NombresDeEntidad {
     private final String entidadId;
     private final String nombre;
     private final List<Patron> patrones = new ArrayList<>();
+    private final List<String> nombres;
 
     /** Un nombre normalizado, que se busca en el texto normalizado, o una sigla, que se busca tal cual. */
     private record Patron(Pattern patron, boolean sigla) {
     }
 
-    public NombresDeEntidad(String entidadId, String nombre, List<String> nombresParaImpo) {
+    public NombresDeEntidad(String entidadId, String nombre, List<String> nombresEnLaFuente) {
         this.entidadId = entidadId;
         this.nombre = nombre;
-        List<String> nombres = new ArrayList<>(nombresParaImpo);
+        List<String> nombres = new ArrayList<>(nombresEnLaFuente);
         if (nombres.isEmpty()) {
             Matcher m = SIGLA_FINAL.matcher(nombre);
             if (m.matches()) {
@@ -44,6 +45,7 @@ public final class NombresDeEntidad {
             boolean sigla = SIGLA.matcher(n).matches();
             patrones.add(new Patron(Pattern.compile("\\b" + Pattern.quote(sigla ? n : normalizar(n)) + "\\b"), sigla));
         }
+        this.nombres = List.copyOf(nombres);
     }
 
     public String entidadId() {
@@ -52,6 +54,11 @@ public final class NombresDeEntidad {
 
     public String nombre() {
         return nombre;
+    }
+
+    /** Los nombres con los que se la busca: los de la fuente o, si no hay, los que salen de su nombre. */
+    public List<String> nombresEnLaFuente() {
+        return nombres;
     }
 
     /** Dónde aparece la entidad en el texto, o -1. */

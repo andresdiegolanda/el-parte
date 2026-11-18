@@ -92,6 +92,8 @@ flowchart TD
 | [`docs/como-se-hizo/login.md`](../docs/como-se-hizo/login.md) | Cómo se hizo el login por enlace de correo, el alta de invitados y quién puede hacer qué (T25). |
 | [`docs/como-se-hizo/README.md`](../docs/como-se-hizo/README.md) | El índice de las páginas "cómo se hizo", una por componente, que la aplicación enlaza desde `/como-funciona` (T26). |
 | [`docs/como-se-hizo/bid.md`](../docs/como-se-hizo/bid.md) | Cómo se hizo el explorador del BID: las operaciones para Uruguay aprobadas cada noche (T24). |
+| [`docs/como-se-hizo/banco-mundial.md`](../docs/como-se-hizo/banco-mundial.md) | El explorador del Banco Mundial (T24). |
+| [`docs/como-se-hizo/presidencia.md`](../docs/como-se-hizo/presidencia.md) | El explorador de Presidencia y el tapado de nombres en texto libre (T24). |
 | [`docs/como-se-hizo/aviso-diario.md`](../docs/como-se-hizo/aviso-diario.md) | Cómo se hizo el aviso diario por correo: escucha los informes de las corridas normales, uno por invitado y noche, sin el contenido de los hechos (T35). |
 | [`docs/como-se-hizo/expediente.md`](../docs/como-se-hizo/expediente.md) | Cómo se hizo el expediente de cada entidad: cada hecho con todas sus versiones, mes por mes (T33). |
 | [`docs/como-se-hizo/impo.md`](../docs/como-se-hizo/impo.md) | Cómo se hizo el explorador de IMPO: el índice de cada edición, el JSON de cada ley y decreto, el tapado y el filtro por entidad (T30). |

@@ -36,3 +36,14 @@ Sí. Los títulos de resoluciones nombran personas (misiones oficiales, designac
 
 - La extracción depende del HTML del sitio, que puede cambiar.
 - El reconocimiento de texto de los PDF puede fallar, como en la muestra.
+
+## Lo que se aprendió al construir el explorador
+
+Verificado el 2026-11-18 (tarjeta T24). El explorador está en [docs/como-se-hizo/presidencia.md](../como-se-hizo/presidencia.md).
+
+- **El robots.txt** prohíbe `/search/`, `*/buscar?search_api_fulltext` y `*/listado-por-filtro?oid`, entre otras rutas. La normativa y sus filtros por tipo, año y mes no están. [PROVEN: https://www.gub.uy/robots.txt, 2026-11-18]
+- **El listado de resoluciones** (`field_tipo_de_norma_target_id=276`) trae diez por página, con la fecha, el título, el resumen, a veces cortado con puntos suspensivos, y la ruta de cada una. Octubre de 2026 tiene 440, en 44 páginas. El mes va con dos cifras: `month=10`. [PROVEN: listado de octubre de 2026, 2026-11-18]
+- **Las rutas llevan nombres.** La ruta de cada resolución sale de su título: las de misiones oficiales terminan con el nombre de la persona. [PROVEN: listado de octubre de 2026]
+- **La página de una resolución** trae el título, la fecha, el resumen entero y el enlace al PDF en `medios.presidencia.gub.uy`, y su número de nodo en los datos de Drupal. `https://www.gub.uy/presidencia/node/` seguido del número lleva a la misma página. [PROVEN: 2026-11-18]
+- **El tipo "Resolución del Poder Ejecutivo"** (277) no tuvo ninguna en octubre de 2026. [PROVEN: listado, 2026-11-18]
+
