@@ -99,11 +99,19 @@ ok, e = con_error("la página web/manana dice", hechos=h)
 comprobar(ok, f"una ruta nueva en un controlador se detecta {e if not ok else ''}")
 
 # Lo diseñado con sus tarjetas ya hechas: una tarjeta que cita algo diseñado, como si se hubiera hecho.
-pendiente = next(t for o in MODELO["nodos"] + MODELO["flechas"] if o["estado"] == "disenado"
+# Cuando ya no queda nada diseñado en el modelo real, se diseña una fuente de prueba.
+m = copy.deepcopy(MODELO)
+if not any(o["estado"] == "disenado" for o in m["nodos"] + m["flechas"]):
+    ocupadas = {(n["col"], n["fila"]) for n in m["nodos"]}
+    fila = next(f for f in range(100) if (0, f) not in ocupadas)
+    m["nodos"].append({"id": "afuera/prueba", "tipo": "externo", "titulo": "Fuente de prueba", "sub": "", "col": 0,
+                       "fila": fila, "estado": "disenado", "que_es": "Una fuente que todavía no se lee.",
+                       "para_que": "Probar el control.", "docs": [], "tarjetas": ["T99"]})
+pendiente = next(t for o in m["nodos"] + m["flechas"] if o["estado"] == "disenado"
                  for t in o.get("tarjetas", []) if TARJETAS.get(t) != "hecho")
 t = dict(TARJETAS)
 t[pendiente] = "hecho"
-e = errores(tarjetas=t)
+e = errores(modelo=m, tarjetas=t)
 comprobar(e and all(f"sus tarjetas ({pendiente}) ya están hechas" in x for x in e), "lo diseñado con su tarjeta hecha se detecta")
 
 # Una flecha que hace una biblioteca no se busca en el código; sin su marco, sí.
